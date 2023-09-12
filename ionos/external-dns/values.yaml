@@ -1,0 +1,4 @@
+aws:
+  credentials:
+    secretName: aws-dns
+txtOwnerId: ionos-dns
