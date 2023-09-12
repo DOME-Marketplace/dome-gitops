@@ -1,4 +1,5 @@
 ingress-nginx:
+  fullnameOverride: ingress-nginx
   controller:
     nodeSelector:
       nodepool: ingress
