@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: namespaces
+  namespace: argocd
+spec:
+  destination:
+    namespace: infra
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: ionos/ingress
+    repoURL: https://github.com/wistefan/dome-gitops
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
