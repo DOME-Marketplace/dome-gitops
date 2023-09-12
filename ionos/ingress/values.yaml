@@ -6,3 +6,5 @@ ingress-nginx:
       annotations:
         cloud.ionos.com/node-selector: nodepool=ingress
     kind: DaemonSet
+    admissionWebhooks:
+      port: 443
