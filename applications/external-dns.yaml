@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ingress
+  name: external-dns
   namespace: argocd
 spec:
   destination:
@@ -9,7 +9,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos/ingress
+    path: ionos/external-dns
     repoURL: https://github.com/wistefan/dome-gitops
     targetRevision: HEAD
   syncPolicy:

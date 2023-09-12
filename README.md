@@ -11,6 +11,13 @@
 - ```kubectl create namespace argocd```
 - ```kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml```
 
+## Sealed Secrets
+
+Seal secrets before adding them to the cluster:
+```bash
+    kubeseal <SECRET_FILE >OUTPUT_FILE -o yaml --controller-namespace sealed-secrets  --controller-name sealed-secrets 
+```
+
 
 ## Ingress controller
 
@@ -50,7 +57,7 @@
 
 - install cert-manager 
 ```
-    helm install \
+helm install \
     cert-manager jetstack/cert-manager \
     --namespace cert-manager \
     --create-namespace \
