@@ -59,11 +59,6 @@ keycloak:
   - name: KEYCLOAK_LOG_LEVEL
     value: INFO
 
-  extraVolumeMounts:
-    - name: profiles
-      mountPath: /opt/bitnami/keycloak/conf/profile.properties
-      subPath: profile.properties
-
   extraVolumes:
     - name: data
       emptyDir: {}
