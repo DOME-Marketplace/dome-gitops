@@ -1,0 +1,75 @@
+realm:
+  orionPep:
+    baseUrl: https://orion-ld
+    adminUrl: https://orion-ld
+    redirectUris:
+      - https://orion-ld/
+    webOrigins:
+      - https://orion-ld/
+
+keycloak:  
+  image: 
+    tag: 21.1.2-debian-11-r1
+  service:
+    type: ClusterIP
+  logging:
+    level: INFO
+  replicaCount: 1
+  auth:
+    adminUser: fiwareAdmin
+    adminPassword: fiwareAdmin
+  serviceAccount:
+    create: true
+  rbac:
+    create: true
+    rules:
+      - apiGroups:
+        - security.openshift.io
+        resourceNames:
+        - anyuid
+        resources:
+        - securitycontextconstraints
+        verbs:
+        - use
+
+  
+  keycloakConfigCli:
+    enabled: true
+    # current image does not contain 20.0.3., thus we need this fix
+    command: 
+      - java
+      - -jar
+      - /opt/bitnami/keycloak-config-cli/keycloak-config-cli-20.0.1.jar
+
+    extraEnvVars:
+      - name: IMPORT_FILES_LOCATIONS
+        value: "/config/*"
+    containerSecurityContext:
+      enabled: false
+    podSecurityContext:
+      enabled: false
+  
+  extraEnvVars:
+  - name: KEYCLOAK_PROXY_ADDRESS_FORWARDING
+    value: "true"
+  - name: KEYCLOAK_LOG_LEVEL
+    value: INFO
+
+  extraVolumeMounts:
+    - name: profiles
+      mountPath: /opt/bitnami/keycloak/conf/profile.properties
+      subPath: profile.properties
+
+  extraVolumes:
+    - name: data
+      emptyDir: {}
+
+  postgresql:
+    enabled: false
+
+  externalDatabase:
+    host:  postgresql-kc
+    user: postgres
+    database: keycloak
+    existingSecret: postgres-secret
+    existingSecretPasswordKey: postgres-password

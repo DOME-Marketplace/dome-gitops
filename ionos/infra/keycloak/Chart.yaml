@@ -1,0 +1,10 @@
+apiVersion: v2
+name: keycloak
+description: A Helm chart for Kubernetes to deploy Keycloak
+type: application
+version: 1.0.3
+appVersion: "17.0.1"
+dependencies:
+- name: keycloak
+  version: 13.0.3
+  repository: https://charts.bitnami.com/bitnami

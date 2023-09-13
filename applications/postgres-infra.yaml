@@ -1,15 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ingress
+  name: postgres
   namespace: argocd
 spec:
   destination:
-    namespace: ingress-nginx
+    namespace: infra
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos/ingress
+    path: ionos/infra/postgres
     repoURL: https://github.com/wistefan/dome-gitops
     targetRevision: HEAD
   syncPolicy:
