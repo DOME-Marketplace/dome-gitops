@@ -3,7 +3,7 @@ keycloak:
     tag: 21.1.2-debian-11-r1
   ingress:
     enabled: true
-    ingressClassName:
+    ingressClassName: nginx
     path: /
     pathType: Prefix
     hostname: keycloak.dome-marketplace.org
