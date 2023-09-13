@@ -8,7 +8,8 @@ metadata:
   namespace: argocd
 data:
   url: https://argocd.dome-marketplace.org
-
+  # explicitly set through rbac
+  admin.enabled: "false"
   dex.config: |
     connectors:
       # GitHub example
