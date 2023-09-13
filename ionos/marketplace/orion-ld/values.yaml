@@ -3,6 +3,8 @@ orion:
     additionalAnnotations:
       prometheus.io/scrape: 'true'
       prometheus.io/port: '8000'
+    image: 
+      tag: 1.2.0
   broker:
     db:
       auth: 
