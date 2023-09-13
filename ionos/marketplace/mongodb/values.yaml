@@ -1,0 +1,17 @@
+mongodb:
+  auth:
+    enabled: true
+    existingSecret: mongodb-secret
+    
+  architecture: standalone
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false
+  resources:
+    limits:
+      cpu: 200m
+      memory: 512Mi
+  persistence:
+    enabled: true
+    size: 8Gi
