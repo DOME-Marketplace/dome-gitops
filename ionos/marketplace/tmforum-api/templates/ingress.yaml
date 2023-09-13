@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "tmforum.fullname" $ }}-doc
+  labels:
+    {{ include "tmforum.labels" $ | nindent 4 }}
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-aws-prod
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: tmforum-doc.dome-marketplace.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ include "tmforum.fullname" $ }}-doc
+            port:
+              name: https
+  tls:
+  - hosts:
+    - tmforum-doc.dome-marketplace.org
+    secretName: tmforum-doc-tls
