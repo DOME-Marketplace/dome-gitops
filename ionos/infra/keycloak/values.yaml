@@ -21,7 +21,8 @@ keycloak:
   replicaCount: 1
   auth:
     adminUser: fiwareAdmin
-    adminPassword: fiwareAdmin
+    existingSecret: keycloak-secret
+    passwordSecretKey: adminPassword
   serviceAccount:
     create: true
   rbac:
