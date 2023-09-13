@@ -7,7 +7,7 @@ metadata:
   name: argocd-cm
   namespace: argocd
 data:
-  url: https://argocd.example.com
+  url: https://argocd.dome-marketplace.org
 
   dex.config: |
     connectors:
