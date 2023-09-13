@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd-ingress
+  name: argocd
   namespace: argocd
 spec:
   destination:
@@ -9,7 +9,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos/argocd-ingress
+    path: ionos/argocd
     repoURL: https://github.com/wistefan/dome-gitops
     targetRevision: HEAD
   syncPolicy:
