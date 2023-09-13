@@ -1,15 +1,19 @@
-realm:
-  orionPep:
-    baseUrl: https://orion-ld
-    adminUrl: https://orion-ld
-    redirectUris:
-      - https://orion-ld/
-    webOrigins:
-      - https://orion-ld/
-
 keycloak:  
   image: 
     tag: 21.1.2-debian-11-r1
+  ingress:
+    enabled: true
+    ingressClassName:
+    path: /
+    pathType: Prefix
+    hostname: keycloak.dome-marketplace.org
+    annotations: 
+      cert-manager.io/cluster-issuer: letsencrypt-aws-prod
+    tls: true
+    extraTls:
+      - hosts:
+        - keycloak.dome-marketplace.org
+        secretName: keycloak-tls
   service:
     type: ClusterIP
   logging:
