@@ -2,11 +2,11 @@ external-dns:
   env:
     - name: AWS_SHARED_CREDENTIALS_FILE
       value: /.aws/credentials
-  volumeMounts:
+  extraVolumeMounts:
     - name: aws-credentials
       mountPath: /.aws
       readOnly: true
-  volumes:
+  extraVolumes:
     - name: aws-credentials
       secret:
         secretName: aws-access-key
