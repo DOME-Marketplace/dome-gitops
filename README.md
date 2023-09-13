@@ -227,7 +227,7 @@ To seamlessly use ArgoCD, we use [Githubs Oauth](https://docs.github.com/en/apps
     watch kubectl get applications -n argocd
 ```
 
-Login to our [ArgoCD](https://argocd.demo-marketplace.org).
+Login to our [ArgoCD](https://argocd.dome-marketplace.org).
 
 ## Deploy a new application
 
