@@ -9,6 +9,4 @@ metadata:
 data:
   policy.default: role:readonly
   policy.csv: |
-    g, stefan.wiedemann@fiware.org, role:admin
-    g, wistefan, role:admin
     g, CggyNDUyNDUxOBIGZ2l0aHVi, role:admin
