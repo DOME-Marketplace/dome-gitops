@@ -7,4 +7,4 @@ metadata:
   name: argocd-cmd-params-cm
   namespace: argocd
 data:
-  server.log.level: DEBUG
+  server.log.level: debug
