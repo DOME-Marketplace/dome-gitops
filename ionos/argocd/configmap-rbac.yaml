@@ -22,5 +22,4 @@ data:
     p, role:org-admin, logs, get, *, allow
     p, role:org-admin, exec, create, */*, allow
 
-    g, stefan.wiedemann@fiware.org, role:admin
     g, stefan.wiedemann@fiware.org, role:org-admin
