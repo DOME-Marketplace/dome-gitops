@@ -9,5 +9,5 @@ metadata:
 data:
   policy.default: role:readonly
   policy.csv: |
+    p, role:admin, applications, *, */*, allow
     g, stefan.wiedemann@fiware.org, role:admin
-    p, stefan.wiedemann@fiware.org, *, delete, default/*, allow
