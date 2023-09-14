@@ -5,7 +5,8 @@ mongodb:
     
   architecture: standalone
   podSecurityContext:
-    enabled: false
+    enabled: true
+    runAsUser: 1000
   containerSecurityContext:
     enabled: false
   resources:
