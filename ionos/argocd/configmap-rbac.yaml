@@ -10,4 +10,4 @@ data:
   policy.default: role:readonly
   policy.csv: |
     g, stefan.wiedemann@fiware.org, role:admin
-    p, stefan.wiedemann@fiware.org, *, *, *, allow
+    p, stefan.wiedemann@fiware.org, *, delete, default/*, allow
