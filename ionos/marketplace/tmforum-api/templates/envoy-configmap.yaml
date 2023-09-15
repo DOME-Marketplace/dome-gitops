@@ -34,6 +34,10 @@ data:
                             prefix: "/tmf-api/party/v4"
                           route:
                             cluster: tmforum-party-catalog
+              http_filters:
+                - name: http_router
+                  typed_config:
+                    "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
       clusters:
         - name: customer-bill-management
           connect_timeout: 15s
