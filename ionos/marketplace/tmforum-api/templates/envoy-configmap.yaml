@@ -35,8 +35,7 @@ data:
                           route:
                             cluster: tmforum-party-catalog
       clusters:
-        - "@type": type.googleapis.com/envoy.config.cluster.v3.Cluster
-          name: customer-bill-management
+        - name: customer-bill-management
           connect_timeout: 15s
           type: STRICT_DNS
           lb_policy: ROUND_ROBIN
@@ -50,8 +49,7 @@ data:
                           protocol: TCP
                           address: "tmforum-tm-forum-api-customer-bill-management"
                           port_value: 8080
-        - "@type": type.googleapis.com/envoy.config.cluster.v3.Cluster
-          name: tmforum-party-catalog
+        - name: tmforum-party-catalog
           connect_timeout: 15s
           type: STRICT_DNS
           lb_policy: ROUND_ROBIN
