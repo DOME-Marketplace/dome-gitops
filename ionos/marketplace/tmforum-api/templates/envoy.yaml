@@ -24,6 +24,7 @@ spec:
           image: "envoyproxy/envoy:v1.27-latest"
           args: 
             - -c /config/envoy-config.yaml
+            - -l debug
           ports:
             - name: http
               containerPort: 10000
