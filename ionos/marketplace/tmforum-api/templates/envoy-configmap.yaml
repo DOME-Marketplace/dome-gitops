@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "tmforum.fullname" $ }}-envoy
+  labels:
+    {{ include "tmforum.labels" $ | nindent 4 }}
+data:
+  envoy-config.yaml:
+    static_resources:
+      listeners:
+        - name: listener_0
+          address:
+            socket_address:
+              address: 0.0.0.0
+              port_value: 10000
+          filter_chains:
+          - filters: 
+            - name: envoy.filters.network.http_connection_manager
+              typed_config:
+                "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+                stat_prefix: ingress_http
+                codec_type: AUTO
+                route_config:
+                  name: tmforum-api
+                  virtual_hosts:
+                    - name: tmforum-api
+                      domains: ["*"]
+                      routes:
+                        - match: 
+                            path: "/tmf-api/customerBillManagement/v4"
+                          route:
+                            cluster: customer-bill-management
+                        - match: 
+                            path: "/tmf-api/party/v4"
+                          route:
+                            cluster: tmforum-party-catalog
+      clusters:
+        - "@type": type.googleapis.com/envoy.config.cluster.v3.Cluster
+          name: customer-bill-management
+          connect_timeout: 15s
+          type: STRICT_DNS
+          lb_policy: ROUND_ROBIN
+          load_assignment:
+            cluster_name: customer-bill-management
+            endpoints:
+              - lb_endpoints:
+                  - endpoint:
+                      address:
+                        socket_address:
+                          protocol: TCP
+                          address: "tmforum-tm-forum-api-customer-bill-management"
+                          port_value: 8080
+        - "@type": type.googleapis.com/envoy.config.cluster.v3.Cluster
+          name: tmforum-party-catalog
+          connect_timeout: 15s
+          type: STRICT_DNS
+          lb_policy: ROUND_ROBIN
+          load_assignment:
+            cluster_name: tmforum-party-catalog
+            endpoints:
+              - lb_endpoints:
+                  - endpoint:
+                      address:
+                        socket_address:
+                          protocol: TCP
+                          address: "tmforum-tm-forum-api-tmforum-party-catalog"
+                          port_value: 8080

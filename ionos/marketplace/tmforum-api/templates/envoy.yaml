@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "tmforum.fullname" . }}-envoy
+  labels:
+    app.kubernetes.io/name: {{ include "tmforum.name" . }}-envoy
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "tmforum.name" . }}-envoy
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "tmforum.name" . }}-envoy
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec: 
+      containers:
+        - name: {{ .Chart.Name }}
+          imagePullPolicy: IfNotPresent
+          image: "envoyproxy/envoy:v1.73.7"
+          args: 
+            - -c /config/
+          ports:
+            - name: http
+              containerPort: 10000
+              protocol: TCP    
+          volumeMounts:
+            - name: config
+              mountPath: /config
+      volumes:
+        - name: config
+          configMap:
+            name: {{ include "tmforum.fullname" $ }}-envoy
