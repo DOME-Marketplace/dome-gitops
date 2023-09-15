@@ -23,7 +23,7 @@ spec:
           imagePullPolicy: IfNotPresent
           image: "envoyproxy/envoy:v1.27-latest"
           args: 
-            - -c /config/
+            - -c /config/envoy-config.yaml
           ports:
             - name: http
               containerPort: 10000
