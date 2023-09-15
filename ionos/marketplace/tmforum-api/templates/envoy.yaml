@@ -21,7 +21,7 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           imagePullPolicy: IfNotPresent
-          image: "envoyproxy/envoy:v1.73.7"
+          image: "envoyproxy/envoy:v1.27-latest"
           args: 
             - -c /config/
           ports:
