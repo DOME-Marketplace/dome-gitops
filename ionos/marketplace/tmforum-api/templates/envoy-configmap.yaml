@@ -5,7 +5,7 @@ metadata:
   labels:
     {{ include "tmforum.labels" $ | nindent 4 }}
 data:
-  envoy-config.yaml:
+  envoy-config.yaml: |
     static_resources:
       listeners:
         - name: listener_0
