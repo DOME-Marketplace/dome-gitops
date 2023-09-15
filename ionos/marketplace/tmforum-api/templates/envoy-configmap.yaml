@@ -38,6 +38,7 @@ data:
         - name: customer-bill-management
           connect_timeout: 15s
           type: STRICT_DNS
+          dns_lookup_family: V4_ONLY
           lb_policy: ROUND_ROBIN
           load_assignment:
             cluster_name: customer-bill-management
@@ -51,6 +52,7 @@ data:
                           port_value: 8080
         - name: tmforum-party-catalog
           connect_timeout: 15s
+          dns_lookup_family: V4_ONLY
           type: STRICT_DNS
           lb_policy: ROUND_ROBIN
           load_assignment:
