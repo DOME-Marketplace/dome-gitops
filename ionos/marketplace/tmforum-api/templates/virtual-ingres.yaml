@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: virtual-ingress
+  labels:
+    {{ include "tmforum.labels" $ | nindent 4 }}
+spec:
+  rules:
+  - host: tmforum.internal
+    http:
+      paths:
+       - backend:
+          service:
+            name: tmforum-tm-forum-api-customer-bill-management
+            port:
+              number: 8080
+        path: /tmf-api/customerBillManagement/v4
+        pathType: Prefix
+      - backend:
+          service:
+            name: tmforum-tm-forum-api-customer-management
+            port:
+              number: 8080
+        path: /tmf-api/customerManagement/v4
+        pathType: Prefix
