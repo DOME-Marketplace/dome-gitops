@@ -27,11 +27,11 @@ data:
                       domains: ["*"]
                       routes:
                         - match: 
-                            path: "/tmf-api/customerBillManagement/v4"
+                            prefix: "/tmf-api/customerBillManagement/v4"
                           route:
                             cluster: customer-bill-management
                         - match: 
-                            path: "/tmf-api/party/v4"
+                            prefix: "/tmf-api/party/v4"
                           route:
                             cluster: tmforum-party-catalog
       clusters:
@@ -47,7 +47,7 @@ data:
                       address:
                         socket_address:
                           protocol: TCP
-                          address: "tmforum-tm-forum-api-customer-bill-management"
+                          address: tmforum-tm-forum-api-customer-bill-management
                           port_value: 8080
         - name: tmforum-party-catalog
           connect_timeout: 15s
@@ -61,5 +61,5 @@ data:
                       address:
                         socket_address:
                           protocol: TCP
-                          address: "tmforum-tm-forum-api-tmforum-party-catalog"
+                          address: tmforum-tm-forum-api-tmforum-party-catalog
                           port_value: 8080
