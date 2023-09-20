@@ -28,6 +28,14 @@ tm-forum-api:
       - tmforum.dome-marketplace.org
       secretName: tmforum-tls 
 
+  apiProxy:
+    image:
+      tag: distroless-v1.27-latest
+    enabled: true
+    service: 
+      nameOverride: tmforum-api-proxy
+
+
   ## configuration to be used by every api-deployment if nothing specific is provided.
   defaultConfig:
   
