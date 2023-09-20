@@ -20,4 +20,4 @@ data:
           clientID:  65555cc661699aa6e33e
           clientSecret: $github-secret:clientSecret
           orgs:
-          - name: DOME-Marketplace
+          - name: dome-marketplace
