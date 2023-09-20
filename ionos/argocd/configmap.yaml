@@ -17,7 +17,7 @@ data:
         id: github
         name: GitHub
         config:
-          clientID: 8c73aff74397ab4f8594
+          clientID:  65555cc661699aa6e33e
           clientSecret: $github-secret:clientSecret
           orgs:
           - name: FIWARE
