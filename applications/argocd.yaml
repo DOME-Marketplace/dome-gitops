@@ -12,7 +12,7 @@ spec:
   project: default
   source:
     path: ionos/argocd
-    repoURL: https://github.com/wistefan/dome-gitops
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
   syncPolicy:
     automated:
