@@ -23,6 +23,6 @@ jobs:
         run: |
           cd applications
           # apply all apps in the apps folder
-          find . -name '*.yaml'  -exec oc apply -f {} \;
+          find . -name '*.yaml'  -exec kubectl apply -f {} \;
           # label them for better filter machanism      
-          find . -name '*.yaml'  -exec oc label deployed-by=fiware-gitops-ci --overwrite -f {} \;
+          find . -name '*.yaml'  -exec kubectl label deployed-by=fiware-gitops-ci --overwrite -f {} \;
