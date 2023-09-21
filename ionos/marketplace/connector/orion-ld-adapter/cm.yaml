@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: orion-ld-adapter
 data:
-  custom-config.yaml: |
+  custom-config.yml: |
     # Orion-LD Configuration
     orion-ld-if:
       orion-ld:

@@ -33,7 +33,7 @@ spec:
           volumeMounts:
           - mountPath: /src/main/resources/
             name: custom-config
-            subPath: custom-config.yaml
+            subPath: custom-config.yml
       volumes:
         - configMap:
             name:  orion-ld-adapter
