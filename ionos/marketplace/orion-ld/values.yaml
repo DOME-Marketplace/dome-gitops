@@ -7,7 +7,7 @@ orion:
       tag: 1.1.0
   broker:
     logging:
-      level: DEBUG
+      level: TRACE
     db:
       auth: 
         user: root
