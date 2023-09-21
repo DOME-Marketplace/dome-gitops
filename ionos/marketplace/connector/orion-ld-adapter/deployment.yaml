@@ -30,6 +30,9 @@ spec:
             - containerPort: 8080
               name: http
               protocol: TCP
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              values: "dev"
           volumeMounts:
           - mountPath: /src/main/resources/
             name: custom-config
