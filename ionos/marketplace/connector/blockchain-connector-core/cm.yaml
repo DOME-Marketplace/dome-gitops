@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: blockchain-connector-core
+data:
+  integration-config.yml: |
+    # Orion-LD Interface Configuration
+    orion-ld-if:
+      orion-ld:
+        domain: http://orion-ld:1026
+        path:
+          entities: /ngsi-ld/v1/entities
+          subscriptions: /ngsi-ld/v1/subscriptions
+      api:
+        domain: http://orion-ld-adapter:8080
+        path:
+          subscription: /api/v1/subscribe
+          entities: /api/v1/publish
+      subscription:
+        type: "Subscription"
+        notification-endpoint-uri: http://blockchain-connector-core:8080/notifications/orion-ld
+        entities: >
+          ProductOrder,
+          ProductOffering
+        id-prefix: "urn:ngsi-ld:Subscription:"
+
+    # Blockchain Interface Configuration
+    blockchain-node-if:
+      api:
+        domain: http://dlt-adapter:8080
+        path:
+          configure-node: /api/v1/configureNode
+          publish: /api/v1/publishEvent
+          subscribe: /api/v1/subscribe
+      subscription:
+        active: false
+      node:
+        rpcAddress: https://red-t.alastria.io/v0/9461d9f4292b41230527d57ee90652a6
+        userEthereumAddress: "0xb794f5ea0ba39494ce839613fffba74279579268"
