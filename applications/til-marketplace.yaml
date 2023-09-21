@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mytrusted-issuers-listsql
+  name: trusted-issuers-list
   namespace: argocd
   labels:
     purpose: marketplace
