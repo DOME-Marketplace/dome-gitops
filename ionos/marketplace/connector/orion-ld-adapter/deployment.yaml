@@ -16,10 +16,10 @@ spec:
     rollingUpdate:
       maxSurge: 1
       maxUnavailable: 0
+  metadata:
+    app.kubernetes.io/instance: orion-ld-adapter
+    app.kubernetes.io/name: orion-ld-adapter
   template:
-    metadata:
-      app.kubernetes.io/instance: orion-ld-adapter
-      app.kubernetes.io/name: orion-ld-adapter
     spec:
       containers: 
         - image: ocanades/orionld-adapter:1.0.0
