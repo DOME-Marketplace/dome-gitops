@@ -6,6 +6,8 @@ orion:
     image: 
       tag: 1.1.0
   broker:
+    logging:
+      level: DEBUG
     db:
       auth: 
         user: root
