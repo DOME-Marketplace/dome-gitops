@@ -26,8 +26,8 @@ spec:
         - image: ocanades/orionld-adapter:1.0.0
           imagePullPolicy: IfNotPresent
           name: broker-adapter
-          env:
-            - name: LOG_LEVEL_ROOT
+          env: 
+            - name: LOGGING_LEVEL_ROOT
               value: DEBUG
           ports:
             - containerPort: 8080
