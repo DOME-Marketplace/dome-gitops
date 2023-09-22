@@ -26,6 +26,9 @@ spec:
         - image: ocanades/blockchain-connector-core:1.0.0
           imagePullPolicy: IfNotPresent
           name: blockchain-connector
+          env: 
+            - name: LOGGING_LEVEL_ROOT
+              value: DEBUG
           ports:
             - containerPort: 8080
               name: http
