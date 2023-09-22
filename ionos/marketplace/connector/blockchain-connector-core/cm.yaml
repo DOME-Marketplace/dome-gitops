@@ -13,7 +13,7 @@ data:
   blockchain.yaml: |
     blockchain-node-if:
       api:
-        domain: "http://dlt-adapter:8080"
+        domain: http://dlt-adapter:8080
         path:
           configure-node: /api/v1/configureNode
           publish: /api/v1/publishEvent
@@ -28,8 +28,9 @@ data:
   application.properties: |
     spring:
       config:   
-        - file:/config/blockchain.yaml
-        - file:/config/orion.yaml
+        import:
+          - file:/config/blockchain.yaml
+          - file:/config/orion.yaml
       application:
         name: Blockchain Connector Core
       datasource:
