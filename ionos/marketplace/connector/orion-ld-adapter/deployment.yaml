@@ -33,8 +33,6 @@ spec:
               value: /config/application.yml
             - name: SPRING_PROFILES_ACTIVE
               value: marketplace
-            - name: LOGGING_LEVEL_ROOT
-              value: DEBUG
           ports:
             - containerPort: 8080
               name: http
