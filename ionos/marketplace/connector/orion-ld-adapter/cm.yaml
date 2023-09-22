@@ -54,7 +54,7 @@ data:
     # Spring Logging Configuration
     logging:
       level:
-        es.in2.orionld: DEBUG
+        es.in2: DEBUG
 
     # Spring Management Configuration - Actuator
     management:

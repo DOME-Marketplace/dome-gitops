@@ -68,7 +68,8 @@ data:
           password: in2pass
     logging:
       level:
-        ROOT: DEBUG
+        ROOT: INFO
+        es.in2: DEBUG
     management:
       endpoints:
         enabled-by-default: false
