@@ -26,12 +26,15 @@ spec:
         - image: ocanades/blockchain-connector-core:1.0.0
           imagePullPolicy: IfNotPresent
           name: blockchain-connector
+          env: 
+            - name: SPRING_CONFIG_LOCATION
+              value: /config/application.properties
           ports:
             - containerPort: 8080
               name: http
               protocol: TCP
           volumeMounts:
-          - mountPath: /app/config/
+          - mountPath: /config/
             name: custom-config
       volumes:
         - configMap:
