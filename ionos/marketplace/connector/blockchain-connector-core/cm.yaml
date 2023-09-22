@@ -3,14 +3,14 @@ kind: ConfigMap
 metadata:
   name: blockchain-connector-core
 data:
-  orion.yaml: |
+  orion.yml: |
     orion-ld-if:
       orion-ld:
         domain: http://orion-ld:1026
         path:
           entities: /ngsi-ld/v1/entities
           subscriptions: /ngsi-ld/v1/subscriptions
-  blockchain.yaml: |
+  blockchain.yml: |
     blockchain-node-if:
       api:
         domain: http://dlt-adapter:8080
@@ -32,8 +32,8 @@ data:
     spring:
       config:   
         import:
-          - file:/config/blockchain.yaml
-          - file:/config/orion.yaml
+          - file:/config/blockchain.yml
+          - file:/config/orion.yml
       application:
         name: Blockchain Connector Core
       datasource:
