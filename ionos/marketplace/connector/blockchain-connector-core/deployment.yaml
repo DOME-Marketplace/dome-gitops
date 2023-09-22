@@ -30,7 +30,7 @@ spec:
             - name: SPRING_CONFIG_NAME
               value: marketplace
             - name: SPRING_CONFIG_LOCATION
-              value: /config/application.properties
+              value: /config/application.yml
             - name: SPRING_PROFILES_ACTIVE
               value: marketplace
             - name: LOGGING_LEVEL_ROOT
