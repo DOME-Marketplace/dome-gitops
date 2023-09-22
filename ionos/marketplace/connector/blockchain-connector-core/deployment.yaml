@@ -27,6 +27,8 @@ spec:
           imagePullPolicy: IfNotPresent
           name: blockchain-connector
           env: 
+            - name: SPRING_CONFIG_LOCATION
+              value: /config/application.properties
             - name: SPRING_PROFILES_ACTIVE
               value: dev
             - name: LOGGING_LEVEL_ROOT
@@ -36,7 +38,7 @@ spec:
               name: http
               protocol: TCP
           volumeMounts:
-          - mountPath: /src/main/resources/
+          - mountPath: /config/
             name: custom-config
       volumes:
         - configMap:

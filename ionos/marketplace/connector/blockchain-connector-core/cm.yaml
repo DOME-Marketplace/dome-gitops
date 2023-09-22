@@ -3,7 +3,55 @@ kind: ConfigMap
 metadata:
   name: blockchain-connector-core
 data:
-  integration-config.yml: |
+  application.properties: |
+    spring:
+      application:
+        name: Blockchain Connector Core
+      datasource:
+        url: jdbc:h2:mem:dbtest
+        driver-class-name: org.h2.Driver
+        username: in2admin
+        password: in2pass
+      jpa:
+        database-platform: org.hibernate.dialect.H2Dialect
+        open-in-view: false
+        properties:
+          jakarta.persistence.sharedCache.mode: UNSPECIFIED
+        hibernate:
+          ddl-auto: update
+        show-sql: true
+        generate-ddl: true
+      security:
+        user:
+          name: in2test
+          password: in2pass
+    logging:
+      level:
+        org.springframework.security: INFO
+        es.in2.blockchain.connector: DEBUG
+    management:
+      endpoints:
+        enabled-by-default: false
+        web:
+          exposure:
+            include: health, info, loggers, metrics
+          base-path: /
+          path-mapping:
+            health: health
+            info: info
+            loggers: loggers
+            metrics: metrics
+      endpoint:
+        health:
+          enabled: true
+          show-details: always
+        loggers:
+          enabled: true
+        metrics:
+          enabled: true
+    server:
+      port: 8080
+
     orion-ld-if:
       orion-ld:
         domain: http://orion-ld:1026
