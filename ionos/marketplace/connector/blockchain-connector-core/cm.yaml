@@ -15,6 +15,13 @@ data:
         path:
           subscription: /api/v1/subscribe
           entities: /api/v1/publish
+      subscription:
+        type: "Subscription"
+        notification-endpoint-uri: http://blockchain-connector-core:8080/notifications/orion-ld
+        entities: >
+          ProductOrder,
+          ProductOffering
+        id-prefix: "urn:ngsi-ld:Subscription:"
   blockchain.yml: |
     blockchain-node-if:
       api:

@@ -3,8 +3,7 @@ kind: ConfigMap
 metadata:
   name: orion-ld-adapter
 data:
-  custom-config.yml: |
-   # Orion-LD Interface Configuration
+  orion.yml: |
     orion-ld-if:
       orion-ld:
         domain: http://orion-ld:1026
@@ -23,3 +22,72 @@ data:
           ProductOrder,
           ProductOffering
         id-prefix: "urn:ngsi-ld:Subscription:"
+  blockchain.yml: |
+    blockchain-node-if:
+      api:
+        domain: http://dlt-adapter:8080
+        path:
+          configure-node: /api/v1/configureNode
+          publish: /api/v1/publishEvent
+          subscribe: /api/v1/subscribe
+      subscription:
+        active: true
+        notification-endpoint-uri: http://blockchain-connector-core:8080/notifications/blockchain-node
+        event-type: "ProductOffering"
+      node:
+        rpcAddress: https://red-t.alastria.io/v0/9461d9f4292b41230527d57ee90652a6
+        userEthereumAddress: "0xb794f5ea0ba39494ce839613fffba74279579268"
+  application.yml: |
+    blockchain-node-if:
+      api:
+        domain: http://dlt-adapter:8080
+    spring:
+      config:   
+        import:
+          - file:/config/blockchain.yml
+          - file:/config/orion.yml
+      application:
+        name: Orion-LD Interface    
+    server:
+      port: 8080
+
+    # Spring Logging Configuration
+    logging:
+      level:
+        es.in2.orionld: DEBUG
+
+    # Spring Management Configuration - Actuator
+    management:
+      endpoints:
+        enabled-by-default: false
+        web:
+          exposure:
+            include: health, info, loggers, metrics
+          base-path: /
+          path-mapping:
+            health: health
+            info: info
+            loggers: loggers
+            metrics: metrics
+      endpoint:
+        health:
+          enabled: true
+          show-details: always
+        info:
+          enabled: true
+        loggers:
+          enabled: true
+        metrics:
+          enabled: true
+
+    # SpringDoc Configuration - OpenAPI 3.0 Documentation & Swagger UI
+    springdoc:
+      api-docs:
+        path: /api-docs
+      swagger-ui:
+        path: /swagger-ui.html
+
+    # Application Configuration
+    app:
+      openapi:
+        dev-url: http://localhost:8080

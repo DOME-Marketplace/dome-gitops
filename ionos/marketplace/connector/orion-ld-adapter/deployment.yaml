@@ -27,6 +27,12 @@ spec:
           imagePullPolicy: IfNotPresent
           name: broker-adapter
           env: 
+            - name: SPRING_CONFIG_NAME
+              value: marketplace
+            - name: SPRING_CONFIG_LOCATION
+              value: /config/application.yml
+            - name: SPRING_PROFILES_ACTIVE
+              value: marketplace
             - name: LOGGING_LEVEL_ROOT
               value: DEBUG
           ports:
@@ -34,7 +40,7 @@ spec:
               name: http
               protocol: TCP
           volumeMounts:
-          - mountPath: /src/main/resources/
+          - mountPath: /config
             name: custom-config
       volumes:
         - configMap:
