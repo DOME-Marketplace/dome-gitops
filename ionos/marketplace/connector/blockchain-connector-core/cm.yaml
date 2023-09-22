@@ -91,3 +91,6 @@ data:
           enabled: true
     server:
       port: 8080
+    app:
+      openapi:
+        dev-url: http://localhost:8080
