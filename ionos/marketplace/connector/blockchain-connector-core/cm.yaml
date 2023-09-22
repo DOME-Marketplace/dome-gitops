@@ -10,6 +10,11 @@ data:
         path:
           entities: /ngsi-ld/v1/entities
           subscriptions: /ngsi-ld/v1/subscriptions
+      api:
+        domain: http://orion-ld-adapter:8080
+        path:
+          subscription: /api/v1/subscribe
+          entities: /api/v1/publish
   blockchain.yml: |
     blockchain-node-if:
       api:
