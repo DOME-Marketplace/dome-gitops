@@ -27,8 +27,12 @@ spec:
           imagePullPolicy: IfNotPresent
           name: blockchain-connector
           env: 
+            - name: SPRING_CONFIG_NAME
+              value: marketplace
             - name: SPRING_CONFIG_LOCATION
               value: /config/application.properties
+            - name: SPRING_PROFILES_ACTIVE
+              value: marketplace
             - name: LOGGING_LEVEL_ROOT
               value: DEBUG
           ports:
