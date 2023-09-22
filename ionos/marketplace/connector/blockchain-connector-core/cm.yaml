@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: blockchain-connector-core
 data:
-  integration-config.yml: |
+  custom-config.yml: |
     
     # Blockchain Interface Configuration
     blockchain-node-if:
