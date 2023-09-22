@@ -19,8 +19,7 @@ data:
         type: "Subscription"
         notification-endpoint-uri: http://blockchain-connector-core:8080/notifications/orion-ld
         entities: >
-          product-order,
-          product-offering
+          product-oder
         id-prefix: "urn:ngsi-ld:Subscription:"
   blockchain.yml: |
     blockchain-node-if:
