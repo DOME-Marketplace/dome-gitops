@@ -29,8 +29,6 @@ spec:
           env: 
             - name: SPRING_CONFIG_LOCATION
               value: /config/application.properties
-            - name: LOGGING_LEVEL_ROOT
-              value: DEBUG
           ports:
             - containerPort: 8080
               name: http

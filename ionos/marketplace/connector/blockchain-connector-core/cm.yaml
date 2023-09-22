@@ -53,8 +53,7 @@ data:
           password: in2pass
     logging:
       level:
-        org.springframework.security: INFO
-        es.in2.blockchain.connector: DEBUG
+        ROOT: DEBUG
     management:
       endpoints:
         enabled-by-default: false
