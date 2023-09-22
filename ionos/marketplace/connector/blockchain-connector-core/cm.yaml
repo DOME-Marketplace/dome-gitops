@@ -5,6 +5,32 @@ metadata:
 data:
   application.properties: |
     spring:
+      config:
+
+        orion-ld-if:
+          orion-ld:
+            domain: http://orion-ld:1026
+            path:
+              entities: /ngsi-ld/v1/entities
+              subscriptions: /ngsi-ld/v1/subscriptions
+
+        blockchain-node-if:
+          api:
+            domain: http://dlt-adapter:8080
+            path:
+              configure-node: /api/v1/configureNode
+              publish: /api/v1/publishEvent
+              subscribe: /api/v1/subscribe
+          subscription:
+            active: true
+            notification-endpoint-uri: http://blockchain-connector-core:8080/notifications/blockchain-node
+            event-type: "ProductOffering"
+          node:
+            rpcAddress: https://red-t.alastria.io/v0/9461d9f4292b41230527d57ee90652a6
+            userEthereumAddress: "0xb794f5ea0ba39494ce839613fffba74279579268"
+
+
+    
       application:
         name: Blockchain Connector Core
       datasource:
@@ -51,29 +77,3 @@ data:
           enabled: true
     server:
       port: 8080
-
-    orion-ld-if:
-      orion-ld:
-        domain: http://orion-ld:1026
-        path:
-          entities: /ngsi-ld/v1/entities
-          subscriptions: /ngsi-ld/v1/subscriptions
-
-    # Blockchain Interface Configuration
-    blockchain-node-if:
-      api:
-        domain: http://dlt-adapter:8080
-        path:
-          configure-node: /api/v1/configureNode
-          publish: /api/v1/publishEvent
-          subscribe: /api/v1/subscribe
-      subscription:
-        active: true
-        notification-endpoint-uri: http://blockchain-connector-core:8080/notifications/blockchain-node
-        event-type: "ProductOffering"
-      node:
-        rpcAddress: https://red-t.alastria.io/v0/9461d9f4292b41230527d57ee90652a6
-        userEthereumAddress: "0xb794f5ea0ba39494ce839613fffba74279579268"
-
-
-    
