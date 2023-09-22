@@ -3,8 +3,14 @@ kind: ConfigMap
 metadata:
   name: blockchain-connector-core
 data:
-  custom-config.yml: |
-    
+  integration-config.yml: |
+    orion-ld-if:
+      orion-ld:
+        domain: http://orion-ld:1026
+        path:
+          entities: /ngsi-ld/v1/entities
+          subscriptions: /ngsi-ld/v1/subscriptions
+
     # Blockchain Interface Configuration
     blockchain-node-if:
       api:
@@ -21,11 +27,5 @@ data:
         rpcAddress: https://red-t.alastria.io/v0/9461d9f4292b41230527d57ee90652a6
         userEthereumAddress: "0xb794f5ea0ba39494ce839613fffba74279579268"
 
-    orion-ld-if:
-      orion-ld:
-        domain: http://orion-ld:1026
-        path:
-          entities: /ngsi-ld/v1/entities
-          subscriptions: /ngsi-ld/v1/subscriptions
 
     
