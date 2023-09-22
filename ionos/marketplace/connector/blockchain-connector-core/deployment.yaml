@@ -27,6 +27,8 @@ spec:
           imagePullPolicy: IfNotPresent
           name: blockchain-connector
           env: 
+            - name: SPRING_PROFILES_ACTIVE
+              value: dev
             - name: LOGGING_LEVEL_ROOT
               value: DEBUG
           ports:
