@@ -3,6 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   name: tmforum-rollout
+  namespace: argocd
 spec:
   selector:
     matchLabels:
