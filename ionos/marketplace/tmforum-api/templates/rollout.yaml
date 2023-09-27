@@ -1,4 +1,5 @@
-{{- range .Values.tm-forum-api.apis -}}
+{{- $api := index .Values "tm-forum-api" "apis"}}
+{{- range $api -}}
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
