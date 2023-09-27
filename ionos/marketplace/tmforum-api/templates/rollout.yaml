@@ -2,13 +2,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: tmforum-rollout
-  namespace: argocd
+  name: {{ include "tmforum.fullname" $ }}-{{ .name }}
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "tmforum.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/name: {{ include "tmforum.name" $ }}-{{ .name }}
+      app.kubernetes.io/instance: {{ $.Release.Name }}
   workloadRef: 
     apiVersion: apps/v1
     kind: Deployment
