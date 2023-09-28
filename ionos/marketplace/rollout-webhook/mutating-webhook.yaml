@@ -3,7 +3,7 @@ kind: MutatingWebhookConfiguration
 metadata:
   name: deployment-mutation
   annotations:
-    cert-manager.io/inject-ca-from-secret: marketplace/webhook-tls-sec
+    cert-manager.io/inject-ca-from: marketplace/webhook-cert
 webhooks:
   - name: "deployment-mutation.marketplace.svc"
     namespaceSelector:

@@ -3,9 +3,6 @@ kind: Certificate
 metadata:
   name: webhook-cert
 spec:
-  secretTemplate:
-    annotations:
-      cert-manager.io/allow-direct-injection: "true"
   secretName: webhook-tls-sec
   issuerRef:
     kind: ClusterIssuer
