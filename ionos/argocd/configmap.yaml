@@ -7,6 +7,9 @@ metadata:
   name: argocd-cm
   namespace: argocd
 data:
+  resource.customizations.ignoreDifferences.apps_Deployment: |
+    jsonPointers:
+    - /spec/replicas
   url: https://argocd.dome-marketplace.org
   # explicitly set through rbac
   admin.enabled: "false"
