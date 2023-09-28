@@ -3,10 +3,6 @@ kind: Rollout
 metadata:
   name: orion-ld-rollout
 spec:
-  selector:
-    matchLabels:
-      app.kubernetes.io/instance: orion-ld
-      app.kubernetes.io/name: orion
   workloadRef: 
     apiVersion: apps/v1
     kind: Deployment
