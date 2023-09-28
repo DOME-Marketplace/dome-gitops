@@ -14,6 +14,7 @@ spec:
       labels:
         app: webhook-server
     spec:
+      serviceAccountName: rollout-webhook
       containers:
         - name: webhook-server
           image: quay.io/wi_stefan/rollout-injecting-webhook:0.0.1
