@@ -42,7 +42,7 @@ tm-forum-api:
     # -- configuration to be used for the image of the container
     image:
       # -- repository to get the container from
-      repository: quay.io/fiware/tmforum-party-catalog
+      repository: quay.io/fiware
       # -- tag to be used, most of the time the apis will use the same version
       tag: 0.8.1
       # -- pull policy to be used
