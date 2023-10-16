@@ -4,6 +4,8 @@ metadata:
   name: webhook-server
   labels:
     app: webhook-server
+  annotations:
+    wistefan/rollout-injecting-webhook: ignore
 spec:
   replicas: 1
   selector:
