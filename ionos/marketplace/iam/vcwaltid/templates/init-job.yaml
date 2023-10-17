@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: name: {{ include "waltid.fullname" . }}-init
+spec:
+  template:
+    spec:
+      containers:
+      - name: init
+        image: quay.io/opencloudio/curl:4.2.0-build.8
+        command:
+          - curl 
+          - --location "${WALTID_CORE_ADDRESS}/v1/did/create"
+          - --header 'Content-Type: application/json' 
+          - --data "{\"method\":\"web\", \"domain\":\"{{ .Values.ingress.host }}\",\"path\":\"did\",\"x5u\":\"{{ .Values.ingress.host }}/certs\"}"
+      restartPolicy: OnFailure
+  backoffLimit: 10
