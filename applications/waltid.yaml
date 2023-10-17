@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mysql
+  name: walt-id
   namespace: argocd
   labels:
     purpose: marketplace-iam
@@ -11,7 +11,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos/marketplace/iam/mysql
+    path: ionos/marketplace/iam/vcwaltid
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
   syncPolicy:

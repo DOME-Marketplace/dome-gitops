@@ -4,7 +4,7 @@ metadata:
   name: trusted-issuers-list
   namespace: argocd
   labels:
-    purpose: marketplace
+    purpose: marketplace-iam
 spec:
   destination:
     namespace: marketplace

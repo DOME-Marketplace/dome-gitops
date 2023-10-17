@@ -28,5 +28,4 @@ trusted-issuers-list:
       name:  mysql-secret
       key: 
 
-    # Should use Secret in production environment
     username: root
