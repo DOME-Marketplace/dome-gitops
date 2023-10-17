@@ -8,10 +8,15 @@ spec:
       containers:
       - name: init
         image: quay.io/opencloudio/curl:4.2.0-build.8
-        command:
-          - curl 
-          - --location "${WALTID_CORE_ADDRESS}/v1/did/create"
-          - --header 'Content-Type: application/json' 
-          - --data "{\"method\":\"web\", \"domain\":\"{{ .Values.ingress.host }}\",\"path\":\"did\",\"x5u\":\"{{ .Values.ingress.host }}/certs\"}"
+        command: 
+          - /bin/sh
+          - /opt/did/script/import.sh
+        volumeMounts:
+          - name: did-config
+            mountPath: /opt/did/script
       restartPolicy: OnFailure
+      volumes:
+        - name: did-config
+          configMap:
+            name: {{ include "waltid.fullname" . }}-did-config
   backoffLimit: 10
