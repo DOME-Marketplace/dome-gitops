@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: name: {{ include "waltid.fullname" . }}-init
+  name: {{ include "waltid.fullname" . }}-init
 spec:
   template:
     spec:
