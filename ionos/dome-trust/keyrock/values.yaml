@@ -42,11 +42,11 @@ keyrock:
     # -- Identifier (EORI) of satellite
     identifier: "EU.EORI.FIWARESATELLITE"
     # -- URL of satellite
-    url: "https://tir.dataspace.com"
+    url: "https://tir.dome-marketplace.org"
     # -- Token endpoint of satellite
-    tokenEndpoint: "https://https://tir.dataspace.com/token"
+    tokenEndpoint: "https://tir.dome-marketplace.org/token"
     # -- Parties endpoint of satellite
-    partiesEndpoint: "https://https://tir.dataspace.com/parties"
+    partiesEndpoint: "https://tir.dome-marketplace.org/parties"
 
   ## -- Configuration of local key and certificate for validation and generation of tokens
   token:
@@ -68,14 +68,14 @@ keyrock:
     - name: IDM_SERVER_MAX_HEADER_SIZE
       value: "32768"
     - name: IDM_PR_CLIENT_ID
-      value: "did:web:my-did:did"
+      value: "did:web:onboarding.dome-marketplace.org"
     - name: IDM_PR_CLIENT_KEY
       valueFrom:
           secretKeyRef:
-            name: vcwaltid-tls-sec
+            name: walt-id-trust-vcwaltid-tls-sec
             key: tls.key
     - name: IDM_PR_CLIENT_CRT
       valueFrom:
           secretKeyRef:
-            name: vcwaltid-tls-sec
+            name: walt-id-trust-vcwaltid-tls-sec
             key: tls.crt
