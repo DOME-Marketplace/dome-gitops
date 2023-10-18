@@ -13,4 +13,4 @@ data:
       --data "{
           \"method\": \"web\",
           \"domain\": \"{{ .Values.ingress.host }}\",
-          \"x5u\": \"https://{{ .Values.ingress.host }}/certs\"}"
+          \"x5u\": \"https://{{ .Values.ingress.host }}/certs/tls.crt\"}"
