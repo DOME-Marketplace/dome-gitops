@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: verifier-trust
+  namespace: argocd
+  labels:
+    purpose: trust-anchor
+spec:
+  destination:
+    namespace: dome-trust
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: ionos/dome-trust/verifier
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
