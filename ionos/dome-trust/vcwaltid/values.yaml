@@ -1,0 +1,59 @@
+# Organisation DID
+did: did:web:onboarding.dome-marketplace.org
+
+ingress:
+  enabled: true
+  annotations: 
+    cert-manager.io/cluster-issuer: letsencrypt-aws-prod
+  class: nginx
+  host: onboarding.dome-marketplace.org
+  tls: 
+    enabled: true
+
+# Walt-id config
+vcwaltid:
+
+  # Image
+  deployment:
+    image:
+      repository: quay.io/fiware/waltid
+      tag: 1.14.1-SNAPSHOT
+      pullPolicy: Always
+
+  # API config
+  api:
+    core: 
+      enabled: true
+    auditor: 
+      enabled: true
+    signatory: 
+      enabled: true
+    custodian: 
+      enabled: true
+    essif: 
+      enabled: true
+
+  # Persistence
+  persistence: 
+    enabled: true
+    pvc:
+      size: 1Gi
+
+  # List of templates to be created
+  templates:
+
+  initContainers:
+    - name: load-did
+      image: quay.io/opencloudio/curl:4.2.0-build.8
+      imagePullPolicy: Always
+      command: 
+        - /bin/sh
+        - /opt/did/script/import.sh
+      env:
+        - name: WALTID_CORE_ADDRESS
+          value: "vcwaltid:7000"
+      volumeMounts:
+        - name: did-config
+          mountPath: /opt/did/script
+        - name: did-secret
+          mountPath: /opt/did/secret

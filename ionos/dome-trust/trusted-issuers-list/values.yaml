@@ -1,0 +1,31 @@
+trusted-issuers-list:
+
+  # Image
+  deployment:
+    image:  
+      tag: 0.1.0
+
+  # Configure an Ingress or OpenShift Route
+  ingress:
+    til:
+      enabled: false
+    tir:
+      enabled: false
+  route:
+    til:
+      enabled: false
+    tir:
+      enabled: false
+      
+  # Database config
+  database:
+    persistence: true
+    host: mysql-trust
+    name: til
+
+    existingSecret:
+      enabled: true
+      name:  mysql-secret
+      key: 
+
+    username: root
