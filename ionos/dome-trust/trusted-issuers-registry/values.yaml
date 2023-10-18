@@ -9,10 +9,12 @@ trusted-issuers-registry:
     annotations: 
       cert-manager.io/cluster-issuer: letsencrypt-aws-prod
     class: nginx
-    host: tir.dome-marketplace.org
+    hosts: 
+      - tir.dome-marketplace.org
     tls: 
       enabled: true
-      host: tir.dome-marketplace.org
+      hosts: 
+        - tir.dome-marketplace.org
     
   additionalEnvVars:
     - name: SATELLITE_KEY
