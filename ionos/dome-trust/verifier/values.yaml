@@ -28,6 +28,6 @@ vcverifier:
         paths: 
           - "/"
     tls:
-      secretName: verifier-tls-sec
-      hosts: 
-        - verifier-onboarding.dome-marketplace.org
+      - hosts: 
+          - verifier-onboarding.dome-marketplace.org
+        secretName: verifier-tls-sec
