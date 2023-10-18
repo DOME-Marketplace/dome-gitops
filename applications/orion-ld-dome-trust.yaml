@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: orion-ld
+  name: orion-ld-d
   namespace: argocd
   labels:
     purpose: trust-anchor
