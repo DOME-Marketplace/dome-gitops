@@ -23,7 +23,7 @@ trusted-issuers-registry:
       valueFrom:
         secretKeyRef:
           name: satellite-key-secret
-          value: private-key
+          key: private-key
   tir:
     ngsiBroker:
       url: http://orion-ld-trust:1026/
