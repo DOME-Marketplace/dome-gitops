@@ -5,3 +5,4 @@ mysql:
   initdbScripts:
     create.sql: |
       CREATE DATABASE til;
+      CREATE DATABASE ccs;
