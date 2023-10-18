@@ -13,7 +13,9 @@ keyrock:
     user: root
     host: mysql-trust
   existingSecret: mysql-secret
-  
+
+  admin: {}
+
   # External hostname of Keyrock
   host: https://keyrock.dome-marketplace.org
   
