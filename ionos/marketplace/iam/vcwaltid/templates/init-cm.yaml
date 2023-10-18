@@ -13,5 +13,4 @@ data:
       --data "{
           \"method\": \"web\",
           \"domain\": \"{{ .Values.ingress.host }}\",
-          \"path\": \"did\",
           \"x5u\": \"https://{{ .Values.ingress.host }}/certs\"}"
