@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mongodb
+  name: mongodb-trust
   namespace: argocd
   labels:
     purpose: trust-anchor
