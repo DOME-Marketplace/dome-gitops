@@ -8,7 +8,7 @@ trusted-issuers-registry:
     enabled: true
     annotations: 
       cert-manager.io/cluster-issuer: letsencrypt-aws-prod
-    class: nginx
+    className: nginx
     hosts: 
       - host: tir.dome-marketplace.org
         paths:
