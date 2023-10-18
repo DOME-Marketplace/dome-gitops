@@ -12,12 +12,8 @@ keyrock:
   db:
     user: root
     host: mysql-trust
-
-  # Admin user to be created
-  admin:
-    user: admin
-    email: admin@fiware.org
-
+  existingSecret: mysql-secret
+  
   # External hostname of Keyrock
   host: https://keyrock.dome-marketplace.org
   
