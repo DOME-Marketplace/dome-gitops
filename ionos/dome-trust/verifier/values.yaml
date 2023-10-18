@@ -1,0 +1,33 @@
+vcverifier:
+  deployment:
+    image:
+      repository: quay.io/fiware/vcverifier
+      tag: 2.1.0
+      pullPolicy: Always
+    logging: 
+      level: DEBUG
+      pathsToSkip: 
+        - "/health"
+
+    ssikit:
+      auditorUrl: http://walt-id-trust-vcwaltid:7002
+    verifier:
+      tirAddress: https://tir.dome-marketplace.org/v3/issuers
+      did: did:web:onboarding.dome-marketplace.org
+    configRepo:
+      configEndpoint: http://credentials-config-service-trust:8080/
+    
+
+  ingress:
+    enabled: true
+    annotations: 
+      cert-manager.io/cluster-issuer: letsencrypt-aws-prod
+    className: nginx
+    hosts:
+      - host: verifier-onboarding.dome-marketplace.org
+        paths: 
+          - "/"
+    tls:
+      secretName: verifier-tls-sec
+      hosts: 
+        - verifier-onboarding.dome-marketplace.org
