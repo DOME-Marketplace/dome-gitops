@@ -4,7 +4,7 @@ metadata:
   name: rollout-webhook
 rules: 
 - apiGroups:
-    - ""
+  - ""
   resources:
   - services
   verbs:
@@ -14,6 +14,16 @@ rules:
   - patch
   - create
   - delete
+- apiGroups:
+  - "apps"
+  resources:
+  - deployments
+  verbs:
+  - get
+  - list
+  - watch
+  - patch
+  - create
 - apiGroups:
   - argoproj.io
   resources:
