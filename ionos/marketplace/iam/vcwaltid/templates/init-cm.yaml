@@ -4,10 +4,10 @@ metadata:
   name: {{ include "waltid.fullname" . }}-did-config
 data:
   import.sh: |-
-    curl --location "{{ include "waltid.fullname" . }}/v1/did/create" \
+    curl --location "http://{{ include "waltid.fullname" . }}:{{ .Values.vcwaltid.api.core.port }}/v1/did/create" \
       --header 'Content-Type: application/json' \
       --data "{
           \"method\": \"web\",
           \"domain\": \"{{ .Values.ingress.host }}\",
           \"path\": \"did\",
-          \"x5u\": \"{{ .Values.ingress.host }}/certs\"
+          \"x5u\": \"https://{{ .Values.ingress.host }}/certs\"
