@@ -4,6 +4,10 @@ metadata:
   name: {{ include "waltid.fullname" . }}-did-config
 data:
   import.sh: |-
+    export KEY=$(cat /opt/did/secret/tls.key)
+    export KEY_ID=$(curl --location "http://{{ include "waltid.fullname" . }}:{{ .Values.vcwaltid.api.core.port }}/v1/key/import" --header 'Content-Type: text/plain' --data "${KEY}" | jq -r '.id')
+    echo The key id: ${KEY_ID}
+
     curl -v --location "http://{{ include "waltid.fullname" . }}:{{ .Values.vcwaltid.api.core.port }}/v1/did/create" \
       --header 'Content-Type: application/json' \
       --data "{

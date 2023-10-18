@@ -14,9 +14,14 @@ spec:
         volumeMounts:
           - name: did-config
             mountPath: /opt/did/script
+          - name: did-secret
+            mountPath: /opt/did/secret
       restartPolicy: OnFailure
       volumes:
         - name: did-config
           configMap:
             name: {{ include "waltid.fullname" . }}-did-config
+        - name: did-secret
+          secret: 
+            secretName: {{ include "waltid.fullname" . }}-tls-sec
   backoffLimit: 10
