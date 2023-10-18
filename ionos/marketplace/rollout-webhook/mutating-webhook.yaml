@@ -8,9 +8,9 @@ webhooks:
   - name: "deployment-mutation.marketplace.svc"
     namespaceSelector:
       matchExpressions:
-        - key: kubernetes.io/metadata.name
+        - key: wistefan/rollout-injecting-webhook
           operator: In
-          values: [ "marketplace" ]
+          values: [ "enabled" ]
     rules:
       - operations: [ "CREATE", "UPDATE"]
         apiGroups: [ "apps" ]
