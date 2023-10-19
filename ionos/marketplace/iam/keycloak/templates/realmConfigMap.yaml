@@ -45,6 +45,7 @@ data:
               "description": "Is allowed to buy.",
               "clientRole": true
             }
+          ]
         }
       },
       "groups": [
