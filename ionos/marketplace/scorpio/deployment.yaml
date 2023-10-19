@@ -39,9 +39,9 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: postgres-secret
-                  key: postgres-password
+                  key: postgres-root-password
             - name: MYSETTINGS_POSTGRES_USERNAME
-              value: scorpio
+              value: root
           ports:
             - name: http
               containerPort: 9090
