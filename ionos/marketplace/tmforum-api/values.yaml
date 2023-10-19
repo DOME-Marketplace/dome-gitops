@@ -44,7 +44,7 @@ tm-forum-api:
       # -- repository to get the container from
       repository: quay.io/fiware
       # -- tag to be used, most of the time the apis will use the same version
-      tag: 0.9.0
+      tag: 0.10.0
       # -- pull policy to be used
       pullPolicy: IfNotPresent
 
@@ -55,9 +55,16 @@ tm-forum-api:
       # -- base path for the ngsi-ld api
       path: ngsi-ld/v1
       # -- address of the broker
-      url: http://orion-ld:1026
+      url: http://scorpio:1026
 
-
+    additionalEnvVars:
+      - name: GENERAL_NGSILDORQUERYVALUE
+        value: ","
+      - name: GENERAL_NGSILDORQUERYKEY
+        value: ","
+      - name: GENERAL_ENCLOSEQUERY
+        value: false
+        
   # -- list of apis to be deployed
   # -- every api needs to define a name and image. Basepath is required when routes or ingress will be enabled. Beside that, they can overwrite the default-config by using the same keys.
   # -- be aware: when you change the image repositrory or the tag for an api, you have to provide both values for the changes to take effect
@@ -112,3 +119,12 @@ tm-forum-api:
       basePath: /tmf-api/serviceCatalogManagement/v4
       specUrl: https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/4.0.0/swagger/TMF633-ServiceCatalog-v4.0.0.swagger.json
 
+    - name: account
+      image: tmforum-account
+      basePath: /tmf-api/accountManagement/v4
+      specUrl: https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/4.0.0/swagger/TMF666-Account-v4.0.0.swagger.json
+
+    - name: agreement
+      image: tmforum-agreement
+      basePath: /tmf-api/agreementManagement/v4
+      specUrl: https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/4.0.0/swagger/TMF651-Agreement-v4.0.0.swagger.json
