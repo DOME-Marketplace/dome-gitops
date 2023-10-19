@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgis-marketplace
+  namespace: argocd
+  labels:
+    purpose: marketplace
+spec:
+  destination:
+    namespace: marketplace
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: ionos/marketplace/postgis
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

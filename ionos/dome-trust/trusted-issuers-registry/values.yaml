@@ -2,7 +2,7 @@ trusted-issuers-registry:
   replicaCount: 1
   deployment:
     image:
-      tag: 0.7.1
+      tag: 0.7.2
       pullPolicy: Always
   ingress:
     enabled: true
