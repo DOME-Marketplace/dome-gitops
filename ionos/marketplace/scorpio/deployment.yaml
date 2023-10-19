@@ -35,6 +35,13 @@ spec:
               value: kafka-marketplace
             - name: QUARKUS_LOG_LEVEL
               value: DEBUG
+            - name: MYSETTINGS_POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-password
+            - name: MYSETTINGS_POSTGRES_USERNAME
+              value: scorpio
           ports:
             - name: http
               containerPort: 9090
