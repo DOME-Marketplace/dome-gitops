@@ -45,15 +45,15 @@ pdc-portal:
     inputLabel: "Participant"
 
     external:
-      host: https://onboarding-portal.dsba.fiware.dev
+      host: https://onboarding-portal.dome-marketplace.org
 
     oidc:
       redirect_path: "/openid_connect1.0/return"
       acr: "urn:http://eidas.europa.eu/LoA/NotNotified/high"
 
     cb:
-      endpoint: "https://kong-onboarding.dsba.fiware.dev/vc/ngsi-ld/v1"
-      endpoint_siop: "https://kong-onboarding.dsba.fiware.dev/vc/ngsi-ld/v1"
+      endpoint: "https://kong-onboarding.dome-marketplace.org/orion/ngsi-ld/v1"
+      endpoint_siop: "https://kong-onboarding.dome-marketplace.org/orion/ngsi-ld/v1"
     
     express:
       port: 7000
