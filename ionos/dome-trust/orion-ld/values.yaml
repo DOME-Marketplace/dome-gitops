@@ -25,7 +25,7 @@ orion:
     initEnabled: true
     hook: post-install, post-upgrade
     entities:
-      - name: "urn:ngsi-ld:TrustedIssuer:did:web:onboarding.dome-marketplace.org"
+      - name: "onboarding.dome-marketplace.org"
         data: |
           {
             "id": "urn:ngsi-ld:TrustedIssuer:did:web:onboarding.dome-marketplace.org",
