@@ -20,3 +20,4 @@ postgresql:
       scripts:
         enable.sh: |
           psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE EXTENSION postgis;"
+          psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE ngb;"
