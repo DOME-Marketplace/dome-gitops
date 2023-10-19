@@ -28,7 +28,7 @@ pdc-portal:
     enabled: true
 
   ccs:
-    endpoint: "http://dsba-onboarding-portal-ccs-credentials-config-service:8080/"
+    endpoint: "http://credentials-config-service-trust:8080/"
     id: "4972b082-c3db-414c-afb7-bf48f2fc42f6"
     credentials:
       - type: "VerifiableCredential"
@@ -36,7 +36,7 @@ pdc-portal:
           "https://tir.dsba.fiware.dev"
         ]
         trustedIssuersLists: [
-          "http://dsba-onboarding-portal-til-trusted-issuers-list:8080"
+          "http://trusted-issuers-list-trust:8080"
         ]
 
   config:
@@ -64,9 +64,9 @@ pdc-portal:
       # SIOP flow enabled
       enabled: true
       # Base uri of the verifier
-      verifier_uri: https://verifier-onboarding.dsba.fiware.dev
+      verifier_uri: https://verifier-onboarding.dome-marketplace.org
       # DID of verifier
-      did: "did:web:onboarding.dsba.fiware.dev:did"
+      did: "did:web:onboarding.dome-marketplace.org"
       # Client ID to be used
       client_id: 4972b082-c3db-414c-afb7-bf48f2fc42f6
 
