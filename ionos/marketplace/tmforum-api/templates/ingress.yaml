@@ -18,7 +18,7 @@ spec:
           service:
             name: {{ include "tmforum.fullname" $ }}-doc
             port:
-              name: https
+              name: http
   tls:
   - hosts:
     - tmforum-doc.dome-marketplace.org
