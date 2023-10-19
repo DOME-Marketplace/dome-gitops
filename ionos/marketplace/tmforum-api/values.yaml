@@ -63,8 +63,8 @@ tm-forum-api:
       - name: GENERAL_NGSILDORQUERYKEY
         value: ","
       - name: GENERAL_ENCLOSEQUERY
-        value: false
-        
+        value: "false"
+
   # -- list of apis to be deployed
   # -- every api needs to define a name and image. Basepath is required when routes or ingress will be enabled. Beside that, they can overwrite the default-config by using the same keys.
   # -- be aware: when you change the image repositrory or the tag for an api, you have to provide both values for the changes to take effect
