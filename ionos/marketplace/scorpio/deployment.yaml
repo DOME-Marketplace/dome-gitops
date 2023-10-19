@@ -32,7 +32,7 @@ spec:
             - name: DBHOST
               value: postgis
             - name: BUSHOST
-              value: kafka-marketplace-controller-headless
+              value: kafka-marketplace
             - name: QUARKUS_LOG_LEVEL
               value: DEBUG
             - name: MYSETTINGS_POSTGRES_PASSWORD
