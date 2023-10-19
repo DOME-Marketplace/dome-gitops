@@ -14,8 +14,6 @@ spec:
       labels:
         app: postgres
     spec:
-      serviceAccount: scorpio
-      serviceAccountName: scorpio
       containers:
       - name: postgres
         image: postgis/postgis:10-3.2
