@@ -6,7 +6,7 @@ data:
   orion.yml: |
     orion-ld-if:
       orion-ld:
-        domain: http://orion-ld:1026
+        domain: http://kong.dome-marketplace.org/scorpio
         path:
           entities: /ngsi-ld/v1/entities
           subscriptions: /ngsi-ld/v1/subscriptions
