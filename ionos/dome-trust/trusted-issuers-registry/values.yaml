@@ -138,12 +138,6 @@ trusted-issuers-registry:
         YURyhqWqqW2u7UehYs6emmSwYv8j0v4CzpH517jp2RJNyinI3TZmgD0AAKzyJAl/
         Zqat8t/baTS3TUdIKg==
         -----END CERTIFICATE-----
-      parties:
-        - id: "did:web:onboarding.dome-marketplace.org"
-          did: "did:web:onboarding.dome-marketplace.org"
-          name: "Onboarding Services"
-          status: "Active"
-          crt: |
 
       trustedList:
         - name: LETS_ENCRYPT_CA

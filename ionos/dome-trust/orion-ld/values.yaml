@@ -21,3 +21,25 @@ orion:
   mongo:
     # we want to use the individually deployed mongodb
     enabled: false
+  initData:
+    initEnabled: true
+    hook: post-install, post-upgrade
+    entities:
+      - name: "urn:ngsi-ld:TrustedIssuer:did:web:onboarding.dome-marketplace.org"
+        data: |
+          {
+            "id": "urn:ngsi-ld:TrustedIssuer:did:web:onboarding.dome-marketplace.org",
+            "type": "TrustedIssuer",
+            "issuer": {
+                "type": "Property",
+                "value": "did:web:onboarding.dome-marketplace.org"
+            },
+            "selfDescription": {
+                "type": "Property",
+                "value": {
+                    "id": "did:web:onboarding.dome-marketplace.org",
+                    "type": "gx:LegalParticipant",
+                    "gx:legalName": "Marketplcae Onboarding Service"
+                }
+            }
+          }
