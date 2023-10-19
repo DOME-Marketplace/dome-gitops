@@ -30,6 +30,7 @@ trusted-issuers-registry:
     contextUrl: "https://registry.lab.dsba.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#"
     satellite:
       id: "EU.EORI.FIWARESATELLITE"
+      key:
       certificate: |
         -----BEGIN CERTIFICATE-----
         MIIGhjCCBG6gAwIBAgIUUliLPK6R7OeviNDRY2dtI/G7YQIwDQYJKoZIhvcNAQEL
@@ -138,7 +139,7 @@ trusted-issuers-registry:
         YURyhqWqqW2u7UehYs6emmSwYv8j0v4CzpH517jp2RJNyinI3TZmgD0AAKzyJAl/
         Zqat8t/baTS3TUdIKg==
         -----END CERTIFICATE-----
-
+      parties: 
       trustedList:
         - name: FIWARE_CA
           crt: |
