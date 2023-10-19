@@ -2,8 +2,7 @@ trusted-issuers-registry:
   replicaCount: 1
   deployment:
     image:
-      repository: quay.io/wi_stefan/trusted-issuers-registry 
-      tag: 0.0.1-T
+      tag: 0.7.2
       pullPolicy: Always
   ingress:
     enabled: true
