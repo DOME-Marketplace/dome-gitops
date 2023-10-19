@@ -28,6 +28,7 @@ orion:
       - name: "onboarding.dome-marketplace.org"
         data: |
           {
+            "@context": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
             "id": "urn:ngsi-ld:TrustedIssuer:did:web:onboarding.dome-marketplace.org",
             "type": "TrustedIssuer",
             "issuer": {
