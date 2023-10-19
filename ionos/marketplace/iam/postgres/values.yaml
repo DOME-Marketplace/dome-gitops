@@ -1,5 +1,7 @@
 postgresql:
-  fullnameOverride: postgresql-hp
+  commonAnnotations:
+    wistefan/rollout-injecting-webhook: ignore
+  fullnameOverride: postgresql-keycloak
   auth:
     username: keycloak  
     enablePostgresUser: true
