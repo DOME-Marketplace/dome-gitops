@@ -49,30 +49,6 @@ data:
         }
       },
       "groups": [
-        {
-          "name": "admin",
-          "path": "/admin",
-          "realmRoles": [
-            "user"
-          ],
-          "clientRoles": {
-            "orion-pep": [
-              "admin"
-            ]
-          }
-        },
-        {
-          "name": "consumer",
-          "path": "/consumer",
-          "realmRoles": [
-            "user"
-          ],
-          "clientRoles": {
-            "orion-pep": [
-              "consumer"
-            ]
-          }
-        }
       ],
       "users": [
       ],
