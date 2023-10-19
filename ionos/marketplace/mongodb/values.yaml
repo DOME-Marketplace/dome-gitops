@@ -1,4 +1,6 @@
 mongodb:
+  commonAnnotations:
+    wistefan/rollout-injecting-webhook: ignore
   auth:
     enabled: true
     existingSecret: mongodb-secret
