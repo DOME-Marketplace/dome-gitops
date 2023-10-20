@@ -21,4 +21,4 @@ mongodb:
 
 
   initdbScriptsConfigMap: mongodb-bae-configmap
-  extraEnvVarsSecret: mongodb-bae-envs-secret
+  extraEnvVarsSecret: mongodb-env-secret
