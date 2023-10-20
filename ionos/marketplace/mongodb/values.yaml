@@ -18,3 +18,7 @@ mongodb:
   persistence:
     enabled: true
     size: 8Gi
+
+
+  initdbScriptsConfigMap: mongodb-bae-configmap
+  extraEnvVarsSecret: mongodb-bae-envs-secret
