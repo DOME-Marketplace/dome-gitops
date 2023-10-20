@@ -34,8 +34,6 @@ business-api-ecosystem:
 
   bizEcosystemChargingBackend:
 
-    serviceAccount:
-      create: false
 
     securityContext:
       runAsUser: 0
@@ -78,9 +76,6 @@ business-api-ecosystem:
   
   bizEcosystemLogicProxy:
 
-    serviceAccount:
-      create: false
-    
     securityContext:
       runAsUser: 0
       runAsGroup: 0
