@@ -55,7 +55,7 @@ keyrock:
     # -- URL of satellite
     url: "https://tir.dome-marketplace.org"
     # -- Token endpoint of satellite
-    tokenEndpoint: "/token"
+    tokenEndpoint: "https://tir.dome-marketplace.org/token"
     # -- Parties endpoint of satellite
     partiesEndpoint: "/parties"
 
