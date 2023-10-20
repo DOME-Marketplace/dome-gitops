@@ -7,3 +7,7 @@ ingress-nginx:
       annotations:
         cloud.ionos.com/node-selector: nodepool=ingress
     kind: DaemonSet
+    config:
+      large-client-header-buffers: "8 32k"
+      http2-max-field-size: "32k"
+      http2-max-header-size: "32k"
