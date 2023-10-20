@@ -42,11 +42,11 @@ keyrock:
     # -- Identifier (EORI) of satellite
     identifier: "EU.EORI.FIWARESATELLITE"
     # -- URL of satellite
-    url: "https://tir.dataspace.com"
+    url: "https://tir.dome-marketplace.org"
     # -- Token endpoint of satellite
-    tokenEndpoint: "https://https://tir.dataspace.com/token"
+    tokenEndpoint: "https://tir.dome-marketplace.org/token"
     # -- Parties endpoint of satellite
-    partiesEndpoint: "https://https://tir.dataspace.com/parties"
+    partiesEndpoint: "https://tir.dome-marketplace.org/parties"
 
   ## -- Configuration of local key and certificate for validation and generation of tokens
   token:

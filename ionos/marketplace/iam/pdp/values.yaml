@@ -1,0 +1,40 @@
+dsba-pdp:
+  db: 
+    enabled: false
+    migrate:
+      enabled: false
+  deployment:
+    image:  
+      pullPolicy: Always
+      repository: quay.io/fiware/dsba-pdp 
+      tag: 1.2.0
+    logLevel: DEBUG
+    ishare:
+      existingSecret: walt-id-vcwaltid-tls-sec
+
+      clientId: did:web:dome-marketplace.org
+      trustedFingerprints:
+        - D2F62092F982CF783D4632BD86FA86C3FBFDB2D8C8A58BC6809163FCF5CD030B
+
+      ar:
+        id: "did:web:dome-marketplace.org"
+        delegationPath: "/ar/delegation"
+        tokenPath: "/oauth2/token"
+        url: "https://keyrock.dome-marketplace.org"
+
+      trustAnchor:
+        id: "EU.EORI.FIWARESATELLITE"
+        tokenPath: "/token"
+        trustedListPath: "/trusted_list"
+        url: "https://tir.dome-marketplace.org"
+        
+    trustedVerifiers:
+      - https://verifier.dome-marketplace.org/.well-known/jwks
+
+    providerId: "did:web:dome-marketplace.org"
+    
+  additionalEnvVars:
+    - name: ISHARE_CERTIFICATE_PATH
+      value: /iShare/tls.crt
+    - name: ISHARE_KEY_PATH
+      value: /iShare/tls.key
