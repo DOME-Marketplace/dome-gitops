@@ -3,7 +3,7 @@ trusted-issuers-registry:
   deployment:
     image:
       repository: quay.io/wi_stefan/trusted-issuers-registry
-      tag: 0.0.1-T
+      tag: 0.0.1
       pullPolicy: Always
   ingress:
     enabled: true
