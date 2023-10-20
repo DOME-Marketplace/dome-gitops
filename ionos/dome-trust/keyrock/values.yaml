@@ -57,7 +57,7 @@ keyrock:
     # -- Token endpoint of satellite
     tokenEndpoint: "https://tir.dome-marketplace.org/token"
     # -- Parties endpoint of satellite
-    partiesEndpoint: "/parties"
+    partiesEndpoint: "https://tir.dome-marketplace.org/parties"
 
   ## -- Configuration of local key and certificate for validation and generation of tokens
   token:
