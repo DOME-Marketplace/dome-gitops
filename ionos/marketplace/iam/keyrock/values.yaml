@@ -12,15 +12,8 @@ keyrock:
   db:
     user: root
     host: mysql-til
+  existingSecret: keyrock-secret
 
-  # Admin user to be created
-  admin:
-    user: admin
-    email: admin@fiware.org
-
-  # External hostname of Keyrock
-  host: https://keyrock.dome-marketplace.org
-  
   ## Theme configuration for Keyrock
   theme:
     ## -- Enable theme
@@ -79,3 +72,12 @@ keyrock:
           secretKeyRef:
             name: vcwaltid-tls-sec
             key: tls.crt
+initScript:
+  ## Creation of role mapping policies during deployment
+  rolePolicy:
+    policyEnabled: false
+    dbName: ar_idm
+    issuer: "did:web:onboarding.dome-marketplace.org"
+    notBefore: "1616583866"
+    notOnOrAfter: "1735817171"
+    issuerDid: "did:web:onboarding.dome-marketplace.org"

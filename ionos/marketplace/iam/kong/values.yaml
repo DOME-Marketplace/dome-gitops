@@ -1,0 +1,69 @@
+kong:
+  image:
+    repository: quay.io/fiware/kong
+    tag: "0.5.7"
+    pullPolicy: IfNotPresent
+
+  replicaCount: 1
+
+  autoscaling:
+    enabled: false
+
+  env:
+    database: "off"
+    nginx_worker_processes: "2"
+    proxy_access_log: /dev/stdout
+    admin_access_log: /dev/stdout
+    admin_gui_access_log: /dev/stdout
+    portal_api_access_log: /dev/stdout
+    proxy_error_log: /dev/stderr
+    admin_error_log: /dev/stderr
+    admin_gui_error_log: /dev/stderr
+    portal_api_error_log: /dev/stderr
+    prefix: /kong_prefix/
+    log_level: debug
+    nginx_proxy_large_client_header_buffers: "16 128k"
+    nginx_proxy_http2_max_field_size: "32k"
+    nginx_proxy_http2_max_header_size: "32k"
+    plugins: bundled,pep-plugin,ngsi-ishare-policies
+    pluginserver_names: pep-plugin
+    pluginserver_pep_plugin_start_cmd: "/go-plugins/pep-plugin"
+    pluginserver_pep_plugin_query_cmd: "/go-plugins/pep-plugin -dump"
+
+  ingressController:
+    enabled: false
+    installCRDs: false
+  
+  proxy:
+    type: ClusterIP
+    enabled: true
+    tls:
+      enabled: false
+    ingress:
+      enabled: true
+      ingressClassName: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-aws-prod
+      hostname: kong.dome-marketplace.org
+      tls: kong-tls-sec
+  
+  admin:
+    enabled: true
+    type: ClusterIP  
+    http: 
+      enabled: true
+      servicePort: 8001
+      containerPort: 8001
+
+  status:
+    enabled: true
+    http: 
+      enabled: true
+      containerPort: 9102
+
+  podAnnotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '9102'
+
+  dblessConfig:
+    configMap: kong-configmap

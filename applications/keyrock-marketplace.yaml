@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: keyrock-marektplace
+  namespace: argocd
+  labels:
+    purpose: marektplace-iam
+spec:
+  destination:
+    namespace: marektplace
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: ionos/marektplace/iam/keyrock
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
