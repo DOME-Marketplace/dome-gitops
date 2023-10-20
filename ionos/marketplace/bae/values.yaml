@@ -67,6 +67,7 @@ business-api-ecosystem:
     backup:
       enabled: false
 
+    initContainers: false
     propagateToken: true
     basePath: /opt/business-ecosystem-charging-backend
     token: 
