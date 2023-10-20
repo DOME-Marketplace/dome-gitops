@@ -34,10 +34,8 @@ business-api-ecosystem:
 
   bizEcosystemChargingBackend:
 
-
-    securityContext:
-      runAsUser: 0
-      runAsGroup: 0
+    serviceAccount:
+      create: true
 
     deployment:
       image:
@@ -76,9 +74,8 @@ business-api-ecosystem:
   
   bizEcosystemLogicProxy:
 
-    securityContext:
-      runAsUser: 0
-      runAsGroup: 0
+    serviceAccount:
+      create: true
     
     existingSecret: bae-secret
 
