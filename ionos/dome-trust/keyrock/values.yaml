@@ -22,6 +22,8 @@ keyrock:
       cert-manager.io/cluster-issuer: letsencrypt-aws-prod
     hosts:
       - host: keyrock.dome-marketplace.org
+        paths: 
+          - "/"
     tls:
       - secretName: keyrock-onboarding-tls-sec
         hosts: 
