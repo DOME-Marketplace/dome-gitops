@@ -8,8 +8,9 @@ keycloak:
     level: INFO
   replicaCount: 1
   auth:
+    existingSecret: keycloak-secret
+    passwordSecretKey: keycloak-admin
     adminUser: fiwareAdmin
-    adminPassword: fiwareAdmin
   serviceAccount:
     create: true
   rbac:
