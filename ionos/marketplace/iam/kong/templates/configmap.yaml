@@ -23,6 +23,7 @@ data:
         plugins:
           - name: pep-plugin
             config:
+              pathprefix: "/"
               authorizationendpointtype: ExtAuthz
               authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
                 
