@@ -10,7 +10,7 @@ vcverifier:
         - "/health"
 
     ssikit:
-      auditorUrl: http://walt-id-trust-vcwaltid:7002
+      auditorUrl: http://walt-id-trust-vcwaltid:7003
     verifier:
       tirAddress: https://tir.dome-marketplace.org/v3/issuers
       did: did:web:onboarding.dome-marketplace.org
@@ -25,7 +25,7 @@ vcverifier:
     className: nginx
     hosts:
       - host: verifier-onboarding.dome-marketplace.org
-        paths: 
+        paths:  
           - "/"
     tls:
       - hosts: 
