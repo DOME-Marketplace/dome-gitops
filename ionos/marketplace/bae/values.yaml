@@ -110,5 +110,5 @@ business-api-ecosystem:
 
     externalIdp:
       enabled: true
-
+    initContainers: false
     propagateToken: true
