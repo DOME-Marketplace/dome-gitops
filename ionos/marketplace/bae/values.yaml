@@ -1,0 +1,120 @@
+business-api-ecosystem:
+  bizEcosystemApis:
+    # should set the path to the new apis.
+    fullnameOverride: tmforum-api-proxy
+    enabled: false
+  bizEcosystemRss:
+    enabled: false
+
+  siop:
+    enabled: true
+    clientId: marketplace-client
+    verifier:
+      host: https://verifier.dome-marketplace.org
+    # Configuration for the Credential Config Service initiation
+    ccs:
+      endpoint: "http://credentials-config-service:8080"
+      credentials:
+        - type: "VerifiableCredential"
+          trustedParticipantsLists: [
+            "https://tir.dome-marketplace.org"
+          ]
+          trustedIssuersLists: [
+            "http://trusted-issuers-list:8080"
+          ]
+        - type: "NaturalPersonCredential"
+          trustedParticipantsLists: [
+            "https://tir.dome-marketplace.org"
+          ]
+          trustedIssuersLists: [
+            "http://trusted-issuers-list:8080"
+          ]
+
+  externalUrl: https://dome-marketplace.org
+
+  bizEcosystemChargingBackend:
+
+    serviceAccount:
+      create: false
+
+    securityContext:
+      runAsUser: 0
+      runAsGroup: 0
+
+    deployment:
+      image:
+        repository: fiware/biz-ecosystem-charging-backend
+        tag: dome-dev
+        pullPolicy: Always
+    
+    plugins:
+      enabled: true
+      annotations:
+        helm.sh/resource-policy: "keep"
+
+    media:
+      enabled: true
+    
+    port: 8006
+
+    loglevel: debug
+
+    payment:
+      method: None
+
+    existingSecret: bae-secret
+    db: 
+      host: mongodb
+      database: charging_db
+      user: charging
+    
+    backup:
+      enabled: false
+
+    propagateToken: true
+    basePath: /opt/business-ecosystem-charging-backend
+    token: 
+      enabled: false
+  
+  bizEcosystemLogicProxy:
+
+    serviceAccount:
+      create: false
+    
+    securityContext:
+      runAsUser: 0
+      runAsGroup: 0
+    
+    existingSecret: bae-secret
+
+    statefulset:
+      image:
+        repository: fiware/biz-ecosystem-logic-proxy
+        tag: dome-dev
+        pullPolicy: Always
+
+    ingress: 
+      enabled: true
+      className: nginx
+      tls: 
+        hosts: 
+          - dome-marketplace.org
+        secretName: walt-id-vcwaltid-tls-sec
+      hosts: 
+        - host: dome-marketplace.org
+          paths: 
+            - "/"
+    
+    port: 8004
+    nodeEnvironment: production
+
+    db:
+      host: mongodb
+      database: belp_db
+      user: belp
+    basePath: /opt/business-ecosystem-logic-proxy
+
+    externalIdp:
+      enabled: true
+
+    propagateToken: true
