@@ -96,15 +96,17 @@ business-api-ecosystem:
     ingress: 
       enabled: true
       className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-aws-prod
       tls: 
-        hosts: 
-          - dome-marketplace.org
-        secretName: walt-id-vcwaltid-tls-sec
+       -  hosts: 
+            - dome-marketplace.org
+          secretName: walt-id-vcwaltid-tls-sec
       hosts: 
         - host: dome-marketplace.org
           paths: 
             - "/"
-    
+
     port: 8004
     nodeEnvironment: production
 
