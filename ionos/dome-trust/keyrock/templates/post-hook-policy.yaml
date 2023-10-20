@@ -1,4 +1,3 @@
-{{- if .Values.initScript.rolePolicy.policyEnabled -}}
 apiVersion: v1
 kind: Pod
 metadata:
@@ -28,4 +27,3 @@ spec:
       configMap:
         name: onboarding-keyrock-create-policy-cm
   restartPolicy: Never
-{{- end }}
