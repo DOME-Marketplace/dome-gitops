@@ -77,7 +77,7 @@ initScript:
   rolePolicy:
     policyEnabled: false
     dbName: ar_idm
-    issuer: "did:web:onboarding.dome-marketplace.org"
+    issuer: "did:web:dome-marketplace.org"
     notBefore: "1616583866"
     notOnOrAfter: "1735817171"
-    issuerDid: "did:web:onboarding.dome-marketplace.org"
+    issuerDid: "did:web:dome-marketplace.org"
