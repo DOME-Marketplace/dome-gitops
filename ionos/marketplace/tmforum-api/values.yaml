@@ -57,6 +57,8 @@ tm-forum-api:
       # -- address of the broker
       url: http://scorpio:1026
 
+    logLevel: INFO
+
     additionalEnvVars:
       - name: GENERAL_NGSILDORQUERYVALUE
         value: ","
