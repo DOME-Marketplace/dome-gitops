@@ -86,7 +86,7 @@ tm-forum-api:
 
     - name: product-catalog
       image: tmforum-product-catalog
-      basePath: /tmf-api/productCatalogManagement/v4
+      basePath: /catalog
       specUrl: https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/4.1.0/swagger/TMF620-ProductCatalog-v4.1.0.swagger.json
 
     - name: product-inventory
