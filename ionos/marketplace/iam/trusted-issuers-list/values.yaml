@@ -3,7 +3,7 @@ trusted-issuers-list:
   # Image
   deployment:
     image:  
-      tag: 0.1.0
+      tag: 0.2.0
 
   # Configure an Ingress or OpenShift Route
   ingress:
