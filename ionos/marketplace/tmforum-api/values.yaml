@@ -58,6 +58,7 @@ tm-forum-api:
       url: http://scorpio:1026
 
     logLevel: INFO
+    contextUrl: https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld
 
     additionalEnvVars:
       - name: GENERAL_NGSILDORQUERYVALUE
