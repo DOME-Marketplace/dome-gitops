@@ -41,7 +41,7 @@ data:
           ],
           "did:web:dome-marketplace.org": [
             {
-              "name": "Admin",
+              "name": "admin",
               "description": "Is allowed to buy.",
               "clientRole": true
             }
