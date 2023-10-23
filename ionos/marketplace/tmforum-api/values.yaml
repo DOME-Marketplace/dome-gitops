@@ -44,7 +44,7 @@ tm-forum-api:
       # -- repository to get the container from
       repository: quay.io/fiware
       # -- tag to be used, most of the time the apis will use the same version
-      tag: 0.11.0
+      tag: 0.12.0
       # -- pull policy to be used
       pullPolicy: IfNotPresent
 
@@ -130,3 +130,8 @@ tm-forum-api:
       image: tmforum-agreement
       basePath: /tmf-api/agreementManagement/v4
       specUrl: https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/4.0.0/swagger/TMF651-Agreement-v4.0.0.swagger.json
+
+    - name: usage-management
+      image: tmforum-usage-management
+      basePath: /tmf-api/usageManagement/v4
+      specUrl: https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/4.0.0/swagger/TMF635-UsageManagement-v4.0.0.swagger.json
