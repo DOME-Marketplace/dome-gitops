@@ -3,6 +3,38 @@ business-api-ecosystem:
     # should set the path to the new apis.
     fullnameOverride: tmforum-api-proxy
     enabled: false
+
+    tmForum:
+      catalog:
+        host: tmforum-api-proxy
+        port: 8080
+        path: /catalog
+      inventory:
+        host: tmforum-api-proxy
+        port: 8080
+        path: /tmf-api/productInventory/v4
+      ordering:
+        host: tmforum-api-proxy
+        port: 8080
+        path: /tmf-api/productOrderingManagement/v4
+      billing:
+        host: tmforum-api-proxy
+        port: 8080
+        path: /tmf-api/customerBillManagement/v4
+      usage:
+        host: tmforum-api-proxy
+        port: 8080
+        path: /tmf-api/usageManagement/v4
+      party:
+        host: tmforum-api-proxy
+        port: 8080
+        path: /tmf-api/party/v4
+      customer:
+        host: tmforum-api-proxy
+        port: 8080
+        path: /tmf-api/customerManagement/v4
+
+
   bizEcosystemRss:
     enabled: false
 
