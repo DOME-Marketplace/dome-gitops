@@ -10,29 +10,29 @@ business-api-ecosystem:
         port: 8080
         path: /
       inventory:
-        host: tmforum-api-proxy
+        host: tmforum-tm-forum-api-product-inventory
         port: 8080
-        path: /tmf-api/productInventory/v4
+        path: /
       ordering:
-        host: tmforum-api-proxy
+        host: tmforum-tm-forum-api-product-ordering-management
         port: 8080
-        path: /tmf-api/productOrderingManagement/v4
+        path: /
       billing:
-        host: tmforum-api-proxy
+        host: tmforum-tm-forum-api-customer-bill-management
         port: 8080
-        path: /tmf-api/customerBillManagement/v4
+        path: /
       usage:
-        host: tmforum-api-proxy
+        host: tmforum-tm-forum-api-usage-management
         port: 8080
-        path: /tmf-api/usageManagement/v4
+        path: /
       party:
-        host: tmforum-api-proxy
+        host: tmforum-tm-forum-api-party-catalog
         port: 8080
-        path: /tmf-api/party/v4
+        path: /
       customer:
-        host: tmforum-api-proxy
+        host: tmforum-tm-forum-api-customer-management
         port: 8080
-        path: /tmf-api/customerManagement/v4
+        path: /
 
 
   bizEcosystemRss:
