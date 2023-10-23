@@ -6,9 +6,9 @@ business-api-ecosystem:
 
     tmForum:
       catalog:
-        host: tmforum-api-proxy
+        host: tmforum-tm-forum-api-product-catalog
         port: 8080
-        path: /catalog
+        path: /
       inventory:
         host: tmforum-api-proxy
         port: 8080
