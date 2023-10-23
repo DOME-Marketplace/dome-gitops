@@ -36,13 +36,14 @@ trusted-issuers-list:
     issuers: 
       # allow ourself to issuer credentials
       - name: dome-marketplace
-        did: "did:web:dome-marketplace.org"
-        credentials:
-          - validFor:
-              from: "2023-07-21T17:32:28Z"
-              to: "2040-07-21T17:32:28Z"
-            credentialsType: "LegalPersonCredential"
-          - validFor:
-              from: "2023-07-21T17:32:28Z"
-              to: "2040-07-21T17:32:28Z"
-            credentialsType: "VerifiableCredential"
+        issuer:
+          did: "did:web:dome-marketplace.org"
+          credentials:
+            - validFor:
+                from: "2023-07-21T17:32:28Z"
+                to: "2040-07-21T17:32:28Z"
+              credentialsType: "LegalPersonCredential"
+            - validFor:
+                from: "2023-07-21T17:32:28Z"
+                to: "2040-07-21T17:32:28Z"
+              credentialsType: "VerifiableCredential"
