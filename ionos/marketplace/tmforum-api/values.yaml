@@ -42,9 +42,9 @@ tm-forum-api:
     # -- configuration to be used for the image of the container
     image:
       # -- repository to get the container from
-      repository: quay.io/fiware
+      repository: quay.io/wi_stefan
       # -- tag to be used, most of the time the apis will use the same version
-      tag: 0.13.0
+      tag: 0.14-PRE
       # -- pull policy to be used
       pullPolicy: IfNotPresent
 
@@ -67,6 +67,12 @@ tm-forum-api:
         value: ","
       - name: GENERAL_ENCLOSEQUERY
         value: "false"
+      - name: REDIS_URI
+        value: ""
+      - name: REDIS_CACHES_ENTITIES_ENABLED
+        value: "false"
+      - name: MICRONAUT_CACHES_ENTITIES_MAXIMUM_SIZE
+        value: "1000"
 
   # -- list of apis to be deployed
   # -- every api needs to define a name and image. Basepath is required when routes or ingress will be enabled. Beside that, they can overwrite the default-config by using the same keys.
