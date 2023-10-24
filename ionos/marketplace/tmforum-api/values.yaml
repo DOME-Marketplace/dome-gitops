@@ -67,12 +67,6 @@ tm-forum-api:
         value: ","
       - name: GENERAL_ENCLOSEQUERY
         value: "false"
-      - name: REDIS_URI
-        value: ""
-      - name: REDIS_CACHES_ENTITIES_ENABLED
-        value: "false"
-      - name: MICRONAUT_CACHES_ENTITIES_MAXIMUM_SIZE
-        value: "1000"
 
   # -- list of apis to be deployed
   # -- every api needs to define a name and image. Basepath is required when routes or ingress will be enabled. Beside that, they can overwrite the default-config by using the same keys.
