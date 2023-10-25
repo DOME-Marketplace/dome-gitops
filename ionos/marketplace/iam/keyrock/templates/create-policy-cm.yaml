@@ -19,27 +19,41 @@ data:
       )
     );
 
-    SET @subjectLegalRepresentative := "LEGAL_REPRESENTATIVE";
+    SET @subjectSeller := "seller";
+    SET @subjectCostumer := "costumer";
 
-    -- Policies Legal Representative
-    SET @policiesLegal := JSON_ARRAY(
+    -- Policies seller
+    SET @policiesSeller := JSON_ARRAY(
       JSON_OBJECT(
         "rules", CAST(@rules as JSON),
         "target", JSON_OBJECT(
-          "actions", JSON_ARRAY("GET","POST","PATCH"),
+          "actions", JSON_ARRAY("GET","POST","PATCH","DELETE"),
           "resource", JSON_OBJECT(
-            "type", "TrustedIssuer",
-            "attributes", JSON_ARRAY("*"),
-            "identifiers", JSON_ARRAY("*")
+            "type", "PATH",
+            "identifiers", JSON_ARRAY("/catalog")
           )
         )
       )
     );
 
-    -- Insert Delegation Evidence Legal Representative VC
-    SET @delegationLegalVC := JSON_OBJECT(
+    -- Policies customer
+    SET @policiesCostumer := JSON_ARRAY(
+      JSON_OBJECT(
+        "rules", CAST(@rules as JSON),
+        "target", JSON_OBJECT(
+          "actions", JSON_ARRAY("GET"),
+          "resource", JSON_OBJECT(
+            "type", "PATH",
+            "identifiers", JSON_ARRAY("/catalog")
+          )
+        )
+      )
+    );
+
+    -- Insert Delegation Evidence Seller VC
+    SET @delegationSellerVC := JSON_OBJECT(
       "target", JSON_OBJECT(
-        "accessSubject", @subjectLegalRepresentative
+        "accessSubject", @subjectSeller
       ),
       "notBefore", {{ .Values.initScript.rolePolicy.notBefore }},
       "notOnOrAfter", {{ .Values.initScript.rolePolicy.notOnOrAfter }},
@@ -51,11 +65,32 @@ data:
               "licenses", JSON_ARRAY("ISHARE.0001")
             )
           ),
-          "policies", CAST(@policiesLegal as JSON)
+          "policies", CAST(@policiesSeller as JSON)
         )
       )
     );
-    INSERT IGNORE INTO delegation_evidence (policy_issuer, access_subject,policy) VALUES ({{ .Values.initScript.rolePolicy.issuerDid | quote }}, @subjectLegalRepresentative, @delegationLegalVC);
+    INSERT IGNORE INTO delegation_evidence (policy_issuer, access_subject,policy) VALUES ({{ .Values.initScript.rolePolicy.issuerDid | quote }}, @subjectSeller, @delegationSellerVC);
+
+    -- Insert Delegation Evidence Customer VC
+    SET @delegationCustomerVC := JSON_OBJECT(
+      "target", JSON_OBJECT(
+        "accessSubject", @subjectCustomer
+      ),
+      "notBefore", {{ .Values.initScript.rolePolicy.notBefore }},
+      "notOnOrAfter", {{ .Values.initScript.rolePolicy.notOnOrAfter }},
+      "policyIssuer", {{ .Values.initScript.rolePolicy.issuerDid | quote }},
+      "policySets", JSON_ARRAY(
+        JSON_OBJECT(
+          "target", JSON_OBJECT(
+            "environment", JSON_OBJECT(
+              "licenses", JSON_ARRAY("ISHARE.0001")
+            )
+          ),
+          "policies", CAST(@policiesCustomer as JSON)
+        )
+      )
+    );
+    INSERT IGNORE INTO delegation_evidence (policy_issuer, access_subject,policy) VALUES ({{ .Values.initScript.rolePolicy.issuerDid | quote }}, @subjectCostumer, @delegationCustomerVC);
 
     {{- end }}
 
