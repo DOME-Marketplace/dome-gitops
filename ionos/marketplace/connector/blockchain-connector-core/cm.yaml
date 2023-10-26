@@ -12,16 +12,16 @@ data:
       subscription:
         active: false
         notificationEndpoint: http://blockchain-connector-core:8080/notifications/blockchain-node
-        event-type: "catalog"
+        event-type: "product-offering"
     broker:
       externalDomain: https://kong.dome-marketplace.org/scorpio
       internalDomain: http://scorpio:1026
     ngsi-subscription: 
       notificationEndpoint: http://blockchain-connector-core:8080/notifications/orion-ld
       entityTypes: > 
-        Catalog,
-        Organization,
-        Individual
+        catalog,
+        organization,
+        individual
     orion-ld-adapter:
       domain: http://orion-ld-adapter:8080 
     spring:
