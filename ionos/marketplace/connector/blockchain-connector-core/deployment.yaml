@@ -23,8 +23,8 @@ spec:
         app.kubernetes.io/name: blockchain-connector-core
     spec:
       containers: 
-        - image: ocanades/blockchain-connector-core:1.0.0
-          imagePullPolicy: IfNotPresent
+        - image: quay.io/wi_stefan/blockchain-connector-core:0.0.1
+          imagePullPolicy: Always
           name: blockchain-connector
           env: 
             - name: SPRING_CONFIG_NAME
