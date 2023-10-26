@@ -19,7 +19,9 @@ data:
     ngsiLdSubscription: 
       notification-endpoint-uri: http://blockchain-connector-core:8080/notifications/orion-ld
       entities: >
-        Catalog
+        Catalog,
+        Organization,
+        Individual
     orionLdAdapter:
       domain: http://orion-ld-adapter:8080 
     spring:
