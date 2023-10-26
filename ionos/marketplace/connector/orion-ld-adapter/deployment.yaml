@@ -24,7 +24,7 @@ spec:
     spec:
       containers: 
         - image: quay.io/wi_stefan/broker-connector-core:0.0.1
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           name: broker-adapter
           env: 
             - name: SPRING_CONFIG_NAME
