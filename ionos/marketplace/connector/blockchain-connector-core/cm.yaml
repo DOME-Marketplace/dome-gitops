@@ -4,7 +4,7 @@ metadata:
   name: blockchain-connector-core
 data:
   application.yml: |
-    dltAdapter:
+    dlt-adapter:
       domain: http://dlt-adapter:8080
     blockchain:
       rpcAddress: https://red-t.alastria.io/v0/9461d9f4292b41230527d57ee90652a6
@@ -16,13 +16,13 @@ data:
     broker:
       externalDomain: https://kong.dome-marketplace.org/scorpio
       internalDomain: http://scorpio:1026
-    ngsiLdSubscription: 
+    ngsi-subscription: 
       notification-endpoint-uri: http://blockchain-connector-core:8080/notifications/orion-ld
       entities: >
         Catalog,
         Organization,
         Individual
-    orionLdAdapter:
+    orion-ld-adapter:
       domain: http://orion-ld-adapter:8080 
     spring:
       application:
