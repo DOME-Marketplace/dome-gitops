@@ -18,10 +18,10 @@ data:
       internalDomain: http://scorpio:1026
     ngsi-subscription: 
      notificationEndpoint: http://blockchain-connector-core:8080/notifications/orion-ld
-      entities: >
-        Catalog,
-        Organization,
-        Individual
+      entities: 
+        - Catalog,
+        - Organization
+        - Individual
     orion-ld-adapter:
       domain: http://orion-ld-adapter:8080 
     spring:
