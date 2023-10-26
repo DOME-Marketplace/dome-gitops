@@ -23,7 +23,7 @@ spec:
         app.kubernetes.io/name: orion-ld-adapter
     spec:
       containers: 
-        - image: quay.io/wi_stefan/broker-connector-core
+        - image: quay.io/wi_stefan/broker-connector-core:0.0.1
           imagePullPolicy: IfNotPresent
           name: broker-adapter
           env: 
