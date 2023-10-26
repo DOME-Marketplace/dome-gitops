@@ -20,6 +20,8 @@ data:
       paths:  
         entities: /ngsi-ld/v1/entities
         subscriptions: /ngsi-ld/v1/subscriptions
+    blockchain-connector: 
+      domain: http://blockchain-connector-core:8080
 
     # Spring Management Configuration - Actuator
     management:
