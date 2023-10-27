@@ -8,6 +8,16 @@ data:
     _transform: true
 
     services:
+      - host: "scorpio"
+        name: "scorpio"
+        port: "1026"
+        protocol: http
+
+        routes:
+          - name: scorpio
+            paths: 
+              - /scorpio
+            strip_path: false
 
       - host: "tmforum-api-proxy"
         name: "tmforum"
