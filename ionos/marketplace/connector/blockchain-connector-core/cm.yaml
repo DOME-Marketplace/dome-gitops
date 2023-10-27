@@ -42,6 +42,9 @@ data:
           ddl-auto: update
         show-sql: true
         generate-ddl: true
+      flyway:
+        baselineOnMigrate: true
+        locations: classpath:db/migrations
       security:
         user:
           name: in2test
