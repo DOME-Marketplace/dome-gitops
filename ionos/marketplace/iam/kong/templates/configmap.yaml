@@ -10,7 +10,7 @@ data:
     services:
       - host: "scorpio"
         name: "scorpio"
-        port: "1026"
+        port: 1026
         protocol: http
 
         routes:
