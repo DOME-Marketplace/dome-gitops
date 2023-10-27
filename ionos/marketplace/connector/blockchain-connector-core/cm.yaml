@@ -12,7 +12,8 @@ data:
       subscription:
         active: false
         notificationEndpoint: http://blockchain-connector-core:8080/notifications/blockchain-node
-        event-type: "product-offering"
+        entityTypes: > 
+          product-offering
     broker:
       externalDomain: https://kong.dome-marketplace.org/scorpio
       internalDomain: http://scorpio:1026
