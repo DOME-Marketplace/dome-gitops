@@ -17,7 +17,7 @@ data:
           - name: scorpio
             paths: 
               - /scorpio
-            strip_path: false
+            strip_path: true
 
       - host: "tmforum-api-proxy"
         name: "tmforum"
