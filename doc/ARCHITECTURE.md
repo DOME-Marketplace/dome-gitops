@@ -42,9 +42,9 @@ When opening the portal, the "Legal Representative" is asked to login with its w
 
 1. Verify the signature of all credentials.
 2. Verfiy the validity of all credentials.
-3. Verify that Compliancy Credential[^2] was issued by a Compliancy Issuer registered at the [Gaia-X Digital Clearing House](https://gaia-x.eu/gxdch/) [Compliancy Issuers Registry](https://registry.lab.gaia-x.eu/development/docs/#/ComplianceIssuers). 
-4. Verfiy that the Compliancy Credential[^2] references the Self-Description[^1](e.g. that the Self-Description is compliant).
-5. Verify that the Natural Person Credential[^3] was issued by the Organisation described in the Self-Descripiton
+3. Verify that Compliancy Credential was issued by a Compliancy Issuer registered at the [Gaia-X Digital Clearing House](https://gaia-x.eu/gxdch/) [Compliancy Issuers Registry](https://registry.lab.gaia-x.eu/development/docs/#/ComplianceIssuers). 
+4. Verfiy that the Compliancy Credential references the Self-Description(e.g. that the Self-Description is compliant).
+5. Verify that the Natural Person Credential was issued by the Organisation described in the Self-Descripiton
 
 The verifier will return a [JSON Web Token](https://jwt.io/), to be used by the portal for storing the Self-Description in the ContextBroker. To do so, the following happens:
 
@@ -89,6 +89,7 @@ The verifier will return a [JSON Web Token](https://jwt.io/), to be used by the 
         }
     }
     ```
+
 [^2] Example Compliancy Credential:
     ```json
     {
@@ -119,6 +120,7 @@ The verifier will return a [JSON Web Token](https://jwt.io/), to be used by the 
         }
     }
     ```
+
 [^3]: Natural Person Credential: 
     ```json
     {
