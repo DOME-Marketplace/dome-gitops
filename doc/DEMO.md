@@ -6,7 +6,7 @@ In order to demonstrate the capabilities of the DOME Marketplace, multiple parti
 - the [DOME Marketplace](../ionos/marketplace/)
 - a [Provider Instance](https://github.com/FIWARE-Ops/fiware-gitops/tree/master/aws/dome/provider)
 
-For more details about the roles and components, see the [architecture-documentation](./ARCHITECTURE.md). A demo-scenario, show-casing some of the current features can be found under [demo](./DEMO.md)
+For more details about the roles and components, see the [architecture-documentation](./ARCHITECTURE.md).
 
 ## On Boarding
 
