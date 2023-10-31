@@ -90,7 +90,7 @@ The verifier will return a [JSON Web Token](https://jwt.io/), to be used by the 
     }
     ```
 
-[^2] Example Compliancy Credential:
+[^2]: Example Compliancy Credential:
     ```json
     {
         "@context": [
