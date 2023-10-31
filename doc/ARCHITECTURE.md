@@ -55,102 +55,102 @@ The verifier will return a [JSON Web Token](https://jwt.io/), to be used by the 
 
 
 [^1]: Example self-description: 
-```json
-{
-    "type" : [ "VerifiableCredential" ],
-    "@context" : [ "https://www.w3.org/2018/credentials/v1", "https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#", "https://w3id.org/security/suites/jws-2020/v1" ],
-    "id" : "urn:uuid:a4c51032-1aab-46ba-8f51-68210a60cc27",
-    "issuer" : "did:web:provider.dome.fiware.dev",
-    "issuanceDate" : "2023-04-26T09:17:52Z",
-    "issued" : "2023-04-26T09:17:52Z",
-    "validFrom" : "2023-04-26T09:17:52Z",
-    "expirationDate" : "2023-04-28T21:17:52Z",
-    "credentialSubject" : {
-        "id" : "did:web:provider.dome.fiware.dev",
-        "type" : "gx:LegalParticipant",
-        "gx:legalName" : "DOME Provider",
-        "gx:legalRegistrationNumber" : {
-        "gx:vatID" : "MYVATID"
+    ```json
+    {
+        "type" : [ "VerifiableCredential" ],
+        "@context" : [ "https://www.w3.org/2018/credentials/v1", "https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#", "https://w3id.org/security/suites/jws-2020/v1" ],
+        "id" : "urn:uuid:a4c51032-1aab-46ba-8f51-68210a60cc27",
+        "issuer" : "did:web:provider.dome.fiware.dev",
+        "issuanceDate" : "2023-04-26T09:17:52Z",
+        "issued" : "2023-04-26T09:17:52Z",
+        "validFrom" : "2023-04-26T09:17:52Z",
+        "expirationDate" : "2023-04-28T21:17:52Z",
+        "credentialSubject" : {
+            "id" : "did:web:provider.dome.fiware.dev",
+            "type" : "gx:LegalParticipant",
+            "gx:legalName" : "DOME Provider",
+            "gx:legalRegistrationNumber" : {
+            "gx:vatID" : "MYVATID"
+            },
+            "gx:headquarterAddress" : {
+            "gx:countrySubdivisionCode" : "BE-BRU"
+            },
+            "gx:legalAddress" : {
+            "gx:countrySubdivisionCode" : "BE-BRU"
+            },
+            "gx-terms-and-conditions:gaiaxTermsAndConditions" : "70c1d713215f95191a11d38fe2341faed27d19e083917bc8732ca4fea4976700"
         },
-        "gx:headquarterAddress" : {
-        "gx:countrySubdivisionCode" : "BE-BRU"
-        },
-        "gx:legalAddress" : {
-        "gx:countrySubdivisionCode" : "BE-BRU"
-        },
-        "gx-terms-and-conditions:gaiaxTermsAndConditions" : "70c1d713215f95191a11d38fe2341faed27d19e083917bc8732ca4fea4976700"
-    },
-    "proof" : {
-        "type" : "JsonWebSignature2020",
-        "creator" : "did:web:provider.dome.fiware.dev",
-        "created" : "2023-04-26T09:17:52Z",
-        "verificationMethod" : "did:web:provider.dome.fiware.dev#e1b0c827edd5446ebb830d9a8b9b748c",
-        "jws" : "eyJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdLCJhbGciOiJQUzI1NiJ9..SGj9KmaiowH2NOVJtWDN9tnAN4MivHJ2QdijCbTv-7V3ZXXtXrLI7qNkOMyxX9LwJv83S6USWFNoqWiluB8CiGYkfFe1FexqWBbodIIqxCM0xO7k2y78Zy_aMTjWkcFuKeGtELL6VeBnQglQauAOMOX60_-TRxNp96K8bJ-8O7EfJQhJnDVq5Dx6XE6oG4_vQyeDPafxb1_JmtjqG0aZ5b8ZRjPYkCYzpeomV4hAtOCT8xN7W6d7vAw07IeVZ_mcvk4OmS6hKND2x3g_gLfroTf43kx0sI-HeD6x4F3wCb_yFvxzolXZ4yI-f-JHalTwFuLJUKlrhNPsjse1eqRGCQ"
-    }
-}
-```
-[^2]
-```json
-{
-    "@context": [
-        "https://www.w3.org/2018/credentials/v1",
-        "http://gx-registry-development:3000/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#"
-    ],
-    "type": [
-        "VerifiableCredential"
-    ],
-    "id": "https://storage.gaia-x.eu/credential-offers/b3e0a068-4bf8-4796-932e-2fa83043e203",
-    "issuer": "did:web:compliance.lab.gaia-x.eu:development",
-    "issuanceDate": "2023-04-26T09:19:11.791Z",
-    "expirationDate": "2023-07-25T09:19:11.791Z",
-    "credentialSubject": [
-        {
-        "type": "gx:compliance",
-        "id": "did:web:raw.githubusercontent.com:egavard:payload-sign:master",
-        "integrity": "sha256-9fc56e0099742e57d467156c4526ba723981b2e91eb0ccf6b725ec65b968fcc8"
+        "proof" : {
+            "type" : "JsonWebSignature2020",
+            "creator" : "did:web:provider.dome.fiware.dev",
+            "created" : "2023-04-26T09:17:52Z",
+            "verificationMethod" : "did:web:provider.dome.fiware.dev#e1b0c827edd5446ebb830d9a8b9b748c",
+            "jws" : "eyJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdLCJhbGciOiJQUzI1NiJ9..SGj9KmaiowH2NOVJtWDN9tnAN4MivHJ2QdijCbTv-7V3ZXXtXrLI7qNkOMyxX9LwJv83S6USWFNoqWiluB8CiGYkfFe1FexqWBbodIIqxCM0xO7k2y78Zy_aMTjWkcFuKeGtELL6VeBnQglQauAOMOX60_-TRxNp96K8bJ-8O7EfJQhJnDVq5Dx6XE6oG4_vQyeDPafxb1_JmtjqG0aZ5b8ZRjPYkCYzpeomV4hAtOCT8xN7W6d7vAw07IeVZ_mcvk4OmS6hKND2x3g_gLfroTf43kx0sI-HeD6x4F3wCb_yFvxzolXZ4yI-f-JHalTwFuLJUKlrhNPsjse1eqRGCQ"
         }
-    ],
-    "proof": {
-        "type": "JsonWebSignature2020",
-        "created": "2023-04-26T09:19:12.415Z",
-        "proofPurpose": "assertionMethod",
-        "jws": "eyJhbGciOiJQUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..bSsi9yohByC9021w1AiLvzgIozgYqTAWLBkEWC8Qay043k81p6UzWfZ04rFv48agxkzDHwCxlFGO_N24SLJvHieZwRJnyoM-VfIYfSJ-9iTI07TMQl-wd03sO5x4R8YWIDeSd3hoWkn5csmQYhQlXmwLRKpMni0qgMMmMTR336XkSImq5NpEiB8QzwJVkmjn4oHHELwEPa3HSfAl42lTUvAwQceaNU288QrPC0ykRW4mdPmKk5TXgkf19tolj8xwhr-pncVv_0D7LH3bYoFzzvNBeQQZ3LOT5tr9QD6AjIJN126gX1ia6gMdmj5SKT_7KgtWk9npsKg3hggpbnihBA",
-        "verificationMethod": "did:web:compliance.lab.gaia-x.eu:development"
     }
-}
-```
+    ```
+[^2] Example Compliancy Credential:
+    ```json
+    {
+        "@context": [
+            "https://www.w3.org/2018/credentials/v1",
+            "http://gx-registry-development:3000/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#"
+        ],
+        "type": [
+            "VerifiableCredential"
+        ],
+        "id": "https://storage.gaia-x.eu/credential-offers/b3e0a068-4bf8-4796-932e-2fa83043e203",
+        "issuer": "did:web:compliance.lab.gaia-x.eu:development",
+        "issuanceDate": "2023-04-26T09:19:11.791Z",
+        "expirationDate": "2023-07-25T09:19:11.791Z",
+        "credentialSubject": [
+            {
+            "type": "gx:compliance",
+            "id": "did:web:raw.githubusercontent.com:egavard:payload-sign:master",
+            "integrity": "sha256-9fc56e0099742e57d467156c4526ba723981b2e91eb0ccf6b725ec65b968fcc8"
+            }
+        ],
+        "proof": {
+            "type": "JsonWebSignature2020",
+            "created": "2023-04-26T09:19:12.415Z",
+            "proofPurpose": "assertionMethod",
+            "jws": "eyJhbGciOiJQUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..bSsi9yohByC9021w1AiLvzgIozgYqTAWLBkEWC8Qay043k81p6UzWfZ04rFv48agxkzDHwCxlFGO_N24SLJvHieZwRJnyoM-VfIYfSJ-9iTI07TMQl-wd03sO5x4R8YWIDeSd3hoWkn5csmQYhQlXmwLRKpMni0qgMMmMTR336XkSImq5NpEiB8QzwJVkmjn4oHHELwEPa3HSfAl42lTUvAwQceaNU288QrPC0ykRW4mdPmKk5TXgkf19tolj8xwhr-pncVv_0D7LH3bYoFzzvNBeQQZ3LOT5tr9QD6AjIJN126gX1ia6gMdmj5SKT_7KgtWk9npsKg3hggpbnihBA",
+            "verificationMethod": "did:web:compliance.lab.gaia-x.eu:development"
+        }
+    }
+    ```
 [^3]: Natural Person Credential: 
-```json
-{
-    "type" : [ "VerifiableCredential", "NaturalPersonCredential" ],
-    "@context" : [ "https://www.w3.org/2018/credentials/v1", "https://w3id.org/security/suites/jws-2020/v1" ],
-    "id" : "urn:uuid:2eff859a-1474-4e51-a897-0e1360fecff9",
-    "issuer" : "did:web:provider.dome.fiware.dev",
-    "issuanceDate" : "2023-04-26T09:41:32Z",
-    "issued" : "2023-04-26T09:41:32Z",
-    "validFrom" : "2023-04-26T09:41:32Z",
-    "expirationDate" : "2023-04-28T21:41:32Z",
-    "credentialSchema" : {
-        "id" : "https://raw.githubusercontent.com/FIWARE-Ops/tech-x-challenge/main/schema.json",
-        "type" : "FullJsonSchemaValidator2021"
-    },
-    "credentialSubject" : {
-        "id" : "d7704c3f-4f13-474d-980c-6036ef670157",
-        "type" : "gx:NaturalParticipant",
-        "familyName" : "Legal",
-        "firstName" : "Representative",
-        "roles" : [ {
-        "names" : [ "LEGAL_REPRESENTATIVE" ],
-        "target" : "did:web:onboarding.dome-marketplace.org"
-        } ],
-        "email" : "legal-representative@dome-provider.org"
-    },
-    "proof" : {
-        "type" : "JsonWebSignature2020",
-        "creator" : "did:web:provider.dome.fiware.dev",
-        "created" : "2023-04-26T09:41:32Z",
-        "verificationMethod" : "did:web:provider.dome.fiware.dev#4057b20fdc4a4c25abaab4f44de95c0f",
-        "jws" : "eyJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdLCJhbGciOiJQUzI1NiJ9..Wm4S4chhXVYAibziWZ6HFUntav8xQz6iG9Lc-qyjnmeHeDrPvOnEMbKqQ1EmKzRhq1XHVl_yTEKo0T5F26ArbDokvaz-dK9LPa3PNkY8S-s5CAi5ufAIuO8FFqbCmonGr140U9_iLGYqaXEYpK9-AjmKl_-jB88jFlBxapbKEKGdHH1vrhggL_xbNmgbcRlueRgOWmHzy2RhFnzHxmpiCl6cvsHKB6dT-Q-VfBvwYExrJqGzLiGvxcNcqKnZ1OVEmaI7KPKQ8GBTvdp7P46gEVLlW_BQYdv3uDlHnoTZhz4ufJBLwMqiYrXvMmmscllnH_BUv2lUYXPRRBdSBD3EBA"
+    ```json
+    {
+        "type" : [ "VerifiableCredential", "NaturalPersonCredential" ],
+        "@context" : [ "https://www.w3.org/2018/credentials/v1", "https://w3id.org/security/suites/jws-2020/v1" ],
+        "id" : "urn:uuid:2eff859a-1474-4e51-a897-0e1360fecff9",
+        "issuer" : "did:web:provider.dome.fiware.dev",
+        "issuanceDate" : "2023-04-26T09:41:32Z",
+        "issued" : "2023-04-26T09:41:32Z",
+        "validFrom" : "2023-04-26T09:41:32Z",
+        "expirationDate" : "2023-04-28T21:41:32Z",
+        "credentialSchema" : {
+            "id" : "https://raw.githubusercontent.com/FIWARE-Ops/tech-x-challenge/main/schema.json",
+            "type" : "FullJsonSchemaValidator2021"
+        },
+        "credentialSubject" : {
+            "id" : "d7704c3f-4f13-474d-980c-6036ef670157",
+            "type" : "gx:NaturalParticipant",
+            "familyName" : "Legal",
+            "firstName" : "Representative",
+            "roles" : [ {
+            "names" : [ "LEGAL_REPRESENTATIVE" ],
+            "target" : "did:web:onboarding.dome-marketplace.org"
+            } ],
+            "email" : "legal-representative@dome-provider.org"
+        },
+        "proof" : {
+            "type" : "JsonWebSignature2020",
+            "creator" : "did:web:provider.dome.fiware.dev",
+            "created" : "2023-04-26T09:41:32Z",
+            "verificationMethod" : "did:web:provider.dome.fiware.dev#4057b20fdc4a4c25abaab4f44de95c0f",
+            "jws" : "eyJiNjQiOmZhbHNlLCJjcml0IjpbImI2NCJdLCJhbGciOiJQUzI1NiJ9..Wm4S4chhXVYAibziWZ6HFUntav8xQz6iG9Lc-qyjnmeHeDrPvOnEMbKqQ1EmKzRhq1XHVl_yTEKo0T5F26ArbDokvaz-dK9LPa3PNkY8S-s5CAi5ufAIuO8FFqbCmonGr140U9_iLGYqaXEYpK9-AjmKl_-jB88jFlBxapbKEKGdHH1vrhggL_xbNmgbcRlueRgOWmHzy2RhFnzHxmpiCl6cvsHKB6dT-Q-VfBvwYExrJqGzLiGvxcNcqKnZ1OVEmaI7KPKQ8GBTvdp7P46gEVLlW_BQYdv3uDlHnoTZhz4ufJBLwMqiYrXvMmmscllnH_BUv2lUYXPRRBdSBD3EBA"
+        }
     }
-}
-```
+    ```
