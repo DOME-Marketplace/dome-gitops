@@ -13,7 +13,7 @@ As shown in the diagram, the PoC's decentralized Marketplace consists of 4 roles
 - a [Provider Instance](https://github.com/FIWARE-Ops/fiware-gitops/tree/master/aws/dome/provider)
 - a [Consumer Instance](https://github.com/FIWARE-Ops/fiware-gitops/tree/master/aws/dome/consumer)
 
-DOME Marketplace, Provider and Consumer are actual participants of the DOME Marketplace. They are connected throught their instances of the [Access Node](../tobelinked) to mutually receive Marketplace entries, like Products and Offerings. The Trust-Relationship between them is built through the DOME Trust Anchor, where each instance can check contacting participants to be trusted in the DOME Marketplace.
+DOME Marketplace, Provider and Consumer are actual participants of the DOME Marketplace. They are connected throught their instances of the [Access Node](#the-access-node) to mutually receive Marketplace entries, like Products and Offerings. The Trust-Relationship between them is built through the DOME Trust Anchor, where each instance can check contacting participants to be trusted in the DOME Marketplace.
 
 ## The DOME Trust Anchor
 
@@ -36,7 +36,7 @@ To allow Self-OnBoarding, an OnBoarding-Portal is provided. The portal acts as a
 - a Self-Description[^1]
 - a Compliancy Credential for the Self-Description[^2]
 - a Natural Person Credential[^3](will be replaced in the future with "LEAR-Credential") for the user logging-in
-> :bulb: A user should retrieve the credentials from its companies issuer. See [credentials-issuance](TODO LINK).
+> :bulb: A user should retrieve the credentials from its organisations issuer. See [credentials-issuance](#credential-issuance).
 
 When opening the portal, the "Legal Representative" is asked to login with its wallet by scanning a QR-Code and presenting the three mentioned credentials. The [verifier](../ionos/dome-trust/verifier/) will then verify the chain of trust as following:
 
@@ -156,3 +156,57 @@ The verifier will return a [JSON Web Token](https://jwt.io/), to be used by the 
         }
     }
     ```
+
+## The Marketplace Instance
+
+All instances of the marketplace are structured the same. They consist of an Access Node and the BAE with its security framework. 
+
+![marketplace-instance](img/marketplace-instance.jpg)
+
+
+### Credential Issuance 
+
+In order to log into a Marketplace Instance, the User needs to get a [Verifiable Credential](https://www.w3.org/TR/vc-data-model/) from its Organisation. 
+
+The current instances of the Marketplace use [Keycloak](https://www.keycloak.org/) with the [Keycloak-VC-Issuer Plugin](https://github.com/FIWARE/keycloak-vc-issuer) as issuer. Therefor, the user will log into Keycloak(f.e. [Provider Keycloak](https://keycloak-provider.dome.fiware.dev/realms/dome/account/#/) - with username "provider-seller" and password "seller"), select the "NaturalPersonCredential ldp_vc" and scan the QR with its wallet(for demo-purposes, the [FIWARE Demo Wallet](https://demo-wallet.fiware.dev/)) could be used). 
+The wallet now contains a verifiable credential, that holds the roles of the user, configured for each "siop2-client" in Keycloak. The Credential is signed with the key of the participant and therefor trusted by other DOME Participants.
+
+For Onboarding an organization, the user requires a second credential from the Issuer. It contains the Self-Description, used for creating the trusted participant. In the [Provider Keycloak](https://keycloak-provider.dome.fiware.dev/realms/dome/account/#/), it could be retrieved as the "GaiaXParticipantCredential ldp_vc". This credential needs to prove its compliance at a Gaia-X Digital Clearing House' [Compliance Service](https://compliance.lab.gaia-x.eu/development/docs/#/Common/CommonController_issueVC). When using the FIWARE Demo Wallet, a button to request such credential at a preconfigured compliance service is available after the credential was received.
+
+### Marketplace interaction
+
+In order to create or buy on the marketplace, a user has to log into the market(f.e. https://dome-marketplace.org). When entering the market, a pop with a QR appears, that the user needs to scan with its wallet. After sending the Credential(as received in [Credentials Issuance](#credential-issuance)), the verifier will:
+
+1. verify the signature and validity of the credential
+2. verfiy that the issuer is a trusted participant in the DOME Marketplace
+3. verfiy that the issuer is allowed to issue such credential and claims in the context of the current instance(at the Trusted Issuers List)
+4. send a response with an Access-Token to the BAE
+
+The BAE will then use the Access-Token to retrieve a JWT from the Verifier and use it for all interaction with the AccessNode. 
+When creating an entry in the Marketplace, f.e. a Product Offering, the BAE will:
+
+1. Send a request with the ProductOffering towards the Access Node, through the PEP, using the JWT
+2. The PEP requests a descision at the PDP
+3. PDP evaluates the role inside the JWT
+4. PEP forwards the call to the Access Node
+
+## The Access Node
+
+To connect all Marketplace instances, a decentralized persistence layer is formed through the "AccessNodes". They provide a standardized interface to all Market-Implementations(like the BAE) in form of the [TMForum API](https://github.com/FIWARE/tmforum-api) and handle the distribution through all instances. 
+
+![access-node](img/access-node.jpg)
+
+When an entity(f.e. a ProductOffering) is created through the TMForum API, distribution through the Marketplace-Instances happens as following:
+
+1. The TMForum API stores the entity in the [NGSI-LD format](https://www.etsi.org/deliver/etsi_gs/CIM/001_099/009/01.07.01_60/gs_CIM009v010701p.pdf) in its [Context Broker](../ionos/marketplace/scorpio/).
+2. The Context Broker notifies the [Blockchain-Connector](../ionos/marketplace/connector/blockchain-connector-core/) about the entity.
+3. The Blockchain-Connector generates a [Hash-Link](https://w3c-ccg.github.io/hashlink/) for the entity.
+4. The Blockchain-Connector sends an event, containing the Hash-Link, to the [DLTAdapter](../ionos/marketplace/connector/dlt-adapter/)
+5. The DLTAdapter creates a transaction on the Blockchain for the event, signed with the account of the participant.
+
+Another instance will now receive the information about the new entity as following:
+1. The DLTAdapter receives the event.
+2. The DLTAdapter notifies the Blockchain-Connector with the event.
+3. The Blockchain-Connector resolves the Hash-Link, retrieves the entity from its original location and compares the hashes.
+4. If the Hash is equal, it sends the Entity to the Broker-Adapter, to be stored Off-Chain.
+5. The Broker-Adapter persists the entity in the Context Broker, thus making it available for the TMForum-Instance of that AccessNode.

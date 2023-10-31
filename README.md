@@ -2,6 +2,7 @@
 
 This repository contains the deployments and descriptions for the DOME-Marketplace. The development instance of the DOME-Marketplace runs on a managed kuberentes, provided by [Ionos](https://dcd.ionos.com).
 
+A description of the deployed architecture and a description of the main flows inside the system can be found [here](./doc/ARCHITECTURE.md).
 
 ## Setup
 
