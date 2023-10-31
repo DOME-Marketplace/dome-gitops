@@ -2,18 +2,7 @@
 doc: 
   defaultApi: party-catalog
   defaultPath: /tmf-api/party/v4
-  route:
-    ## -- should the deployment create openshift routes
-    enabled: true
-    # -- host to be used
-    host: tmforum.dome.fiware.dev
-    tls:
-      insecureEdgeTerminationPolicy: Redirect
-      termination: edge
-    certificate:
-      issuer:
-        kind: ClusterIssuer
-        name: letsencrypt-aws-prod
+
 
 tm-forum-api:
   ingress:
