@@ -26,7 +26,7 @@ data:
         protocol: http
 
         routes:
-          - name: product-catalog
+          - name: product-catalog-ppd
             methods:
               - POST
               - PUT
@@ -35,21 +35,14 @@ data:
               - /product-catalog
             strip_path: true
 
-        plugins:
-          - name: pep-plugin
-            config:
-              pathprefix: "/"
-              authorizationendpointtype: ExtAuthz
-              authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
+            plugins:
+              - name: pep-plugin
+                config:
+                  pathprefix: "/"
+                  authorizationendpointtype: ExtAuthz
+                  authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
 
-
-      - host: "tmforum-tm-forum-api-product-catalog"
-        name: "product-catalog-r"
-        port: 8080
-        protocol: http
-
-        routes:
-          - name: product-catalog
+          - name: product-catalog-get
             methods:
               - GET
             paths:
