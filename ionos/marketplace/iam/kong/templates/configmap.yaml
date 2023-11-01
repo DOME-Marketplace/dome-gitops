@@ -20,12 +20,29 @@ data:
             strip_path: true
 
       - host: "tmforum-tm-forum-api-product-catalog"
+        name: "product-catalog-r"
+        port: 8080
+        protocol: http
+
+        routes:
+          - name: product-catalog
+            methods:
+              - GET
+            paths:
+              - /product-catalog
+            strip_path: true
+
+      - host: "tmforum-tm-forum-api-product-catalog"
         name: "product-catalog"
         port: 8080
         protocol: http
 
         routes:
           - name: product-catalog
+            methods:
+              - POST
+              - PUT
+              - DELETE
             paths:
               - /product-catalog
             strip_path: true
@@ -36,13 +53,7 @@ data:
               pathprefix: "/"
               authorizationendpointtype: ExtAuthz
               authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
-                
-          - name: request-transformer
-            config:
-              remove:
-                headers:
-                  - Authorization
-                  - authorization
+  
 
       - host: "tmforum-tm-forum-api-product-inventory"
         name: "product-inventory"
@@ -61,13 +72,6 @@ data:
               pathprefix: "/"
               authorizationendpointtype: ExtAuthz
               authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
-                
-          - name: request-transformer
-            config:
-              remove:
-                headers:
-                  - Authorization
-                  - authorization
 
       - host: "tmforum-tm-forum-api-product-ordering-management"
         name: "product-ordering-management"
@@ -86,13 +90,7 @@ data:
               pathprefix: "/"
               authorizationendpointtype: ExtAuthz
               authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
-                
-          - name: request-transformer
-            config:
-              remove:
-                headers:
-                  - Authorization
-                  - authorization
+
 
       - host: "tmforum-tm-forum-api-customer-bill-management"
         name: "customer-bill-management"
@@ -111,13 +109,7 @@ data:
               pathprefix: "/"
               authorizationendpointtype: ExtAuthz
               authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
-                
-          - name: request-transformer
-            config:
-              remove:
-                headers:
-                  - Authorization
-                  - authorization
+
 
       - host: "tmforum-tm-forum-api-usage-management"
         name: "usage-management"
@@ -136,13 +128,7 @@ data:
               pathprefix: "/"
               authorizationendpointtype: ExtAuthz
               authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
-                
-          - name: request-transformer
-            config:
-              remove:
-                headers:
-                  - Authorization
-                  - authorization
+
 
       - host: "tmforum-tm-forum-api-party-catalog"
         name: "party-catalog"
@@ -161,13 +147,7 @@ data:
               pathprefix: "/"
               authorizationendpointtype: ExtAuthz
               authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
-                
-          - name: request-transformer
-            config:
-              remove:
-                headers:
-                  - Authorization
-                  - authorization
+
 
       - host: "tmforum-tm-forum-api-customer-management"
         name: "customer-management"
@@ -187,9 +167,3 @@ data:
               authorizationendpointtype: ExtAuthz
               authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
                 
-          - name: request-transformer
-            config:
-              remove:
-                headers:
-                  - Authorization
-                  - authorization
