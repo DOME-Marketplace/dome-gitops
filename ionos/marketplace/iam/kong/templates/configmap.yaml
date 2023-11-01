@@ -19,18 +19,6 @@ data:
               - /scorpio
             strip_path: true
 
-      - host: "tmforum-tm-forum-api-product-catalog"
-        name: "product-catalog-r"
-        port: 8080
-        protocol: http
-
-        routes:
-          - name: product-catalog
-            methods:
-              - GET
-            paths:
-              - /product-catalog
-            strip_path: true
 
       - host: "tmforum-tm-forum-api-product-catalog"
         name: "product-catalog"
@@ -53,7 +41,21 @@ data:
               pathprefix: "/"
               authorizationendpointtype: ExtAuthz
               authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
-  
+
+
+      - host: "tmforum-tm-forum-api-product-catalog"
+        name: "product-catalog-r"
+        port: 8080
+        protocol: http
+
+        routes:
+          - name: product-catalog
+            methods:
+              - GET
+            paths:
+              - /product-catalog
+            strip_path: true
+ 
 
       - host: "tmforum-tm-forum-api-product-inventory"
         name: "product-inventory"
