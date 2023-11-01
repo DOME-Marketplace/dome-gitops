@@ -6,9 +6,9 @@ business-api-ecosystem:
 
     tmForum:
       catalog:
-        host: kong.dome-marketplace.org
+        host: tmforum-tm-forum-api-product-catalog
         port: 8080
-        path: /product-catalog
+        path: /
       inventory:
         host: tmforum-tm-forum-api-product-inventory
         port: 8080
