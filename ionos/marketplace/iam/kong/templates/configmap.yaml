@@ -19,14 +19,13 @@ data:
               - /scorpio
             strip_path: true
 
-
       - host: "tmforum-tm-forum-api-product-catalog"
         name: "product-catalog"
         port: 8080
         protocol: http
 
         routes:
-          - name: product-catalog-ppd
+          - name: product-catalog-authenticated
             methods:
               - POST
               - PUT
@@ -42,11 +41,69 @@ data:
                   authorizationendpointtype: ExtAuthz
                   authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
 
-          - name: product-catalog-get
+          - name: product-catalog-anonymus
             methods:
               - GET
             paths:
               - /product-catalog
+            strip_path: true
+
+      - host: "tmforum-tm-forum-api-resource-catalog"
+        name: "resource-catalog"
+        port: 8080
+        protocol: http
+
+        routes:
+          - name: resource-catalog-authenticated
+            methods:
+              - POST
+              - PUT
+              - DELETE
+            paths:
+              - /resource-catalog
+            strip_path: true
+
+            plugins:
+              - name: pep-plugin
+                config:
+                  pathprefix: "/"
+                  authorizationendpointtype: ExtAuthz
+                  authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
+
+          - name: resource-catalog-anonymus
+            methods:
+              - GET
+            paths:
+              - /resource-catalog
+            strip_path: true
+
+      - host: "tmforum-tm-forum-api-service-catalog"
+        name: "service-catalog"
+        port: 8080
+        protocol: http
+
+        routes:
+          - name: service-catalog-authenticated
+            methods:
+              - POST
+              - PUT
+              - DELETE
+            paths:
+              - /service-catalog
+            strip_path: true
+
+            plugins:
+              - name: pep-plugin
+                config:
+                  pathprefix: "/"
+                  authorizationendpointtype: ExtAuthz
+                  authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
+
+          - name: service-catalog-anonymus
+            methods:
+              - GET
+            paths:
+              - /service-catalog
             strip_path: true
  
 
