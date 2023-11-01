@@ -80,9 +80,9 @@ In order to provide GitOps capabilities, we use [ArgoCD](https://argo-cd.readthe
 ```shell
     kubectl create namespace argocd
 ```
-2. Deploy argocd:
+2. Deploy argocd with extensions enabled:
 ```shell 
-    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.8.3/manifests/install.yaml
+    kubectl apply -k ./extension/ -n argocd
 ```
 
 From now on, every deployment should be managed by ArgoCD through [Applications](https://argo-cd.readthedocs.io/en/stable/core_concepts/).
@@ -239,4 +239,15 @@ In order to deploy a new application, follow the steps:
 4. Add your application to the [/applications](./applications/) folder.
 5. Create a PR and wait for it to be merged. The application will be automatically deployed afterwards.
 
+## Blue-Green Deployments
+
+In order to reduce the resource-usage and the number of deployments to maintain, the cluster supports [Blue-Green Deployments](https://www.redhat.com/en/topics/devops/what-is-blue-green-deployment).
+To integrate seamless with ArgoCD, the extension [Argo Rollouts](https://argo-rollouts.readthedocs.io/en/stable/) is used. The standard ArgoCD installation is extended via the [argo-rollouts.yaml](./ionos/argocd/argo-rollouts.yaml), the [configmap-cmd.yaml](./ionos/argocd/configmap-cmd.yaml) and the [dashboard-extension.yaml](./ionos/argocd/dashboard-extension.yaml)(to integrate with the ArgoCD dashboard). 
+
+Blue-Green Deployments on the cluster will be done through two mechanisms:
+
+- the [rollout-injecting-webhook](https://github.com/wistefan/rollout-injecting-webhook) automatically creates a [Rollout](https://argo-rollouts.readthedocs.io/en/stable/features/specification/) for each deployment in enabled workspaces(currently "marketplace", see [rollout-webhook deployment](./ionos/marketplace/rollout-webhook/)) - read the [doc](https://github.com/wistefan/rollout-injecting-webhook/blob/main/README.md) for more information
+- explicitly creating Rollout-Specs(see the [official documentation](https://argo-rollouts.readthedocs.io/en/stable/features/specification/))
+
+> :warning: Be aware how Blue-Green Rollouts work and there limitations. Since they create a second instance of the application, this is only suitable for stateless-applications(as a Deployment-Resource should be). Stateful-Applications can lead to bad results like deadlocks. If the applications takes care of Datamigrations, configure it to not migrate before Promotion and connect the new revision to another database. To disable the [Rollout-Injection](https://github.com/wistefan/rollout-injecting-webhook), annotate the deployment with ```wistefan/rollout-injecting-webhook: ignore```
 
