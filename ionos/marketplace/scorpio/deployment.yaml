@@ -27,7 +27,7 @@ spec:
       containers:
         - name: scorpio
           imagePullPolicy: IfNotPresent
-          image: "scorpiobroker/all-in-one-runner:java-kafka-4.1.8"
+          image: "scorpiobroker/all-in-one-runner:java-kafka-4.1.10"
           env:
             - name: DBHOST
               value: postgis
