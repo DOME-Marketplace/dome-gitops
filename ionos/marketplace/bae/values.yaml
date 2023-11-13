@@ -123,7 +123,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: dome-dev
+        tag: v9.0.0-rc1-dome
         pullPolicy: Always
 
     ingress: 
