@@ -80,7 +80,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: dome-dev
+        tag: v9.0.0-rc1
         pullPolicy: Always
     
     plugins:
@@ -123,7 +123,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: v9.0.0-rc1-dome
+        tag: v9.0.0-rc2-dome
         pullPolicy: Always
 
     ingress: 
