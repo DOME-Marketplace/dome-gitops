@@ -51,6 +51,10 @@ business-api-ecosystem:
     clientId: marketplace-client
     verifier:
       host: https://verifier.dome-marketplace.org
+    allowedRoles:
+      - seller
+      - customer
+      - admin
     # Configuration for the Credential Config Service initiation
     ccs:
       endpoint: "http://credentials-config-service:8080"
