@@ -31,9 +31,9 @@ tm-forum-api:
     # -- configuration to be used for the image of the container
     image:
       # -- repository to get the container from
-      repository: quay.io/wi_stefan
+      repository: quay.io/fiware
       # -- tag to be used, most of the time the apis will use the same version
-      tag: 0.14-PRE
+      tag: 0.14.1
       # -- pull policy to be used
       pullPolicy: IfNotPresent
 
