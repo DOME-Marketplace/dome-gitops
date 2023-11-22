@@ -21,6 +21,7 @@ In order to setup the DOME-Marketplace, its recommended to install the following
 - [ionosctl-cli](https://github.com/ionos-cloud/ionosctl) to interact with the Ionos-APIs
 - [jq](https://jqlang.github.io/jq/download/) as a json-processor to ease the work with the client outputs
 - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) for debugging and inspecting the resources in the cluster
+- [kubeseal](https://github.com/bitnami-labs/sealed-secrets#kubeseal) for sealing secrets using asymmetric cryptography
 
 ### Cluster creation
 
@@ -118,7 +119,7 @@ Apply the application via:
 Once its deployed, secrets can be "sealed" via:
 
 ```bash
-    kubeseal <SECRET_FILE >OUTPUT_FILE -o yaml --controller-namespace sealed-secrets  --controller-name sealed-secrets 
+    kubeseal -f mysecret.yaml -w mysealedsecret.yaml --controller-namespace sealed-secrets  --controller-name sealed-secrets
 ```
 
 ### Ingress controller
