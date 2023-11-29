@@ -23,58 +23,7 @@ data:
         catalog,
         organization,
         individual
-    orion-ld-adapter:
-      domain: http://orion-ld-adapter:8080 
-    spring:
-      application:
-        name: Blockchain Connector Core
-      datasource:
-        url: jdbc:h2:mem:dbtest
-        driver-class-name: org.h2.Driver
-        username: in2admin
-        password: in2pass
-      jpa:
-        database-platform: org.hibernate.dialect.H2Dialect
-        open-in-view: false
-        properties:
-          jakarta.persistence.sharedCache.mode: UNSPECIFIED
-        hibernate:
-          ddl-auto: update
-        show-sql: true
-        generate-ddl: true
-      flyway:
-        baselineOnMigrate: true
-        locations: classpath:db/migrations
-      security:
-        user:
-          name: in2test
-          password: in2pass
-    logging:
-      level:
-        ROOT: INFO
-        es.in2: DEBUG
-    management:
-      endpoints:
-        enabled-by-default: false
-        web:
-          exposure:
-            include: health, info, loggers, metrics
-          base-path: /
-          path-mapping:
-            health: health
-            info: info
-            loggers: loggers
-            metrics: metrics
-      endpoint:
-        health:
-          enabled: true
-          show-details: always
-        loggers:
-          enabled: true
-        metrics:
-          enabled: true
-    server:
-      port: 8080
-    app:
-      openapi:
-        dev-url: http://localhost:8080
+    broker-adapter:
+      domain: http://orion-ld-adapter:8080
+    operator:
+      organizationId: FIWARE_TEST_PROVIDER
