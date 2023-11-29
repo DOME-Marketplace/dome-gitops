@@ -27,10 +27,9 @@ spec:
           name: blockchain-connector
           env: 
             - name: DATABASE_URL
-              value: r2dbc:postgresql://postgres-connector:5432/mktdb
+              value: "r2dbc:postgresql://postgres-connector:5432/mktdb"
             - name: FLYWAY_URL
-              value: jdbc:postgresql://postgres-connector:5432/mktdb
-            
+              value: "jdbc:postgresql://postgres-connector:5432/mktdb"
             - name: SPRING_CONFIG_LOCATION
               value: /config/application.yml
           ports:
