@@ -1,9 +1,9 @@
 postgresql:
   commonAnnotations:
     wistefan/rollout-injecting-webhook: ignore
-  fullnameOverride: postgresql-keycloak
+  fullnameOverride: postgresql-connector
   auth:
-    username: keycloak  
+    username: connector  
     enablePostgresUser: true
     existingSecret: postgres-connector-secret
     secretKeys:
