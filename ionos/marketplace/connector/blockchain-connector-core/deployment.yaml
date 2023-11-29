@@ -30,14 +30,12 @@ spec:
               value: "r2dbc:postgresql://postgres-connector:5432/mktdb"
             - name: FLYWAY_URL
               value: "jdbc:postgresql://postgres-connector:5432/mktdb"
-            - name: SPRING_CONFIG_LOCATION
-              value: /config/application.yml
           ports:
             - containerPort: 8080
               name: http
               protocol: TCP
           volumeMounts:
-          - mountPath: /config/
+          - mountPath: /src/main/resources/
             name: custom-config
       volumes:
         - configMap:
