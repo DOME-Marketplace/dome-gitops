@@ -14,9 +14,6 @@ data:
         notificationEndpoint: http://blockchain-connector-core:8080/notifications/blockchain-node
         entityTypes: > 
           product-offering
-    broker:
-      externalDomain: https://kong.dome-marketplace.org/scorpio
-      internalDomain: http://scorpio:1026
     ngsi-subscription: 
       notificationEndpoint: http://blockchain-connector-core:8080/notifications/orion-ld
       entityTypes: > 

@@ -3,58 +3,10 @@ kind: ConfigMap
 metadata:
   name: orion-ld-adapter
 data:
-  application.yml: |
-    spring:
-      application:
-        name: Orion-LD Interface    
-    server:
-      port: 8080
-
-    # Spring Logging Configuration
-    logging:
-      level:
-        es.in2: DEBUG
-
+  external-config.yml: |
     broker:
-      domain: http://scorpio:1026
+      externalDomain: https://kong.dome-marketplace.org/scorpio
+      internalDomain: http://scorpio:1026
       paths:  
         entities: /ngsi-ld/v1/entities
         subscriptions: /ngsi-ld/v1/subscriptions
-    blockchain-connector: 
-      domain: http://blockchain-connector-core:8080
-
-    # Spring Management Configuration - Actuator
-    management:
-      endpoints:
-        enabled-by-default: false
-        web:
-          exposure:
-            include: health, info, loggers, metrics
-          base-path: /
-          path-mapping:
-            health: health
-            info: info
-            loggers: loggers
-            metrics: metrics
-      endpoint:
-        health:
-          enabled: true
-          show-details: always
-        info:
-          enabled: true
-        loggers:
-          enabled: true
-        metrics:
-          enabled: true
-
-    # SpringDoc Configuration - OpenAPI 3.0 Documentation & Swagger UI
-    springdoc:
-      api-docs:
-        path: /api-docs
-      swagger-ui:
-        path: /swagger-ui.html
-
-    # Application Configuration
-    app:
-      openapi:
-        dev-url: http://localhost:8080
