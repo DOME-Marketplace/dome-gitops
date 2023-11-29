@@ -31,6 +31,13 @@ spec:
                 secretKeyRef:
                   name: postgres-connector-secret
                   key: postgres-password
+            - name: SPRING_FLYWAY_USERNAME
+              value: postgres
+            - name: SPRING_FLYWAY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-connector-secret
+                  key: postgres-password
             - name: DATABASE_URL
               value: "r2dbc:postgresql://postgres-connector:5432/mktdb"
             - name: FLYWAY_URL
