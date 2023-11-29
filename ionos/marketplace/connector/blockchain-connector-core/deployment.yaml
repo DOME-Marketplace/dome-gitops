@@ -39,9 +39,9 @@ spec:
                   name: postgres-connector-secret
                   key: postgres-password
             - name: DATABASE_URL
-              value: "r2dbc:postgresql://postgres-connector:5432/mktdb"
+              value: "r2dbc:postgresql://postgresql-connector:5432/mktdb"
             - name: FLYWAY_URL
-              value: "jdbc:postgresql://postgres-connector:5432/mktdb"
+              value: "jdbc:postgresql://postgresql-connector:5432/mktdb"
           ports:
             - containerPort: 8080
               name: http
