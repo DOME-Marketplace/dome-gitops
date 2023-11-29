@@ -41,7 +41,10 @@ business-api-ecosystem:
         host: tmforum-tm-forum-api-service-catalog
         port: 8080
         path: 
-
+      resourceInventory:
+        host: tmforum-tm-forum-api-resource-inventory
+        port: 8080
+        path:
 
   bizEcosystemRss:
     enabled: false
@@ -84,7 +87,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: v9.0.0-rc3
+        tag: v9.0.0-rc5
         pullPolicy: Always
     
     plugins:
@@ -127,7 +130,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: v9.0.0-rc3-dome
+        tag: v9.0.0-rc5-dome
         pullPolicy: Always
 
     ingress: 
