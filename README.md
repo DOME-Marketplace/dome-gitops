@@ -21,6 +21,7 @@ In order to setup the DOME-Marketplace, its recommended to install the following
 - [ionosctl-cli](https://github.com/ionos-cloud/ionosctl) to interact with the Ionos-APIs
 - [jq](https://jqlang.github.io/jq/download/) as a json-processor to ease the work with the client outputs
 - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) for debugging and inspecting the resources in the cluster
+- [kubeseal](https://github.com/bitnami-labs/sealed-secrets#kubeseal) for sealing secrets using asymmetric cryptography
 
 ### Cluster creation
 
@@ -46,7 +47,7 @@ In order to setup the DOME-Marketplace, its recommended to install the following
 
 4. Create the initial nodepool inside your cluster and datacenter:
 ```shell
-    export DOME_K8S_DEFAULT_NODEPOOL_ID=$(ionosctl k8s nodepool create --cluster-id $DOME_K8S_CLUSTER_ID --name default-pool --node-count 2 --ram-size 8192 --storage-size 10 --datacenter-id $DOME_DATACENTER_ID --cpu-family "INTEL_SKYLAKE"  -o json | jq -r '.items[0].id')
+    export DOME_K8S_DEFAULT_NODEPOOL_ID=$(ionosctl k8s nodepool create --cluster-id $DOME_K8S_CLUSTER_ID --name default-pool --node-count 2 --ram 8192 --storage-size 10 --datacenter-id $DOME_DATACENTER_ID --cpu-family "INTEL_SKYLAKE"  -o json | jq -r '.items[0].id')
     # wait for the pool to be available
     watch ionosctl k8s nodepool get --nodepool-id $DOME_K8S_DEFAULT_NODEPOOL_ID --cluster-id $DOME_K8S_CLUSTER_ID
 ```
@@ -118,7 +119,7 @@ Apply the application via:
 Once its deployed, secrets can be "sealed" via:
 
 ```bash
-    kubeseal <SECRET_FILE >OUTPUT_FILE -o yaml --controller-namespace sealed-secrets  --controller-name sealed-secrets 
+    kubeseal -f mysecret.yaml -w mysealedsecret.yaml --controller-namespace sealed-secrets  --controller-name sealed-secrets
 ```
 
 ### Ingress controller
