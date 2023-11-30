@@ -4,7 +4,7 @@ metadata:
   name: kong-marketplace
   namespace: argocd
   labels:
-    purpose: marektplace-iam
+    purpose: marketplace-iam
 spec:
   destination:
     namespace: marketplace
