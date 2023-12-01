@@ -23,7 +23,7 @@ spec:
         app.kubernetes.io/name: blockchain-connector-core
     spec:
       containers: 
-        - image: in2kizuna/blockchain-connector:v1.0.0-SNAPSHOT
+        - image: quay.io/wi_stefan/blockchain-connector-core:1.0.0
           name: blockchain-connector
           env: 
             - name: SPRING_LOGGING_LEVEL_ROOT
