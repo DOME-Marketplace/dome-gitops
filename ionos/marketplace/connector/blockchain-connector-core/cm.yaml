@@ -24,6 +24,7 @@ data:
           individual,
           organization,
           product,
+          product-offering,
           category,
           service-specification,
           product-offering-price,
