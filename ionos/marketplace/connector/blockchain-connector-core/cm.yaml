@@ -11,7 +11,7 @@ data:
       userEthereumAddress: "0xb794f5ea0ba39494ce839613fffba74279579268"
       subscription:
         active: false
-        notificationEndpoint: http://blockchain-connector-core:8080/notifications/blockchain-node
+        notificationEndpoint: http://blockchain-connector-core:8080/notifications/dlt
         entityTypes: > 
           product-offering
     broker:
