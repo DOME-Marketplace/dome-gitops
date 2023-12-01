@@ -23,7 +23,7 @@ spec:
         app.kubernetes.io/name: orion-ld-adapter
     spec:
       containers: 
-        - image: in2kizuna/broker-adapter:v1.0.0-SNAPSHOT
+        - image: quay.io/wi_stefan/broker-adapter:1.0.0
           imagePullPolicy: Always
           name: broker-adapter
           ports:
