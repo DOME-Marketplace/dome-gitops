@@ -26,6 +26,8 @@ spec:
         - image: in2kizuna/blockchain-connector:v1.0.0-SNAPSHOT
           name: blockchain-connector
           env: 
+            - name: SPRING_LOGGING_LEVEL_ROOT
+              value: DEBUG
             - name: SPRING_R2DBC_PASSWORD
               valueFrom:
                 secretKeyRef:
