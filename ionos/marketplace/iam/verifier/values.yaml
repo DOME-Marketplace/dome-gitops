@@ -2,7 +2,7 @@ vcverifier:
   deployment:
     image:
       repository: quay.io/fiware/vcverifier
-      tag: 2.7.0-PRE-27
+      tag: 2.7.0-pre-27
       pullPolicy: Always
     logging: 
       level: DEBUG
