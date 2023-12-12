@@ -27,7 +27,7 @@ vcverifier:
 
     server:
       staticDir: /static
-      templateDir: templates
+      templateDir: /templates
 
 
   ingress:
