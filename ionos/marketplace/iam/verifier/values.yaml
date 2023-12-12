@@ -2,7 +2,7 @@ vcverifier:
   deployment:
     image:
       repository: quay.io/fiware/vcverifier
-      tag: 2.7.0-pre-27
+      tag: 2.7.0
       pullPolicy: Always
     logging: 
       level: DEBUG
@@ -19,7 +19,7 @@ vcverifier:
         
     initContainers:
       - name: add-theme
-        image: quay.io/fiware/verifier-theme:0.0.1-pre-1
+        image: quay.io/fiware/verifier-theme:0.0.1
         imagePullPolicy: Always
         volumeMounts:
           - name: static-volume
