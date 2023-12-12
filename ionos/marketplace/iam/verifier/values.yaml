@@ -23,7 +23,7 @@ vcverifier:
         imagePullPolicy: Always
         volumeMounts:
           - name: static-volume
-            mountPath: /target-
+            mountPath: /target
 
     server:
       staticDir: /static
