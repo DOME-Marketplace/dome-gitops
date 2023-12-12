@@ -41,7 +41,7 @@ vcverifier:
 
 
   templates: 
-    verifier_present_qr.html:
+    verifier_present_qr.html: |
       {{define "verifier_present_qr"}}
       <!doctype html>
 
