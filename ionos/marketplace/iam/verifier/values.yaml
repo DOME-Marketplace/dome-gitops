@@ -65,7 +65,7 @@ vcverifier:
           
           <body>
               <div class="w3-bar w3-card color-primary w3-margin-bottom w3-large">
-                  <a class="w3-bar-item w3-right" href="https://dome-marketplace.org"><img src="/static/img/logo.svg" alt="DOME Marketplace" style="width:222px;height:50px;">
+                  <a class="w3-bar-item w3-right" href="https://dome-marketplace.org"><img src="/static/img/logo-white.svg" alt="DOME Marketplace" style="width:222px;height:50px;">
                   </a>
               </div>
               <main class="w3-container w3-center">
