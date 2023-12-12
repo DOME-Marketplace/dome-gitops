@@ -58,7 +58,7 @@ vcverifier:
               <link href="/static/css/prism.css" rel="stylesheet">
           
               <meta name="viewport" content="width=device-width, initial-scale=1" />
-              <meta name="theme-color" content="#919597">
+              <meta name="theme-color" content="#2d58a7">
               <title>Credential Verifier</title>
           
           </head>
