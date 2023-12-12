@@ -25,6 +25,12 @@ vcverifier:
           - name: static-volume
             mountPath: /target
 
+
+    server:
+      staticDir: /static
+      templateDir: /templates
+
+
   ingress:
     enabled: true
     annotations: 

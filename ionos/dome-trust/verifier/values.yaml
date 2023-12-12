@@ -9,6 +9,11 @@ vcverifier:
       pathsToSkip: 
         - "/health"
 
+    server:
+      staticDir: /static
+      templateDir: /templates
+
+
     ssikit:
       auditorUrl: http://walt-id-trust-vcwaltid:7003
     verifier:
