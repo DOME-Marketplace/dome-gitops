@@ -61,21 +61,24 @@ business-api-ecosystem:
     # Configuration for the Credential Config Service initiation
     ccs:
       endpoint: "http://credentials-config-service:8080"
-      credentials:
-        - type: "VerifiableCredential"
-          trustedParticipantsLists: [
-            "https://tir.dome-marketplace.org"
-          ]
-          trustedIssuersLists: [
-            "http://trusted-issuers-list:8080"
-          ]
-        - type: "NaturalPersonCredential"
-          trustedParticipantsLists: [
-            "https://tir.dome-marketplace.org"
-          ]
-          trustedIssuersLists: [
-            "http://trusted-issuers-list:8080"
-          ]
+      defaultOidcScope: "defaultScope"
+      # -- Credential configurations for particular scopes
+      oidcScopes:
+        defaultScope:
+          - type: "VerifiableCredential"
+            trustedParticipantsLists: [
+              "https://tir.dome-marketplace.org"
+            ]
+            trustedIssuersLists: [
+              "http://trusted-issuers-list:8080"
+            ]
+          - type: "LegalPersonCredential"
+            trustedParticipantsLists: [
+              "https://tir.dome-marketplace.org"
+            ]
+            trustedIssuersLists: [
+              "http://trusted-issuers-list:8080"
+            ]
 
   externalUrl: https://dome-marketplace.org
 
