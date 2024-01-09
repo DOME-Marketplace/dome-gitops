@@ -64,6 +64,21 @@ business-api-ecosystem:
       defaultOidcScope: "defaultScope"
       # -- Credential configurations for particular scopes
       oidcScopes:
+        didRead: 
+          - type: "VerifiableCredential"
+            trustedParticipantsLists: [
+              "https://tir.dome-marketplace.org"
+            ]
+            trustedIssuersLists: [
+              "http://trusted-issuers-list:8080"
+            ]
+          - type: "LegalPersonCredential"
+            trustedParticipantsLists: [
+              "https://tir.dome-marketplace.org"
+            ]
+            trustedIssuersLists: [
+              "http://trusted-issuers-list:8080"
+            ]
         defaultScope:
           - type: "VerifiableCredential"
             trustedParticipantsLists: [
