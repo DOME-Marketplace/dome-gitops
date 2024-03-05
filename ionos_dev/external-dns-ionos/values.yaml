@@ -36,8 +36,8 @@ external-dns:
       env:
         #- name: REGEXP_DOMAIN_FILTER
         #  value: ".*.dome-marketplace-dev.org"
-        - name: EXCLUDE_DOMAIN_FILTER
-          value: "dome-marketplace-dev.org"
+        #- name: EXCLUDE_DOMAIN_FILTER
+        #  value: "dome-marketplace-dev.org"
         - name: LOG_LEVEL
           value: debug
         - name: IONOS_API_KEY
