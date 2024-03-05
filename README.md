@@ -240,6 +240,8 @@ In order to deploy a new application, follow the steps:
 4. Add your application to the [/applications](./applications/) folder.
 5. Create a PR and wait for it to be merged. The application will be automatically deployed afterwards.
 
+For a detailed guide on how to deploy a new application, you can refer to the [Integration Guide](./doc/INTEGRATION.md)
+
 ## Blue-Green Deployments
 
 In order to reduce the resource-usage and the number of deployments to maintain, the cluster supports [Blue-Green Deployments](https://www.redhat.com/en/topics/devops/what-is-blue-green-deployment).

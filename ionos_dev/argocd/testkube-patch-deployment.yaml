@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-repo-server
+spec:
+  template:
+    spec:
+      containers:
+      - name: testkube
+        command: [/var/run/argocd/argocd-cmp-server]
+        image: kubeshop/testkube-argocd:latest
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 999
+        volumeMounts:
+          - mountPath: /var/run/argocd
+            name: var-files
+          - mountPath: /home/argocd/cmp-server/plugins
+            name: plugins
+          - mountPath: /home/argocd/cmp-server/config/plugin.yaml
+            subPath: plugin.yaml
+            name: argocd-cm-plugin
+          - mountPath: /tmp
+            name: cmp-tmp
+      volumes:
+        - configMap:
+            name: argocd-cm-plugin
+          name: argocd-cm-plugin
+        - emptyDir: {}
+          name: cmp-tmp

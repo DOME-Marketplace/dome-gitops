@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mysql-trust
+  namespace: argocd
+  labels:
+    purpose: trust-anchor
+spec:
+  destination:
+    namespace: dome-trust
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: ionos_dev/dome-trust/mysql
+    repoURL: https://github.com/ivanligot/dome-gitops.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

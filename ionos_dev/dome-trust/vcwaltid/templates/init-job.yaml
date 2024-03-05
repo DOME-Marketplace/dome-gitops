@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "waltid.fullname" . }}-init
+spec:
+  template:
+    spec:
+      containers:
+      - name: init
+        image: quay.io/opencloudio/curl:4.2.0-build.8
+        command: 
+          - /bin/sh
+          - /opt/did/script/import.sh
+        volumeMounts:
+          - name: did-config
+            mountPath: /opt/did/script
+          - name: did-secret
+            mountPath: /opt/did/secret
+      restartPolicy: OnFailure
+      volumes:
+        - name: did-config
+          configMap:
+            name: {{ include "waltid.fullname" . }}-did-config
+        - name: did-secret
+          secret: 
+            secretName: {{ include "waltid.fullname" . }}-tls-sec
+  backoffLimit: 10
