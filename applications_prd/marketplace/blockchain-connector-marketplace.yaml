@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: blockchain-connector-core
+  namespace: argocd
+  labels:
+    purpose: marketplace
+spec:
+  destination:
+    namespace: marketplace
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: ionos_prd/marketplace/connector/blockchain-connector-core
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: env_production
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pdp-trust
+  namespace: argocd
+  labels:
+    purpose: trust-anchor
+spec:
+  destination:
+    namespace: dome-trust
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: ionos_prd/dome-trust/pdp
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: env_production
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
