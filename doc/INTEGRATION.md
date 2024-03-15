@@ -14,7 +14,7 @@ The following paragraphs detail the steps to integrate a new application into DO
 
 Before starting the integration process, you need to configure **kubectl** in order to access the remote cluster locally; to do this, follow the steps below:
 
-1. Download the cluster configuration file
+1. Request the cluster administrator to create a service account, providing the name of your organization and the namespace within which your application will be deployed. You will be provided with a configuration file to access the cluster
 2. Modify the **KUBECONFIG** environment variable by adding the path to the configuration file
 3. Verify that the new context has been added by executing the following command:
 
@@ -31,6 +31,8 @@ kubectl config use-context <name of the context>
 At this point, you should be able to run kubectl commands on the remote cluster.
 
 > ⚠️ Ensure that the user name of the new context has not already been used in other contexts; if so, modify the user name in the configuration file.
+
+> ⚠️The service account provided to you will have limited permissions; you will be able to view all resources within your namespace but will only have write access to secrets.
 
 ## Step 1: Fork the repository and create a new branch
 
