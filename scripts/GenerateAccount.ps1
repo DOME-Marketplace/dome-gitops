@@ -1,5 +1,5 @@
 # usage:
-# .\GenerateAccount.ps1 -templatePath .\templates -outputPath ..\accounts -namespace <namespace> -server <server url>
+# .\scripts\GenerateAccount.ps1 -templatePath .\scripts\templates -outputPath .\accounts -namespace <namespace> -server <cluster server url>
 
 param (
     [string]$templatePath,

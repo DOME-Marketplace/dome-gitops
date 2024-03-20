@@ -242,6 +242,27 @@ In order to deploy a new application, follow the steps:
 
 For a detailed guide on how to deploy a new application, you can refer to the [Integration Guide](./doc/INTEGRATION.md)
 
+### [CLUSTER ADMIN] Generate service account for teams
+
+To enable teams wishing to integrate their applications into DOME to create the necessary secrets and monitor application resources, they must be granted access to the cluster. To do this, a service account must be created for each team. The provided service account will have write permissions on secrets and sealed secrets, and read-only access to all other Kubernetes resources, limited to the application namespace. 
+
+To generate the service account and necessary roles, execute the following script:
+
+**Windows PowerShell**
+
+```shell
+.\scripts\GenerateAccount.ps1 -templatePath .\scripts\templates -outputPath .\accounts -namespace <namespace> -server <cluster server url>
+```
+
+**Shell**
+
+```shell
+# chmod +x ./scripts/GenerateAccount.sh
+./scripts/GenerateAccount.sh ./scripts/templates ./accounts <namespace> <server url>
+```
+
+Once executed, the script will create the resources defined in [scripts/templates](./scripts/templates) on the cluster. Additionally, the manifest files of the created resources will be available in the directory ```accounts/<namespace>```. Specifically, the file at ```accounts/<namespace>/config/kube-config.yaml``` will contain the Kubernetes configuration which must be provided to the team to allow them to connect to the cluster.
+
 ## Blue-Green Deployments
 
 In order to reduce the resource-usage and the number of deployments to maintain, the cluster supports [Blue-Green Deployments](https://www.redhat.com/en/topics/devops/what-is-blue-green-deployment).

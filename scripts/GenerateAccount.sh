@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # usage:
-# .\GenerateAccount.sh ./templates ../accounts <namespace> <server url>
+# ./scripts/GenerateAccount.sh ./scripts/templates ./accounts <namespace> <server url>
 
 templatePath=$1
 outputPath=$2
