@@ -145,6 +145,21 @@ data:
 kubeseal -f <secret name>-plain-secret.yaml -w <secret name>-sealed-secret.yaml --controller-namespace sealed-secrets --controller-name sealed-secrets
 ```
 
+or using the script SealSecret:
+
+**Windows PowerShell**
+
+```shell
+.\scripts\SealSecret.ps1 -secretPath <path to plain secret>
+```
+
+**Shell**
+
+```shell
+# chmod +x ./scripts/SealSecret.sh
+./scripts/SealSecret.sh <path to plain secret>
+```
+
 > ⚠️ If you are using Helm charts, make sure to place the sealed secret file under the directory ```your-app/templates```.
 
 ## Step 4: Add ArgoCD application
