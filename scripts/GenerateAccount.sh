@@ -1,12 +1,13 @@
 #!/bin/bash
 
 # usage:
-# ./scripts/GenerateAccount.sh ./scripts/templates ./accounts <namespace> <server url>
+# ./scripts/GenerateAccount.sh ./scripts/templates ./accounts <namespace> <server url> <env suffix>
 
 templatePath=$1
 outputPath=$2
 namespace=$3
 serverUrl=$4
+envSuffix=$5
 
 # Replace placeholder NAMESPACE within file at filePath
 replace_namespace_placeholder_in_file() {
@@ -52,6 +53,20 @@ kubectl apply -f $outputDirectory/service-account.yaml
 kubectl apply -f $outputDirectory/token.yaml
 kubectl apply -f $outputDirectory/role.yaml
 kubectl apply -f $outputDirectory/role-binding.yaml
+
+# retrieve script folder path
+scriptParentDirectory=$(dirname "$0")
+destinationDir="ionos_" + $envSuffix
+
+if [ -z "$envSuffix" ]; then
+    destinationDir="ionos"
+fi
+
+mv "$sourcePath" "$destinationPath"
+
+echo "Moving namespace file to $destinationDir/namespaces..."
+
+mv "$outputDirectory/namespace.yaml" "$scriptParentDirectory/../$destinationDir/namespaces/$namespace.yaml"
 
 echo "Generating kube configs..."
 

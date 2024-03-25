@@ -1,11 +1,12 @@
 # usage:
-# .\scripts\GenerateAccount.ps1 -templatePath .\scripts\templates -outputPath .\accounts -namespace <namespace> -server <cluster server url>
+# .\scripts\GenerateAccount.ps1 -templatePath .\scripts\templates -outputPath .\accounts -namespace <namespace> -server <cluster server url> -env <env suffix>
 
 param (
     [string]$templatePath,
     [string]$outputPath,
     [string]$namespace,
-    [string]$server
+    [string]$server,
+    [string]$env = ""
 )
 
 # Replace placeholder NAMESPACE within file at filePath
@@ -57,6 +58,20 @@ kubectl apply -f $outputDirectory\service-account.yaml
 kubectl apply -f $outputDirectory\token.yaml
 kubectl apply -f $outputDirectory\role.yaml
 kubectl apply -f $outputDirectory\role-binding.yaml
+
+# retrieve script path
+$scriptPath = $MyInvocation.MyCommand.Path
+# retrieve script folder path
+$scriptParentDirectory = Split-Path $scriptPath -Parent
+$destinationDir = "ionos_" + $env
+
+if($env -eq "") {
+    $destinationDir = "ionos"
+}
+
+Write-Host "Moving namespace file to $destinationDir\namespaces..."
+
+Move-Item -Path $outputDirectory\namespace.yaml -Destination $scriptParentDirectory\..\$destinationDir\namespaces\$namespace.yaml -Force
 
 Write-Host "Generating kube configs..."
 
