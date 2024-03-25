@@ -1,0 +1,12 @@
+apiVersion: v2
+name: business-api-ecosystem
+description: Chart holder for argo-cd
+
+type: application
+version: 0.6.16
+appVersion: "8.0.0"
+
+dependencies:
+- name: business-api-ecosystem
+  version: 0.9.2
+  repository: https://fiware.github.io/helm-charts

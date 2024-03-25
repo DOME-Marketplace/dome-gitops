@@ -1,0 +1,221 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.kong.dblessConfig.configMap }}
+data:
+  kong.yml: |
+    _format_version: "2.1"
+    _transform: true
+
+    services:
+      - host: "scorpio"
+        name: "scorpio"
+        port: 1026
+        protocol: http
+
+        routes:
+          - name: scorpio
+            paths: 
+              - /scorpio
+            strip_path: true
+
+      - host: "tmforum-tm-forum-api-product-catalog"
+        name: "product-catalog"
+        port: 8080
+        protocol: http
+
+        routes:
+          - name: product-catalog-authenticated
+            methods:
+              - POST
+              - PUT
+              - DELETE
+            paths:
+              - /product-catalog
+            strip_path: true
+
+            plugins:
+              - name: pep-plugin
+                config:
+                  pathprefix: "/"
+                  authorizationendpointtype: ExtAuthz
+                  authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
+
+          - name: product-catalog-anonymus
+            methods:
+              - GET
+            paths:
+              - /product-catalog
+            strip_path: true
+
+      - host: "tmforum-tm-forum-api-resource-catalog"
+        name: "resource-catalog"
+        port: 8080
+        protocol: http
+
+        routes:
+          - name: resource-catalog-authenticated
+            methods:
+              - POST
+              - PUT
+              - DELETE
+            paths:
+              - /resource-catalog
+            strip_path: true
+
+            plugins:
+              - name: pep-plugin
+                config:
+                  pathprefix: "/"
+                  authorizationendpointtype: ExtAuthz
+                  authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
+
+          - name: resource-catalog-anonymus
+            methods:
+              - GET
+            paths:
+              - /resource-catalog
+            strip_path: true
+
+      - host: "tmforum-tm-forum-api-service-catalog"
+        name: "service-catalog"
+        port: 8080
+        protocol: http
+
+        routes:
+          - name: service-catalog-authenticated
+            methods:
+              - POST
+              - PUT
+              - DELETE
+            paths:
+              - /service-catalog
+            strip_path: true
+
+            plugins:
+              - name: pep-plugin
+                config:
+                  pathprefix: "/"
+                  authorizationendpointtype: ExtAuthz
+                  authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
+
+          - name: service-catalog-anonymus
+            methods:
+              - GET
+            paths:
+              - /service-catalog
+            strip_path: true
+ 
+
+      - host: "tmforum-tm-forum-api-product-inventory"
+        name: "product-inventory"
+        port: 8080
+        protocol: http
+
+        routes:
+          - name: product-inventory
+            paths:
+              - /product-inventory
+            strip_path: true
+
+        plugins:
+          - name: pep-plugin
+            config:
+              pathprefix: "/"
+              authorizationendpointtype: ExtAuthz
+              authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
+
+      - host: "tmforum-tm-forum-api-product-ordering-management"
+        name: "product-ordering-management"
+        port: 8080
+        protocol: http
+
+        routes:
+          - name: product-ordering-management
+            paths:
+              - /product-ordering-management
+            strip_path: true
+
+        plugins:
+          - name: pep-plugin
+            config:
+              pathprefix: "/"
+              authorizationendpointtype: ExtAuthz
+              authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
+
+
+      - host: "tmforum-tm-forum-api-customer-bill-management"
+        name: "customer-bill-management"
+        port: 8080
+        protocol: http
+
+        routes:
+          - name: customer-bill-management
+            paths:
+              - /customer-bill-management
+            strip_path: true
+
+        plugins:
+          - name: pep-plugin
+            config:
+              pathprefix: "/"
+              authorizationendpointtype: ExtAuthz
+              authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
+
+
+      - host: "tmforum-tm-forum-api-usage-management"
+        name: "usage-management"
+        port: 8080
+        protocol: http
+
+        routes:
+          - name: usage-management
+            paths:
+              - /usage-management
+            strip_path: true
+
+        plugins:
+          - name: pep-plugin
+            config:
+              pathprefix: "/"
+              authorizationendpointtype: ExtAuthz
+              authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
+
+
+      - host: "tmforum-tm-forum-api-party-catalog"
+        name: "party-catalog"
+        port: 8080
+        protocol: http
+
+        routes:
+          - name: party-catalog
+            paths:
+              - /party-catalog
+            strip_path: true
+
+        plugins:
+          - name: pep-plugin
+            config:
+              pathprefix: "/"
+              authorizationendpointtype: ExtAuthz
+              authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
+
+
+      - host: "tmforum-tm-forum-api-customer-management"
+        name: "customer-management"
+        port: 8080
+        protocol: http
+
+        routes:
+          - name: customer-management
+            paths:
+              - /customer-management
+            strip_path: true
+
+        plugins:
+          - name: pep-plugin
+            config:
+              pathprefix: "/"
+              authorizationendpointtype: ExtAuthz
+              authorizationendpointaddress: http://pdp-marketplace-dsba-pdp:8080/authz
+                

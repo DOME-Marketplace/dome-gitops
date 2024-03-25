@@ -1,0 +1,63 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: onboarding-keyrock-create-policy-cm
+  annotations:
+    "helm.sh/hook": post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation
+    "helm.sh/hook-weight": "1"
+data:
+  create.sh: |-
+    mysql -h {{ .Values.keyrock.db.host }} -u {{ .Values.keyrock.db.user }} -p$DB_PASSWORD {{ .Values.initScript.rolePolicy.dbName }} <<EOF
+
+    {{ if .Values.initScript.rolePolicy.policyEnabled -}}
+
+    -- Static objects
+    SET @rules := JSON_ARRAY(
+      JSON_OBJECT(
+        "effect", "Permit"
+      )
+    );
+
+    SET @subjectLegalRepresentative := "LEGAL_REPRESENTATIVE";
+
+    -- Policies Legal Representative
+    SET @policiesLegal := JSON_ARRAY(
+      JSON_OBJECT(
+        "rules", CAST(@rules as JSON),
+        "target", JSON_OBJECT(
+          "actions", JSON_ARRAY("GET","POST","PATCH"),
+          "resource", JSON_OBJECT(
+            "type", "TrustedIssuer",
+            "attributes", JSON_ARRAY("*"),
+            "identifiers", JSON_ARRAY("*")
+          )
+        )
+      )
+    );
+
+    -- Insert Delegation Evidence Legal Representative VC
+    SET @delegationLegalVC := JSON_OBJECT(
+      "target", JSON_OBJECT(
+        "accessSubject", @subjectLegalRepresentative
+      ),
+      "notBefore", {{ .Values.initScript.rolePolicy.notBefore }},
+      "notOnOrAfter", {{ .Values.initScript.rolePolicy.notOnOrAfter }},
+      "policyIssuer", {{ .Values.initScript.rolePolicy.issuerDid | quote }},
+      "policySets", JSON_ARRAY(
+        JSON_OBJECT(
+          "target", JSON_OBJECT(
+            "environment", JSON_OBJECT(
+              "licenses", JSON_ARRAY("ISHARE.0001")
+            )
+          ),
+          "policies", CAST(@policiesLegal as JSON)
+        )
+      )
+    );
+    INSERT IGNORE INTO delegation_evidence (policy_issuer, access_subject,policy) VALUES ({{ .Values.initScript.rolePolicy.issuerDid | quote }}, @subjectLegalRepresentative, @delegationLegalVC);
+
+    {{- end }}
+
+    COMMIT;
+    EOF

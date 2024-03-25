@@ -1,0 +1,12 @@
+apiVersion: v2
+name: trusted-issuers-list
+description: Chart holder for argo-cd
+
+type: application
+version: 0.3.5
+appVersion: "0.0.3"
+
+dependencies:
+  - name: trusted-issuers-list
+    version: 0.3.5
+    repository: https://fiware.github.io/helm-charts

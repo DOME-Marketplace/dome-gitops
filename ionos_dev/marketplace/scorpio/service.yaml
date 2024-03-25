@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: scorpio
+  labels:
+    app.kubernetes.io/name: scorpio
+    app.kubernetes.io/instance: scorpio
+spec:
+  type: ClusterIP
+  ports:
+    # same as orion, makes other config easier
+    - port: 1026
+      targetPort: 9090
+      protocol: TCP
+      name: scorpio
+  selector:
+    app.kubernetes.io/name: scorpio
+    app.kubernetes.io/instance: scorpio

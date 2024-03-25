@@ -1,0 +1,12 @@
+apiVersion: v2
+name: dsba-pdp
+description: Chart holder for argo-cd
+
+type: application
+version: 0.0.16
+appVersion: "0.0.11"
+
+dependencies:
+  - name: dsba-pdp
+    version: 0.0.16
+    repository: https://fiware.github.io/helm-charts

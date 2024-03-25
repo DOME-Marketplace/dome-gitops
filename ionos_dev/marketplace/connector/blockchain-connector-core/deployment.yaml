@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blockchain-connector-core
+  labels:
+    app.kubernetes.io/instance: blockchain-connector-core
+    app.kubernetes.io/name: blockchain-connector-core  
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: blockchain-connector-core
+      app.kubernetes.io/name: blockchain-connector-core  
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: blockchain-connector-core
+        app.kubernetes.io/name: blockchain-connector-core
+    spec:
+      containers: 
+        - image: quay.io/wi_stefan/blockchain-connector-core:1.0.0
+          name: blockchain-connector
+          env: 
+            - name: SPRING_LOGGING_LEVEL_ROOT
+              value: DEBUG
+            - name: SPRING_R2DBC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-connector-secret
+                  key: postgres-password
+            - name: SPRING_FLYWAY_USERNAME
+              value: postgres
+            - name: SPRING_FLYWAY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-connector-secret
+                  key: postgres-password
+            - name: DATABASE_URL
+              value: "r2dbc:postgresql://postgresql-connector:5432/mktdb"
+            - name: FLYWAY_URL
+              value: "jdbc:postgresql://postgresql-connector:5432/mktdb"
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          volumeMounts:
+          - mountPath: /src/main/resources/
+            name: custom-config
+      volumes:
+        - configMap:
+            name:  blockchain-connector-core
+          name: custom-config

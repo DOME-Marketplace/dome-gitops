@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scorpio
+  labels:
+    app.kubernetes.io/name: scorpio
+    app.kubernetes.io/instance: scorpio
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: scorpio
+      app.kubernetes.io/instance: scorpio
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: scorpio
+        app.kubernetes.io/instance: scorpio
+    spec:
+      serviceAccountName: default
+      containers:
+        - name: scorpio
+          imagePullPolicy: IfNotPresent
+          image: "scorpiobroker/all-in-one-runner:java-kafka-4.1.10"
+          env:
+            - name: DBHOST
+              value: postgis
+            - name: BUSHOST
+              value: kafka-marketplace
+            - name: QUARKUS_LOG_LEVEL
+              value: DEBUG
+            - name: MYSETTINGS_POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-root-password
+            - name: MYSETTINGS_POSTGRES_USERNAME
+              value: postgres
+          ports:
+            - name: http
+              containerPort: 9090
+              protocol: TCP

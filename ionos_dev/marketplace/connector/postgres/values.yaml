@@ -1,0 +1,28 @@
+postgresql:
+  commonAnnotations:
+    wistefan/rollout-injecting-webhook: ignore
+  fullnameOverride: postgresql-connector
+  auth:
+    username: connector  
+    enablePostgresUser: true
+    existingSecret: postgres-connector-secret
+    secretKeys:
+      adminPasswordKey: postgres-root-password
+      userPasswordKey: postgres-password
+  rbac:
+    create: true
+    rules:
+      - apiGroups:
+        - security.openshift.io
+        resourceNames:
+        - anyuid
+        resources:
+        - securitycontextconstraints
+        verbs:
+        - use    
+  primary:
+    initdb:
+      scripts:
+        create.sh: |
+          psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE mktdb;"
+

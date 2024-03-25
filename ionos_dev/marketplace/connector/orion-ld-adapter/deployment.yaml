@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orion-ld-adapter
+  labels:
+    app.kubernetes.io/instance: orion-ld-adapter
+    app.kubernetes.io/name: orion-ld-adapter  
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: orion-ld-adapter
+      app.kubernetes.io/name: orion-ld-adapter  
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: orion-ld-adapter
+        app.kubernetes.io/name: orion-ld-adapter
+    spec:
+      containers: 
+        - image: quay.io/wi_stefan/broker-adapter:1.0.0
+          imagePullPolicy: Always
+          name: broker-adapter
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          volumeMounts:
+          - mountPath: /src/main/resources/
+            name: custom-config
+      volumes:
+        - configMap:
+            name:  orion-ld-adapter
+          name: custom-config
