@@ -1,0 +1,5 @@
+sealed-secrets:
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false
