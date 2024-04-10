@@ -1,0 +1,12 @@
+apiVersion: v2
+name: mysql
+description: Chart holder for argo-cd
+
+type: application
+version: 9.4.4
+appVersion: "8.0.31"
+
+dependencies:
+- name: mysql
+  version: 9.4.4
+  repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami

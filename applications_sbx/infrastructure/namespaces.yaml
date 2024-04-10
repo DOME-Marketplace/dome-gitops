@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: namespaces
+  namespace: argocd
+  labels:
+    purpose: infra
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: ionos_common/namespaces
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: env_production
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

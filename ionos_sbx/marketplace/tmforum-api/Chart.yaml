@@ -1,0 +1,12 @@
+apiVersion: v2
+name: tm-forum-api
+description: Chart holder for argo-cd
+
+type: application
+version: 0.1.0
+appVersion: "0.4.1"
+
+dependencies:
+- name: tm-forum-api
+  version: 0.2.2
+  repository: https://fiware.github.io/helm-charts
