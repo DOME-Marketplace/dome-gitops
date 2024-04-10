@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookstack
+  namespace: knowledgebase
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bookstack
+  template:
+    metadata:
+      labels:
+        app: bookstack
+    spec:
+      containers:
+        - name: bookstack
+          image: solidnerd/bookstack:23.10.4
+          env:
+            - name: DB_HOST
+              value: "mysql:3306"
+            - name: DB_DATABASE
+              value: "bookstack"
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: bookstack-secret
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bookstack-secret
+                  key: DB_PASSWORD
+            - name: APP_URL
+              value: "http://85.215.243.214:6875"
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: bookstack-secret
+                  key: APP_KEY
+            - name: MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: bookstack-secret
+                  key: MAIL_USERNAME
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bookstack-secret
+                  key: MAIL_PASSWORD
+            - name: MAIL_HOST
+              value: "sandbox.smtp.mailtrap.io"
+            - name: MAIL_PORT
+              value: "2525"
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: /var/www/bookstack/public/uploads
+              name: bookstack-uploads
+            - mountPath: /var/www/bookstack/storage/uploads
+              name: bookstack-storage-uploads

@@ -1,0 +1,7 @@
+mysql:
+  fullnameOverride: mysql-knowledgebase
+  auth:
+    existingSecret: mysql-secret
+  initdbScripts:
+    create.sql: |
+      CREATE DATABASE bookstack;
