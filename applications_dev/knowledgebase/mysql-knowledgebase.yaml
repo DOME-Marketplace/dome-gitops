@@ -12,8 +12,8 @@ spec:
   project: default
   source:
     path: ionos_dev/knowledgebase/mysql
-    repoURL: https://github.com/DOME-Marketplace/dome-gitops.git
-    targetRevision: HEAD
+    repoURL: https://github.com/BazRoe/dome-gitops.git
+    targetRevision: bookstack_deploy
   syncPolicy:
     automated:
       prune: true
