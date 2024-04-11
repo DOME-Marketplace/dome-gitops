@@ -11,9 +11,13 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos_sbx/dome-trust/kong
+    path: ionos_common/dome-trust/kong
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: env_production
+    helm:
+      valueFiles:
+        - values.yaml
+        - values-sbx.yaml
   syncPolicy:
     automated:
       prune: true
