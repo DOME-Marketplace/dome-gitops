@@ -3,36 +3,38 @@ kind: Deployment
 metadata:
   name: bookstack
   namespace: knowledgebase
+  labels:
+    app.kubernetes.io/instance: bookstack
+    app.kubernetes.io/name: bookstack
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: bookstack
+      app.kubernetes.io/instance: bookstack
+      app.kubernetes.io/name: bookstack
   template:
     metadata:
       labels:
-        app: bookstack
+        app.kubernetes.io/instance: bookstack
+        app.kubernetes.io/name: bookstack
     spec:
       containers:
         - name: bookstack
-          image: solidnerd/bookstack:23.10.4
+          image: sh3rd3n/dome-bookstack:1.0.0
           env:
             - name: DB_HOST
-              value: "mysql:3306"
+              value: "mysql-knowledgebase:3306"
             - name: DB_DATABASE
               value: "bookstack"
             - name: DB_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: bookstack-secret
-                  key: DB_USERNAME
+              value: "root"
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: bookstack-secret
                   key: DB_PASSWORD
             - name: APP_URL
-              value: "http://85.215.243.214:6875"
+              value: "https://knowledgebase.dome-marketplace-dev.org"
             - name: APP_KEY
               valueFrom:
                 secretKeyRef:
@@ -54,8 +56,17 @@ spec:
               value: "2525"
           ports:
             - containerPort: 8080
+              name: http
+              protocol: TCP
           volumeMounts:
             - mountPath: /var/www/bookstack/public/uploads
               name: bookstack-uploads
             - mountPath: /var/www/bookstack/storage/uploads
               name: bookstack-storage-uploads
+      volumes: 
+      - name: bookstack-uploads
+        persistentVolumeClaim:
+          claimName: kb-bookstack-uploads-pvc
+      - name: bookstack-storage-uploads
+        persistentVolumeClaim:
+          claimName: kb-bookstack-storage-uploads-pvc

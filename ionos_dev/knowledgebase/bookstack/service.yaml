@@ -4,9 +4,12 @@ metadata:
   name: bookstack
   namespace: knowledgebase
 spec:
+  type: ClusterIP
   selector:
-    app: bookstack
+    app.kubernetes.io/instance: bookstack
+    app.kubernetes.io/name: bookstack
   ports:
-    - protocol: TCP
+    - name: http
       port: 8080
+      protocol: TCP
       targetPort: 8080
