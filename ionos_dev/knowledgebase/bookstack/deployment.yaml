@@ -8,6 +8,8 @@ metadata:
     app.kubernetes.io/name: bookstack
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app.kubernetes.io/instance: bookstack
@@ -63,6 +65,10 @@ spec:
               name: bookstack-uploads
             - mountPath: /var/www/bookstack/storage/uploads
               name: bookstack-storage-uploads
+      securityContext:
+        runAsUser: 33
+        runAsGroup: 33
+        fsGroup: 33
       volumes: 
       - name: bookstack-uploads
         persistentVolumeClaim:
