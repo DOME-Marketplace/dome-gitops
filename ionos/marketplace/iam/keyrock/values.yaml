@@ -65,12 +65,12 @@ keyrock:
     - name: IDM_PR_CLIENT_KEY
       valueFrom:
           secretKeyRef:
-            name: vcwaltid-tls-sec
+            name: walt-id-vcwaltid-tls-sec
             key: tls.key
     - name: IDM_PR_CLIENT_CRT
       valueFrom:
           secretKeyRef:
-            name: vcwaltid-tls-sec
+            name: walt-id-vcwaltid-tls-sec
             key: tls.crt
 initScript:
   ## Creation of role mapping policies during deployment
