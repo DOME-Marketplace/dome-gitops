@@ -122,7 +122,7 @@ ionos_dev/
     └── values.yaml
 ```
 
-> You don't have manifest files nor Helm charts? Follow this [guide](./INTEGRATION.md).
+> You don't have manifest files nor Helm charts? Follow this [guide](./K8S_APPLICATION.md).
 
 ### Add secrets
 Using GitOps, means every deployed resource is represented in a git-repository. While this is not a problem for most resources, secrets need to be handled differently. We use the [bitnami/sealed-secrets](https://github.com/bitnami-labs/sealed-secrets) project for that. 
