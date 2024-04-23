@@ -1,0 +1,27 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: deployment-mutation-argo-rollout-tests
+  annotations:
+    cert-manager.io/inject-ca-from: argo-rollout-tests/webhook-cert
+webhooks:
+  - name: "deployment-mutation.argo-rollout-tests.svc"
+    namespaceSelector:
+      matchExpressions:
+        - key: kubernetes.io/metadata.name
+          operator: In
+          values: [ "argo-rollout-tests", "argo-rollout-tests-alternative" ]
+    rules:
+      - operations: [ "CREATE", "UPDATE"]
+        apiGroups: [ "apps" ]
+        apiVersions: [ "v1" ]
+        resources: [ "deployments" ]
+        scope: "Namespaced"
+    clientConfig:
+      service:
+        namespace: argo-rollout-tests
+        name: webhook-server
+        path: "/mutate"
+    admissionReviewVersions: ["v1"]
+    sideEffects: None
+    timeoutSeconds: 5
