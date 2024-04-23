@@ -67,14 +67,21 @@ business-api-ecosystem:
         didRead: 
           - type: "VerifiableCredential"
             trustedParticipantsLists: [
-              "https://tir.dome-marketplace.org"
+              "http://trusted-issuers-list:8080"
             ]
             trustedIssuersLists: [
               "http://trusted-issuers-list:8080"
             ]
           - type: "LegalPersonCredential"
             trustedParticipantsLists: [
-              "https://tir.dome-marketplace.org"
+              "http://trusted-issuers-list:8080"
+            ]
+            trustedIssuersLists: [
+              "http://trusted-issuers-list:8080"
+            ]
+          - type: "LEARCredentialEmployee"
+            trustedParticipantsLists: [
+              "http://trusted-issuers-list:8080"
             ]
             trustedIssuersLists: [
               "http://trusted-issuers-list:8080"
@@ -82,14 +89,21 @@ business-api-ecosystem:
         defaultScope:
           - type: "VerifiableCredential"
             trustedParticipantsLists: [
-              "https://tir.dome-marketplace.org"
+              "http://trusted-issuers-list:8080"
             ]
             trustedIssuersLists: [
               "http://trusted-issuers-list:8080"
             ]
           - type: "LegalPersonCredential"
             trustedParticipantsLists: [
-              "https://tir.dome-marketplace.org"
+              "http://trusted-issuers-list:8080"
+            ]
+            trustedIssuersLists: [
+              "http://trusted-issuers-list:8080"
+            ]
+          - type: "LEARCredentialEmployee"
+            trustedParticipantsLists: [
+              "http://trusted-issuers-list:8080"
             ]
             trustedIssuersLists: [
               "http://trusted-issuers-list:8080"
