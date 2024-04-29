@@ -1,0 +1,31 @@
+superset:
+  image:
+    repository: apache/superset
+    tag: latest
+  envFile:
+    default: docker/.env
+    optionalOverride: docker/.env-local
+  volumes:
+    - name: superset-home
+      path: /app/superset_home
+  ports:
+    superset: 8088
+  dependsOn:
+    - db
+    - redis
+
+redis:
+  image: redis:7
+  containerName: superset-cache
+  volumes:
+    - name: redis
+      path: /data
+
+db:
+  image: postgres:15
+  containerName: superset-db
+  volumes:
+    - name: db-home
+      path: /var/lib/postgresql/data
+    - name: db-init
+      path: /docker-entrypoint-initdb.d
