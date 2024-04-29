@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: mysql-analytics
+  name: postgres-analytics
   namespace: argocd
   labels:
     purpose: analytics
@@ -11,7 +11,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos_dev/analytics/mysql
+    path: ionos_dev/analytics/postgres
     repoURL: https://github.com/DOME-Marketplace/dome-gitops.git
     targetRevision: HEAD
   syncPolicy:
