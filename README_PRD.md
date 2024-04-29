@@ -146,7 +146,7 @@ In order to automatically create DNS entries for [Ingress-Resources](https://kub
 
 External-DNS watches the ingress objects and creates A-Records for them. To do so, it needs the ability to access the AWS APIs. 
 
-Execute instructions from file /ionos_prd/external-dns-ionos-webhook/README.md
+Execute instructions from file /docs/EXTERNAL_DNS_IONOS.md.md
 
 ### Cert-Manager
 
