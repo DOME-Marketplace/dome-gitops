@@ -50,6 +50,22 @@ If your application relies on database or other third-party software, you should
 
 ## Manifest files
 
+You need to create the following resource files for each service in your docker-compose. So the first step is to create the folder structure for your application within the proper environment directory.
+
+Here is the folder structure for the demo application:
+
+```
+ionos_<env>/
+  └── app-name/
+    └── mysql/
+      └── templates/
+      └── Chart.yaml
+      ...
+    └── my-app/
+      └── deployment.yaml
+      ...
+```
+
 > ⚠️ The resources described below are those required for deploying the sample application. Other applications may require additional resources or may not need all those described.
 
 ### Deployment
