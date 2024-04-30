@@ -13,7 +13,7 @@ spec:
   source:
     path: ionos_sbx/dome-trust/trusted-issuers-registry
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
-    targetRevision: env_production
+    targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true

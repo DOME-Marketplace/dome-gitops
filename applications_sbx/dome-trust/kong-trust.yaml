@@ -13,7 +13,7 @@ spec:
   source:
     path: ionos_common/dome-trust/kong
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
-    targetRevision: env_production
+    targetRevision: HEAD
     helm:
       valueFiles:
         - values.yaml

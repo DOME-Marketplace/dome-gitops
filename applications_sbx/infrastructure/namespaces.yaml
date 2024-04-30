@@ -12,7 +12,7 @@ spec:
   source:
     path: ionos_common/namespaces
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
-    targetRevision: env_production
+    targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true

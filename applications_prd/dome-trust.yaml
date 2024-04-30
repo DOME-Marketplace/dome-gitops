@@ -13,7 +13,7 @@ spec:
   source:
     path: applications_prd/dome-trust
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
-    targetRevision: env_production
+    targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true

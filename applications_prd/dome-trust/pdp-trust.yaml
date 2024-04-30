@@ -13,7 +13,7 @@ spec:
   source:
     path: ionos_prd/dome-trust/pdp
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
-    targetRevision: env_production
+    targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true
