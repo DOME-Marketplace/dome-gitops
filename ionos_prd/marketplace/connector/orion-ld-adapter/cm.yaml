@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: orion-ld-adapter
+data:
+  external-config.yml: |
+    broker:
+      externalDomain: https://kong.dome-marketplace-prd.org/scorpio
+      internalDomain: http://scorpio:1026
+      paths:  
+        entities: /ngsi-ld/v1/entities
+        subscriptions: /ngsi-ld/v1/subscriptions

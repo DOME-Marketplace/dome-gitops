@@ -1,0 +1,8 @@
+mysql:
+  fullnameOverride: mysql-trust
+  auth:
+    existingSecret: mysql-secret
+  initdbScripts:
+    create.sql: |
+      CREATE DATABASE til;
+      CREATE DATABASE ccs;

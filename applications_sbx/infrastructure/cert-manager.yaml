@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+  namespace: argocd  
+  labels:
+    purpose: infra
+spec:
+  destination:
+    namespace: cert-manager
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: ionos_common/cert-manager
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values.yaml
+        - values-sbx.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

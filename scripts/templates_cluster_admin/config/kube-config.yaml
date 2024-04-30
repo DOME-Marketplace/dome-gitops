@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Config
+preferences: {}
+current-context: %ENV%-admin-service-account@%ENV%
+clusters:
+- cluster:
+    certificate-authority-data: %CA_CERT%
+    server: %KUBE_SERVER_URL%
+  name: !!str %ENV%
+contexts:
+- context:
+    cluster: !!str %ENV%
+    user: %ENV%-admin-service-account
+  name: %ENV%-admin-service-account@%ENV%
+users:
+- name: %ENV%-admin-service-account
+  user:
+    token: %TOKEN%
