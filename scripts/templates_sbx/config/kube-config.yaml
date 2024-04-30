@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Config
+preferences: {}
+current-context: %NAMESPACE%-service-account@Sbx
+clusters:
+- cluster:
+    certificate-authority-data: %CA_CERT%
+    server: %KUBE_SERVER_URL%
+  name: !!str Sbx
+contexts:
+- context:
+    cluster: !!str Sbx
+    user: %NAMESPACE%-service-account
+  name: %NAMESPACE%-service-account@Sbx
+users:
+- name: %NAMESPACE%-service-account
+  user:
+    token: %TOKEN%
