@@ -5,11 +5,11 @@ zammad:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
     hosts:
-      - host: zammad.dome-marketplace-dev.org
+      - host: zammad.dome-marketplace-sbx.org
         paths: 
           - path: /
             pathType: ImplementationSpecific
     tls:
       - secretName: zammad-tls-secret
         hosts:
-          - zammad.dome-marketplace-dev.org
+          - zammad.dome-marketplace-sbx.org
