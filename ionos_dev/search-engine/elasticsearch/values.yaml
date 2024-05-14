@@ -1,0 +1,24 @@
+elasticsearch:
+  image:
+    repository: docker.elastic.co/elasticsearch/elasticsearch
+    tag: "8.5.1"
+    pullPolicy: IfNotPresent
+
+  replicaCount: 1
+
+  protocol: https
+  httpPort: 9200
+  transportPort: 9300
+
+  env:
+    - name: ES_JAVA_OPTS
+      value: -Xms1024m -Xmx1024m
+    - name: cluster.name
+      value: elasticsearch
+    - name: discovery.type
+      value: single-node
+
+  volumes:
+    - name: elasticsearch-data
+      persistentVolumeClaim:
+        claimName: elasticsearch-data
