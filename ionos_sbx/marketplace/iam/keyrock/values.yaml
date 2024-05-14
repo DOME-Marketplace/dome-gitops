@@ -1,0 +1,83 @@
+keyrock:
+  fullnameOverride: keyrock-marketplace
+
+  # Image
+  statefulset:
+    image:
+      repository: quay.io/wi_stefan/keyrock
+      tag: sn-fix
+      pullPolicy: Always
+
+  # DB config
+  db:
+    user: root
+    host: mysql-til
+  existingSecret: keyrock-secret
+
+  ## Theme configuration for Keyrock
+  theme:
+    ## -- Enable theme
+    enabled: false
+
+  ## Configuration of Authorisation Registry (AR)
+  authorisationRegistry:
+    # -- Enable usage of authorisation registry
+    enabled: true
+    # -- Identifier (EORI) of AR
+    identifier: "did:web:dome-marketplace-sbx.org"
+    # -- URL of AR
+    url: "internal"
+
+  ## Configuration of iSHARE Satellite
+  satellite:
+    # -- Enable usage of satellite
+    enabled: true
+    # -- Identifier (EORI) of satellite
+    identifier: "EU.EORI.FIWARESATELLITE"
+    # -- URL of satellite
+    url: "https://tir.dome-marketplace-sbx.org"
+    # -- Token endpoint of satellite
+    tokenEndpoint: "https://tir.dome-marketplace-sbx.org/token"
+    # -- Parties endpoint of satellite
+    partiesEndpoint: "https://tir.dome-marketplace-sbx.org/parties"
+
+  ## -- Configuration of local key and certificate for validation and generation of tokens
+  token:
+    # -- Enable storage of local key and certificate
+    enabled: false
+
+  # ENV variables for Keyrock
+  additionalEnvVars:
+    - name: IDM_TITLE
+      value: "dsba AR"
+    - name: IDM_DEBUG
+      value: "true"
+    - name: DEBUG
+      value: "*"
+    - name: IDM_DB_NAME
+      value: ar_idm
+    - name: IDM_DB_SEED
+      value: "true"
+    - name: IDM_SERVER_MAX_HEADER_SIZE
+      value: "32768"
+    - name: IDM_PR_CLIENT_ID
+      value: "did:web:my-did:did"
+    - name: IDM_PR_CLIENT_KEY
+      valueFrom:
+          secretKeyRef:
+            name: walt-id-vcwaltid-tls-sec
+            key: tls.key
+    - name: IDM_PR_CLIENT_CRT
+      valueFrom:
+          secretKeyRef:
+            name: walt-id-vcwaltid-tls-sec
+            key: tls.crt
+initScript:
+  ## Creation of role mapping policies during deployment
+  rolePolicy:
+    policyEnabled: false
+    dbName: ar_idm
+    issuer: "did:web:dome-marketplace-sbx.org"
+    notBefore: "1616583866"
+    notOnOrAfter: "1735817171"
+    issuerDid: "did:web:dome-marketplace-sbx.org"

@@ -1,0 +1,12 @@
+apiVersion: v2
+name: keyrock
+description: Chart holder for argo-cd
+
+type: application
+version: 0.7.4
+appVersion: "8.3.3"
+
+dependencies:
+  - name: keyrock
+    version: 0.7.7
+    repository: https://fiware.github.io/helm-charts

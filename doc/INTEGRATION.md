@@ -12,7 +12,7 @@ The following paragraphs detail the steps to integrate a new application into DO
 
 ## Step 0: Configuration of kubectl to access the remote cluster
 
-Before starting the integration process, you need to configure **kubectl** in order to access the remote cluster locally; to do this, follow the steps below:
+Before starting the integration process, you need to configure [**kubectl**](https://kubernetes.io/docs/tasks/tools) in order to access the remote cluster locally; to do this, follow the steps below:
 
 1. Request the cluster administrator to create a service account, providing the name of your organization and the namespace within which your application will be deployed. You will be provided with a configuration file to access the cluster
 2. Modify the **KUBECONFIG** environment variable by adding the path to the configuration file
@@ -70,7 +70,7 @@ For each environment, two directories are defined:
 
 > ⚠️ The ```applications``` and ```ionos``` directories are currently reserved for the demo environment. For the continuation of the guide, we will use the ```dev``` environment, which serves as a playground where teams can test the integration of their components within the DOME ecosystem.
 
-## Step 2: Add a new namespace
+## Step 2: Add a new namespace (if not exists)
 Each application is deployed to a separate namespace. To create the namespace for your application, follow these steps:
 
 1. Move to the namespace directory:
@@ -121,6 +121,8 @@ ionos_dev/
     └── Chart.yaml
     └── values.yaml
 ```
+
+> You don't have manifest files nor Helm charts? Follow this [guide](./K8S_APPLICATION.md).
 
 ### Add secrets
 Using GitOps, means every deployed resource is represented in a git-repository. While this is not a problem for most resources, secrets need to be handled differently. We use the [bitnami/sealed-secrets](https://github.com/bitnami-labs/sealed-secrets) project for that. 
