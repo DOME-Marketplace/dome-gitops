@@ -1,0 +1,15 @@
+zammad:
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
+    hosts:
+      - host: zammad.dome-marketplace-dev.org
+        paths: 
+          - path: /
+            pathType: ImplementationSpecific
+    tls:
+      - secretName: zammad-tls-secret
+        hosts:
+          - zammad.dome-marketplace-dev.org
