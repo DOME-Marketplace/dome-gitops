@@ -17,6 +17,7 @@ spec:
       containers:
         - name: search
           image: mardetom/search:0.0.2
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
               hostPort: 8080

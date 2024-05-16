@@ -3,3 +3,4 @@ webhook-tsl-sec.yaml
 accounts
 
 .idea
+/ionos_dev/search-engine/elasticsearch_*/*
