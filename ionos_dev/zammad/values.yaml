@@ -5,11 +5,11 @@ zammad:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
     hosts:
-      - host: zammad.dome-marketplace-dev.org
+      - host: ticketing.dome-marketplace-dev.org
         paths: 
           - path: /
             pathType: ImplementationSpecific
     tls:
-      - secretName: zammad-tls-secret
+      - secretName: ticketing-tls-secret
         hosts:
-          - zammad.dome-marketplace-dev.org
+          - ticketing.dome-marketplace-dev.org
