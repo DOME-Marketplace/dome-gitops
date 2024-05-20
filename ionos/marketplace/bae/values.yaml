@@ -154,11 +154,6 @@ business-api-ecosystem:
   
   bizEcosystemLogicProxy:
 
-    theme:
-      enabled: true
-      name: "bae-dome-theme"
-      url: "https://github.com/Ficodes/bae-dome-theme"
-
     serviceAccount:
       create: true
     
@@ -167,7 +162,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "9.1.0"
+        tag: "9.1.0-dome"
         pullPolicy: Always
 
     ingress: 
