@@ -1,9 +1,31 @@
 ## configuration for the desmos - see https://DOME-Marketplace.github.io/access-node for configuration documentation
-desmos:
+access-node.desmos:
   # -- should the desmos-blockchain-connector be enabled
   enabled: true
   ## deployment specific configuration
   app:
+    ## profile (dev == sbx)
+    profile: dev
+    ## debug level
+    logLevel: false
+    ## information about the access-node operator
+    operator:
+      # -- did of the organization running the node
+      organizationIdentifier: did:elsi:VATES-S9999999
+    ## connection information for the context broker
+    broker:
+      # -- provider of the broker
+      provider: scorpio
+      # -- internal address of the context broker to be used by the connector
+      internalDomain: http://scorpio:9090
+      # -- external address of the broker. Will be included in the hashlink and used by other access-nodes to retrieve the actual entities
+      externalDomain: http://scorpio:9090
+    ## configuration of ngsi-ld entities to listen for
+    ngsiSubscription:
+      # -- local address of the blockchain-connectors notification endpoint for ngsi-ld events
+      notificationEndpoint: http://desmos:8080/notifications/broker
+      # -- a list of entity-types the connector is interested in
+      entityTypes: catalog,product-offering,category,individual,organization,product,service-specification,product-offering-price,resource-specification,product-specification
     ## configuration to connect to the dlt-adapter
     dltAdapter:
       # -- provider of the dlt-adapter component
@@ -13,29 +35,11 @@ desmos:
       # -- (external) address of the dlt-adapter
       externalDomain: http://dlt-adapter:80
       ## configuration of subscriptions at the blockchain
-    eventSubscription:
+    txSubscription:
       # -- local address of the blockchain-connectors notification endpoint for dlt events
       notificationEndpoint: http://desmos:8080/notifications/dlt
       # -- a list of entity-types the connector is interested in
-      eventTypes: catalog,product-offering,category,individual,organization,product,service-specification,product-offering-price,resource-specification,product-specification
-      ## connection information for the context broker
-    broker:
-      # -- provider of the broker
-      provider: scorpio
-      # -- internal address of the context broker to be used by the connector
-      internalDomain: http://scorpio:9090
-      # -- external address of the broker. Will be included in the hashlink and used by other access-nodes to retrieve the actual entities
-      externalDomain: https://my-scorpio.org
-      ## configuration of ngsi-ld entities to listen for
-    ngsiSubscription:
-      # -- local address of the blockchain-connectors notification endpoint for ngsi-ld events
-      notificationEndpoint: http://desmos:8080/notifications/broker
-      # -- a list of entity-types the connector is interested in
       entityTypes: catalog,product-offering,category,individual,organization,product,service-specification,product-offering-price,resource-specification,product-specification
-      ## information about the access-node operator
-    client:
-      # -- did of the organization running the node
-      organizationId: did:web:my-marketplace-operator.org
     ## configuration of the database to be used by the blockchain-connector
     db:
       # -- host of the db
@@ -48,14 +52,19 @@ desmos:
     fullnameOverride: desmos
 
 ## configuration for the dlt-adapter - see https://DOME-Marketplace.github.io/access-node/dlt-adapter for configuration documentation
-dlt-adapter:
+access-node.dlt-adapter:
   # -- should the dlt-adapter be enabled
   enabled: true
   # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
   fullnameOverride: dlt-adapter
+  env:
+    DEBUG: "*"
+    PRIVATE_KEY: "0xe2afef2c880b138d741995ba56936e389b0b5dd2943e21e4363cc70d81c89346"
+    RPC_ADDRESS: "https://red-t.alastria.io/v0/9461d9f4292b41230527d57ee90652a6"
+    ISS: "0x43b27fef24cfe8a0b797ed8a36de2884f9963c0c2a0da640e3ec7ad6cd0c493d"
 
 ## configuration of postgres to be used for the blockchain-connector - see https://github.com/bitnami/charts/tree/main/bitnami/postgresql for details
-postgresql:
+access-node.postgresql:
   # -- should the postgresql deployment be enabled
   enabled: true
   # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
@@ -81,7 +90,7 @@ postgresql:
           psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE mktdb;"
 
 ## configuration of the context-broker - see https://github.com/FIWARE/helm-charts/tree/main/charts/scorpio-broker-aaio for details
-scorpio:
+access-node.scorpio:
   # -- should scorpio be enabled
   enabled: true
   ## configuration of the image to be used
@@ -114,12 +123,12 @@ scorpio:
     type: ClusterIP
 
 ## configuration for kafka in case its used by scorpio - see https://github.com/bitnami/charts/tree/main/bitnami/kafka
-kafka:
+access-node.kafka:
   # -- should kafka be enabled?
   enabled: false
 
 ## configuration of postgis to be used for scorpio - see https://github.com/bitnami/charts/tree/main/bitnami/postgresql for details
-postgis:
+access-node.postgis:
   # -- should postgis be enabled
   enabled: true
   # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
@@ -146,7 +155,7 @@ postgis:
           psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE ngb;"
 
 ## configuration of the tm-forum-api - see https://github.com/FIWARE/helm-charts/tree/main/charts/tm-forum-api for details
-tm-forum-api:
+access-node.tm-forum-api:
   # -- should tm-forum-api be enabled
   enabled: true
   ## configuration to be used by every api-deployment if nothing specific is provided.
@@ -155,7 +164,7 @@ tm-forum-api:
     image:
       # -- current latest tag
       tag: "0.16.0"
-    # --  ngsi-ld broker connection information
+    # -- ngsi-ld broker connection information
     ngsiLd:
       # -- address of the broker
       url: http://scorpio:9090
@@ -165,5 +174,5 @@ tm-forum-api:
     serverHost: http://localhost:8080
   ## configuration for the api proxy, to serve all apis through one kubernetes service
   apiProxy:
-    # -- should the proxy be enabled
+    # -- the proxy must be enabled
     enabled: true
