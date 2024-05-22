@@ -17,7 +17,7 @@ desmos:
       # -- local address of the blockchain-connectors notification endpoint for dlt events
       notificationEndpoint: http://desmos:8080/notifications/dlt
       # -- a list of entity-types the connector is interested in
-      eventTypes: catalog,product-offering,category
+      eventTypes: catalog,product-offering,category,individual,organization,product,service-specification,product-offering-price,resource-specification,product-specification
       ## connection information for the context broker
     broker:
       # -- provider of the broker
@@ -31,7 +31,7 @@ desmos:
       # -- local address of the blockchain-connectors notification endpoint for ngsi-ld events
       notificationEndpoint: http://desmos:8080/notifications/broker
       # -- a list of entity-types the connector is interested in
-      entityTypes: catalog,product-offering,category
+      entityTypes: catalog,product-offering,category,individual,organization,product,service-specification,product-offering-price,resource-specification,product-specification
       ## information about the access-node operator
     client:
       # -- did of the organization running the node
