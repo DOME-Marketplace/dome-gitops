@@ -1,38 +1,11 @@
 apiVersion: v2
 name: access-node
-description: Umbrella Chart for the DOME Marketplace access-node
+description: Chart holder for ArgoCD
 type: application
-version: 0.0.1-PRE-15
-appVersion: 0.0.1
+version: 0.1.0
+appVersion: 0.1.0
 dependencies:
-  - name: desmos
-    condition: desmos.enabled
-    repository: https://in2workspace.github.io/helm-charts
-    version: 0.5.0
-  - name: dlt-adapter
-    condition: dlt-adapter.enabled
-    repository: https://alastria.github.io/helm-charts
-    version: 1.0.0
-  - name: kafka
-    condition: kafka.enabled
-    repository: oci://registry-1.docker.io/bitnamicharts
-    version: 26.0.0
-  - name: postgresql
-    condition: postgis.enabled
-    alias: postgis
-    repository: oci://registry-1.docker.io/bitnamicharts
-    version: 13.1.5
-  - name: postgresql
-    condition: postgresql.enabled
-    alias: postgresql
-    repository: oci://registry-1.docker.io/bitnamicharts
-    version: 13.1.5
-  - name: scorpio-broker-aaio
-    condition: scorpio.enabled
-    alias: scorpio
-    repository: https://fiware.github.io/helm-charts
-    version: 0.1.7
-  - name: tm-forum-api
-    condition: tm-forum-api.enabled
-    repository: https://fiware.github.io/helm-charts
-    version: 0.9.0
+  - name: access-node
+    condition: access-node.enabled
+    repository: https://dome-marketplace.github.io/access-node
+    version: 0.1.0
