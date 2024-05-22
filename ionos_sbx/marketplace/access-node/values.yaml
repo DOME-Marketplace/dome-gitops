@@ -7,11 +7,11 @@ access-node.desmos:
     ## profile (dev == sbx)
     profile: dev
     ## debug level
-    logLevel: false
+    logLevel: debug
     ## information about the access-node operator
     operator:
       # -- did of the organization running the node
-      organizationIdentifier: did:elsi:VATES-S9999999
+      organizationIdentifier: did:elsi:VATES-S9999999E
     ## connection information for the context broker
     broker:
       # -- provider of the broker
@@ -141,7 +141,7 @@ access-node.postgis:
     username: postgres
     # -- should the default postgres user be enabled
     enablePostgresUser: true
-    # -- username to be used
+    # -- password to be used
     password: postgres
   ## configuration of the postgres primary replicas
   primary:
