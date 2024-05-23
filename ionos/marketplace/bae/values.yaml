@@ -162,7 +162,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "9.1.2-dome"
+        tag: "9.1.3-dome"
         pullPolicy: Always
 
     ingress: 
