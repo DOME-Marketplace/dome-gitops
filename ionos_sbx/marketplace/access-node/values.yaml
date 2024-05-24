@@ -45,10 +45,16 @@ access-node:
     db:
       # -- host of the db
       host: postgresql-connector
-      # -- password to be used
-      password: postgres
       # -- username to be used
       username: postgres
+      # -- existing secret to retrieve the db password
+      existingSecret:
+        # -- should an existing secret be used
+        enabled: true
+        # -- name of the secret
+        name: desmos-api-secret
+        # -- key to retrieve the password from
+        key: desmos-db-password
       # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
       fullnameOverride: desmos
 
@@ -78,8 +84,8 @@ access-node:
       username: postgres
       # -- should the default postgres user be enabled
       enablePostgresUser: true
-      # -- password to be used
-      password: postgres
+      # -- existing secret
+      existingSecret: desmos-postgres-secret
     ## configuration of the postgres primary replica
     primary:
       ## provide db initialization
@@ -106,8 +112,14 @@ access-node:
       dbhost: postgis
       # -- username to be used
       user: postgres
-      # -- password to be used
-      password: postgres
+      # -- existing secret to retrieve the db password
+      existingSecret:
+        # -- should an existing secret be used
+        enabled: true
+        # -- name of the secret
+        name: desmos-scorpio-secret
+        # -- key to retrieve the password from
+        key: passwordKey
     ## configuration of the readiness probe
     readinessProbe:
       # -- path to be used for the readiness probe, older versions used /actuator/health
@@ -142,8 +154,8 @@ access-node:
       username: postgres
       # -- should the default postgres user be enabled
       enablePostgresUser: true
-      # -- password to be used
-      password: postgres
+      # -- existing secret
+      existingSecret: desmos-postgis-secret
     ## configuration of the postgres primary replicas
     primary:
       ## provide db initialization
