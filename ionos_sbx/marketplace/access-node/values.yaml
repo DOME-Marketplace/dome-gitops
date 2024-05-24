@@ -41,14 +41,14 @@ access-node:
         notificationEndpoint: http://desmos:8080/notifications/dlt
         # -- a list of entity-types the connector is interested in
         entityTypes: catalog,product-offering,category,individual,organization,product,service-specification,product-offering-price,resource-specification,product-specification
-      ## configuration of the database to be used by the blockchain-connector
-      db:
-        # -- host of the db
-        host: postgresql-connector
-        # -- password to be used
-        password: postgres
-        # -- username to be used
-        username: postgres
+    ## configuration of the database to be used by the blockchain-connector
+    db:
+      # -- host of the db
+      host: postgresql-connector
+      # -- password to be used
+      password: postgres
+      # -- username to be used
+      username: postgres
       # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
       fullnameOverride: desmos
 
