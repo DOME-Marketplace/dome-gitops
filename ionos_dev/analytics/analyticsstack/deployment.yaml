@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analyticsstack
+  namespace: analytics
+  labels:
+    app.kubernetes.io/instance: analyticsstack
+    app.kubernetes.io/name: analyticsstack
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: analyticsstack
+      app.kubernetes.io/name: analyticsstack
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: analyticsstack
+        app.kubernetes.io/name: analyticsstack
+    spec:
+      containers:
+        - name: analyticsstack
+          image: ed-harbor:TODO
+          env:
+            - name: DB_HOST
+              value: "postgres-analytics:5432"
+            - name: DB_DATABASE
+              value: "mydata"
+            - name: DB_USERNAME
+              value: "root"
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: analytics-secret
+                  key: DB_PASSWORD
+            - name: APP_URL
+              value: "https://analytics.dome-marketplace-dev.org"
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: analyticsstack-secret
+                  key: APP_KEY
+            - name: MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: analyticsstack-secret
+                  key: MAIL_USERNAME
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: analyticsstack-secret
+                  key: MAIL_PASSWORD
+            - name: MAIL_HOST
+              value: "sandbox.smtp.mailtrap.io"
+            - name: MAIL_PORT
+              value: "2525"
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/www/analyticsstack/public/uploads
+              name: analyticsstack-uploads
+            - mountPath: /var/www/analyticsstack/storage/uploads
+              name: analyticsstack-storage-uploads
+      securityContext:
+        runAsUser: 33
+        runAsGroup: 33
+        fsGroup: 33
+      volumes: 
+      - name: analyticsstack-uploads
+        persistentVolumeClaim:
+          claimName: kb-analyticsstack-uploads-pvc
+      - name: analyticsstack-storage-uploads
+        persistentVolumeClaim:
+          claimName: kb-analyticsstack-storage-uploads-pvc
