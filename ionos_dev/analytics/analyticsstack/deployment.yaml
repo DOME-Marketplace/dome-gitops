@@ -22,15 +22,22 @@ spec:
     spec:
       containers:
         - name: analyticsstack
-          image: ed-harbor:TODO
+          image: docker.ramp.eu/ed-pvt/dome-matomo-backend-app:dev_6_03_2024_01
           env:
-            - name: DB_HOST
-              value: "postgres-analytics:5432"
-            - name: DB_DATABASE
-              value: "mydata"
-            - name: DB_USERNAME
-              value: "root"
-            - name: DB_PASSWORD
+            - name: SPRING_DATASOURCE_URL
+              value: ${MATOMO_ANALYTICS_DB_HOST:-jdbc:postgresql://localhost}:${MATOMO_ANALYTICS_DB_PORT_NUMBER:-5433}/${MATOMO_ANALYTICS_DB:-matomo_data_json}
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "postgres"
+            - name: MATOMO_SITE_ID
+              value: "1"
+            - name: MATOMO_API_URL
+              value: "https://dome-marketplace-dev.org/matomo/index.php"
+            - name: MATOMO_TOKEN_AUTH
+              valueFrom:
+                secretKeyRef:
+                  name: analytics-secret
+                  key: MATOMO_TOKEN_AUTH
+            - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: analytics-secret
@@ -42,20 +49,6 @@ spec:
                 secretKeyRef:
                   name: analyticsstack-secret
                   key: APP_KEY
-            - name: MAIL_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: analyticsstack-secret
-                  key: MAIL_USERNAME
-            - name: MAIL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: analyticsstack-secret
-                  key: MAIL_PASSWORD
-            - name: MAIL_HOST
-              value: "sandbox.smtp.mailtrap.io"
-            - name: MAIL_PORT
-              value: "2525"
           ports:
             - containerPort: 8080
               name: http
