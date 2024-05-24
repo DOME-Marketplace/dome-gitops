@@ -8,12 +8,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/DOME-Marketplace/access-node
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
     path: ionos_sbx/marketplace/access-node
-    helm:
-      valueFiles:
-        - values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: marketplace
