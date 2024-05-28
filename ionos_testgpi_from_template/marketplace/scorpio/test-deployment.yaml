@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment-kustomize
+  namespace: argo-kustomize-tests
+  labels:
+    app: nginx-kustomize
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-kustomize
+  template:
+    metadata:
+      labels:
+        app: nginx-kustomize
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.25.2
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service-kustomize
+  namespace: argo-kustomize-tests
+  labels:
+    app: nginx-kustomize
+spec:
+  selector:
+    app: nginx-kustomize
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9376

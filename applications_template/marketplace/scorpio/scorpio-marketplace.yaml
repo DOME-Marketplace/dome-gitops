@@ -12,6 +12,8 @@ spec:
   project: default
   source:
     path: ionos_template/marketplace/scorpio
+    directory:
+      recurse: false
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
   syncPolicy:

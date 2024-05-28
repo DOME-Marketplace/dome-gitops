@@ -1,0 +1,16 @@
+- op: replace
+  path: /spec/template/spec/containers/0/env
+  value:
+    - name: DBHOST
+      value: postgis_dev
+    - name: BUSHOST
+      value: kafka-marketplace
+    - name: QUARKUS_LOG_LEVEL
+      value: DEBUG
+    - name: MYSETTINGS_POSTGRES_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: postgres-secret
+          key: postgres-root-password
+    - name: MYSETTINGS_POSTGRES_USERNAME
+      value: postgres_dev

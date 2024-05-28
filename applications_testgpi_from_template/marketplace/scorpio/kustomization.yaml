@@ -1,0 +1,11 @@
+resources:
+- ../../../applications_template/marketplace/scorpio
+patches:
+  - path: application_path.yaml
+    target:
+      kind: Application
+  - path: test_namespace.yaml
+    target:
+      kind: Application
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
