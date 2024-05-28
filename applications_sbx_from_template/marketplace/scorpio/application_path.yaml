@@ -1,0 +1,3 @@
+- op: replace
+  path: /spec/source/path
+  value: "ionos_sbx_from_template/marketplace/scorpio"

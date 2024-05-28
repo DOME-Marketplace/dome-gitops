@@ -1,0 +1,16 @@
+resources:
+- ../../../ionos_template/marketplace/scorpio
+patches:
+  - path: deployment_replica_count.yaml
+    target:
+      kind: Deployment
+  - path: deployment_image.yaml
+    target:
+      kind: Deployment
+      name: scorpio
+  - path: deployment_envvars.yaml
+    target:
+      kind: Deployment
+      name: scorpio
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
