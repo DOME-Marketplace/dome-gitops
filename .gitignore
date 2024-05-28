@@ -1,5 +1,6 @@
 *-plain-secret.yaml
 webhook-tsl-sec.yaml
-accounts
+accounts*
+connectivity-test.yaml
 
 .idea

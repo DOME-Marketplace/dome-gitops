@@ -6,7 +6,7 @@ metadata:
 rules:
 - apiGroups: [""]
   resources: ["*"]
-  verbs: ["get", "list", "create", "update", "delete", "watch"]
+  verbs: ["get", "list", "create", "update", "delete", "watch", "patch"]
 - apiGroups: ["bitnami.com"]
   resources: ["sealedsecrets"]
-  verbs: ["get", "list", "create", "update", "delete", "watch"]
+  verbs: ["get", "list", "create", "update", "delete", "watch", "patch"]

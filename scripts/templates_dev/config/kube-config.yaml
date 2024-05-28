@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Config
 preferences: {}
-current-context: %NAMESPACE%-service-account@Dev
+current-context: %NAMESPACE%-service-account-dev@Dev
 clusters:
 - cluster:
     certificate-authority-data: %CA_CERT%
@@ -10,9 +10,9 @@ clusters:
 contexts:
 - context:
     cluster: !!str Dev
-    user: %NAMESPACE%-service-account
-  name: %NAMESPACE%-service-account@Dev
+    user: %NAMESPACE%-service-account-dev
+  name: %NAMESPACE%-service-account-dev@Dev
 users:
-- name: %NAMESPACE%-service-account
+- name: %NAMESPACE%-service-account-dev
   user:
     token: %TOKEN%

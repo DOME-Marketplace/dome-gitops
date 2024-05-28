@@ -110,9 +110,9 @@ if (-not (Test-Path -Path $outputDirectory\config)) {
 }
 
 # Write content
-$templateContent | Set-Content -Path $outputDirectory\config\kube-config.yaml
+$templateContent | Set-Content -Path $outputDirectory\config\kube-config-$env.yaml
 
-Write-Host "Kube configs generated: $outputDirectory\config\kube-config.yaml"
+Write-Host "Kube configs generated: $outputDirectory\config\kube-config-$env.yaml"
 
 
 
