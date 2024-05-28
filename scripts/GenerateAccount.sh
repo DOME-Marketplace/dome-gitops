@@ -117,6 +117,6 @@ templateContent="${templateContent//\%ENV\%/$envSuffix}"
 mkdir -p "$outputDirectory/config"
 
 # Write content
-echo "$templateContent" > "$outputDirectory/config/kube-config.yaml"
+echo "$templateContent" > "$outputDirectory/config/kube-config-$env.yaml"
 
-echo "Kube configs generated: $outputDirectory\config\kube-config.yaml"
+echo "Kube configs generated: $outputDirectory\config\kube-config-$env.yaml"
