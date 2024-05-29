@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: search
-          image: mardetom/search:0.0.2
+          image: mardetom/search:0.0.5
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -27,3 +27,11 @@ spec:
               value: elasticsearch
             - name: ELASTICSEARCH_ADDRESS_PORT
               value: "9200"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 9000
+            initialDelaySeconds: 30
+            failureThreshold: 5
+            periodSeconds: 10
+            timeoutSeconds: 10
