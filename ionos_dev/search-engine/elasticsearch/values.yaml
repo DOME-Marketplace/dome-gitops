@@ -1,6 +1,6 @@
 elasticsearch:
   image: "docker.elastic.co/elasticsearch/elasticsearch"
-  imageTag: "8.5.1"
+  imageTag: "7.16.2"
   imagePullPolicy: "IfNotPresent"
 
   replicas: 1

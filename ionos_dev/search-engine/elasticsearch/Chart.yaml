@@ -3,10 +3,10 @@ name: elasticsearch
 description: Chart holder for argo-cd
 
 type: application
-version: 8.5.1
-appVersion: "8.5.1"
+version: 7.16.2
+appVersion: "7.16.2"
 
 dependencies:
   - name: elasticsearch
-    version: 8.5.1
+    version: 7.16.2
     repository: https://helm.elastic.co
