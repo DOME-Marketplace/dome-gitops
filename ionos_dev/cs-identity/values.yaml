@@ -1,0 +1,26 @@
+keycloak:
+  service:
+    type: ClusterIP
+  logging:
+    level: INFO
+  replicaCount: 1
+  auth:
+    existingSecret: keycloak-secret
+    passwordSecretKey: keycloak-admin
+    adminUser: csAdmin
+  serviceAccount:
+    create: true
+
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hostname: cs-identity.dome-marketplace-dev.org
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
+    tls: true
+  
+  postgresql:
+    enabled: true
+    auth:
+      database: keycloak
+      existingSecret: keycloak-secret
