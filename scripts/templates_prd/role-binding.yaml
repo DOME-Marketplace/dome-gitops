@@ -5,7 +5,7 @@ metadata:
   namespace: %NAMESPACE%
 subjects:
 - kind: ServiceAccount
-  name: %NAMESPACE%-service-account-dev
+  name: %NAMESPACE%-service-account-prd
   namespace: %NAMESPACE%
 roleRef:
   kind: Role

@@ -1,6 +1,7 @@
 *-plain-secret.yaml
 webhook-tsl-sec.yaml
-accounts
+accounts*
+connectivity-test.yaml
 
 .idea
 /ionos_dev/search-engine/elasticsearch_*/*

@@ -4,5 +4,5 @@ metadata:
   name: %NAMESPACE%-sa-secret
   namespace: %NAMESPACE%
   annotations:
-    kubernetes.io/service-account.name: %NAMESPACE%-service-account-sbx
+    kubernetes.io/service-account.name: %NAMESPACE%-service-account-prd
 type: kubernetes.io/service-account-token
