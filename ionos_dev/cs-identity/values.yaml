@@ -18,6 +18,12 @@ keycloak:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
     tls: true
+    
+  extraEnvVars:
+    - name: KEYCLOAK_PROXY_ADDRESS_FORWARDING
+      value: "true"
+    - name: KEYCLOAK_LOG_LEVEL
+      value: INFO
   
   postgresql:
     enabled: true
