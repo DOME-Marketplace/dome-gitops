@@ -4,7 +4,7 @@ metadata:
   name: search-engine
   namespace: argocd
   labels:
-    purpose: marketplace
+    purpose: search-engine
 spec:
   destination:
     namespace: search-engine
