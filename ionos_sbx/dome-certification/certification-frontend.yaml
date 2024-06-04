@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: certification-frontend
+  labels:
+    app: certification-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: certification-frontend
+  template:
+    metadata:
+      labels:
+        app: certification-frontend
+    spec:
+      containers:
+        - name: certification-frontend
+          image: dome-certification/certification-frontend:latest
+          ports:
+            - containerPort: 80
