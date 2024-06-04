@@ -31,6 +31,6 @@ spec:
                 secretKeyRef:
                   name: chatbot-backend-secret
                   key: AUTH_KEY
-        ports:
-        - containerPort: 5000
+          ports:
+            - containerPort: 5000
 
