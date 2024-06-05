@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: certification-backend
+  labels:
+    app: certification-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: certification-backend
+  template:
+    metadata:
+      labels:
+        app: certification-backend
+    spec:
+      containers:
+        - name: certification-backend
+          image: dome-certification/certification-backend:latest
+          ports:
+            - containerPort: 8080
