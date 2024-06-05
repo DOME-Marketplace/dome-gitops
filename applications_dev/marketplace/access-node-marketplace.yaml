@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: rollout-webhook
+  name: access-node
   namespace: argocd
   labels:
     purpose: marketplace
@@ -11,7 +11,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos_dev/marketplace/rollout-webhook
+    path: ionos_dev/marketplace/access-node
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
   syncPolicy:
