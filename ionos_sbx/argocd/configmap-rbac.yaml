@@ -10,3 +10,4 @@ data:
   policy.default: role:readonly
   policy.csv: |
     g, CgkxNTU3NTY4MjYSBmdpdGh1Yg, role:admin
+    g, CgYyNDEzMTgSBmdpdGh1Yg, role:admin
