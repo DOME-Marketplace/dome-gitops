@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dome-search-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: dome-search
+      app.kubernetes.io/name: dome-search
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: dome-search
+        app.kubernetes.io/name: dome-search
+    spec:
+      containers:
+        - name: search
+          image: production.eng.it:8433/dome/search:0.0.6
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              hostPort: 8080
+              protocol: TCP
+          env:
+            - name: ELASTICSEARCH_ADDRESS_HOST
+              value: elasticsearch
+            - name: ELASTICSEARCH_ADDRESS_PORT
+              value: "9200"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 9000
+            initialDelaySeconds: 30
+            failureThreshold: 5
+            periodSeconds: 10
+            timeoutSeconds: 10
