@@ -1,0 +1,82 @@
+vcverifier:
+  deployment:
+    image:
+      repository: quay.io/fiware/vcverifier
+      tag: 2.7.0
+      pullPolicy: Always
+    logging: 
+      level: DEBUG
+      pathsToSkip: 
+        - "/health"
+
+    ssikit:
+      auditorUrl: http://walt-id-vcwaltid:7003
+    verifier:
+      tirAddress: https://tir.dome-marketplace-sbx.org/v3/issuers
+      did: did:web:dome-marketplace-sbx.org
+    configRepo:
+      configEndpoint: http://credentials-config-service:8080/
+        
+    initContainers:
+      - name: add-theme
+        image: quay.io/fiware/verifier-theme:0.0.1
+        imagePullPolicy: Always
+        volumeMounts:
+          - name: static-volume
+            mountPath: /target
+
+    server:
+      staticDir: /static
+      templateDir: /templates
+
+
+  ingress:
+    enabled: true
+    annotations: 
+      cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+    className: nginx
+    hosts:
+      - host: verifier.dome-marketplace-sbx.org
+        paths:  
+          - "/"
+    tls:
+      - hosts: 
+          - verifier.dome-marketplace-sbx.org
+        secretName: verifier-tls-sec
+
+
+  templates: 
+    verifier_present_qr.html: |-
+      {{define "verifier_present_qr"}}
+      <!doctype html>
+
+      <html>
+          <head>
+              <meta charset="utf-8" />
+              <link href="/static/css/w3pro.css" rel="stylesheet">
+              <link href="/static/css/mystyle.css" rel="stylesheet">
+              <link href="/static/css/prism.css" rel="stylesheet">
+          
+              <meta name="viewport" content="width=device-width, initial-scale=1" />
+              <meta name="theme-color" content="#2d58a7">
+              <title>Credential Verifier</title>
+          
+          </head>
+          
+          <body>
+              <div class="w3-bar w3-card color-primary w3-margin-bottom w3-large">
+                  <a class="w3-bar-item w3-right" href="https://dome-marketplace-sbx.org"><img src="/static/img/logo-white.svg" alt="DOME Marketplace" style="width:222px;height:50px;">
+                  </a>
+              </div>
+              <main class="w3-container w3-center">
+
+                  <h3>Scan this QR code to authenticate with a mobile</h3>
+
+                  <img src="data:{{.qrcode}}" alt="the qr.">
+
+              </main>
+          </body>
+      </html>
+      {{end}}
+  static:
+    enabled: true

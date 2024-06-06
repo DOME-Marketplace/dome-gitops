@@ -6,43 +6,43 @@ business-api-ecosystem:
 
     tmForum:
       catalog:
-        host: tmforum-tm-forum-api-product-catalog
+        host: tm-forum-api-product-catalog
         port: 8080
         path: 
       inventory:
-        host: tmforum-tm-forum-api-product-inventory
+        host: tm-forum-api-product-inventory
         port: 8080
         path: 
       ordering:
-        host: tmforum-tm-forum-api-product-ordering-management
+        host: tm-forum-api-product-ordering-management
         port: 8080
         path: 
       billing:
-        host: tmforum-tm-forum-api-account
+        host: tm-forum-api-account
         port: 8080
         path: 
       usage:
-        host: tmforum-tm-forum-api-usage-management
+        host: tm-forum-api-usage-management
         port: 8080
         path: 
       party:
-        host: tmforum-tm-forum-api-party-catalog
+        host: tm-forum-api-party-catalog
         port: 8080
         path: 
       customer:
-        host: tmforum-tm-forum-api-customer-management
+        host: tm-forum-api-customer-management
         port: 8080
         path: 
       resources:
-        host: tmforum-tm-forum-api-resource-catalog
+        host: tm-forum-api-resource-catalog
         port: 8080
         path: 
       services:
-        host: tmforum-tm-forum-api-service-catalog
+        host: tm-forum-api-service-catalog
         port: 8080
         path: 
       resourceInventory:
-        host: tmforum-tm-forum-api-resource-inventory
+        host: tm-forum-api-resource-inventory
         port: 8080
         path:
 
@@ -67,14 +67,21 @@ business-api-ecosystem:
         didRead: 
           - type: "VerifiableCredential"
             trustedParticipantsLists: [
-              "https://tir.dome-marketplace-dev.org"
+              "http://trusted-issuers-list:8080"
             ]
             trustedIssuersLists: [
               "http://trusted-issuers-list:8080"
             ]
           - type: "LegalPersonCredential"
             trustedParticipantsLists: [
-              "https://tir.dome-marketplace-dev.org"
+              "http://trusted-issuers-list:8080"
+            ]
+            trustedIssuersLists: [
+              "http://trusted-issuers-list:8080"
+            ]
+          - type: "LEARCredentialEmployee"
+            trustedParticipantsLists: [
+              "http://trusted-issuers-list:8080"
             ]
             trustedIssuersLists: [
               "http://trusted-issuers-list:8080"
@@ -82,14 +89,21 @@ business-api-ecosystem:
         defaultScope:
           - type: "VerifiableCredential"
             trustedParticipantsLists: [
-              "https://tir.dome-marketplace-dev.org"
+              "http://trusted-issuers-list:8080"
             ]
             trustedIssuersLists: [
               "http://trusted-issuers-list:8080"
             ]
           - type: "LegalPersonCredential"
             trustedParticipantsLists: [
-              "https://tir.dome-marketplace-dev.org"
+              "http://trusted-issuers-list:8080"
+            ]
+            trustedIssuersLists: [
+              "http://trusted-issuers-list:8080"
+            ]
+          - type: "LEARCredentialEmployee"
+            trustedParticipantsLists: [
+              "http://trusted-issuers-list:8080"
             ]
             trustedIssuersLists: [
               "http://trusted-issuers-list:8080"
@@ -105,7 +119,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: v9.0.0-rc5
+        tag: "9.1.0"
         pullPolicy: Always
     
     plugins:
@@ -148,7 +162,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: v9.0.0-rc13-dome
+        tag: "9.1.4-dome"
         pullPolicy: Always
 
     ingress: 

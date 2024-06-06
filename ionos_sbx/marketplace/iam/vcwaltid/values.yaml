@@ -1,0 +1,110 @@
+# Organisation DID
+did: did:web:dome-marketplace-sbx.org
+
+ingress:
+  enabled: true
+  annotations: 
+    cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+  class: nginx
+  host: dome-marketplace-sbx.org
+  tls: 
+    enabled: true
+
+# Walt-id config
+vcwaltid:
+
+  # Image
+  deployment:
+    image:
+      repository: quay.io/fiware/waltid
+      tag: 1.14.1-SNAPSHOT
+      pullPolicy: Always
+
+  # API config
+  api:
+    core: 
+      enabled: true
+    auditor: 
+      enabled: true
+    signatory: 
+      enabled: true
+    custodian: 
+      enabled: true
+    essif: 
+      enabled: true
+
+  # Persistence
+  persistence: 
+    enabled: true
+    pvc:
+      size: 1Gi
+
+  # List of templates to be created
+  templates:
+    GaiaXParticipantCredential.json: |
+      {
+        "@context": [
+          "https://www.w3.org/2018/credentials/v1",
+          "https://registry.lab.gaia-x.eu/development/api/trusted-shape-registry/v1/shapes/jsonld/trustframework#"
+        ],
+        "type": [
+          "VerifiableCredential"
+        ],
+        "id": "did:web:raw.githubusercontent.com:egavard:payload-sign:master",
+        "issuer": "did:web:raw.githubusercontent.com:egavard:payload-sign:master",
+        "issuanceDate": "2023-03-21T12:00:00.148Z",
+        "credentialSubject": {
+          "id": "did:web:raw.githubusercontent.com:egavard:payload-sign:master",
+          "type": "gx:LegalParticipant",
+          "gx:legalName": "dsba compliant participant",
+          "gx:legalRegistrationNumber": {
+            "gx:vatID": "MYVATID"
+          },
+          "gx:headquarterAddress": {
+            "gx:countrySubdivisionCode": "BE-BRU"
+          },
+          "gx:legalAddress": {
+            "gx:countrySubdivisionCode": "BE-BRU"
+          },
+          "gx-terms-and-conditions:gaiaxTermsAndConditions": "70c1d713215f95191a11d38fe2341faed27d19e083917bc8732ca4fea4976700"
+        }
+      }
+    NaturalPersonCredential.json: |
+      {
+        "@context": ["https://www.w3.org/2018/credentials/v1"],
+        "credentialSchema": {
+          "id": "https://raw.githubusercontent.com/FIWARE-Ops/tech-x-challenge/main/schema.json",
+          "type": "FullJsonSchemaValidator2021"
+        },
+        "credentialSubject": {
+          "type": "gx:NaturalParticipant",
+          "familyName": "Happy",
+          "firstName": "User",
+          "roles": [{
+            "names": ["LEGAL_REPRESENTATIVE"],
+            "target": "did:web:onboarding"
+          }]
+        },
+        "id": "urn:uuid:3add94f4-28ec-42a1-8704-4e4aa51006b4",
+        "issued": "2021-08-31T00:00:00Z",
+        "issuer": "did:ebsi:2A9BZ9SUe6BatacSpvs1V5CdjHvLpQ7bEsi2Jb6LdHKnQxaN",
+        "validFrom": "2021-08-31T00:00:00Z",
+        "issuanceDate": "2021-08-31T00:00:00Z",
+        "type": ["VerifiableCredential", "LegalPersonCredential"]
+      }
+
+  initContainers:
+    - name: load-did
+      image: quay.io/opencloudio/curl:4.2.0-build.8
+      imagePullPolicy: Always
+      command: 
+        - /bin/sh
+        - /opt/did/script/import.sh
+      env:
+        - name: WALTID_CORE_ADDRESS
+          value: "vcwaltid:7000"
+      volumeMounts:
+        - name: did-config
+          mountPath: /opt/did/script
+        - name: did-secret
+          mountPath: /opt/did/secret

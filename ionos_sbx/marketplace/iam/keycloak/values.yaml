@@ -1,0 +1,99 @@
+
+keycloak:
+  image: 
+    tag: 21.1.2-debian-11-r1
+  service:
+    type: ClusterIP
+  logging:
+    level: INFO
+  replicaCount: 1
+  auth:
+    existingSecret: keycloak-secret
+    passwordSecretKey: keycloak-admin
+    adminUser: fiwareAdmin
+  serviceAccount:
+    create: true
+  rbac:
+    create: true
+    rules:
+      - apiGroups:
+        - security.openshift.io
+        resourceNames:
+        - anyuid
+        resources:
+        - securitycontextconstraints
+        verbs:
+        - use
+
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hostname: keycloak.dome-marketplace-sbx.org
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+    tls: true
+
+
+  keycloakConfigCli:
+    enabled: true
+    # current image does not contain 20.0.3., thus we need this fix
+    command: 
+      - java
+      - -jar
+      - /opt/bitnami/keycloak-config-cli/keycloak-config-cli-20.0.1.jar
+
+    extraEnvVars:
+      - name: IMPORT_FILES_LOCATIONS
+        value: "/config/*"
+    containerSecurityContext:
+      enabled: false
+    podSecurityContext:
+      enabled: false
+    existingConfigmap: keycloak-marketplace-realm
+  
+  extraEnvVars:
+  - name: KEYCLOAK_PROXY_ADDRESS_FORWARDING
+    value: "true"
+  - name: KEYCLOAK_LOG_LEVEL
+    value: INFO
+  - name: VCISSUER_ISSUER_DID
+    value: "did:web:dome-marketplace-sbx.org"
+  - name: VCISSUER_WALTID_ADDRESS
+    value: "http://walt-id-vcwaltid"
+
+
+  extraVolumeMounts:
+    - name: profiles
+      mountPath: /opt/bitnami/keycloak/conf/profile.properties
+      subPath: profile.properties
+    - name: providers
+      mountPath: /opt/bitnami/keycloak/providers/
+    - name: data
+      mountPath: /data
+
+  extraVolumes:
+    - name: data
+      emptyDir: {}
+    - name: profiles
+      configMap:
+        name: keycloak-marketplace-profile
+    - name: providers
+      emptyDir: {}
+
+  initContainers:
+    - name: add-vc-issuer
+      image: quay.io/fiware/keycloak-vc-issuer:1.0.1
+      imagePullPolicy: Always
+      volumeMounts:
+        - name: providers
+          mountPath: /target
+  
+  postgresql:
+    enabled: false
+
+  externalDatabase:
+    host: postgresql-keycloak
+    user: postgres
+    database: keycloak_marketplace
+    existingSecret: postgres-keycloak-secret
+    existingSecretPasswordKey: postgres-password

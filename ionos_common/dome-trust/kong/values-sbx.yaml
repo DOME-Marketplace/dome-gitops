@@ -1,0 +1,6 @@
+kong:
+  proxy:
+    ingress:
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+      hostname: kong-onboarding.dome-marketplace-sbx.org

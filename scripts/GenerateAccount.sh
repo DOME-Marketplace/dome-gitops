@@ -20,6 +20,9 @@ replace_namespace_placeholder_in_file() {
     # Replace placeholder NAMESPACE with the given value
     placeholder="NAMESPACE"
     templateContent="${templateContent//\%$placeholder\%/$namespace}"
+    # Replace placeholder ENV with the given value
+    placeholder="ENV"
+    templateContent="${templateContent//\%$placeholder\%/$envSuffix}"
 
     # Create target directory if it doesn't exist
     mkdir -p "$outputDirectory"
@@ -109,10 +112,11 @@ templateContent="${templateContent//\%NAMESPACE\%/$namespace}"
 templateContent="${templateContent//\%CA_CERT\%/$caCrtBase64}"
 templateContent="${templateContent//\%TOKEN\%/$tokenDecoded}"
 templateContent="${templateContent//\%KUBE_SERVER_URL\%/$serverUrl}"
+templateContent="${templateContent//\%ENV\%/$envSuffix}"
 
 mkdir -p "$outputDirectory/config"
 
 # Write content
-echo "$templateContent" > "$outputDirectory/config/kube-config.yaml"
+echo "$templateContent" > "$outputDirectory/config/kube-config-$env.yaml"
 
-echo "Kube configs generated: $outputDirectory\config\kube-config.yaml"
+echo "Kube configs generated: $outputDirectory\config\kube-config-$env.yaml"

@@ -1,0 +1,45 @@
+image:
+  registry: registry.k8s.io
+  repository: external-dns/external-dns
+  tag: v0.14.0
+
+# restrict to namespace
+namespace: default
+# zone to which the external-DNS should be restricted
+zoneNameFilters:
+  - dome-marketplace-sbx.org
+provider: webhook
+
+extraArgs:
+  webhook-provider-url: http://localhost:8888
+
+sidecars:
+  - name: ionos-webhook
+    image: ghcr.io/ionos-cloud/external-dns-ionos-webhook:v0.6.0
+    ports:
+      - containerPort: 8888
+        name: http
+    livenessProbe:
+      httpGet:
+        path: /health
+        port: http
+      initialDelaySeconds: 10
+      timeoutSeconds: 5
+    readinessProbe:
+      httpGet:
+        path: /health
+        port: http
+      initialDelaySeconds: 10
+      timeoutSeconds: 5
+    env:
+      - name: LOG_LEVEL
+        value: debug
+      - name: IONOS_API_KEY
+        valueFrom:
+          secretKeyRef:
+            name: ionos-credentials
+            key: api-key
+      - name: SERVER_HOST
+        value: "0.0.0.0"
+      - name: IONOS_DEBUG
+        value: "true"
