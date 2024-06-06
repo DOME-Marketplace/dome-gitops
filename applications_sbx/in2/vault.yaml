@@ -4,16 +4,16 @@ metadata:
   name: vault
   namespace: argocd
   labels:
-    purpose: wallet
+    purpose: in2
 spec:
   project: default
   source:
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
-    path: ionos_sbx/wallet/vault
+    path: ionos_sbx/in2/vault
   destination:
     server: https://kubernetes.default.svc
-    namespace: wallet
+    namespace: in2
   syncPolicy:
     automated:
       prune: true

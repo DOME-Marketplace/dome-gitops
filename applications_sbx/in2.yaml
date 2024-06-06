@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: wallet
+  name: in2
   namespace: argocd
   labels:
-    purpose: wallet
+    purpose: in2
 spec:
   destination:
-    namespace: wallet
+    namespace: in2
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: applications_sbx/wallet
+    path: applications_sbx/in2
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
   syncPolicy:
