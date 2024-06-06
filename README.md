@@ -275,3 +275,6 @@ Blue-Green Deployments on the cluster will be done through two mechanisms:
 
 > :warning: Be aware how Blue-Green Rollouts work and there limitations. Since they create a second instance of the application, this is only suitable for stateless-applications(as a Deployment-Resource should be). Stateful-Applications can lead to bad results like deadlocks. If the applications takes care of Datamigrations, configure it to not migrate before Promotion and connect the new revision to another database. To disable the [Rollout-Injection](https://github.com/wistefan/rollout-injecting-webhook), annotate the deployment with ```wistefan/rollout-injecting-webhook: ignore```
 
+## Review
+
+Default reviewers are configured via the ``.github/CODEOWNERS`` file
