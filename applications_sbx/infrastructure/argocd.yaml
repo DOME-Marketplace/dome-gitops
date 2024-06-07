@@ -6,14 +6,26 @@ metadata:
   labels:
     purpose: infra
 spec:
+  project: default
+  sources:
+  - repoURL: https://argoproj.github.io/argo-helm
+    targetRevision: 7.1.1
+    chart: argo-cd
+    helm:
+      releaseName: argocd
+      valueFiles:
+      - $values/ionos_sbx/argocd/values.yaml
+  - repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: feature/monitoring
+    ref: values
+  - repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: feature/monitoring
+    path: ionos_sbx/argocd
+    directory:
+      include: '{argo-rollouts.yaml,github-sealed-secret.yaml,github-sealed-secret-kbi.yaml}'
   destination:
     namespace: argocd
     server: https://kubernetes.default.svc
-  project: default
-  source:
-    path: ionos_sbx/argocd
-    repoURL: https://github.com/DOME-Marketplace/dome-gitops
-    targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true
