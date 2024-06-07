@@ -80,7 +80,7 @@ spec:
             - name: OIDC_GROUPS_CLAIM
               value: "groups"
             - name: OIDC_ADDITIONAL_SCOPES
-              value: "group"
+              value: "groups"
             - name: OIDC_REMOVE_FROM_GROUPS
               value: "true"
           ports:
