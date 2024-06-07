@@ -15,6 +15,5 @@ spec:
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+    syncOptions:
+    - ApplyOutOfSyncOnly=true
