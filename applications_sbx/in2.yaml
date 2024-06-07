@@ -1,19 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: vault
+  name: in2
   namespace: argocd
   labels:
-    purpose: wallet
+    purpose: in2
 spec:
+  destination:
+    namespace: in2
+    server: https://kubernetes.default.svc
   project: default
   source:
+    path: applications_sbx/in2
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
-    path: ionos_sbx/wallet/vault
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: wallet
   syncPolicy:
     automated:
       prune: true
