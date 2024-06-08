@@ -16,10 +16,10 @@ spec:
       valueFiles:
       - $values/ionos_sbx/argocd/values.yaml
   - repoURL: https://github.com/DOME-Marketplace/dome-gitops
-    targetRevision: feature/monitoring
+    targetRevision: HEAD
     ref: values
   - repoURL: https://github.com/DOME-Marketplace/dome-gitops
-    targetRevision: feature/monitoring
+    targetRevision: HEAD
     path: ionos_sbx/argocd
     directory:
       include: '{argo-rollouts.yaml,github-sealed-secret.yaml,github-sealed-secret-kbi.yaml}'
