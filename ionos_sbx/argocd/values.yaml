@@ -1,5 +1,3 @@
-
-
 configs:
   params:
     server.log.level: debug
