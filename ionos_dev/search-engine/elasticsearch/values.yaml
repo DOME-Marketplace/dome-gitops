@@ -19,6 +19,17 @@ elasticsearch:
   - name: discovery.type
     value: single-node
 
+  ingress:
+    enabled: false
+    annotations: {}
+    className: "nginx"
+    pathtype: ImplementationSpecific
+    hosts:
+      - host: elasticsearch.local
+        paths:
+          - path: /
+    tls: []
+
   resources:
     requests:
       cpu: "1000m"
