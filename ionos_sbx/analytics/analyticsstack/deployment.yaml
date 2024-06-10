@@ -31,7 +31,7 @@ spec:
             - name: MATOMO_SITE_ID
               value: "1"
             - name: MATOMO_API_URL
-              value: "https://dome-marketplace-dev.org/matomo/index.php"
+              value: "https://dome-marketplace.org/matomo/index.php"
             - name: MATOMO_TOKEN_AUTH
               valueFrom:
                 secretKeyRef:
@@ -43,7 +43,7 @@ spec:
                   name: analytics-secret
                   key: DB_PASSWORD
             - name: APP_URL
-              value: "https://analytics.dome-marketplace-dev.org"
+              value: "https://analytics.dome-marketplace-sbx.org"
             - name: APP_KEY
               valueFrom:
                 secretKeyRef:
