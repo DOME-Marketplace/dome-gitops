@@ -1,7 +1,0 @@
-postgres:
-  fullnameOverride: postgres-analytics
-  auth:
-    existingSecret: postgres-secret
-  initdbScripts:
-    create.sql: |
-      CREATE DATABASE mydata;
