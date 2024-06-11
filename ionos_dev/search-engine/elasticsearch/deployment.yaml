@@ -32,7 +32,7 @@ spec:
             - name: discovery.type
               value: single-node
           volumeMounts:
-            - mountPath: /usr/share/elasticsearch/data
+            - mountPath: /var/lib/elasticsearch/data
               name: elasticsearch-data
           livenessProbe:
             exec:
