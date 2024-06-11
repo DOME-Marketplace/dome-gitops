@@ -24,7 +24,7 @@ spec:
               protocol: TCP
           env:
             - name: ELASTICSEARCH_ADDRESS_HOST
-              value: elasticsearch
+              value: dome-elasticsearch-svc
             - name: ELASTICSEARCH_ADDRESS_PORT
               value: "9200"
           livenessProbe:
