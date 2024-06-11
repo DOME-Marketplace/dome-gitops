@@ -67,14 +67,21 @@ business-api-ecosystem:
         didRead: 
           - type: "VerifiableCredential"
             trustedParticipantsLists: [
-              "https://tir.dome-marketplace-prd.org"
+              "http://trusted-issuers-list:8080"
             ]
             trustedIssuersLists: [
               "http://trusted-issuers-list:8080"
             ]
           - type: "LegalPersonCredential"
             trustedParticipantsLists: [
-              "https://tir.dome-marketplace-prd.org"
+              "http://trusted-issuers-list:8080"
+            ]
+            trustedIssuersLists: [
+              "http://trusted-issuers-list:8080"
+            ]
+          - type: "LEARCredentialEmployee"
+            trustedParticipantsLists: [
+              "http://trusted-issuers-list:8080"
             ]
             trustedIssuersLists: [
               "http://trusted-issuers-list:8080"
@@ -82,14 +89,21 @@ business-api-ecosystem:
         defaultScope:
           - type: "VerifiableCredential"
             trustedParticipantsLists: [
-              "https://tir.dome-marketplace-prd.org"
+              "http://trusted-issuers-list:8080"
             ]
             trustedIssuersLists: [
               "http://trusted-issuers-list:8080"
             ]
           - type: "LegalPersonCredential"
             trustedParticipantsLists: [
-              "https://tir.dome-marketplace-prd.org"
+              "http://trusted-issuers-list:8080"
+            ]
+            trustedIssuersLists: [
+              "http://trusted-issuers-list:8080"
+            ]
+          - type: "LEARCredentialEmployee"
+            trustedParticipantsLists: [
+              "http://trusted-issuers-list:8080"
             ]
             trustedIssuersLists: [
               "http://trusted-issuers-list:8080"
@@ -105,7 +119,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: v9.0.0-rc5
+        tag: "9.1.0"
         pullPolicy: Always
     
     plugins:
@@ -148,7 +162,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: v9.0.0-rc13-dome
+        tag: "9.1.4-dome"
         pullPolicy: Always
 
     ingress: 
