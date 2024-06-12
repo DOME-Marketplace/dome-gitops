@@ -11,3 +11,4 @@ data:
   # subject in argocd jwt
   policy.csv: |
     g, CggxNzE4MTU4MRIGZ2l0aHVi, role:admin
+    g, CgkxNTU3NTY4MjYSBmdpdGh1Yg, role:admin

@@ -1,18 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: tmforum
+  name: mysql-knowledgebase
   namespace: argocd
   labels:
-    purpose: marketplace
+    purpose: knowledgebase
 spec:
   destination:
-    namespace: marketplace
+    namespace: knowledgebase
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos_dev/marketplace/tmforum-api
-    repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    path: ionos_prd/knowledgebase/mysql
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops.git
     targetRevision: HEAD
   syncPolicy:
     automated:
