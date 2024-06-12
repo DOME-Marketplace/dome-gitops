@@ -8,6 +8,7 @@ wallet-api:
   app:
     internalServerPort: 8080
     logLevel: DEBUG
+    basePath: /wallet-api
     walletUi:
       scheme: https
       domain: wallet.dome-marketplace-sbx.org
