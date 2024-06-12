@@ -1,0 +1,48 @@
+elasticsearch:
+  image: "docker.elastic.co/elasticsearch/elasticsearch"
+  imageTag: "7.17.3"
+  imagePullPolicy: "IfNotPresent"
+
+  replicas: 1
+  clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
+  minimumMasterNodes: 1
+
+  protocol: https
+  httpPort: 9200
+  transportPort: 9300
+
+  esJavaOpts: "-Xms1024m -Xmx1024m"
+
+  nameOverride: "dome-elasticsearch-svc"
+
+  resources:
+    requests:
+      cpu: "1000m"
+      memory: "2Gi"
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+
+  volumeClaimTemplate:
+    accessModes: ["ReadWriteOnce"]
+    resources:
+      requests:
+        storage: "5Gi"
+
+  readinessProbe:
+    failureThreshold: 3
+    initialDelaySeconds: 60
+    periodSeconds: 10
+    successThreshold: 3
+    timeoutSeconds: 5
+
+  extraInitContainers:
+    - name: file-permissions
+      image: busybox
+      command: ["chown", "-R", "1000:1000", "/usr/share/elasticsearch/"]
+      volumeMounts:
+        - mountPath: /usr/share/elasticsearch/data
+          name: elasticsearch-master
+      securityContext:
+        privileged: true
+        runAsUser: 0
