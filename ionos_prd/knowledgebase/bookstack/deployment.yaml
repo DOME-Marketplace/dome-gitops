@@ -36,7 +36,7 @@ spec:
                   name: bookstack-secret
                   key: DB_PASSWORD
             - name: APP_URL
-              value: "https://knowledgebase.dome-marketplace-sbx.org"
+              value: "https://knowledgebase.dome-marketplace-prd.org"
             - name: APP_KEY
               valueFrom:
                 secretKeyRef:
@@ -56,33 +56,6 @@ spec:
               value: "sandbox.smtp.mailtrap.io"
             - name: MAIL_PORT
               value: "2525"
-
-            - name: AUTH_METHOD
-              value: "oidc"
-            - name: AUTH_AUTO_INITIATE
-              value: "true"
-            - name: OIDC_NAME
-              value: "DOME SSO"
-            - name: OIDC_DISPLAY_NAME_CLAIMS
-              value: "name"
-            - name: OIDC_CLIENT_ID
-              value: "bookstack"
-            - name: OIDC_CLIENT_SECRET
-              value: "N1e9syMGGDsnjlxTsLKwaB0OrrG17b51"
-            - name: OIDC_ISSUER
-              value: "https://cs-identity.dome-marketplace-sbx.org/realms/dome"
-            - name: OIDC_END_SESSION_ENDPOINT
-              value: "https://cs-identity.dome-marketplace-sbx.org/realms/dome/protocol/openid-connect/logout"
-            - name: OIDC_ISSUER_DISCOVER
-              value: "true"
-            - name: OIDC_USER_TO_GROUPS
-              value: "true"
-            - name: OIDC_GROUPS_CLAIM
-              value: "groups"
-            - name: OIDC_ADDITIONAL_SCOPES
-              value: "groups"
-            - name: OIDC_REMOVE_FROM_GROUPS
-              value: "true"
           ports:
             - containerPort: 8080
               name: http

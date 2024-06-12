@@ -8,6 +8,7 @@ wallet-api:
   app:
     internalServerPort: 8080
     logLevel: DEBUG
+    basePath: /wallet-api
     walletUi:
       scheme: https
       domain: wallet.dome-marketplace-sbx.org
@@ -19,12 +20,12 @@ wallet-api:
         path: /keycloak/realms/wallet
       internal:
         scheme: http
-        domain: wallet-keycloak
+        domain: dome-wallet-keycloak
         port: 8080
         path: /realms/wallet
       jwtDecoderPath: /protocol/openid-connect/certs
     ebsiTest:
-      url: http://wallet-keycloak:8080/realms/wallet/protocol/openid-connect/token
+      url: http://dome-wallet-keycloak:8080/realms/wallet/protocol/openid-connect/token
       client:
         id: user-registry-client
         secret: defaultSecret
@@ -47,7 +48,7 @@ wallet-api:
           key: user-password
     vault:
       provider: hashicorp
-      host: vault
+      host: vault-server
       scheme: http
       port: 8200
       token: defaultToken
@@ -71,7 +72,7 @@ dome-wallet-ui:
   # -- should be enabled?
   enabled: true
   # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-  fullnameOverride: wallet-identity-provider
+  fullnameOverride: dome-wallet-ui
   ## deployment specific configuration
   app:
     internalServerPort: 8080
@@ -110,9 +111,11 @@ dome-wallet-keycloak:
         # -- key to retrieve the password from
         key: keycloak-password
   db:
-    name: postgres
-    url: jdbc:postgresql://wallet-keycloak-postgres/keycloak
+    type: postgres
+    host: dome-wallet-keycloak-postgres
     port: 5432
+    externalService: false
+    name: keycloak
     username: postgres
     password: postgres
     existingSecret:
@@ -128,9 +131,9 @@ postgresql:
   # -- should the postgresql deployment be enabled
   enabled: true
   # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-  fullnameOverride: postgresql-connector
+  fullnameOverride: dome-wallet-keycloak-postgres
   # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-  nameOverride: postgresql-connector
+  nameOverride: dome-wallet-keycloak-postgres
   ## auth configuration for the database
   auth:
     # -- username to be used
@@ -147,7 +150,7 @@ postgresql:
       scripts:
         # -- create the database as expected by the blockchain-connector
         create.sh: |
-          psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE mktdb;"
+          psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE keycloak;"
           
 ## configuration of the context-broker - see https://github.com/FIWARE/helm-charts/tree/main/charts/scorpio-broker-aaio for details
 scorpio:

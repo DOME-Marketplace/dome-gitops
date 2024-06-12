@@ -74,16 +74,13 @@ In order to setup the DOME-Marketplace, its recommended to install the following
 > :bulb: Even thought the [cluster creation](#cluster-creation) was done on Ionos, the following steps apply to all [Kubernetes](https://kubernetes.io/) installations(tested version is 1.26.7). Its not required to use Ionos for that.
 
 
-In order to provide GitOps capabilities, we use [ArgoCD](https://argo-cd.readthedocs.io/en/stable/). To setup the tool, we need 2 manual steps to deploy ArgoCD, as its decribed by the [manual](https://argo-cd.readthedocs.io/en/stable/getting_started/#1-install-argo-cd)
+In order to provide GitOps capabilities, we use [ArgoCD](https://argo-cd.readthedocs.io/en/stable/). To setup the tool, we use helm argocd [chart](https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd).
 > :warning: The following steps expect kubectl to be already connected to the cluster, as described in [cluster-creationg step 6](#cluster-creation)  
 
-1. Create a namespace for argocd. For easier configuration, we use argo's default ```argocd```
+1. Deploy argocd for sbx environment:
 ```shell
-    kubectl create namespace argocd
-```
-2. Deploy argocd with extensions enabled:
-```shell 
-    kubectl apply -k ./extension/ -n argocd
+    # Extract the argocd helm chart <versiom> from applications_sbx/infrastructure/argocd.yaml
+    helm upgrade -i --namespace argocd --create-namespace --values ionos_sbx/argocd/values.yaml --version <version> argocd argo/argo-cd
 ```
 
 From now on, every deployment should be managed by ArgoCD through [Applications](https://argo-cd.readthedocs.io/en/stable/core_concepts/).

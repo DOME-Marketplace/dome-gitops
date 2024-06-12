@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: dome-gpt.dome-marketplace-dev.org
+  - host: eng-gpt.dome-marketplace-dev.org
     http:
       paths:
       - path: /
@@ -22,5 +22,5 @@ spec:
               number: 5000
   tls:
   - hosts:
-    - dome-gpt.dome-marketplace-dev.org
+    - eng-gpt.dome-marketplace-dev.org
     secretName: chatbot-backend-tls-secret
