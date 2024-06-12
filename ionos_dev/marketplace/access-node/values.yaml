@@ -199,5 +199,5 @@ access-node:
       serverHost: http://localhost:8080
     ## configuration for the api proxy, to serve all apis through one kubernetes service
     apiProxy:
-      enabled: false
+      enabled: true
  
