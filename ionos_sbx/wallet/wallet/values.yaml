@@ -4,6 +4,20 @@ wallet-api:
   enabled: true
   # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
   fullnameOverride: wallet-api
+  ## ingress specific configuration
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+    hosts:
+      - host: wallet.dome-marketplace-sbx.org
+        paths:
+          - path: /wallet-api
+            pathType: Prefix
+    tls:
+      - hosts:
+          - wallet.dome-marketplace-sbx.org
   ## deployment specific configuration
   app:
     internalServerPort: 8080
@@ -73,6 +87,20 @@ dome-wallet-ui:
   enabled: true
   # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
   fullnameOverride: dome-wallet-ui
+  ## ingress specific configuration
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+    hosts:
+      - host: wallet.dome-marketplace-sbx.org
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+          - wallet.dome-marketplace-sbx.org
   ## deployment specific configuration
   app:
     internalServerPort: 8080
@@ -97,6 +125,20 @@ dome-wallet-keycloak:
   enabled: true
   # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
   fullnameOverride: dome-wallet-keycloak
+  ## ingress specific configuration
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+    hosts:
+      - host: wallet.dome-marketplace-sbx.org
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+          - wallet.dome-marketplace-sbx.org
   ## deployment specific configuration
   app:
     internalServerPort: 8080
