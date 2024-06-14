@@ -18,3 +18,14 @@ spec:
     automated:
       prune: true
       selfHeal: true
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      name: walt-id-vcwaltid
+      jsonPointers:
+        - /spec/replicas
+    - group: apps
+      kind: Deployment
+      name: walt-id-vcwaltid-certs
+      jsonPointers:
+        - /spec/replicas
