@@ -18,3 +18,9 @@ spec:
     automated:
       prune: true
       selfHeal: true
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      name: kong-marketplace-kong
+      jsonPointers:
+        - /spec/replicas
