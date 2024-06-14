@@ -3,12 +3,16 @@ access-node:
   desmos:
     # -- should the desmos-blockchain-connector be enabled
     enabled: true
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    fullnameOverride: desmos
     ## deployment specific configuration
     app:
-      ## profile (dev == sbx)
-      profile: dev
+      ## profile (test == dev)
+      profile: test
       ## debug level
-      logLevel: debug
+      logLevel: DEBUG
+      # internal server port
+      internalServerPort: 8080
       ## information about the access-node operator
       operator:
         # -- did of the organization running the node
@@ -24,7 +28,7 @@ access-node:
       ## configuration of ngsi-ld entities to listen for
       ngsiSubscription:
         # -- local address of the blockchain-connectors notification endpoint for ngsi-ld events
-        notificationEndpoint: http://desmos:8080/notifications/broker
+        notificationEndpoint: /api/v1/notifications/broker
         # -- a list of entity-types the connector is interested in
         entityTypes: catalog,product-offering,category,individual,organization,product,service-specification,product-offering-price,resource-specification,product-specification
       ## configuration to connect to the dlt-adapter
@@ -32,37 +36,35 @@ access-node:
         # -- provider of the dlt-adapter component
         provider: digitelts
         # -- (local) address of the dlt-adapter
-        internalDomain: http://dlt-adapter:80
+        internalDomain: http://dlt-adapter:8080
         # -- (external) address of the dlt-adapter
-        externalDomain: http://dlt-adapter:80
+        externalDomain: http://dlt-adapter:8080
         ## configuration of subscriptions at the blockchain
       txSubscription:
         # -- local address of the blockchain-connectors notification endpoint for dlt events
-        notificationEndpoint: http://desmos:8080/notifications/dlt
+        notificationEndpoint: /api/v1/notifications/dlt
         # -- a list of entity-types the connector is interested in
         entityTypes: catalog,product-offering,category,individual,organization,product,service-specification,product-offering-price,resource-specification,product-specification
     ## configuration of the database to be used by the blockchain-connector
     db:
       # -- host of the db
-      host: pg-75qkrjg6i4d7tlg2.postgresql.de-txl.ionos.com
+      host: desmos-postgres
       # -- port of the host of the db
-      port:
+      port: 5432
       # -- should be true if is an external service
-      externalService: true
+      externalService: false
       # -- name of the db
-      name: desmos
+      name: mktdb
       # -- username to be used
-      username: desmosuser
+      username: postgres
       # -- existing secret to retrieve the db password
       existingSecret:
         # -- should an existing secret be used
         enabled: true
         # -- name of the secret
-        name: desmos-sbx-secret
+        name: desmos-api-db-secret
         # -- key to retrieve the password from
-        key: desmos-db-password
-      # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-      fullnameOverride: desmos
+        key: password
 
   ## configuration for the dlt-adapter - see https://DOME-Marketplace.github.io/access-node/dlt-adapter for configuration documentation
   dlt-adapter:
@@ -79,7 +81,30 @@ access-node:
   ## configuration of postgres to be used for the blockchain-connector - see https://github.com/bitnami/charts/tree/main/bitnami/postgresql for details
   postgresql:
     # -- should the postgresql deployment be enabled
-    enabled: false
+    enabled: true
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    fullnameOverride: desmos-postgres
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    nameOverride: desmos-postgres
+    ## auth configuration for the database
+    auth:
+      # -- username to be used
+      username: postgres
+      # -- should the default postgres user be enabled
+      enablePostgresUser: true
+      # -- existing secret
+      existingSecret: desmos-api-db-secret
+      secretKeys:
+        userPasswordKey: password
+    ## configuration of the postgres primary replica
+    primary:
+      ## provide db initialization
+      initdb:
+        ## provide scripts for initialization
+        scripts:
+          # -- create the database as expected by the blockchain-connector
+          create.sh: |
+            psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE mktdb;"  
 
   ## configuration of the context-broker - see https://github.com/FIWARE/helm-charts/tree/main/charts/scorpio-broker-aaio for details
   scorpio:
@@ -94,7 +119,7 @@ access-node:
     ## configuration of the database to be used by broker
     db:
       # -- host of the db
-      dbhost: postgis
+      dbhost: scorpio-postgis
       # -- username to be used
       user: postgres
       # -- existing secret to retrieve the db password
@@ -102,9 +127,9 @@ access-node:
         # -- should an existing secret be used
         enabled: true
         # -- name of the secret
-        name: desmos-scorpio-secret
+        name: desmos-scorpio-db-secret
         # -- key to retrieve the password from
-        key: passwordKey
+        key: password
     ## configuration of the readiness probe
     readinessProbe:
       # -- path to be used for the readiness probe, older versions used /actuator/health
@@ -130,9 +155,9 @@ access-node:
     # -- should postgis be enabled
     enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-    fullnameOverride: postgis
+    fullnameOverride: scorpio-postgis
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-    nameOverride: postgis
+    nameOverride: scorpio-postgis
     ## auth configuration for the database
     auth:
       # -- username to be used
@@ -140,7 +165,9 @@ access-node:
       # -- should the default postgres user be enabled
       enablePostgresUser: true
       # -- existing secret
-      existingSecret: desmos-postgis-secret
+      existingSecret: desmos-scorpio-db-secret
+      secretKeys:
+        userPasswordKey: password
     ## configuration of the postgres primary replicas
     primary:
       ## provide db initialization
@@ -154,6 +181,8 @@ access-node:
 
   ## configuration of the tm-forum-api - see https://github.com/FIWARE/helm-charts/tree/main/charts/tm-forum-api for details
   tm-forum-api:
+    fullnameOverride: tm-forum-api
+    nameOverride: tm-forum-api
     # -- should tm-forum-api be enabled
     enabled: true
     ## configuration to be used by every api-deployment if nothing specific is provided.
@@ -161,7 +190,7 @@ access-node:
       # -- configuration to be used for the image of the containers
       image:
         # -- current latest tag
-        tag: "0.16.0"
+        tag: "0.20.1"
       # -- ngsi-ld broker connection information
       ngsiLd:
         # -- address of the broker

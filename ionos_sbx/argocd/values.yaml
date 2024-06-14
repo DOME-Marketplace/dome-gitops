@@ -1,0 +1,81 @@
+configs:
+  params:
+    server.log.level: debug
+    server.extensions.enabled: "true"
+  rbac:
+    policy.default: role:readonly
+    policy.csv: |
+      g, CgkxNTU3NTY4MjYSBmdpdGh1Yg, role:admin
+      g, CgYyNDEzMTgSBmdpdGh1Yg, role:admin
+  cm:
+    url: https://argocd.dome-marketplace-sbx.org
+    admin.enabled: "true"
+    dex.config: |
+      connectors:
+        - type: github
+          id: github
+          name: GitHub
+          config:
+            clientID: 4eff9d054669dee85f3a
+            clientSecret: $github-secret:clientSecret
+            orgs:
+            - name: DOME-Marketplace
+
+redis-ha:
+  enabled: false
+
+controller:
+  replicas: 1
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+server:
+  replicas: 1
+  extensions:
+    enabled: true
+    extensionList:
+      - name: web
+        env:
+          - name: EXTENSION_URL
+            value: https://github.com/argoproj-labs/rollout-extension/releases/download/v0.3.1/extension.tar
+  ingress:
+    enabled: true
+    hostname: argocd.dome-marketplace-sbx.org
+    tls: true
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    ingressClassName: "nginx"
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+repoServer:
+  replicas: 1
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+applicationSet:
+  replicas: 1
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+dex:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+redis:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
