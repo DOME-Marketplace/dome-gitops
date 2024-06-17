@@ -127,7 +127,7 @@ access-node:
         # -- name of the secret
         name: scorpio-secret
         # -- key to retrieve the password from
-        key: postgres-password
+        key: postgres-root-password
     ## configuration of the readiness probe
     readinessProbe:
       # -- path to be used for the readiness probe, older versions used /actuator/health
