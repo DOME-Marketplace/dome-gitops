@@ -19,9 +19,9 @@ Create Zone for the domain(s) to be used in Ionos DNS API via:
 
 
 
-Prepare SealedSecret named ionos-credentials based on the token generated via endpoint https://api.ionos.com/auth/v1/tokens/generate:
+Prepare SealedSecret named ionos-token-secret based on the token generated via endpoint https://api.ionos.com/auth/v1/tokens/generate:
     
-Secret template to be placed in file 'ionos-token-secret.yaml'
+Secret tokenValue to be placed in file 'ionos-token-secret.yaml'
 
     apiVersion: v1
     data:
