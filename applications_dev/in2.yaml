@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: in2
+  namespace: argocd
+  labels:
+    purpose: in2
+spec:
+  destination:
+    namespace: in2
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: applications_dev/in2
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
