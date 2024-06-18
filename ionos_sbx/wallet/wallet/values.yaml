@@ -18,6 +18,7 @@ wallet-api:
     tls:
       - hosts:
           - wallet.dome-marketplace-sbx.org
+        secretName: wallet-tls-secret
   ## deployment specific configuration
   app:
     internalServerPort: 8080
@@ -101,6 +102,7 @@ dome-wallet-ui:
     tls:
       - hosts:
           - wallet.dome-marketplace-sbx.org
+        secretName: wallet-tls-secret
   ## deployment specific configuration
   app:
     internalServerPort: 8080
@@ -134,11 +136,12 @@ dome-wallet-keycloak:
     hosts:
       - host: wallet.dome-marketplace-sbx.org
         paths:
-          - path: /
+          - path: /keycloak
             pathType: Prefix
     tls:
       - hosts:
           - wallet.dome-marketplace-sbx.org
+        secretName: wallet-tls-secret
   ## deployment specific configuration
   app:
     internalServerPort: 8080
