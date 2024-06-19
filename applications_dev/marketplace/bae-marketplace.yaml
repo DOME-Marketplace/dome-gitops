@@ -18,9 +18,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-  ignoreDifferences:
-    - group: apps
-      kind: Deployment
-      name: bae-marketplace-biz-ecosystem-charging-backend
-      jsonPointers:
-        - /spec/replicas
