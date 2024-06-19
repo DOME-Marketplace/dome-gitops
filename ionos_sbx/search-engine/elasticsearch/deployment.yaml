@@ -49,7 +49,10 @@ spec:
       hostname: elasticsearch
       restartPolicy: Always
       securityContext:
-        fsGroup: 1000
+          privileged: true
+          runAsUser: 1000
+          runAsGroup: 1000
+          fsGroup: 1000
       volumes:
         - name: elasticsearch-data
           persistentVolumeClaim:
