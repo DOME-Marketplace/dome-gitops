@@ -203,3 +203,56 @@ access-node:
     apiProxy:
       # -- the proxy must be enabled
       enabled: true
+
+    apis:
+    - name: party-catalog
+      image: tmforum-party-catalog
+      basePath: /
+
+    - name: customer-bill-management
+      image: tmforum-customer-bill-management
+      basePath: /
+
+    - name: customer-management
+      image: tmforum-customer-management
+      basePath: /
+
+    - name: product-catalog
+      image: tmforum-product-catalog
+      basePath: /
+
+    - name: product-inventory
+      image: tmforum-product-inventory
+      basePath: /
+
+    - name: product-ordering-management
+      image: tmforum-product-ordering-management
+      basePath: /
+
+    - name: resource-catalog
+      image: tmforum-resource-catalog
+      basePath: /
+
+    - name: resource-function-activation
+      image: tmforum-resource-function-activation
+      basePath: /
+
+    - name: resource-inventory
+      image: tmforum-resource-inventory
+      basePath: /
+
+    - name: service-catalog
+      image: tmforum-service-catalog
+      basePath: /
+
+    - name: account
+      image: tmforum-account
+      basePath: /
+
+    - name: agreement
+      image: tmforum-agreement
+      basePath: /
+
+    - name: usage-management
+      image: tmforum-usage-management
+      basePath: /
