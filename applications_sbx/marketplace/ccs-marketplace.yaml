@@ -18,9 +18,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-  ignoreDifferences:
-    - group: apps
-      kind: Deployment
-      name: credentials-config-service
-      jsonPointers:
-        - /spec/replicas
