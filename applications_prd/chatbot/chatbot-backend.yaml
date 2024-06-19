@@ -1,26 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: bae-marketplace
+  name: chatbot-backend
   namespace: argocd
   labels:
-    purpose: marketplace
+    purpose: chatbot
 spec:
   destination:
-    namespace: marketplace
+    namespace: chatbot
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos_dev/marketplace/bae
+    path: ionos_prd/chatbot/backend
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-  ignoreDifferences:
-    - group: apps
-      kind: Deployment
-      name: bae-marketplace-biz-ecosystem-charging-backend
-      jsonPointers:
-        - /spec/replicas

@@ -9,15 +9,15 @@ wallet-api:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+      cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
     hosts:
-      - host: wallet.dome-marketplace-sbx.org
+      - host: wallet.dome-marketplace-dev.org
         paths:
           - path: /wallet-api
             pathType: Prefix
     tls:
       - hosts:
-          - wallet.dome-marketplace-sbx.org
+          - wallet.dome-marketplace-dev.org
         secretName: wallet-tls-secret
   ## deployment specific configuration
   app:
@@ -26,11 +26,11 @@ wallet-api:
     basePath: /wallet-api
     walletUi:
       scheme: https
-      domain: wallet.dome-marketplace-sbx.org
+      domain: wallet.dome-marketplace-dev.org
     authServer:
       external:
         scheme: https
-        domain: wallet.dome-marketplace-sbx.org
+        domain: wallet.dome-marketplace-dev.org
         port: 443
         path: /keycloak/realms/wallet
       internal:
@@ -93,22 +93,22 @@ dome-wallet-ui:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+      cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
     hosts:
-      - host: wallet.dome-marketplace-sbx.org
+      - host: wallet.dome-marketplace-dev.org
         paths:
           - path: /
             pathType: Prefix
     tls:
       - hosts:
-          - wallet.dome-marketplace-sbx.org
+          - wallet.dome-marketplace-dev.org
         secretName: wallet-tls-secret
   ## deployment specific configuration
   app:
     internalServerPort: 8080
     walletApi:
-      internalDomain: https://wallet.dome-marketplace-sbx.org/wallet-api
-      websocketExternalDomain: wss://wallet.dome-marketplace-sbx.org/wallet-api
+      internalDomain: https://wallet.dome-marketplace-dev.org/wallet-api
+      websocketExternalDomain: wss://wallet.dome-marketplace-dev.org/wallet-api
       websocketPath: /api/v1/pin
       executeContentPath: /api/v1/execute-content
       requestCredentialPath: /api/v1/request-credential
@@ -118,7 +118,7 @@ dome-wallet-ui:
       requestSignedCredentialPath: /api/v1/request-signed-credential
       cborPath: /api/v1/vp/cbor
     iam:
-      external_domain: https://wallet.dome-marketplace-sbx.org/keycloak
+      external_domain: https://wallet.dome-marketplace-dev.org/keycloak
       realm_path: /realms/wallet
 
 ## configuration for the dome-wallet-keycloak
@@ -132,15 +132,15 @@ dome-wallet-keycloak:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+      cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
     hosts:
-      - host: wallet.dome-marketplace-sbx.org
+      - host: wallet.dome-marketplace-dev.org
         paths:
           - path: /keycloak
             pathType: Prefix
     tls:
       - hosts:
-          - wallet.dome-marketplace-sbx.org
+          - wallet.dome-marketplace-dev.org
         secretName: wallet-tls-secret
   ## deployment specific configuration
   app:
@@ -196,7 +196,7 @@ postgresql:
         # -- create the database as expected by the blockchain-connector
         create.sh: |
           psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE keycloak;"
-          
+
 ## configuration of the context-broker - see https://github.com/FIWARE/helm-charts/tree/main/charts/scorpio-broker-aaio for details
 scorpio:
   # -- should scorpio be enabled

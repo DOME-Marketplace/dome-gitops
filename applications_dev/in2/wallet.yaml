@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: vault
+  name: wallet
   namespace: argocd
   labels:
     purpose: in2
@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
-    path: ionos_dev/wallet/vault
+    path: ionos_dev/wallet/wallet
   destination:
     server: https://kubernetes.default.svc
     namespace: in2
