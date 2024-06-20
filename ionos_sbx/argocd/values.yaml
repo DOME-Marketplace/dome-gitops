@@ -1,7 +1,7 @@
 configs:
   params:
     server.log.level: debug
-    server.extensions.enabled: "true"
+    server.extensions.enabled: "false"
   rbac:
     policy.default: role:readonly
     policy.csv: |
@@ -35,11 +35,6 @@ server:
   replicas: 1
   extensions:
     enabled: true
-    extensionList:
-      - name: web
-        env:
-          - name: EXTENSION_URL
-            value: https://github.com/argoproj-labs/rollout-extension/releases/download/v0.3.1/extension.tar
   ingress:
     enabled: true
     hostname: argocd.dome-marketplace-sbx.org
