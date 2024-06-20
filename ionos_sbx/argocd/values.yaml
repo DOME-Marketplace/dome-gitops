@@ -33,8 +33,6 @@ controller:
 
 server:
   replicas: 1
-  extensions:
-    enabled: true
   ingress:
     enabled: true
     hostname: argocd.dome-marketplace-sbx.org
