@@ -93,6 +93,7 @@ access-node:
       # -- existing secret
       existingSecret: desmos-secret
       secretKeys:
+        adminPasswordKey: postgres-password
         userPasswordKey: postgres-password
     ## configuration of the postgres primary replica
     primary:
@@ -165,6 +166,7 @@ access-node:
       # -- existing secret
       existingSecret: scorpio-secret
       secretKeys:
+        adminPasswordKey: postgres-password
         userPasswordKey: postgres-password
     ## configuration of the postgres primary replicas
     primary:
