@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+  - repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: 60.2.0
+    chart: kube-prometheus-stack
+    helm:
+      releaseName: kube-prometheus-stack
+      valueFiles:
+      - $values/ionos_dev/kube-prometheus-stack/values.yaml
+  - repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: HEAD
+    ref: values
+  - repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: HEAD
+    path: ionos_dev/kube-prometheus-stack
+    directory:
+      include: '{kube-prometheus-stack-sso-secret.yaml,kube-prometheus-stack-discord-webhook-infrastructure-secret.yaml,standard-cluster-monitoring-recording-rules.yaml,onzack-namespace-monitoring-recording-rules.yaml}'
+  - repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: HEAD
+    path: ionos_common/grafana-dashboards
+  - repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: HEAD
+    path: ionos_dev/grafana-dashboards
+  destination:
+    namespace: kube-prometheus-stack
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
