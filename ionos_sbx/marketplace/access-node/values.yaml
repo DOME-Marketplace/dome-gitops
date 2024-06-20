@@ -10,9 +10,7 @@ access-node:
       ## profile (test == dev)
       profile: test
       ## debug level
-      logLevel: DEBUG
-      # internal server port
-      internalServerPort: 8080
+      logLevel: INFO
       ## information about the access-node operator
       operator:
         # -- did of the organization running the node
@@ -28,7 +26,7 @@ access-node:
       ## configuration of ngsi-ld entities to listen for
       ngsiSubscription:
         # -- local address of the blockchain-connectors notification endpoint for ngsi-ld events
-        notificationEndpoint: /api/v1/notifications/broker
+        notificationEndpoint: http://desmos:8080/api/v1/notifications/broker
         # -- a list of entity-types the connector is interested in
         entityTypes: catalog,product-offering,category,individual,organization,product,service-specification,product-offering-price,resource-specification,product-specification
       ## configuration to connect to the dlt-adapter
@@ -42,7 +40,7 @@ access-node:
         ## configuration of subscriptions at the blockchain
       txSubscription:
         # -- local address of the blockchain-connectors notification endpoint for dlt events
-        notificationEndpoint: /api/v1/notifications/dlt
+        notificationEndpoint: http://desmos:8080/api/v1/notifications/dlt
         # -- a list of entity-types the connector is interested in
         entityTypes: catalog,product-offering,category,individual,organization,product,service-specification,product-offering-price,resource-specification,product-specification
     ## configuration of the database to be used by the blockchain-connector
@@ -54,7 +52,7 @@ access-node:
       # -- should be true if is an external service
       externalService: false
       # -- name of the db
-      name: mktdb
+      name: desmos
       # -- username to be used
       username: postgres
       # -- existing secret to retrieve the db password
@@ -104,7 +102,7 @@ access-node:
         scripts:
           # -- create the database as expected by the blockchain-connector
           create.sh: |
-            psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE mktdb;"  
+            psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE desmos;"  
 
   ## configuration of the context-broker - see https://github.com/FIWARE/helm-charts/tree/main/charts/scorpio-broker-aaio for details
   scorpio:
