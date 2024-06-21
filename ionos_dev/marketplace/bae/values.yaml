@@ -119,7 +119,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: "9.1.0"
+        tag: 9.1.1
         pullPolicy: Always
     
     plugins:
@@ -162,7 +162,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "9.1.4-dome"
+        tag: "9.2.2"
         pullPolicy: Always
 
     ingress: 
@@ -192,3 +192,10 @@ business-api-ecosystem:
       enabled: true
     initContainers: false
     propagateToken: true
+    additionalEnvVars:
+      - name: BAE_LP_CHAT_URL
+        value: https://eng-gpt.dome-marketplace-dev.org/predict
+      - name: BAE_LP_KNOWLEDGE_BASE_URL
+        value: https://knowledgebase.dome-marketplace-dev.org/
+      - name: BAE_LP_TICKETING_URL
+        value: https://ticketing.dome-marketplace-dev.org/
