@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: loki-distributed
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+  - repoURL: https://grafana.github.io/helm-charts
+    targetRevision: 0.79.0
+    chart: loki-distributed
+    helm:
+      releaseName: loki-distributed
+      valueFiles:
+      - $values/ionos_sbx/loki-distributed/values.yaml
+  - repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: feature/monitoring
+    ref: values
+  destination:
+    namespace: loki-distributed
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

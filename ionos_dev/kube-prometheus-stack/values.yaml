@@ -1,0 +1,79 @@
+grafana:
+  ingress:
+    enabled: true
+    hosts:
+      - grafana.dome-marketplace-dev.org
+    tls:
+      - secretName: grafana-tls
+        hosts:
+        - grafana.dome-marketplace-dev.org
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
+    ingressClassName: nginx
+  grafana.ini:
+    server:
+      # The full public facing url you use in browser, used for redirects and emails
+      root_url: https://grafana.dome-marketplace-dev.org
+    auth:
+      disable_login_form: true
+      signout_redirect_url: https://grafana.dome-marketplace-dev.org/login
+    auth.github:
+      enabled: true
+      allow_sign_up: true
+      auto_login: false
+      scopes: user:email,read:org
+      auth_url: https://github.com/login/oauth/authorize
+      token_url: https://github.com/login/oauth/access_token
+      api_url: https://api.github.com/user
+      #allowed_organizations: ["DOME-Marketplace"]
+      client_id: $__file{/etc/secrets/kube-prometheus-stack-sso/client_id}
+      client_secret: $__file{/etc/secrets/kube-prometheus-stack-sso/client_secret}
+      role_attribute_path: contains(groups[*], '@DOME-Marketplace/dome-grafana-dev-admins') && 'GrafanaAdmin' || contains(groups[*], '@DOME-Marketplace/dome-grafana-dev-rw') && 'Editor' || contains(groups[*], '@DOME-Marketplace/dome-grafana-dev-ro') && 'Viewer' || ''
+  extraSecretMounts:
+    - name: kube-prometheus-stack-sso
+      secretName: kube-prometheus-stack-sso
+      defaultMode: 0440
+      mountPath: /etc/secrets/kube-prometheus-stack-sso
+      readOnly: true
+  additionalDataSources:
+  - name: loki-distributed
+    access: proxy
+    isDefault: false
+    basicAuth: false
+    editable: true
+    jsonData:
+        tlsSkipVerify: true
+    orgId: 1
+    type: loki
+    url: http://loki-distributed-gateway.loki-distributed.svc.cluster.local
+    version: 1
+prometheus:
+  prometheusSpec:
+    podMonitorSelectorNilUsesHelmValues: false
+    probeSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+alertmanager:
+  config:
+    route:
+      group_by: ['namespace']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 12h
+      receiver: infrastructure
+      routes:
+      - receiver: infrastructure
+        matchers:
+          - alertname = "Watchdog"
+    receivers:
+    - name: 'null'
+    - name: infrastructure
+      discord_configs:
+        - webhook_url: https://discord.com/api/webhooks/1253364400429989988/ckmmSS9F6RycC5EI-DvBZYdy1WRD6qA0rY4QFzoU8Nhu3Oc0CJSiRUS1eQnjzp3F1VHX
+      # - webhook_url_file: /etc/alertmanager/secrets/kube-prometheus-stack-discord-infrastructure-webhook-secret/webhook_url
+    templates:
+    - '/etc/alertmanager/config/*.tmpl'
+  # alertmanagerSpec:
+  #   secrets:
+  #     - kube-prometheus-stack-discord-infrastructure-webhook-secret
