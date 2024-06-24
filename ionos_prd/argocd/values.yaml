@@ -15,7 +15,7 @@ configs:
           id: github
           name: GitHub
           config:
-            clientID: 839cdac972b6665e6679
+            clientID: 09c05cde2c60b44e38b2
             clientSecret: $github-secret:clientSecret
             orgs:
             - name: DOME-Marketplace
