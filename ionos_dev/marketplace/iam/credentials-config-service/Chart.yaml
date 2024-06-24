@@ -8,5 +8,5 @@ appVersion: "0.0.1"
 
 dependencies:
   - name: credentials-config-service
-    version: 0.0.4
+    version: 0.1.5
     repository: https://fiware.github.io/helm-charts
