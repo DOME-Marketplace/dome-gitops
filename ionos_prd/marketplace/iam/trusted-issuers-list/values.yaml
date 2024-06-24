@@ -26,7 +26,7 @@ trusted-issuers-list:
     existingSecret:
       enabled: true
       name:  mysql-secret
-      key: 
+      key: mysql-root-password
 
     username: root
 
