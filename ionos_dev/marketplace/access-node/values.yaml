@@ -3,6 +3,8 @@ access-node:
   desmos:
     # -- should the desmos-blockchain-connector be enabled
     enabled: true
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    fullnameOverride: desmos
     ## deployment specific configuration
     app:
       ## profile (test == dev)
@@ -32,9 +34,9 @@ access-node:
         # -- provider of the dlt-adapter component
         provider: digitelts
         # -- (local) address of the dlt-adapter
-        internalDomain: http://dlt-adapter:80
+        internalDomain: http://dlt-adapter:8080
         # -- (external) address of the dlt-adapter
-        externalDomain: http://dlt-adapter:80
+        externalDomain: http://dlt-adapter:8080
         ## configuration of subscriptions at the blockchain
       txSubscription:
         # -- local address of the blockchain-connectors notification endpoint for dlt events
@@ -61,8 +63,6 @@ access-node:
         name: desmos-secret
         # -- key to retrieve the password from
         key: postgres-password
-      # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-      fullnameOverride: desmos
 
   ## configuration for the dlt-adapter - see https://DOME-Marketplace.github.io/access-node/dlt-adapter for configuration documentation
   dlt-adapter:
@@ -93,6 +93,7 @@ access-node:
       # -- existing secret
       existingSecret: desmos-secret
       secretKeys:
+        adminPasswordKey: postgres-password
         userPasswordKey: postgres-password
     ## configuration of the postgres primary replica
     primary:
@@ -165,6 +166,7 @@ access-node:
       # -- existing secret
       existingSecret: scorpio-secret
       secretKeys:
+        adminPasswordKey: postgres-password
         userPasswordKey: postgres-password
     ## configuration of the postgres primary replicas
     primary:
@@ -197,9 +199,9 @@ access-node:
       contextUrl: https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld
       # -- host that the tm-forum api can be reached at, when the proxy is enabled it should be set to that address. If not, set the host for each api individually
       serverHost: http://localhost:8080
-      
     ## configuration for the api proxy, to serve all apis through one kubernetes service
     apiProxy:
+      # -- the proxy must be enabled
       enabled: true
 
     apis:
