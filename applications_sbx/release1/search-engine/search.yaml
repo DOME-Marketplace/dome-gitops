@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: verifier-marketplace
+  name: search
   namespace: argocd
   labels:
-    purpose: marketplace-iam
+    purpose: search-engine
 spec:
   destination:
-    namespace: marketplace
+    namespace: search-engine
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos_dev/marketplace/iam/verifier
+    path: ionos_sbx/search-engine/search
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
   syncPolicy:

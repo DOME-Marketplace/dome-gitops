@@ -5,3 +5,4 @@ connectivity-test.yaml
 
 .idea
 /ionos_dev/search-engine/elasticsearch_*/*
+.history

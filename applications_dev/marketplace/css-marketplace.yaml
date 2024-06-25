@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: verifier-marketplace
+  name: credentials-config-service
   namespace: argocd
   labels:
     purpose: marketplace-iam
@@ -11,7 +11,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos_dev/marketplace/iam/verifier
+    path: ionos_dev/marketplace/iam/credentials-config-service
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
   syncPolicy:
