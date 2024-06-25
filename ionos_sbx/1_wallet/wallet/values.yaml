@@ -196,7 +196,7 @@ postgresql:
         # -- create the database as expected by the blockchain-connector
         create.sh: |
           psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE keycloak;"
-          
+
 ## configuration of the context-broker - see https://github.com/FIWARE/helm-charts/tree/main/charts/scorpio-broker-aaio for details
 scorpio:
   # -- should scorpio be enabled
