@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: search
-          image: production.eng.it:8433/dome/search:0.0.6
+          image: production.eng.it:8433/dome/search:0.1.2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -25,11 +25,21 @@ spec:
               protocol: TCP
           env:
             - name: ELASTICSEARCH_ADDRESS_HOST
-              value: dome-elasticsearch-svc
+              value: elasticsearch-master
             - name: ELASTICSEARCH_ADDRESS_PORT
               value: "9200"
             - name: network.host
               value: "0.0.0.0"
+            - name: ELASTIC_USERNAME
+              value: elastic
+            - name: ELASTIC_PASSWORD
+              value: dome_2024!
+            - name: TMFORUM_URL
+              value: https://dome-dev.eng.it/tmf-api
+            - name: BAE_URL
+              value: https://dome-marketplace-sbx.org
+            - name: LOG_LEVEL
+              value: DEBUG
           livenessProbe:
             httpGet:
               path: /health
