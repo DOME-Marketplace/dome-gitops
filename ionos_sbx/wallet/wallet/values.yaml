@@ -154,6 +154,8 @@ wallet:
     app:
       internalServerPort: 8080
       keycloak:
+        hostnameUrl: "https://wallet.dome-marketplace-sbx.org/keycloak"
+        adminUrl: "https://wallet.dome-marketplace-sbx.org/keycloak"
         relativePath: "/keycloak/"
         admin: admin
         existingSecret:
