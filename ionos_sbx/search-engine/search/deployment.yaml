@@ -35,11 +35,11 @@ spec:
             - name: ELASTIC_PASSWORD
               value: dome_2024!
             - name: TMFORUM_HOST
-              value: http://tm-forum-api-envoy
+              value: http://tm-forum-api-envoy.marketplace.svc.cluster.local
             - name: TMFORUM_PORT
               value: "8080"
             - name: BAE_HOST
-              value: http://bae-marketplace-biz-ecosystem-logic-proxy
+              value: http://bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local
             - name: BAE_PORT
               value: "8004"
             - name: LOG_LEVEL
