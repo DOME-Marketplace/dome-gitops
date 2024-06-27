@@ -35,9 +35,9 @@ spec:
             - name: ELASTIC_PASSWORD
               value: dome_2024!
             - name: TMFORUM_URL
-              value: https://dome-dev.eng.it/tmf-api
+              value: tm-forum-api-envoy:8080
             - name: BAE_URL
-              value: https://dome-marketplace-sbx.org
+              value: bae-marketplace-biz-ecosystem-charging-backend:8006
             - name: LOG_LEVEL
               value: DEBUG
           livenessProbe:
