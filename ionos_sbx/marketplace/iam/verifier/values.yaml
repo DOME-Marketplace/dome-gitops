@@ -5,7 +5,7 @@ vcverifier:
       tag: 0.1.0
       pullPolicy: Always
     logging:
-      level: INFO
+      level: DEBUG
       pathsToSkip:
         - "/health"
 
