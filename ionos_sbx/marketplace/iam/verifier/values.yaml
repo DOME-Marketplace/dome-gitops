@@ -1,17 +1,16 @@
 vcverifier:
   deployment:
     image:
-      repository: quay.io/fiware/vcverifier
-      tag: 2.7.0
+      repository: quay.io/dome-marketplace/vcverifier
+      tag: 0.1.0
       pullPolicy: Always
     logging: 
-      level: DEBUG
+      level: INFO
       pathsToSkip: 
         - "/health"
 
-    ssikit:
-      auditorUrl: http://walt-id-vcwaltid:7003
     verifier:
+      certificateFingerprint: B4:51:A0:FD:55:EE:02:E1:BB:E7:A8:8F:9E:F8:9E:49:9E:3A:8F:DC:CA:B8:7E:67:4A:F6:C9:D2:9F:69:41:94
       tirAddress: https://tir.dome-marketplace-sbx.org/v3/issuers
       did: did:web:dome-marketplace-sbx.org
     configRepo:
@@ -26,6 +25,7 @@ vcverifier:
             mountPath: /target
 
     server:
+      host: https://verifier.dome-marketplace-sbx.org
       staticDir: /static
       templateDir: /templates
 
