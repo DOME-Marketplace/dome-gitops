@@ -10,10 +10,9 @@ credentials-config-service:
   database:
     host: mysql-til
     name: ccs
+    username: root
 
     existingSecret:
       enabled: true
       name:  mysql-secret
-      key: 
-
-    username: root
+      key: mysql-root-password

@@ -1,0 +1,16 @@
+global:
+  dnsService: "coredns"
+
+compactor:
+  enabled: true
+
+ingester:
+  persistence:
+    enabled: true
+    claims:
+      - name: data
+        size: 200Gi
+querier:
+  persistence:
+    enabled: true
+    size: 200Gi

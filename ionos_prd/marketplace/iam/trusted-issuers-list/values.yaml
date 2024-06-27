@@ -26,36 +26,6 @@ trusted-issuers-list:
     existingSecret:
       enabled: true
       name:  mysql-secret
-      key: 
+      key: mysql-root-password
 
     username: root
-
-  initData:
-    initEnabled: true
-    hook: post-install,post-upgrade
-    issuers: 
-      # allow ourself to issue credentials
-      - name: dome-marketplace
-        issuer:
-          did: "did:web:dome-marketplace-prd.org"
-          credentials:
-            - validFor:
-                from: "2023-07-21T17:32:28Z"
-                to: "2040-07-21T17:32:28Z"
-              credentialsType: "LegalPersonCredential"
-            - validFor:
-                from: "2023-07-21T17:32:28Z"
-                to: "2040-07-21T17:32:28Z"
-              credentialsType: "VerifiableCredential"
-      - name: dome-provider
-        issuer:
-          did: "did:web:provider.dome.fiware.dev"
-          credentials:
-            - validFor:
-                from: "2023-07-21T17:32:28Z"
-                to: "2040-07-21T17:32:28Z"
-              credentialsType: "LegalPersonCredential"
-            - validFor:
-                from: "2023-07-21T17:32:28Z"
-                to: "2040-07-21T17:32:28Z"
-              credentialsType: "VerifiableCredential"

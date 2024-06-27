@@ -8,12 +8,12 @@ credentials-config-service:
 
   # Database config
   database:
+    persistence: true
     host: mysql-til
     name: ccs
+    username: root
 
     existingSecret:
       enabled: true
       name:  mysql-secret
-      key: 
-
-    username: root
+      key: mysql-root-password
