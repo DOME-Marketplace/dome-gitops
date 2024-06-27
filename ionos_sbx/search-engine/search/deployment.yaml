@@ -35,13 +35,13 @@ spec:
             - name: ELASTIC_PASSWORD
               value: dome_2024!
             - name: TMFORUM_HOST
-              value: tm-forum-api-envoy
+              value: http://tm-forum-api-envoy
             - name: TMFORUM_PORT
               value: "8080"
             - name: BAE_HOST
-              value: bae-marketplace-biz-ecosystem-charging-backend
+              value: http://bae-marketplace-biz-ecosystem-logic-proxy
             - name: BAE_PORT
-              value: "8006"
+              value: "8004"
             - name: LOG_LEVEL
               value: DEBUG
           livenessProbe:
