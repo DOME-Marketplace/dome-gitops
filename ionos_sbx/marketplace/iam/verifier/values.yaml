@@ -1,21 +1,22 @@
 vcverifier:
   deployment:
     image:
-      repository: quay.io/dome-marketplace/vcverifier
-      tag: 0.1.0
+      repository: quay.io/fiware/vcverifier
+      tag: 2.7.0
       pullPolicy: Always
-    logging:
+    logging: 
       level: DEBUG
-      pathsToSkip:
+      pathsToSkip: 
         - "/health"
 
+    ssikit:
+      auditorUrl: http://walt-id-vcwaltid:7003
     verifier:
-      certificateFingerprint: B4:51:A0:FD:55:EE:02:E1:BB:E7:A8:8F:9E:F8:9E:49:9E:3A:8F:DC:CA:B8:7E:67:4A:F6:C9:D2:9F:69:41:94
       tirAddress: https://tir.dome-marketplace-sbx.org/v3/issuers
       did: did:web:dome-marketplace-sbx.org
     configRepo:
       configEndpoint: http://credentials-config-service:8080/
-
+        
     initContainers:
       - name: add-theme
         image: quay.io/fiware/verifier-theme:0.0.1
@@ -25,27 +26,26 @@ vcverifier:
             mountPath: /target
 
     server:
-      host: https://verifier.dome-marketplace-sbx.org
       staticDir: /static
       templateDir: /templates
 
 
   ingress:
     enabled: true
-    annotations:
+    annotations: 
       cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
     className: nginx
     hosts:
       - host: verifier.dome-marketplace-sbx.org
-        paths:
+        paths:  
           - "/"
     tls:
-      - hosts:
+      - hosts: 
           - verifier.dome-marketplace-sbx.org
         secretName: verifier-tls-sec
 
 
-  templates:
+  templates: 
     verifier_present_qr.html: |-
       {{define "verifier_present_qr"}}
       <!doctype html>
@@ -56,13 +56,13 @@ vcverifier:
               <link href="/static/css/w3pro.css" rel="stylesheet">
               <link href="/static/css/mystyle.css" rel="stylesheet">
               <link href="/static/css/prism.css" rel="stylesheet">
-      
+          
               <meta name="viewport" content="width=device-width, initial-scale=1" />
               <meta name="theme-color" content="#2d58a7">
               <title>Credential Verifier</title>
-      
+          
           </head>
-      
+          
           <body>
               <div class="w3-bar w3-card color-primary w3-margin-bottom w3-large">
                   <a class="w3-bar-item w3-right" href="https://dome-marketplace-sbx.org"><img src="/static/img/logo-white.svg" alt="DOME Marketplace" style="width:222px;height:50px;">
