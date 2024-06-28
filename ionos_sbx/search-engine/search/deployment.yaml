@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: search
-          image: production.eng.it:8433/dome/search:0.1.3
+          image: production.eng.it:8433/dome/search:0.1.4
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -34,14 +34,14 @@ spec:
               value: elastic
             - name: ELASTIC_PASSWORD
               value: dome_2024!
-            - name: TMFORUM_HOST
-              value: http://tm-forum-api-envoy.marketplace.svc.cluster.local
-            - name: TMFORUM_PORT
-              value: "8080"
-            - name: BAE_HOST
-              value: http://bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local
-            - name: BAE_PORT
-              value: "8004"
+            - name: TMFORUM_SERVICE_CATALOG_URL
+              value: http://tm-forum-api-service-catalog:8080
+            - name: TMFORUM_PRODUCT_CATALOG_URL
+              value: http://tm-forum-api-product-catalog:8080
+            - name: TMFORUM_RESOURCE_CATALOG_URL
+              value: http://tm-forum-api-resource-catalog:8080
+            - name: BAE_URL
+              value: http://bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004
             - name: LOG_LEVEL
               value: DEBUG
           livenessProbe:
