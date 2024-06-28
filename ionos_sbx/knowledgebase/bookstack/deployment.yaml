@@ -23,6 +23,7 @@ spec:
       containers:
         - name: bookstack
           image: production.eng.it:8433/dome/knowledgebase-sbx:1.0.0
+          imagePullPolicy: always
           env:
             - name: DB_HOST
               value: "mysql-knowledgebase:3306"
