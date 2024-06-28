@@ -2,10 +2,10 @@ apiVersion: v2
 name: wallet
 description: Chart holder for ArgoCD
 type: application
-version: 0.1.2
-appVersion: "v0.0.3"
+version: 0.1.3
+appVersion: "v0.0.4"
 dependencies:
   - name: wallet
     condition: wallet.enabled
     repository: https://in2workspace.github.io/helm-charts
-    version: 0.1.2
+    version: 0.1.3
