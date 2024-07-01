@@ -1,0 +1,28 @@
+postgresql:
+  commonAnnotations:
+    wistefan/rollout-injecting-webhook: ignore
+  fullnameOverride: dekra-postgres
+  auth:
+    username: root  
+    enablePostgresUser: true
+    existingSecret: root
+    secretKeys:
+      adminPasswordKey: root
+      userPasswordKey: root
+  rbac:
+    create: true
+    rules:
+      - apiGroups:
+        - security.openshift.io
+        resourceNames:
+        - anyuid
+        resources:
+        - securitycontextconstraints
+        verbs:
+        - use    
+  primary:
+    initdb:
+      scripts:
+        create.sh: |
+          psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE dome;"
+
