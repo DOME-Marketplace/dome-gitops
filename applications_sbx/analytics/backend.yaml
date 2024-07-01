@@ -11,7 +11,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos_dev/analytics/backend
+    path: ionos_sbx/analytics/backend
     repoURL: https://github.com/DOME-Marketplace/dome-gitops.git
     targetRevision: HEAD
   syncPolicy:
