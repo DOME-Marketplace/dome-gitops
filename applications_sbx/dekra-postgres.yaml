@@ -4,7 +4,7 @@ metadata:
   name: dekra-postgres
   namespace: argocd
   labels:
-    purpose: marketplace-iam
+    purpose: dome-certification
 spec:
   destination:
     namespace: dome-certification
