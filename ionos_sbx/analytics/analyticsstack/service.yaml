@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: analyticsstack
+  namespace: analytics
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/instance: analyticsstack
+    app.kubernetes.io/name: analyticsstack
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: superset-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: superset-app
+  template:
+    metadata:
+      labels:
+        app: superset-app
+    spec:
+      containers:
+        - name: superset
+          image: {{ .Values.superset.image.repository }}:{{ .Values.superset.image.tag }}
+          ports:
+            - containerPort: 8088
+          env:
+            - name: ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: superset-secrets
+                  key: admin_username
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: superset-secrets
+                  key: admin_password
+          volumeMounts:
+            - name: superset-home
+              mountPath: /app/superset_home
+      volumes:
+        - name: superset-home
+          emptyDir: {}
