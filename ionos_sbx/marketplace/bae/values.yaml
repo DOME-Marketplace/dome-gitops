@@ -162,7 +162,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "9.3.0"
+        tag: "9.4.0"
         pullPolicy: Always
 
     ingress: 
@@ -199,3 +199,7 @@ business-api-ecosystem:
         value: https://knowledgebase.dome-marketplace-sbx.org/
       - name: BAE_LP_TICKETING_URL
         value: https://ticketing.dome-marketplace-sbx.org/
+      - name: BAE_LP_SIOP_OPERATORS
+        value: did:elsi:VATES-B87798617
+      - name: BAE_LP_SEARCH_URL
+        value: http://dome-search-svc.search-engine.svc.cluster.local:8080
