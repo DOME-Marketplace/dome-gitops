@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: dome-certification-ingress
+  name: dome-certification-backend-ingress
   namespace: dome-certification
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
@@ -10,17 +10,17 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: certification.dome-marketplace-dev.org
+  - host: dome-certification.dome-marketplace-dev.org
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: certification-backend
+            name: dome-certification-backend-svc
             port:
               number: 8080
   tls:
   - hosts:
-    - certification.dome-marketplace-dev.org
+    - dome-certification.dome-marketplace-dev.org
     secretName: dome-certification-tls-secret
