@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dome-search-deployment
+  namespace: search-engine
 spec:
   replicas: 1
   selector:
@@ -16,7 +17,7 @@ spec:
     spec:
       containers:
         - name: search
-          image: production.eng.it:8433/dome/search:0.0.6
+          image: production.eng.it:8433/dome/search:0.1.5
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -24,9 +25,25 @@ spec:
               protocol: TCP
           env:
             - name: ELASTICSEARCH_ADDRESS_HOST
-              value: dome-elasticsearch-svc
+              value: elasticsearch-master
             - name: ELASTICSEARCH_ADDRESS_PORT
               value: "9200"
+            - name: network.host
+              value: "0.0.0.0"
+            - name: ELASTIC_USERNAME
+              value: elastic
+            - name: ELASTIC_PASSWORD
+              value: dome_2024!
+            - name: TMFORUM_SERVICE_CATALOG_URL
+              value: http://tm-forum-api-service-catalog.marketplace.svc.cluster.local:8080
+            - name: TMFORUM_PRODUCT_CATALOG_URL
+              value: http://tm-forum-api-product-catalog.marketplace.svc.cluster.local:8080
+            - name: TMFORUM_RESOURCE_CATALOG_URL
+              value: http://tm-forum-api-resource-catalog.marketplace.svc.cluster.local:8080
+            - name: BAE_URL
+              value: http://bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004
+            - name: LOG_LEVEL
+              value: DEBUG
           livenessProbe:
             httpGet:
               path: /health
