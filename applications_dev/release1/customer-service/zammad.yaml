@@ -1,23 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: external-dns-ionos
+  name: zammad
   namespace: argocd
   labels:
-    purpose: infra
+    purpose: zammad
 spec:
   destination:
-    namespace: default
+    namespace: zammad
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos_common/external-dns-ionos
+    path: ionos_dev/zammad
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
-    helm:
-      valueFiles:
-        - values.yaml
-        - values-dev.yaml
   syncPolicy:
     automated:
       prune: true
