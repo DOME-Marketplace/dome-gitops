@@ -1,0 +1,21 @@
+superset:
+  fullnameOverride: analytics-superset
+  
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+    hosts:
+      - host: analytics.dome-marketplace-sbx.org
+        paths: 
+          - path: /
+            pathType: ImplementationSpecific
+    tls:
+      - secretName: analytics-tls-secret
+        hosts:
+          - analytics.dome-marketplace-sbx.org
+
+  extraSecretEnv: {
+    SUPERSET_SECRET_KEY: 'U80rJ3+W8ly3Y0tBENm1zD5rHKBQU0/Lx7QUK6TO7T1AUfHuX7jJku5C'
+  }
