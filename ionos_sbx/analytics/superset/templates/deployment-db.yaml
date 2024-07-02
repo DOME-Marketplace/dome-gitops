@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: {{ .Values.db.image }}
+          image: registry.k8s.io/postgres:15
           ports:
             - containerPort: 5432
           volumeMounts:
