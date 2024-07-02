@@ -17,5 +17,12 @@ spec:
       containers:
         - name: certification-backend
           image: dome-certification/certification-backend:latest
+          env:
+          - name: POSTGRES_DB
+            value: dome
+          - name: POSTGRES_USER
+            value: root
+          - name: POSTGRES_PASSWORD
+            value: root
           ports:
             - containerPort: 8080
