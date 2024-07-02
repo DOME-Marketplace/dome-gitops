@@ -113,13 +113,17 @@ business-api-ecosystem:
 
   bizEcosystemChargingBackend:
 
+    updateStrategy:
+      type: Recreate
+      rollingUpdate: null
+
     serviceAccount:
       create: true
 
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: 9.1.2
+        tag: 9.1.1
         pullPolicy: Always
     
     plugins:
