@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: analyticsstack
-          image: docker.ramp.eu/ed-pvt/dome-matomo-backend-app:dev_6_03_2024_01
+          image: docker.ramp.eu/dome/dome-matomo-backend-app:dev_6_03_2024_01
           env:
             - name: SPRING_DATASOURCE_URL
               value: ${MATOMO_ANALYTICS_DB_HOST:-jdbc:postgresql://localhost}:${MATOMO_ANALYTICS_DB_PORT_NUMBER:-5433}/${MATOMO_ANALYTICS_DB:-matomo_data_json}
