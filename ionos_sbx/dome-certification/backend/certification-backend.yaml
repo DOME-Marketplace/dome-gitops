@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: certification-backend
-          image: dome-certification/certification-backend:latest
+          image: operations.tacs4.com/pts/dome/dome-certification-back:latest
           env:
           - name: POSTGRES_DB
             value: dome
