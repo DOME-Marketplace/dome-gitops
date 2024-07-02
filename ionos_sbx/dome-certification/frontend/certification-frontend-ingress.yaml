@@ -17,7 +17,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: dome-certification-frontend-svc
+            name: certification-frontend-svc
             port:
               number: 80
   tls:
