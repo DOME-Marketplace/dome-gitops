@@ -35,12 +35,12 @@ spec:
             - name: MATOMO_TOKEN_AUTH
               valueFrom:
                 secretKeyRef:
-                  name: analytics-secret
+                  name: analyticsstack-secret
                   key: MATOMO_TOKEN_AUTH
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: analytics-secret
+                  name: analyticsstack-secret
                   key: DB_PASSWORD
             - name: APP_URL
               value: "https://analytics.dome-marketplace-sbx.org"
