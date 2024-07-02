@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: superset
-          image: registry.k8s.io/apache/superset
+          image: https://apache.github.io/superset
           ports:
             - containerPort: 8088
           env:
