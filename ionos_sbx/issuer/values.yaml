@@ -169,8 +169,8 @@ issuer:
     # Keycloak Configuration
     keycloak:
       proxy: edge
-      logsCertsLevel: TRACE
-      logLevel: ALL
+      logsCertsLevel: DEBUG
+      logLevel: DEBUG
       admin:
         username: admin
         password: admin
