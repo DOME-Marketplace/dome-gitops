@@ -11,7 +11,7 @@ issuer:
       tls:
         - hosts:
             - issuer.dome-marketplace-sbx.org
-          secretName: ingress-nginx-admission
+          secretName: issuer-secret-tls
     app:
       profile: default
       logLevel: DEBUG
@@ -111,7 +111,7 @@ issuer:
       tls:
         - hosts:
             - issuer.dome-marketplace-sbx.org
-          secretName: ingress-nginx-admission
+          secretName: issuer-secret-tls
     app:
       internalServerPort: 8080
       loginUrl:
@@ -165,7 +165,7 @@ issuer:
       tls:
         - hosts:
             - issuer.dome-marketplace-sbx.org
-          secretName: ingress-nginx-admission
+          secretName: issuer-secret-tls
     # Keycloak Configuration
     keycloak:
       proxy: edge
