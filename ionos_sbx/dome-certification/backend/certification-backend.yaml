@@ -23,6 +23,11 @@ spec:
           - name: POSTGRES_USER
             value: root
           - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: root
+                key: postgres-password
+
             value: root
           ports:
             - containerPort: 8080
