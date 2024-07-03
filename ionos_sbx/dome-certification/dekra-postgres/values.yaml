@@ -5,7 +5,7 @@ postgresql:
   auth:
     username: root  
     enablePostgresUser: true
-    existingSecret: root
+    existingSecret: dekra-postgres-secret
     secretKeys:
       adminPasswordKey: root
       userPasswordKey: root

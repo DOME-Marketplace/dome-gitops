@@ -25,9 +25,7 @@ spec:
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: root
+                name: dekra-postgres-secret
                 key: postgres-password
-
-            value: root
           ports:
             - containerPort: 8080
