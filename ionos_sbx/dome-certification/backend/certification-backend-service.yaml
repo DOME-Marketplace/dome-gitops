@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: certification-backend-svc
+  namespace: dome-certification
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/instance: certification-backend-svc
+    app.kubernetes.io/name: certification-backend-svc
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080

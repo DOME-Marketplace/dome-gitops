@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: certification-backend
+  labels:
+    app: certification-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: certification-backend
+  template:
+    metadata:
+      labels:
+        app: certification-backend
+    spec:
+      containers:
+        - name: certification-backend
+          image: noeliaguedek/dome-compliance:back
+          env:
+          - name: POSTGRES_DB
+            value: dome
+          - name: POSTGRES_USER
+            value: root
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: root
+                key: postgres-password
+
+            value: root
+          ports:
+            - containerPort: 8080
