@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: certification-backend
-          image: noeliaguedek/dome-compliance:back
+          image: noeliaguedek/dome-compliance-backend:1.0.0
           env:
           - name: POSTGRES_DB
             value: dome

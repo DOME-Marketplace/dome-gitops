@@ -5,8 +5,8 @@ postgresql:
     enablePostgresUser: true
     existingSecret: dekra-postgres-secret
     secretKeys:
-      adminPasswordKey: root
-      userPasswordKey: root
+      adminPasswordKey: postgres-root-password
+      userPasswordKey: postgres-password
   rbac:
     create: true
     rules:
