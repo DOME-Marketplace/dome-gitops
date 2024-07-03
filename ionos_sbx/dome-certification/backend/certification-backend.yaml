@@ -27,5 +27,7 @@ spec:
               secretKeyRef:
                 name: dekra-postgres-secret
                 key: postgres-password
+          - name: SPRING_DATASOURCE_URL
+            value: "jdbc:postgresql://dekra-postgres:5432/dome"
           ports:
             - containerPort: 8080

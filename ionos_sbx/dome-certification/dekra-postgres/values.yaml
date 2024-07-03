@@ -1,6 +1,4 @@
 postgresql:
-  commonAnnotations:
-    wistefan/rollout-injecting-webhook: ignore
   fullnameOverride: dekra-postgres
   auth:
     username: root  

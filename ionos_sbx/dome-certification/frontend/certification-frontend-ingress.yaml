@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: dome-certification.dome-marketplace-sbx-org
+  - host: certification-dome.dome-marketplace-sbx.org
     http:
       paths:
       - path: /
@@ -22,5 +22,5 @@ spec:
               number: 80
   tls:
   - hosts:
-    - dome-certification.dome-marketplace-sbx-org
-    secretName: dome-certification-tls-secret
+    - certification-dome.dome-marketplace-sbx.org
+    secretName: certification-tls-secret
