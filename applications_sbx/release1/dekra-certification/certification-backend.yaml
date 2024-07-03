@@ -12,7 +12,7 @@ spec:
   project: default
   source:
     path: ionos_sbx/dome-certification/backend
-    repoURL: https://github.com/DOME-Marketplace/dome-certification-backend
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
   syncPolicy:
     automated:

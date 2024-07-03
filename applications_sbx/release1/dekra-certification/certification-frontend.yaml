@@ -11,8 +11,8 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos_sbx/dome-certification/
-    repoURL: https://github.com/DOME-Marketplace/dome-certification-frontend
+    path: ionos_sbx/dome-certification/frontend
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
   syncPolicy:
     automated:
