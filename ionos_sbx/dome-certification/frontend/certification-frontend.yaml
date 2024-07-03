@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: certification-frontend
-          image: operations.tacs4.com/pts/dome/dome-certification-front:latest
+          image: noeliaguedek/dome-compliance:front
           ports:
             - containerPort: 80
