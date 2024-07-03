@@ -22,7 +22,8 @@ spec:
     spec:
       containers:
         - name: bookstack
-          image: production.eng.it:8433/dome/knowledgebase-sbx:1.0.0
+          #image: production.eng.it:8433/dome/knowledgebase-sbx:1.0.0
+          image: production.eng.it:8433/dome/knowledgebase
           imagePullPolicy: Always
           env:
             - name: DB_HOST
