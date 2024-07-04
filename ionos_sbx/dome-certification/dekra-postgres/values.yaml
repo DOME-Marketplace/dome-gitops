@@ -11,4 +11,4 @@ postgresql:
     initdb:
       scripts:
         create.sh: |
-          psql postgresql://root:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE dome;"  
+          psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE dome;"  
