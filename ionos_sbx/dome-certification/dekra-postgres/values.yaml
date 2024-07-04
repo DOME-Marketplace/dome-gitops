@@ -3,21 +3,10 @@ postgresql:
   auth:
     username: root  
     enablePostgresUser: true
-    existingSecret: dekra-postgres-secret
+    #existingSecret: dekra-postgres-secret
     secretKeys:
       adminPasswordKey: postgres-root-password
       userPasswordKey: postgres-password
-  rbac:
-    create: true
-    rules:
-      - apiGroups:
-        - security.openshift.io
-        resourceNames:
-        - anyuid
-        resources:
-        - securitycontextconstraints
-        verbs:
-        - use    
   primary:
     initdb:
       scripts:
