@@ -3,7 +3,7 @@ postgresql:
   auth:
     username: root  
     enablePostgresUser: true
-    #existingSecret: dekra-postgres-secret
+    existingSecret: dekra-postgres-secret
     secretKeys:
       adminPasswordKey: postgres-root-password
       userPasswordKey: postgres-password
@@ -11,5 +11,5 @@ postgresql:
     initdb:
       scripts:
         create.sh: |
-          psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE dome;"
+          psql postgresql://root:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE dome;"
 
