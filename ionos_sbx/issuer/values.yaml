@@ -3,6 +3,15 @@ issuer:
     ingress:
       enabled: true
       className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+        nginx.ingress.kubernetes.io/configuration-snippet: |
+          if ($request_uri ~* "^/issuer-api/token") {
+            return 301 https://in2-dome-marketplace-test.org/issuer-keycloak/realms/CredentialIssuer/verifiable-credential/did:key:z6MkqmaCT2JqdUtLeKah7tEVfNXtDXtQyj4yxEgV11Y5CqUa/token;
+          }
+          if ($request_uri ~* "^/issuer-api/.well-known/openid-configuration") {
+            return 301 https://in2-dome-marketplace-test.org/issuer-keycloak/realms/CredentialIssuer/verifiable-credential/did:key:z6MkqmaCT2JqdUtLeKah7tEVfNXtDXtQyj4yxEgV11Y5CqUa/.well-known/openid-configuration;
+          }
       hosts:
         - host: issuer.dome-marketplace-sbx.org
           paths:
@@ -32,6 +41,8 @@ issuer:
                 enable: true
               ssl:
                 trust: smtp.ionos.de
+      remoteSignature:
+        internalDomain: http://dss:8050
       api:
         externalDomain:
           # if deployed locally set to false
@@ -57,16 +68,14 @@ issuer:
           # internalPort is only used if externalService is false
           internalPort: 30002
           path: /issuer-keycloak
-        internalDomain: http://issuer-keycloak:8080
+        internalDomain: http://dome-issuer-keycloak:8080/issuer-keycloak
         realm: CredentialIssuer
         client:
           clientId: oidc4vci-wallet-client
-          clientSecret: oidc4vci-wallet-client-secret
           username: user
-          password: user
           existingSecret:
-            enabled: false
-            name: auth-secret
+            enabled: true
+            name: issuer-api-auth-secret
             clientSecretKey: authServerClientSecret
             clientPasswordKey: authServerClientPassword
         paths:
@@ -88,11 +97,10 @@ issuer:
       externalService: false
       name: issuer
       username: postgres
-      password: postgres
       existingSecret:
-        enabled: false
-        name: db-secret
-        key: db-password
+        enabled: true
+        name: issuer-api-db-secret
+        key: password
 
   issuer-ui:
     image:
@@ -103,6 +111,8 @@ issuer:
     ingress:
       enabled: true
       className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
       hosts:
         - host: issuer.dome-marketplace-sbx.org
           paths:
@@ -140,10 +150,10 @@ issuer:
         externalService: true
         scheme: https
         # change by the external url or set to localhost if deployed locally
-        host: issuer.dome-marketplace-sbx.org
+        host: wallet.dome-marketplace-sbx.org
         # internalPort is only used if externalService is false
         internalPort: 30003
-        path: /wallet-ui
+        path: /
       procedures: /api/v1/procedures
       saveCredential: /api/v1/credentials?type=LEARCredentialEmployee
       credentialOfferUrl: /api/v1/credential-offer
@@ -157,6 +167,8 @@ issuer:
     ingress:
       enabled: true
       className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
       hosts:
         - host: issuer.dome-marketplace-sbx.org
           paths:
@@ -173,11 +185,10 @@ issuer:
       logLevel: DEBUG
       admin:
         username: admin
-        password: admin
         existingSecret:
-          enabled: false
-          name: keycloak-secrets
-          passwordKey: keycloakAdminPassword
+          enabled: true
+          name: dome-issuer-keycloak-admin-secrets
+          passwordKey: password
       relativePath: "/issuer-keycloak/"
       hostname:
         url:
@@ -202,10 +213,9 @@ issuer:
         certificateKeyFile: /opt/keycloak/pem/server.key.pem
         certificateFile: /opt/keycloak/pem/server.crt.pem
         trustStoreFile: /opt/keycloak/truststore/truststore.jks
-        trustStorePassword: pempas
         existingSecret:
-          enabled: false
-          name: keycloak-secrets
+          enabled: true
+          name: dome-issuer-keycloak-https-secrets
           trustStorePasswordKey: keycloakTrustStorePassword
         clientAuth: request
       db:
@@ -213,11 +223,10 @@ issuer:
         username: postgres
         url: jdbc:postgresql://issuer-keycloak-postgres/cred
         port: 5432
-        password: postgres
         existingSecret:
-          enabled: false
-          name: keycloak-secrets
-          passwordKey: keycloakDbPassword
+          enabled: true
+          name: dome-issuer-keycloak-db-secret
+          passwordKey: password
 
     # Issuer API Configuration
     issuerApi:
@@ -260,7 +269,10 @@ issuer:
         # -- should the default postgres user be enabled
         enablePostgresUser: true
         # -- password to be used
-        password: postgres
+        existingSecret: issuer-api-db-secret
+        secretKeys:
+          adminPasswordKey: password
+          userPasswordKey: password
       ## configuration of the postgres primary replica
       primary:
         ## provide db initialization
@@ -285,8 +297,10 @@ issuer:
         username: postgres
         # -- should the default postgres user be enabled
         enablePostgresUser: true
-        # -- password to be used
-        password: postgres
+        existingSecret: dome-issuer-keycloak-db-secret
+        secretKeys:
+          adminPasswordKey: password
+          userPasswordKey: password
       ## configuration of the postgres primary replica
       primary:
         ## provide db initialization
