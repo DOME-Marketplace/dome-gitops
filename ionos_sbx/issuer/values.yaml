@@ -235,7 +235,7 @@ issuer:
       db:
         type: postgres
         username: postgres
-        url: jdbc:postgresql://issuer-keycloak-postgres/cred
+        url: jdbc:postgresql://dome-issuer-keycloak-postgres/cred
         port: 5432
         existingSecret:
           enabled: true
