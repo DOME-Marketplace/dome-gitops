@@ -20,8 +20,8 @@ spec:
           env:
           - name: POSTGRES_DB
             value: dome
-          - name: POSTGRES_USER
-            value: root
+          - name: SPRING_DATASOURCE_USERNAME
+            value: postgres
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
