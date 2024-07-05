@@ -100,7 +100,7 @@ issuer:
           # internalPort is only used if externalService is false
           internalPort: 30000
           path: /
-        internalDomain: http://wallet-ui:8080
+        internalDomain: http://dome-wallet-ui:8080
     db:
       host: issuer-postgres
       port: 5432
@@ -235,7 +235,7 @@ issuer:
       db:
         type: postgres
         username: postgres
-        url: jdbc:postgresql://issuer-keycloak-postgres/cred
+        url: jdbc:postgresql://dome-issuer-keycloak-postgres/cred
         port: 5432
         existingSecret:
           enabled: true
