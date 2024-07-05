@@ -24,7 +24,7 @@ issuer:
             proxy_set_header X-Forwarded-Proto $scheme;
           }
 
-    hosts:
+      hosts:
         - host: issuer.dome-marketplace-sbx.org
           paths:
             - path: /issuer-api
