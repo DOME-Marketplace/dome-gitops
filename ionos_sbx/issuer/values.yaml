@@ -9,10 +9,10 @@ issuer:
         cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
         nginx.ingress.kubernetes.io/configuration-snippet: |
           if ($request_uri ~* "^/issuer-api/token") {
-            return 301 https://issuer.dome-marketplace-sbx.org/issuer-keycloak/realms/CredentialIssuer/verifiable-credential/did:key:z6MkqmaCT2JqdUtLeKah7tEVfNXtDXtQyj4yxEgV11Y5CqUa/token;
+            return 301 http://dome-issuer-keycloak:8080/issuer-keycloak/realms/CredentialIssuer/verifiable-credential/did:key:z6MkqmaCT2JqdUtLeKah7tEVfNXtDXtQyj4yxEgV11Y5CqUa/token;
           }
           if ($request_uri ~* "^/issuer-api/.well-known/openid-configuration") {
-            return 301 https://issuer.dome-marketplace-sbx.org/issuer-keycloak/realms/CredentialIssuer/verifiable-credential/did:key:z6MkqmaCT2JqdUtLeKah7tEVfNXtDXtQyj4yxEgV11Y5CqUa/.well-known/openid-configuration;
+            return 301 http://dome-issuer-keycloak:8080/issuer-keycloak/realms/CredentialIssuer/verifiable-credential/did:key:z6MkqmaCT2JqdUtLeKah7tEVfNXtDXtQyj4yxEgV11Y5CqUa/.well-known/openid-configuration;
           }
       hosts:
         - host: issuer.dome-marketplace-sbx.org
