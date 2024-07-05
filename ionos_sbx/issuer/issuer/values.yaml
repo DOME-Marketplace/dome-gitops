@@ -42,7 +42,15 @@ issuer:
               ssl:
                 trust: smtp.ionos.de
       remoteSignature:
-        internalDomain: http://dss:8050
+        externalDomain:
+          # if deployed locally set to false
+          externalService: true
+          scheme: http
+          # change by the external url or set to localhost if deployed locally
+          host: dome-dss:8080
+          # internalPort is only used if externalService is false
+          internalPort: 30003
+        internalDomain: http://dome-dss:8080
       api:
         externalDomain:
           # if deployed locally set to false

@@ -8,4 +8,4 @@ dependencies:
   - name: dome-dss
     condition: dome-dss.enabled
     repository: https://in2workspace.github.io/dome-dss
-    version: 0.0.1
+    version: 0.0.3

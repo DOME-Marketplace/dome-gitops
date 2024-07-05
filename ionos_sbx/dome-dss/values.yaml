@@ -1,6 +1,6 @@
 dome-dss:
   app:
-    internalServerPort: 8080
+    internalServerPort: 8050
 
   authServer:
     internalDomain: "http://dome-issuer-keycloak:8080/issuer-keycloak"
