@@ -8,7 +8,7 @@ issuer:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
         nginx.ingress.kubernetes.io/configuration-snippet: |
-          location http://dome-issuer-keycloak.in2.svc.cluster.local:8080/.well-known/openid-configuration {
+          location ^/.well-known/openid-configuration {
             proxy_pass http://dome-issuer-keycloak.in2.svc.cluster.local:8080/realms/CredentialIssuer/verifiable-credential/did:key:z6MkqmaCT2JqdUtLeKah7tEVfNXtDXtQyj4yxEgV11Y5CqUa/.well-known/openid-configuration;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
@@ -16,7 +16,7 @@ issuer:
             proxy_set_header X-Forwarded-Proto $scheme;
           }
 
-          location http://dome-issuer-keycloak.in2.svc.cluster.local:8080/token {
+          location ^/token {
             proxy_pass http://dome-issuer-keycloak.in2.svc.cluster.local:8080/realms/CredentialIssuer/verifiable-credential/did:key:z6MkqmaCT2JqdUtLeKah7tEVfNXtDXtQyj4yxEgV11Y5CqUa/token;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
