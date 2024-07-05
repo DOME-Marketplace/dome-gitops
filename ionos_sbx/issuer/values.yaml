@@ -7,8 +7,7 @@ issuer:
       className: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
-        nginx.ingress.kubernetes.io/configuration-snippet: |
-          inx.ingress.kubernetes.io/configuration-snippet: |
+        nginx.ingress.kubernetes.io/configuration-snippet: |          
           if ($request_uri ~* "^/issuer-api/token") {
             return 301 http://dome-issuer-keycloak.in2.svc.cluster.local:8080/issuer-keycloak/realms/CredentialIssuer/verifiable-credential/did:key:z6MkqmaCT2JqdUtLeKah7tEVfNXtDXtQyj4yxEgV11Y5CqUa/token;
           }
