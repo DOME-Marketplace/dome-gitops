@@ -6,8 +6,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app.kubernetes.io/instance: certification-frontend-svc
-    app.kubernetes.io/name: certification-frontend-svc
+    app: certification-frontend
   ports:
     - name: http
       port: 80
