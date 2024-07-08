@@ -19,3 +19,5 @@ spec:
           image: noeliaguedek/dome-compliance-frontend:1.0.0
           ports:
             - containerPort: 80
+              name: http
+              protocol: TCP
