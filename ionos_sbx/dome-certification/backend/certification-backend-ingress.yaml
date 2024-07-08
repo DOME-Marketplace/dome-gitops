@@ -23,4 +23,4 @@ spec:
   tls:
   - hosts:
     - dome-certification-api.dome-marketplace-sbx.org
-    secretName: dome-certification-tls-secret
+    secretName: dome-certification-api-tls-secret
