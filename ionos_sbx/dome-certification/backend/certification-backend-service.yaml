@@ -6,8 +6,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app.kubernetes.io/instance: certification-backend-svc
-    app.kubernetes.io/name: certification-backend-svc
+    app: certification-backend
   ports:
     - name: http
       port: 8080
