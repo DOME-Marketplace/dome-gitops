@@ -295,7 +295,7 @@ issuer:
 
     # Token Configuration
     token:
-      expiration: 2592000
+      expiration: "2592000"
 
   issuer-postgres:
       # -- should the postgresql deployment be enabled
