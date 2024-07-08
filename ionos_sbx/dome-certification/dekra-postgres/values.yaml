@@ -1,7 +1,7 @@
 postgresql:
   fullnameOverride: dekra-postgres
   auth:
-    username: root  
+    username: root
     enablePostgresUser: true
     existingSecret: dekra-postgres-secret
     secretKeys:
@@ -11,4 +11,14 @@ postgresql:
     initdb:
       scripts:
         create.sh: |
-          psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE dome;"  
+          #!/bin/sh
+          set -e
+
+          # Crear la base de datos
+          psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE dome;"
+
+          # Crear los usuarios en la base de datos dome
+          export PGPASSWORD=$POSTGRES_PASSWORD
+
+          psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "dome" -c "INSERT INTO public.users (id, address, country_code, email, firstname, last_seen, lastname, organization_name, \"password\", \"role\", username, website) VALUES ('959718aa-a5bc-4827-8b68-bd7aeeb0d08a'::uuid, 'calle francia 81', 'ES', 'antonio.alvarez@dekra.com', 'Antonio', '2024-07-05 10:21:48.083', 'Alvarez', 'dekra', '\$2a\$10\$a0/YDXCCBIIhZKmVwzyxCOekuRbOd69ForS8SE9h5ZgYWKtxkZMGe', 'ADMIN', 'a505612', 'www.dekra.com');"
+          psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "dome" -c "INSERT INTO public.users (id, address, country_code, email, firstname, last_seen, lastname, organization_name, \"password\", \"role\", username, website) VALUES ('52d3fbb0-3f4f-4c65-a14f-b3c2880d3e53'::uuid, 'Malaga', 'ES', 'noelia.guerra@dekra.com', 'Noelia', '2024-07-08 14:16:19.034', 'Guerra Melgares', 'Dekra DPS', '\$2a\$10\$TpmYdMEGVJBHOnuQg3vK8.bX4xTcvGssQ/M7Bx3v/0i.8SGzvFxGS', 'EMPLOYEE', 'A133656', 'www.dekra.com');"
