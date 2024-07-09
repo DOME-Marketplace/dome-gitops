@@ -13,6 +13,7 @@ spec:
     - selector:
         dnsZones:
           - "{{ .Values.dome.dnsName }}"
+          - "{{ .Values.dome.dnsName2 }}"
       http01:
         ingress:
           ingressClassName: nginx

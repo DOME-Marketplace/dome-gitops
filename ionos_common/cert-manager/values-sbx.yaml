@@ -1,5 +1,6 @@
 dome:
   env: sbx
   dnsName: dome-marketplace-sbx.org
+  dnsName2: dome-marketplace.io
   maintainer:
     email: karol.bialas@ionos.com

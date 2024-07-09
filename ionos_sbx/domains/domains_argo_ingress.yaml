@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: domains-argo-ingress
+  name: argocd-server-2
   namespace: argocd
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
