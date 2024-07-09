@@ -272,7 +272,7 @@ issuer:
 
     # Issuer API Configuration
     issuerApi:
-      url: http://issuer-api:8080
+      url: http://issuer-api:8080/issuer-api
       externalUrl:
         # if deployed locally set to false
         externalService: true
