@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dome-wallet-keycloak-2
+  namespace: in2
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: wallet.dome-marketplace.io
+      http:
+        paths:
+          - path: /keycloak
+            pathType: Prefix
+            backend:
+              service:
+                name: dome-wallet-keycloak
+                port:
+                  number: 8080
+  tls:
+    - hosts:
+        - wallet.dome-marketplace.io
+      secretName: wallet-secret-tls-2
