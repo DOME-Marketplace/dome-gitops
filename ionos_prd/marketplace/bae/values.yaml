@@ -113,6 +113,8 @@ business-api-ecosystem:
 
   bizEcosystemChargingBackend:
 
+    maxUploadSize: "5242880"
+    
     serviceAccount:
       create: true
 
