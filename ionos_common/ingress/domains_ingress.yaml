@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: domains-ingress
+  namespace: argocd
+  annotations:
+#    cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+#    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+#    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/permanent-redirect: http://dome-marketplace-sbx.org
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: dome-marketplace.io
+#    http:
+#      paths:
+#      - path:
+#        pathType: Prefix
+#        backend:
+#          service:
+#            name: argocd-server
+#            port:
+#              name: https
+
+  tls:
+  - hosts:
+    - dome-marketplace.io
+    secretName: domains-tls-secret
