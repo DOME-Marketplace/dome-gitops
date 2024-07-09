@@ -113,6 +113,8 @@ business-api-ecosystem:
 
   bizEcosystemChargingBackend:
 
+    maxUploadSize: "5242880"
+    
     serviceAccount:
       create: true
 
@@ -162,7 +164,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "9.4.4"
+        tag: "9.4.5"
         pullPolicy: Always
 
     ingress: 
