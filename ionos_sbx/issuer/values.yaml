@@ -272,7 +272,7 @@ issuer:
 
     # Issuer API Configuration
     issuerApi:
-      url: http://issuer-api:8080
+      url: http://issuer-api:8080/issuer-api
       externalUrl:
         # if deployed locally set to false
         externalService: true
@@ -295,7 +295,7 @@ issuer:
 
     # Token Configuration
     token:
-      expiration: 2592000
+      expiration: "2592000"
 
   issuer-postgres:
       # -- should the postgresql deployment be enabled
