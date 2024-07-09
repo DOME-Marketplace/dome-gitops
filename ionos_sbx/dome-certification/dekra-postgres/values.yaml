@@ -15,7 +15,7 @@ postgresql:
           set -e
 
           # Create DB
-          psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE dome;"
+          # psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE dome;"
 
           # Create ADMIN USERS
           export PGPASSWORD=$POSTGRES_PASSWORD
