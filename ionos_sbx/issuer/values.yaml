@@ -2,6 +2,11 @@ issuer:
   issuer-api:
     fullnameOverride: issuer-api
     nameOverride: issuer-api
+    image:
+      repository: in2workspace/issuer-api
+      # Overrides the image tag whose default is the chart appVersion.
+      tag: v1.1.0
+      pullPolicy: Always
     ingress:
       enabled: true
       className: nginx
@@ -201,6 +206,11 @@ issuer:
   dome-issuer-keycloak:
     fullnameOverride: dome-issuer-keycloak
     nameOverride: dome-issuer-keycloak
+    image:
+      repository: in2workspace/dome-issuer-keycloak
+      pullPolicy: Always
+      # Overrides the image tag whose default is the chart appVersion.
+      tag: v1.0.0
     readinessProbe:
       path: /issuer-keycloak/health
     livenessProbe:
