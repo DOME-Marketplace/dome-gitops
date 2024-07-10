@@ -11,24 +11,24 @@ issuer:
       enabled: true
       className: nginx
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+        cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
       hosts:
-        - host: issuer.dome-marketplace-sbx.org
+        - host: issuer.dome-marketplace-dev.org
           paths:
             - path: /issuer-api
               pathType: Prefix
       tls:
         - hosts:
-            - issuer.dome-marketplace-sbx.org
+            - issuer.dome-marketplace-dev.org
           secretName: issuer-secret-tls
     ingressWellKnown:
       enabled: true
       className: nginx
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+        cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
         nginx.ingress.kubernetes.io/rewrite-target: /issuer-keycloak/realms/CredentialIssuer/verifiable-credential/did:key:z6MkqmaCT2JqdUtLeKah7tEVfNXtDXtQyj4yxEgV11Y5CqUa/.well-known/openid-configuration
       hosts:
-        - host: issuer.dome-marketplace-sbx.org
+        - host: issuer.dome-marketplace-dev.org
           paths:
             - path: /issuer-api/.well-known/openid-configuration
               pathType: Prefix
@@ -36,16 +36,16 @@ issuer:
               servicePort: 8080
       tls:
         - hosts:
-            - issuer.dome-marketplace-sbx.org
+            - issuer.dome-marketplace-dev.org
           secretName: issuer-secret-tls
       ingressToken:
         enabled: true
         className: nginx
         annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+          cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
           nginx.ingress.kubernetes.io/rewrite-target: /issuer-keycloak/realms/CredentialIssuer/verifiable-credential/did:key:z6MkqmaCT2JqdUtLeKah7tEVfNXtDXtQyj4yxEgV11Y5CqUa/token
         hosts:
-          - host: issuer.dome-marketplace-sbx.org
+          - host: issuer.dome-marketplace-dev.org
             paths:
               - path: /issuer-api/token
                 pathType: Prefix
@@ -53,7 +53,7 @@ issuer:
                 servicePort: 8080
         tls:
           - hosts:
-              - issuer.dome-marketplace-sbx.org
+              - issuer.dome-marketplace-dev.org
             secretName: issuer-secret-tls
     app:
       profile: default
@@ -91,7 +91,7 @@ issuer:
           externalService: true
           scheme: https
           # change by the external url or set to localhost if deployed locally
-          host: issuer.dome-marketplace-sbx.org
+          host: issuer.dome-marketplace-dev.org
           # internalPort is only used if externalService is false
           internalPort: 30001
           path: /issuer-api
@@ -106,7 +106,7 @@ issuer:
           externalService: true
           scheme: https
           # change by the external url or set to localhost if deployed locally
-          host: issuer.dome-marketplace-sbx.org
+          host: issuer.dome-marketplace-dev.org
           # internalPort is only used if externalService is false
           internalPort: 30002
           path: /issuer-keycloak
@@ -128,7 +128,7 @@ issuer:
           externalService: true
           scheme: https
           # change by the external url or set to localhost if deployed locally
-          host: issuer.dome-marketplace-sbx.org
+          host: issuer.dome-marketplace-dev.org
           # internalPort is only used if externalService is false
           internalPort: 30000
           path: /
@@ -156,15 +156,15 @@ issuer:
       enabled: true
       className: nginx
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+        cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
       hosts:
-        - host: issuer.dome-marketplace-sbx.org
+        - host: issuer.dome-marketplace-dev.org
           paths:
             - path: /
               pathType: Prefix
       tls:
         - hosts:
-            - issuer.dome-marketplace-sbx.org
+            - issuer.dome-marketplace-dev.org
           secretName: issuer-secret-tls
     app:
       internalServerPort: 8080
@@ -173,7 +173,7 @@ issuer:
         externalService: true
         scheme: https
         # change by the external url or set to localhost if deployed locally
-        host: issuer.dome-marketplace-sbx.org
+        host: issuer.dome-marketplace-dev.org
         # internalPort is only used if externalService is false
         internalPort: 30002
         path: /issuer-keycloak/realms/CredentialIssuer
@@ -185,7 +185,7 @@ issuer:
         externalService: true
         scheme: https
         # change by the external url or set to localhost if deployed locally
-        host: issuer.dome-marketplace-sbx.org
+        host: issuer.dome-marketplace-dev.org
         # internalPort is only used if externalService is false
         internalPort: 30001
         path: /issuer-api
@@ -194,7 +194,7 @@ issuer:
         externalService: true
         scheme: https
         # change by the external url or set to localhost if deployed locally
-        host: wallet.dome-marketplace-sbx.org
+        host: wallet.dome-marketplace-dev.org
         # internalPort is only used if externalService is false
         internalPort: 30003
         path: /
@@ -219,15 +219,15 @@ issuer:
       enabled: true
       className: nginx
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+        cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
       hosts:
-        - host: issuer.dome-marketplace-sbx.org
+        - host: issuer.dome-marketplace-dev.org
           paths:
             - path: /issuer-keycloak
               pathType: Prefix
       tls:
         - hosts:
-            - issuer.dome-marketplace-sbx.org
+            - issuer.dome-marketplace-dev.org
           secretName: issuer-secret-tls
     # Keycloak Configuration
     keycloak:
@@ -247,7 +247,7 @@ issuer:
           externalService: true
           scheme: https
           # change by the external url or set to localhost if deployed locally
-          host: issuer.dome-marketplace-sbx.org
+          host: issuer.dome-marketplace-dev.org
           # internalPort is only used if externalService is false
           internalPort: 30002
           path: /issuer-keycloak
@@ -256,7 +256,7 @@ issuer:
           externalService: true
           scheme: https
           # change by the external url or set to localhost if deployed locally
-          host: issuer.dome-marketplace-sbx.org
+          host: issuer.dome-marketplace-dev.org
           # internalPort is only used if externalService is false
           internalPort: 30002
           path: /issuer-keycloak
@@ -288,7 +288,7 @@ issuer:
         externalService: true
         scheme: https
         # change by the external url or set to localhost if deployed locally
-        host: issuer.dome-marketplace-sbx.org
+        host: issuer.dome-marketplace-dev.org
         # internalPort is only used if externalService is false
         internalPort: 30001
         path: /issuer-api
