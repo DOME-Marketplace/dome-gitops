@@ -1,0 +1,283 @@
+wallet:
+
+  ## configuration for the wallet-api
+  wallet-api:
+    # -- should be enabled?
+    enabled: true
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    fullnameOverride: wallet-api
+    ingress:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
+      hosts:
+        - host: wallet.dome-marketplace-dev.org
+          paths:
+            - path: /wallet-api
+              pathType: Prefix
+      tls:
+        - hosts:
+            - wallet.dome-marketplace-dev.org
+          secretName: wallet-secret-tls
+    ## deployment specific configuration
+    app:
+      internalServerPort: 8080
+      logLevel: INFO
+      basePath: /wallet-api
+      walletUi:
+        scheme: https
+        domain: wallet.dome-marketplace-dev.org
+      authServer:
+        external:
+          scheme: https
+          domain: wallet.dome-marketplace-dev.org
+          port: 443
+          path: /keycloak/realms/wallet
+        internal:
+          scheme: http
+          domain: dome-wallet-keycloak
+          port: 8080
+          path: /keycloak/realms/wallet
+        jwtDecoderPath: /protocol/openid-connect/certs
+      ebsiTest:
+        url: http://dome-wallet-keycloak:8080/keycloak/realms/wallet/protocol/openid-connect/token
+        client:
+          id: user-registry-client
+          existingSecret:
+            # -- should an existing secret be used
+            enabled: true
+            # -- name of the secret
+            name: wallet-api-client-secret
+            # -- key to retrieve the password from
+            key: client-secret
+        userData:
+          name: admin
+          existingSecret:
+            # -- should an existing secret be used
+            enabled: true
+            # -- name of the secret
+            name: wallet-api-user-password
+            # -- key to retrieve the password from
+            key: user-password
+      vault:
+        provider: hashicorp
+        # host needs to match with the service name of the vault server
+        host: wallet-vault-server # fullnameOverride: wallet-vault
+        scheme: http
+        port: 8200
+        # cambiar por valores dummy
+        existingSecret:
+          # -- should an existing secret be used
+          enabled: true
+          # -- name of the secret
+          name: wallet-api-token-secret
+          # -- key to retrieve the token from
+          key: token
+      broker:
+        provider: scorpio
+        internal:
+          scheme: http
+          domain: scorpio
+          port: 9090
+        pathsEntities: /ngsi-ld/v1/entities
+
+  ## configuration for the dome-wallet-ui
+  dome-wallet-ui:
+    # -- should be enabled?
+    enabled: true
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    fullnameOverride: dome-wallet-ui
+    ## ingress specific configuration
+    ingress:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
+      hosts:
+        - host: wallet.dome-marketplace-dev.org
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - wallet.dome-marketplace-dev.org
+          secretName: wallet-secret-tls
+    ## deployment specific configuration
+    app:
+      internalServerPort: 8080
+      walletApi:
+        # Este internalDomain es en realidad el external
+        internalDomain: https://wallet.dome-marketplace-dev.org/wallet-api
+        # ws = sin certificado, wss = con certificado
+        websocketExternalDomain: wss://wallet.dome-marketplace-dev.org/wallet-api
+      #        websocketPath: /api/v1/pin
+      #        executeContentPath: /api/v1/execute-content
+      #        requestCredentialPath: /api/v1/request-credential
+      #        verifiablePresentationPath: /api/v1/vp
+      #        credentialsPath: /api/v1/credentials
+      #        credentialsByIdPath: /api/v1/credentials?credentialId=
+      #        requestSignedCredentialPath: /api/v1/request-signed-credential
+      #        cborPath: /api/v1/vp/cbor
+      iam:
+        external_domain: https://wallet.dome-marketplace-dev.org/keycloak
+  #        realm_path: /realms/wallet
+
+  ## configuration for the dome-wallet-keycloak
+  dome-wallet-keycloak:
+    # -- should be enabled?
+    enabled: true
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    fullnameOverride: dome-wallet-keycloak
+    # -- Added because the rollout is not working
+    readinessProbe:
+      path: /keycloak/health
+    # -- Added because the rollout is not working
+    livenessProbe:
+      path: /keycloak/health
+    ## ingress specific configuration
+    ingress:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
+      hosts:
+        - host: wallet.dome-marketplace-dev.org
+          paths:
+            - path: /keycloak
+              pathType: Prefix
+      tls:
+        - hosts:
+            - wallet.dome-marketplace-dev.org
+          secretName: wallet-secret-tls
+    ## deployment specific configuration
+    app:
+      internalServerPort: 8080
+      keycloak:
+        hostnameUrl: "https://wallet.dome-marketplace-dev.org/keycloak"
+        adminUrl: "https://wallet.dome-marketplace-dev.org/keycloak"
+        relativePath: "/keycloak/"
+        admin: admin
+        existingSecret:
+          # -- should an existing secret be used
+          enabled: true
+          # -- name of the secret
+          name: dome-wallet-keycloak-secret
+          # -- key to retrieve the password from
+          key: keycloak-password
+    db:
+      type: postgres
+      host: dome-wallet-keycloak-postgres
+      port: 5432
+      externalService: true
+      name: keycloak
+      username: postgres
+      existingSecret:
+        # -- should an existing secret be used
+        enabled: true
+        # -- name of the secret
+        name: dome-wallet-keycloak-db-secret
+        # -- key to retrieve the password from
+        key: keycloak-db-password
+
+  ## configuration of postgres to be used for the blockchain-connector - see https://github.com/bitnami/charts/tree/main/bitnami/postgresql for details
+  postgresql:
+    # -- should the postgresql deployment be enabled
+    enabled: true
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    fullnameOverride: dome-wallet-keycloak-postgres
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    nameOverride: dome-wallet-keycloak-postgres
+    ## auth configuration for the database
+    auth:
+      # -- username to be used
+      username: postgres
+      # -- password to be used
+      password: postgres
+      # -- should the default postgres user be enabled
+      enablePostgresUser: true
+      # -- existing secret
+      existingSecret: dome-wallet-keycloak-db-secret
+      secretKeys:
+        adminPasswordKey: keycloak-db-password
+        userPasswordKey: keycloak-db-password
+    ## configuration of the postgres primary replica
+    primary:
+      ## provide db initialization
+      initdb:
+        ## provide scripts for initialization
+        scripts:
+          # -- create the database as expected by the blockchain-connector
+          create.sh: |
+            psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE keycloak;"
+
+  ## configuration of the context-broker - see https://github.com/FIWARE/helm-charts/tree/main/charts/scorpio-broker-aaio for details
+  scorpio:
+    # -- should scorpio be enabled
+    enabled: true
+    ## configuration of the image to be used
+    image:
+      # -- repository to be used - resource friendly all-in-one-runner without kafka
+      repository: scorpiobroker/all-in-one-runner
+      # -- tag of the image to be used - latest java image without kafka
+      tag: java-4.1.15
+    ## configuration of the database to be used by broker
+    db:
+      # -- host of the db
+      dbhost: postgis
+      # -- username to be used
+      user: postgres
+      # -- password to be used
+      existingSecret:
+        # -- should an existing secret be used
+        enabled: true
+        # -- name of the secret
+        name: scorpio-secret
+        # -- key to retrieve the password from
+        key: postgres-password
+    ## configuration of the readiness probe
+    readinessProbe:
+      # -- path to be used for the readiness probe, older versions used /actuator/health
+      path: /q/health
+    ## configuration of the liveness probe
+    livenessProbe:
+      # -- path to be used for the readiness probe, older versions used /actuator/health
+      path: /q/health
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    fullnameOverride: scorpio
+    ## configuration to be used for the service offered by scorpio
+    service:
+      # -- ClusterIP is the recommended type for most clusters
+      type: ClusterIP
+
+  ## configuration of postgis to be used for scorpio - see https://github.com/bitnami/charts/tree/main/bitnami/postgresql for details
+  postgis:
+    # -- should postgis be enabled
+    enabled: true
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    fullnameOverride: postgis
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    nameOverride: postgis
+    ## auth configuration for the database
+    auth:
+      # -- username to be used
+      username: postgres
+      # -- password to be used
+      password: postgres
+      # -- should the default postgres user be enabled
+      enablePostgresUser: true
+      # -- existing secret
+      existingSecret: scorpio-secret
+      secretKeys:
+        adminPasswordKey: postgres-password
+        userPasswordKey: postgres-password
+    ## configuration of the postgres primary replicas
+    primary:
+      ## provide db initialization
+      initdb:
+        ## provide scripts for initialization
+        scripts:
+          # -- enable the postgis extension and create the database as expected by scorpio
+          enable.sh: |
+            psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE EXTENSION postgis;"
+            psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE ngb;"
