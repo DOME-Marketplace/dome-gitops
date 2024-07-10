@@ -1,0 +1,37 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-server-2
+  namespace: argocd
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: argocd.dome-marketplace.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              name: https
+  - host: argocd.yumket.eu
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: argocd-server
+              port:
+                name: https
+  tls:
+  - hosts:
+    - argocd.dome-marketplace.org
+    - argocd.yumket.eu
+    secretName: domains-argo-tls-secret

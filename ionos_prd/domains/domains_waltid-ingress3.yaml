@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: walt-id-vcwaltid-3
+  namespace: marketplace
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
+    nginx.ingress.kubernetes.io/rewrite-target: /v1/did/did:web:yumket.eu
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: yumket.eu
+      http:
+        paths:
+          - path: /.well-known/did.json
+            pathType: Prefix
+            backend:
+              service:
+                name: walt-id-vcwaltid
+                port:
+                  number: 7000
+  tls:
+    - hosts:
+        - yumket.eu
+      secretName: walt-id-vcwaltid-tls-sec-3

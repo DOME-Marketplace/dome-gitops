@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: walt-id-vcwaltid-2
+  namespace: marketplace
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
+    nginx.ingress.kubernetes.io/rewrite-target: /v1/did/did:web:dome-marketplace.org
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: dome-marketplace.org
+      http:
+        paths:
+          - path: /.well-known/did.json
+            pathType: Prefix
+            backend:
+              service:
+                name: walt-id-vcwaltid
+                port:
+                  number: 7000
+  tls:
+    - hosts:
+        - dome-marketplace.org
+      secretName: walt-id-vcwaltid-tls-sec-2
