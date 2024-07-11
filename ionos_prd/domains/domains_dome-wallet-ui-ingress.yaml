@@ -1,0 +1,35 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dome-wallet-ui-2
+  namespace: in2
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: wallet.dome-marketplace.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: dome-wallet-ui
+                port:
+                  number: 8080
+    - host: wallet.yumket.eu
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: dome-wallet-ui
+                port:
+                  number: 8080
+  tls:
+    - hosts:
+        - wallet.dome-marketplace.org
+        - wallet.yumket.eu
+      secretName: wallet-secret-tls-2

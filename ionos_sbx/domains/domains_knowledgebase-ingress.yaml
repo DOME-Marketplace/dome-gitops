@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: knowledgebase-ingress-2
+  namespace: knowledgebase
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+    nginx.ingress.kubernetes.io/backend-protocol: HTTP                                                                                                              ││
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: knowledgebase.dome-marketplace.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: bookstack
+                port:
+                  number: 8080
+  tls:
+    - hosts:
+        - knowledgebase.dome-marketplace.io
+      secretName: knowledgebase-tls-secret-2

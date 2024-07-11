@@ -13,6 +13,8 @@ spec:
     - selector:
         dnsZones:
           - "dome-marketplace-prd.org"
+          - "dome-marketplace.org"
+          - "yumket.eu"
       http01:
         ingress:
           ingressClassName: nginx
