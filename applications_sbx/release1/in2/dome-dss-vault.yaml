@@ -12,7 +12,7 @@ spec:
   project: default
   source:
     path: ionos_sbx/dome-dss/vault
-    repoURL: https://github.com/in2workspace/in2-dome-gitops
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
   syncPolicy:
     automated:
