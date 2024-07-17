@@ -36,7 +36,8 @@ At this point, you should be able to run kubectl commands on the remote cluster.
 
 ## Step 1: Create a new branch on the repository
 
-Team members begin by creating a new branch from GitOps repository main branch, with the name starting with the enviroment name, and working there for their specific integration work. This facilitates tracking activities, changes, and clear visibilty by DevOps team.
+Team members begin by creating a new branch from GitOps repository main branch, with the name starting with the **enviroment name** 
+Ex: sbx-myapp-first-deploy, and working there for their specific integration work. This facilitates tracking activities, changes, and clear visibilty by DevOps team.
 
 > ⚠️ If you are not part of the Dome Organization you will not able to create branch on the Dome Repository, please contact Paolo Fabriani, or DevOps team in order to get the relative access.
 
@@ -233,8 +234,21 @@ source:
 You can use the [marketplace](../applications_sbx/marketplace/bae-marketplace.yaml) application or for the contained approach [monitoring](../applications_sbx/monitoring.yaml) as a reference.
 
 ## Step 5: Create a Pull Request
-Upon completing the changes, the team initiates a pull request from their branch to the main one. This PR serves as a formal request for the integration to be reviewed and merged. Team members must wait for the review process to be completed.
+Upon completing the changes, the team initiates a pull request from their branch to the main one. This PR serves as a formal request for the integration to be reviewed and merged. This PR must be named with the enviroment destination as prefix.   
+Ex: **SBX - Deployment of myapp**  
+Team members must wait for the review process to be completed. 
 
-After an approval of the Merge Request be available to test as soon as possible the applicaiton.
+After an approval of the Merge Request be available to test as soon as possible the new deployed applicaiton.
+
+> ⚠️ If someone else PR is merged before yours, your branch will result as Out Of Date. Please avoid to merge the main to our branch in order to update it. Instead make a **REBASE** of your branch following those step. 
+>- ```git checkout main``` 
+>- ```git fetch -p --all```
+>- ```git pull```
+>- ```git checkout <your_branch>```
+>- ```git rebase main```
+>- ```git status``` to ensure that you are still on your branch
+>- ```git push --force```
+>
+> after that your branch and your Pull Request will be again Up-To-Date and mergeable. This approach ensure to maintain a readable git tree. 
 
 Once the pull request is approved and merged into the main branch, the GitOps pipeline automatically triggers the deployment process. This involves synchronising the desired state of the cluster with the changes introduced in the merged pull request. The deployment is executed based on the Helm chart or manifest configurations added to the repository.
