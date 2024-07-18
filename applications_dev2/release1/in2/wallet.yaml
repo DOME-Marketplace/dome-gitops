@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
-    targetRevision: ENV_DEV2
+    targetRevision: HEAD
     path: ionos_dev2/wallet/wallet
   destination:
     server: https://kubernetes.default.svc

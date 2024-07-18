@@ -13,7 +13,7 @@ spec:
   source:
     path: ionos_dev2/marketplace/bae
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
-    targetRevision: ENV_DEV2
+    targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true
