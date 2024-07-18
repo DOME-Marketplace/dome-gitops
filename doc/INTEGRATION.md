@@ -2,7 +2,7 @@
 
 The following documentation describes the integration approach designed for DOME. The team intending to integrate its component needs to adhere to a structured set of steps:
 
-1. [Fork the repository and create a new branch](#step-1-fork-the-repository-and-create-a-new-branch)
+1. [Create a new branch on the repository](#step-1-create-a-new-branch-on-the-repository)
 2. [Add a new namespace](#step-2-add-a-new-namespace)
 3. [Add component manifest files](#step-3-add-component-manifest-files)
 4. [Add ArgoCD application](#step-4-add-argocd-application)
@@ -34,33 +34,44 @@ At this point, you should be able to run kubectl commands on the remote cluster.
 
 > ⚠️The service account provided to you will have limited permissions; you will be able to view all resources within your namespace but will only have write access to secrets.
 
-## Step 1: Fork the repository and create a new branch
+## Step 1: Create a new branch on the repository
 
-Team members begin by forking the main GitOps repository and creating a new branch for their specific integration work. This facilitates isolated development and changes.
+Team members begin by creating a new branch from GitOps repository main branch, with the name starting with the **enviroment name** 
+Ex: sbx-myapp-first-deploy, and working there for their specific integration work. This facilitates tracking activities, changes, and clear visibilty by DevOps team.
 
-After forking and subsequently cloning the project, navigate to the project directory to proceed with the rest of the guide.
+> ⚠️ If you are not part of the Dome Organization you will not able to create branch on the Dome Repository, please contact Paolo Fabriani, or DevOps team in order to get the relative access.
+
+After cloning the project, navigate to the project directory to proceed with the rest of the guide.
 
 ### Repository structure
 The GitOps repository has the following structure:
 
 ```
-applications/
-  └── app_1.yaml
-  └── app_2.yaml
+applications_sbx/
+  └── infrastructure
+    └── argocd.yaml
+    ...
+  └──  marketplace
+    └── access-node.yaml
+    ...
+  └── infrastructure.yaml
+  └── marketplace.yaml
+  └── release1
+    └──  owner or namespace
+      └──  app_1.yaml
+      └──  app_2.yaml
   ...
-applications_dev/
-  └── app_1.yaml
-  └── app_2.yaml
-ionos/
+ionos_sbx/
   └── app_1/
     └── Chart.yaml
     └── values.yaml
-    ...
-ionos_dev/
-  └── app_1/
-    └── Chart.yaml
-    └── values.yaml
-    ...
+  └── app_2/
+    └── deployment.yaml
+    └── service.yaml
+    └── ingress.yaml
+    └── secret.yaml
+    └── configmap.yaml
+  ...
 ```
 
 For each environment, two directories are defined:
@@ -68,7 +79,7 @@ For each environment, two directories are defined:
 - ```applications_<env>```: it will host the environment-specific Argocd applications (see [Add ArgoCD application](#step-4-add-argocd-application))
 - ```ionos_<env>```: it will host application manifest files (see [Add component manifest files](#step-3-add-component-manifest-files))
 
-> ⚠️ The ```applications``` and ```ionos``` directories are currently reserved for the demo environment. For the continuation of the guide, we will use the ```dev``` environment, which serves as a playground where teams can test the integration of their components within the DOME ecosystem.
+> ⚠️ The ```applications``` and ```ionos``` directories are currently reserved for the demo environment. For the continuation of the guide, we will use the ```sbx``` environment, which serves as a playground where teams can test the integration of their components within the DOME ecosystem.
 
 ## Step 2: Add a new namespace (if not exists)
 Each application is deployed to a separate namespace. To create the namespace for your application, follow these steps:
@@ -76,7 +87,7 @@ Each application is deployed to a separate namespace. To create the namespace fo
 1. Move to the namespace directory:
 
 ```sh
-cd ionos_dev/namespaces
+cd ionos_sbx/namespaces
 ```
 
 2. Create a manifest file for your app namespace:
@@ -94,14 +105,14 @@ The team incorporates their integration by adding either a Helm chart or plain K
 First, create a directory for your application by executing the following commands:
 
 ```sh
-cd ionos_dev/
+cd ionos_sbx/
 mkdir <name of you application>
 ```
 
 Then put your application manifest files or Helm charts inside this directory. Once done, the structure should look like the following:
 
 ```
-ionos_dev/
+ionos_sbx/
   └── your-app/
     └── deployment.yaml
     └── service.yaml
@@ -113,7 +124,7 @@ ionos_dev/
 or, if you are using Helm:
 
 ```
-ionos_dev/
+ionos_sbx/
   └── your-app/
     └── templates/
       └── secret.yaml
@@ -170,10 +181,10 @@ Now that the manifest files for your component are ready, the next step is to cr
 First, navigate to the ```application``` directory:
 
 ```sh
-cd applications_dev/
+cd applications_sbx/release1
 ```
 
-and create a file name ```your-app.yaml``` with the following content:
+and create a folder with named as the namespace, or as your company, inside of it create a file named ```your-app.yaml``` with the following content:
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
@@ -189,7 +200,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos_dev/<app name>
+    path: ionos_sbx/<app name>
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
   syncPolicy:
@@ -200,29 +211,44 @@ spec:
 
 If your application is complex and consists of multiple components but you still want to manage it as a single ArgoCD application, you can use the following approach:
 
-1. During the step [Add component manifest files](#step-3-add-component-manifest-files), create a directory for each sub-component (i.e. ```ionos_dev/your-app/sub-component-1```, ```ionos_dev/your-app/sub-component-2``` etc)
-2. Create the directory ```applications_dev/your-app```
-3. Inside ```applications_dev/your-app```, create an ArgoCD application file for each sub-component, ensuring that it points to the respective subfolder under ```ionos_dev/your-app```
+1. During the step [Add component manifest files](#step-3-add-component-manifest-files), create a directory for each sub-component (i.e. ```ionos_sbx/your-app/sub-component-1```, ```ionos_sbx/your-app/sub-component-2``` etc)
+2. Create the directory ```applications_sbx/release1/your-app```
+3. Inside ```applications_sbx/release1/your-app```, create an ArgoCD application file for each sub-component, ensuring that it points to the respective subfolder under ```ionos_sbx/your-app```
 
 ```yaml
 source:
-    path: ionos_dev/<app name>/<sub-component name>
+    path: ionos_sbx/<app name>/<sub-component name>
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
 ```
 
-4. Create an ArgoCD application file for your entire application and make it point to ```applications_dev/your-app```
+4. Create an ArgoCD application file for your entire application and make it point to ```applications_sbx/release1/your-app```
 
 ```yaml
 source:
-    path: applications_dev/<app name>
+    path: applications_sbx/release1/<app name>
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
 ```
 
-You can use the [marketplace](../applications_dev/marketplace.yaml) application or [dome-trust](../applications_dev/dome-trust.yaml) as a reference.
+You can use the [marketplace](../applications_sbx/marketplace/bae-marketplace.yaml) application or for the contained approach [monitoring](../applications_sbx/monitoring.yaml) as a reference.
 
 ## Step 5: Create a Pull Request
-Upon completing the changes, the team initiates a pull request from their branch to the main one. This PR serves as a formal request for the integration to be reviewed and merged. Team members must wait for the review process to be completed.
+Upon completing the changes, the team initiates a pull request from their branch to the main one. This PR serves as a formal request for the integration to be reviewed and merged. This PR must be named with the enviroment destination as prefix.   
+Ex: **SBX - Deployment of myapp**  
+Team members must wait for the review process to be completed. 
+
+After an approval of the Merge Request be available to test as soon as possible the new deployed applicaiton.
+
+> ⚠️ If someone else PR is merged before yours, your branch will result as Out Of Date. Please avoid to merge the main to our branch in order to update it. Instead make a **REBASE** of your branch following those step. 
+>- ```git checkout main``` 
+>- ```git fetch -p --all```
+>- ```git pull```
+>- ```git checkout <your_branch>```
+>- ```git rebase main```
+>- ```git status``` to ensure that you are still on your branch
+>- ```git push --force```
+>
+> after that your branch and your Pull Request will be again Up-To-Date and mergeable. This approach ensure to maintain a readable git tree. 
 
 Once the pull request is approved and merged into the main branch, the GitOps pipeline automatically triggers the deployment process. This involves synchronising the desired state of the cluster with the changes introduced in the merged pull request. The deployment is executed based on the Helm chart or manifest configurations added to the repository.
