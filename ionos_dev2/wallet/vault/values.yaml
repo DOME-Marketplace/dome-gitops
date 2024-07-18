@@ -1,0 +1,4 @@
+vault:
+  fullnameOverride: wallet-vault
+  injector:
+    enabled: false
