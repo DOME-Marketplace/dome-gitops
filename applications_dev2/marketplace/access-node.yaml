@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: access-node
+  namespace: argocd
+  labels:
+    purpose: marketplace
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: ENV_DEV2
+    path: ionos_dev2/marketplace/access-node
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: marketplace
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

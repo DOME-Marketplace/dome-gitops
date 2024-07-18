@@ -1,0 +1,258 @@
+## configuration for the desmos - see https://DOME-Marketplace.github.io/access-node for configuration documentation
+access-node:
+  desmos:
+    # -- should the desmos-blockchain-connector be enabled
+    enabled: true
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    fullnameOverride: desmos
+    ## deployment specific configuration
+    app:
+      ## profile (test == dev)
+      profile: test
+      ## debug level
+      logLevel: INFO
+      ## information about the access-node operator
+      operator:
+        # -- did of the organization running the node
+        organizationIdentifier: did:elsi:VATES-S9999999E
+      ## connection information for the context broker
+      broker:
+        # -- provider of the broker
+        provider: scorpio
+        # -- internal address of the context broker to be used by the connector
+        internalDomain: http://scorpio:9090
+        # -- external address of the broker. Will be included in the hashlink and used by other access-nodes to retrieve the actual entities
+        externalDomain: http://scorpio:9090
+      ## configuration of ngsi-ld entities to listen for
+      ngsiSubscription:
+        # -- local address of the blockchain-connectors notification endpoint for ngsi-ld events
+        notificationEndpoint: http://desmos:8080/api/v1/notifications/broker
+        # -- a list of entity-types the connector is interested in
+        entityTypes: catalog,product-offering,category,individual,organization,product,service-specification,product-offering-price,resource-specification,product-specification
+      ## configuration to connect to the dlt-adapter
+      dltAdapter:
+        # -- provider of the dlt-adapter component
+        provider: digitelts
+        # -- (local) address of the dlt-adapter
+        internalDomain: http://dlt-adapter:8080
+        # -- (external) address of the dlt-adapter
+        externalDomain: http://dlt-adapter:8080
+        ## configuration of subscriptions at the blockchain
+      txSubscription:
+        # -- local address of the blockchain-connectors notification endpoint for dlt events
+        notificationEndpoint: http://desmos:8080/api/v1/notifications/dlt
+        # -- a list of entity-types the connector is interested in
+        entityTypes: catalog,product-offering,category,individual,organization,product,service-specification,product-offering-price,resource-specification,product-specification
+    ## configuration of the database to be used by the blockchain-connector
+    db:
+      # -- host of the db
+      host: desmos-postgres
+      # -- port of the host of the db
+      port: 5432
+      # -- should be true if is an external service
+      externalService: false
+      # -- name of the db
+      name: desmos
+      # -- username to be used
+      username: postgres
+      # -- existing secret to retrieve the db password
+      existingSecret:
+        # -- should an existing secret be used
+        enabled: true
+        # -- name of the secret
+        name: desmos-secret
+        # -- key to retrieve the password from
+        key: postgres-password
+
+  ## configuration for the dlt-adapter - see https://DOME-Marketplace.github.io/access-node/dlt-adapter for configuration documentation
+  dlt-adapter:
+    # -- should the dlt-adapter be enabled
+    enabled: true
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    fullnameOverride: dlt-adapter
+    env:
+      DEBUG: "*"
+      PRIVATE_KEY: "0xe2afef2c880b138d741995ba56936e389b0b5dd2943e21e4363cc70d81c89346"
+      RPC_ADDRESS: "https://red-t.alastria.io/v0/9461d9f4292b41230527d57ee90652a6"
+      ISS: "0x43b27fef24cfe8a0b797ed8a36de2884f9963c0c2a0da640e3ec7ad6cd0c493d"
+
+  ## configuration of postgres to be used for the blockchain-connector - see https://github.com/bitnami/charts/tree/main/bitnami/postgresql for details
+  postgresql:
+    # -- should the postgresql deployment be enabled
+    enabled: true
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    fullnameOverride: desmos-postgres
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    nameOverride: desmos-postgres
+    ## auth configuration for the database
+    auth:
+      # -- username to be used
+      username: postgres
+      # -- should the default postgres user be enabled
+      enablePostgresUser: true
+      # -- existing secret
+      existingSecret: desmos-secret
+      secretKeys:
+        adminPasswordKey: postgres-password
+        userPasswordKey: postgres-password
+    ## configuration of the postgres primary replica
+    primary:
+      ## provide db initialization
+      initdb:
+        ## provide scripts for initialization
+        scripts:
+          # -- create the database as expected by the blockchain-connector
+          create.sh: |
+            psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE desmos;"  
+
+  ## configuration of the context-broker - see https://github.com/FIWARE/helm-charts/tree/main/charts/scorpio-broker-aaio for details
+  scorpio:
+    # -- should scorpio be enabled
+    enabled: true
+    ## configuration of the image to be used
+    image:
+      # -- repository to be used - resource friendly all-in-one-runner without kafka
+      repository: scorpiobroker/all-in-one-runner
+      # -- tag of the image to be used - latest java image without kafka
+      tag: java-4.1.10
+    ## configuration of the database to be used by broker
+    db:
+      # -- host of the db
+      dbhost: scorpio-postgis
+      # -- username to be used
+      user: postgres
+      # -- existing secret to retrieve the db password
+      existingSecret:
+        # -- should an existing secret be used
+        enabled: true
+        # -- name of the secret
+        name: scorpio-secret
+        # -- key to retrieve the password from
+        key: postgres-password
+    ## configuration of the readiness probe
+    readinessProbe:
+      # -- path to be used for the readiness probe, older versions used /actuator/health
+      path: /q/health
+    ## configuration of the liveness probe
+    livenessProbe:
+      # -- path to be used for the readiness probe, older versions used /actuator/health
+      path: /q/health
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    fullnameOverride: scorpio
+    ## configuration to be used for the service offered by scorpio
+    service:
+      # -- ClusterIP is the recommended type for most clusters
+      type: ClusterIP
+
+  ## configuration for kafka in case its used by scorpio - see https://github.com/bitnami/charts/tree/main/bitnami/kafka
+  kafka:
+    # -- should kafka be enabled?
+    enabled: false
+
+  ## configuration of postgis to be used for scorpio - see https://github.com/bitnami/charts/tree/main/bitnami/postgresql for details
+  postgis:
+    # -- should postgis be enabled
+    enabled: true
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    fullnameOverride: scorpio-postgis
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    nameOverride: scorpio-postgis
+    ## auth configuration for the database
+    auth:
+      # -- username to be used
+      username: postgres
+      # -- should the default postgres user be enabled
+      enablePostgresUser: true
+      # -- existing secret
+      existingSecret: scorpio-secret
+      secretKeys:
+        adminPasswordKey: postgres-password
+        userPasswordKey: postgres-password
+    ## configuration of the postgres primary replicas
+    primary:
+      ## provide db initialization
+      initdb:
+        ## provide scripts for initialization
+        scripts:
+          # -- enable the postgis extension and create the database as expected by scorpio
+          enable.sh: |
+            psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE EXTENSION postgis;"
+            psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE ngb;"
+
+  ## configuration of the tm-forum-api - see https://github.com/FIWARE/helm-charts/tree/main/charts/tm-forum-api for details
+  tm-forum-api:
+    fullnameOverride: tm-forum-api
+    nameOverride: tm-forum-api
+    # -- should tm-forum-api be enabled
+    enabled: true
+    ## configuration to be used by every api-deployment if nothing specific is provided.
+    defaultConfig:
+      # -- configuration to be used for the image of the containers
+      image:
+        # -- current latest tag
+        tag: "0.20.1"
+      # -- ngsi-ld broker connection information
+      ngsiLd:
+        # -- address of the broker
+        url: http://scorpio:9090
+      # -- default context to be used when contacting the context broker
+      contextUrl: https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld
+      # -- host that the tm-forum api can be reached at, when the proxy is enabled it should be set to that address. If not, set the host for each api individually
+      serverHost: http://localhost:8080
+    ## configuration for the api proxy, to serve all apis through one kubernetes service
+    apiProxy:
+      # -- the proxy must be enabled
+      enabled: true
+
+    apis:
+    - name: party-catalog
+      image: tmforum-party-catalog
+      basePath: /
+
+    - name: customer-bill-management
+      image: tmforum-customer-bill-management
+      basePath: /
+
+    - name: customer-management
+      image: tmforum-customer-management
+      basePath: /
+
+    - name: product-catalog
+      image: tmforum-product-catalog
+      basePath: /
+
+    - name: product-inventory
+      image: tmforum-product-inventory
+      basePath: /
+
+    - name: product-ordering-management
+      image: tmforum-product-ordering-management
+      basePath: /
+
+    - name: resource-catalog
+      image: tmforum-resource-catalog
+      basePath: /
+
+    - name: resource-function-activation
+      image: tmforum-resource-function-activation
+      basePath: /
+
+    - name: resource-inventory
+      image: tmforum-resource-inventory
+      basePath: /
+
+    - name: service-catalog
+      image: tmforum-service-catalog
+      basePath: /
+
+    - name: account
+      image: tmforum-account
+      basePath: /
+
+    - name: agreement
+      image: tmforum-agreement
+      basePath: /
+
+    - name: usage-management
+      image: tmforum-usage-management
+      basePath: /
