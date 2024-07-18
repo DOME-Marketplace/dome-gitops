@@ -5,7 +5,7 @@ configs:
   rbac:
     policy.default: role:readonly
     policy.csv: |
-      g, CgkxNTU3NTY4MjYSBmdpdGh1Yg, role:adm
+      g, CgkxNTU3NTY4MjYSBmdpdGh1Yg, role:admin
       g, CggxNzE4MTU4MRIGZ2l0aHVi, role:admin
   cm:
     url: https://argocd.dome-marketplace-dev.org
