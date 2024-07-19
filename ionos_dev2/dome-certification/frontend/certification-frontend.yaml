@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: certification-frontend
+  namespace: dome-certification
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: certification-frontend
+  template:
+    metadata:
+      labels:
+        app: certification-frontend
+    spec:
+      containers:
+        - name: certification-frontend
+          image: noeliaguedek/dome-compliance-frontend:1.0.4
+          ports:
+            - containerPort: 80
+              name: http
+              protocol: TCP
