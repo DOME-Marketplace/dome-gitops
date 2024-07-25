@@ -10,16 +10,16 @@ configs:
   cm:
     url: https://argocd.dome-marketplace-dev2.org
     admin.enabled: "true"
-#    dex.config: |
-#      connectors:
-#        - type: github
-#          id: github
-#          name: GitHub
-#          config:
-#            clientID: 4eff9d054669dee85f3a
-#            clientSecret: $github-secret:clientSecret
-#            orgs:
-#            - name: DOME-Marketplace
+    dex.config: |
+      connectors:
+        - type: github
+          id: github
+          name: GitHub
+          config:
+            clientID: Ov23lirzp53vIGHAoesP
+            clientSecret: $github-secret:clientSecret
+            orgs:
+            - name: DOME-Marketplace
 
 redis-ha:
   enabled: false
@@ -61,11 +61,11 @@ applicationSet:
     serviceMonitor:
       enabled: true
 
-#dex:
-#  metrics:
-#    enabled: true
-#    serviceMonitor:
-#      enabled: true
+dex:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
 
 redis:
   metrics:
