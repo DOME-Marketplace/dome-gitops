@@ -18,11 +18,11 @@ spec:
   - repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
     ref: values
-#  - repoURL: https://github.com/DOME-Marketplace/dome-gitops
-#    targetRevision: HEAD
-#    path: ionos_dev2/argocd
-#    directory:
-#      include: '{github-sealed-secret.yaml}'
+  - repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: HEAD
+    path: ionos_dev2/argocd
+    directory:
+      include: '{github-sealed-secret.yaml}'
   destination:
     namespace: argocd
     server: https://kubernetes.default.svc
