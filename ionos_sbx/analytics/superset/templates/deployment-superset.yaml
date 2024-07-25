@@ -22,12 +22,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: superset-secrets
-                  key: 
+                  key: admin_username
             - name: ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: superset-secrets
-                  key: 
+                  key: admin_password
           volumeMounts:
             - name: superset-home
               mountPath: /app/superset_home
