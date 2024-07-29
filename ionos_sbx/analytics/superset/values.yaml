@@ -15,13 +15,3 @@ superset:
       - secretName: analytics-tls-secret
         hosts:
           - analytics.dome-marketplace-sbx.org
-
-  extraSecretEnv: {
-    SUPERSET_SECRET_KEY: 'U80rJ3+W8ly3Y0tBENm1zD5rHKBQU0/Lx7QUK6TO7T1AUfHuX7jJku5C'
-  }
-
-  configOverrides: {
-  secret: |
-    # Generate your own secret key for encryption. Use `openssl rand -base64 42` to generate a good key
-    SECRET_KEY = 'U80rJ3+W8ly3Y0tBENm1zD5rHKBQU0/Lx7QUK6TO7T1AUfHuX7jJku5C'
-  }
