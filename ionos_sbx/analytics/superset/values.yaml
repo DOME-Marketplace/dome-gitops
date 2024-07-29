@@ -12,10 +12,10 @@ superset:
           - path: /
             pathType: ImplementationSpecific
             backend:
-              service:
-          		  name: superset-app
-          		  port:
-            			  number: 8088
+              service: 
+                name: superset-app
+                port:
+                  number: 8088
     tls:
       - secretName: analytics-tls-secret
         hosts:
