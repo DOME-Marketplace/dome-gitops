@@ -28,6 +28,16 @@ spec:
                 secretKeyRef:
                   name: superset-secrets
                   key: admin_password
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: superset-secrets
+                  key: SECRET_KEY
+            - name: SUPERSET_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: superset-secrets
+                  key: SUPERSET_SECRET_KEY
           volumeMounts:
             - name: superset-home
               mountPath: /app/superset_home
