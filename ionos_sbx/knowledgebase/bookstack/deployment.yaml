@@ -22,8 +22,8 @@ spec:
     spec:
       containers:
         - name: bookstack
-          #image: production.eng.it:8433/dome/knowledgebase-sbx:0.0.2
-          image: production.eng.it:8433/dome/knowledgebase:1.0.0
+          image: production.eng.it:8433/dome/knowledgebase-sbx:0.0.2
+          #image: production.eng.it:8433/dome/knowledgebase:1.0.0
           imagePullPolicy: Always
           env:
             - name: DB_HOST
@@ -39,7 +39,7 @@ spec:
                   key: DB_PASSWORD
             - name: APP_URL
               #value: "https://knowledgebase.dome-marketplace-sbx.org"
-              value: "https:///"
+              value: "https://knowledgebase.yumket-sbx.eu"
             - name: APP_KEY
               valueFrom:
                 secretKeyRef:
