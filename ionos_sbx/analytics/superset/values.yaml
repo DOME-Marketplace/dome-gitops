@@ -1,6 +1,4 @@
 superset:
-  fullnameOverride: analytics-superset
-  
   ingress:
     enabled: true
     className: nginx
@@ -13,7 +11,7 @@ superset:
             pathType: ImplementationSpecific
             backend:
               service: 
-                name: superset-app
+                name: superset
                 port:
                   number: 8088
     tls:
