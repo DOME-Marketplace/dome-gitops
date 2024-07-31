@@ -1,8 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: superset
-  namespace: knowledgebase
+  name: superset-ingress
+  namespace: analytics
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
