@@ -1,26 +1,26 @@
 
-fullnameOverride: analytics-superset
-service:
-  port: 8088
-  type: NodePort
-  nodePort:
-    - http: 8088
+superset:
+  service:
+    port: 8088
+    type: NodePort
+    nodePort:
+      - http: 8088
 
-ingress:
-  enabled: true
-  ingressClassName: nginx
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
-  hosts:
-    - host: analytics.dome-marketplace-sbx.org
-      paths: 
-        - path: /
-          pathType: Prefix
-  tls:
-    - secretName: analytics-tls-secret
-      hosts:
-        - analytics.dome-marketplace-sbx.org
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+    hosts:
+      - host: analytics.dome-marketplace-sbx.org
+        paths: 
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: analytics-tls-secret
+        hosts:
+          - analytics.dome-marketplace-sbx.org
 
-configOverrides:
-  SECRET_KEY: IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT
-  SUPERSET_SECRET_KEY: IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT
+  configOverrides:
+    SECRET_KEY: IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT
+    SUPERSET_SECRET_KEY: IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT
