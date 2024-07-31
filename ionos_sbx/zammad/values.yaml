@@ -5,11 +5,11 @@ zammad:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
     hosts:
-      - host: ticket-sbx.yumket.eu
+      - host: ticketing.dome-marketplace-sbx.org
         paths: 
           - path: /
             pathType: ImplementationSpecific
     tls:
       - secretName: ticketing-tls-secret
         hosts:
-          - ticket-sbx.yumket.eu
+          - ticketing.dome-marketplace-sbx.org
