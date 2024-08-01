@@ -50,7 +50,7 @@ In order to setup the DOME-Marketplace, its recommended to install the following
 
 4. Create the initial nodepool inside your cluster and datacenter:
 ```shell
-    export DOME_K8S_DEFAULT_NODEPOOL_ID=$(ionosctl k8s nodepool create --cluster-id $DOME_K8S_CLUSTER_ID --name default-pool --node-count 2 --ram 32768 --storage-size 40 --datacenter-id $DOME_DATACENTER_ID --cpu-family "INTEL_SKYLAKE"  -o json | jq -r '.items[0].id')
+    export DOME_K8S_DEFAULT_NODEPOOL_ID=$(ionosctl k8s nodepool create --cluster-id $DOME_K8S_CLUSTER_ID --name default-pool --node-count 4 --ram 32768 --storage-size 100 --storage-type SSD --datacenter-id $DOME_DATACENTER_ID --cpu-family "INTEL_SKYLAKE"  -o json | jq -r '.items[0].id')
     # wait for the pool to be available
     watch ionosctl k8s nodepool get --nodepool-id $DOME_K8S_DEFAULT_NODEPOOL_ID --cluster-id $DOME_K8S_CLUSTER_ID
     export DOME_K8S_DEFAULT_NODEPOOL_ID=24ca1894-6b36-4e3f-9332-4bb00c3b9891 
@@ -59,7 +59,7 @@ In order to setup the DOME-Marketplace, its recommended to install the following
 5. Following the recommendations from the [Ionos-FAQ](https://docs.ionos.com/cloud/managed-services/managed-kubernetes/ingress-preserve-source-ip), we also dedicate a specific nodepool for the ingress-controller
 
 ```shell 
-    export DOME_K8S_INGRESS_NODEPOOL_ID=$(ionosctl k8s nodepool create --cluster-id $DOME_K8S_CLUSTER_ID --name ingress-pool --node-count 1 --datacenter-id $DOME_DATACENTER_ID --cpu-family "INTEL_SKYLAKE" --labels nodepool=ingress -o json | jq -r '.items[0].id')
+    export DOME_K8S_INGRESS_NODEPOOL_ID=$(ionosctl k8s nodepool create --cluster-id $DOME_K8S_CLUSTER_ID --name ingress-pool --node-count 1 --ram 4096 --storage-size 10 --storage-type SSD --datacenter-id $DOME_DATACENTER_ID --cpu-family "INTEL_SKYLAKE" --labels nodepool=ingress -o json | jq -r '.items[0].id')
     # wait for the pool to be available
     watch ionosctl k8s nodepool get --nodepool-id $DOME_K8S_INGRESS_NODEPOOL_ID --cluster-id $DOME_K8S_CLUSTER_ID
     export DOME_K8S_INGRESS_NODEPOOL_ID=8668accc-b521-4c57-a283-33907af85726
