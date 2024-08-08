@@ -133,6 +133,8 @@ issuer:
           internalPort: 30000
           path: /
         internalDomain: http://dome-wallet-ui:8080
+      wallet:
+        url: https://wallet.dome-marketplace-sbx.org
     db:
       host: issuer-postgres
       port: 5432
