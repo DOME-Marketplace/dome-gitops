@@ -6,9 +6,28 @@ access-node:
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     fullnameOverride: desmos
     ## deployment specific configuration
+    image:
+      repository: in2workspace/in2-desmos-api
+      # Overrides the image tag whose default is the chart appVersion.
+      tag: v1.0.0-SNAPSHOT
+      pullPolicy: Always
+    ingress:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+      hosts:
+        - host: desmos.dome-marketplace-sbx.org
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - desmos.dome-marketplace-sbx.org
+          secretName: desmos-tls-secret
     app:
       ## profile (test == dev)
-      profile: test
+      profile: dev
       ## debug level
       logLevel: INFO
       ## information about the access-node operator
@@ -26,7 +45,7 @@ access-node:
       ## configuration of ngsi-ld entities to listen for
       ngsiSubscription:
         # -- local address of the blockchain-connectors notification endpoint for ngsi-ld events
-        notificationEndpoint: http://desmos:8080/api/v1/notifications/broker
+        notificationEndpoint: http://desmos:80/api/v1/notifications/broker
         # -- a list of entity-types the connector is interested in
         entityTypes: catalog,product-offering,category,individual,organization,product,service-specification,product-offering-price,resource-specification,product-specification
       ## configuration to connect to the dlt-adapter
@@ -40,9 +59,23 @@ access-node:
         ## configuration of subscriptions at the blockchain
       txSubscription:
         # -- local address of the blockchain-connectors notification endpoint for dlt events
-        notificationEndpoint: http://desmos:8080/api/v1/notifications/dlt
+        notificationEndpoint: http://desmos:80/api/v1/notifications/dlt
         # -- a list of entity-types the connector is interested in
         entityTypes: catalog,product-offering,category,individual,organization,product,service-specification,product-offering-price,resource-specification,product-specification
+      # -- operator external domain
+      externalDomain: "https://desmos.dome-marketplace-sbx.org"
+      externalAccessNodesUrls:
+        enableCustomUrls: true
+        customUrls: ""
+      # -- configuration to set your private key
+      privateKey:
+        existingSecret:
+          # -- should an existing secret be used
+          enabled: true
+          # -- name of the secret
+          name: desmos-secret
+          # -- key to retrieve the password from
+          key: private-key
     ## configuration of the database to be used by the blockchain-connector
     db:
       # -- host of the db
@@ -62,7 +95,7 @@ access-node:
         # -- name of the secret
         name: desmos-secret
         # -- key to retrieve the password from
-        key: postgres-password
+        key: desmos-db-password
 
   ## configuration for the dlt-adapter - see https://DOME-Marketplace.github.io/access-node/dlt-adapter for configuration documentation
   dlt-adapter:
@@ -70,9 +103,13 @@ access-node:
     enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     fullnameOverride: dlt-adapter
+
+    existingSecret:
+      enabled: true
+      name: desmos-secret
+      key: private-key
     env:
       DEBUG: "*"
-      PRIVATE_KEY: "0xe2afef2c880b138d741995ba56936e389b0b5dd2943e21e4363cc70d81c89346"
       RPC_ADDRESS: "https://red-t.alastria.io/v0/9461d9f4292b41230527d57ee90652a6"
       ISS: "0x43b27fef24cfe8a0b797ed8a36de2884f9963c0c2a0da640e3ec7ad6cd0c493d"
 
@@ -93,8 +130,8 @@ access-node:
       # -- existing secret
       existingSecret: desmos-secret
       secretKeys:
-        adminPasswordKey: postgres-password
-        userPasswordKey: postgres-password
+        adminPasswordKey: desmos-db-password
+        userPasswordKey: desmos-db-password
     ## configuration of the postgres primary replica
     primary:
       ## provide db initialization
@@ -114,7 +151,7 @@ access-node:
       # -- repository to be used - resource friendly all-in-one-runner without kafka
       repository: scorpiobroker/all-in-one-runner
       # -- tag of the image to be used - latest java image without kafka
-      tag: java-4.1.10
+      tag: java-4.1.15
     ## configuration of the database to be used by broker
     db:
       # -- host of the db
@@ -126,9 +163,9 @@ access-node:
         # -- should an existing secret be used
         enabled: true
         # -- name of the secret
-        name: scorpio-secret
+        name: desmos-secret
         # -- key to retrieve the password from
-        key: postgres-password
+        key: scorpio-db-password
     ## configuration of the readiness probe
     readinessProbe:
       # -- path to be used for the readiness probe, older versions used /actuator/health
@@ -164,10 +201,10 @@ access-node:
       # -- should the default postgres user be enabled
       enablePostgresUser: true
       # -- existing secret
-      existingSecret: scorpio-secret
+      existingSecret: desmos-secret
       secretKeys:
-        adminPasswordKey: postgres-password
-        userPasswordKey: postgres-password
+        adminPasswordKey: scorpio-db-password
+        userPasswordKey: scorpio-db-password
     ## configuration of the postgres primary replicas
     primary:
       ## provide db initialization
