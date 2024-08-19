@@ -43,4 +43,3 @@ keycloak:
   extraVolumeMounts:
     - name: plugins
       mountPath: /opt/bitnami/keycloak/providers/
-      subPath: dome-vc-authenticator-1.0.0.jar
