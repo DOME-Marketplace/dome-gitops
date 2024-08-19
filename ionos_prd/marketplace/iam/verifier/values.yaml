@@ -317,7 +317,7 @@ vcverifier:
                       const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
                       const code = jsQR(imageData.data, imageData.width, imageData.height);
                       if (code) {
-                          const baseUrl = 'https://wallet.dome-marketplace-lcl.org/tabs/home';
+                          const baseUrl = 'https://wallet.dome-marketplace-prd.org/tabs/home';
                           const qrData = code.data.replace('openid://', '');
                           walletButton.onclick = () => window.location.href = `${baseUrl}${qrData}`;
                       }
@@ -347,7 +347,7 @@ vcverifier:
               </div>
               <div class="card">
                   <h3>Having trouble logging in?</h3>
-                  <p>Get help from <a href="https://ticketing.dome-marketplace-sbx.org">Customer Support</a></p>
+                  <p>Get help from <a href="https://ticketing.dome-marketplace-prd.org">Customer Support</a></p>
               </div>
           </div>
           <div class="right-column">
@@ -368,7 +368,7 @@ vcverifier:
                       </div>
                       <div class="instructions">
                           <h3>Login instructions</h3>
-                          <h4>1. You must register or log in to a EUDI Wallet using your phone. You may use the <a href="https://wallet.dome-marketplace-lcl.org">DOME Wallet</a>.</h4>
+                          <h4>1. You must register or log in to a EUDI Wallet using your phone. You may use the <a href="https://wallet.dome-marketplace-prd.org">DOME Wallet</a>.</h4>
                           <h4>2. Scan the QR code.</h4>
                           <h4>3. Select the credential.</h4>
                       </div>
