@@ -34,3 +34,13 @@ keycloak:
     auth:
       database: keycloak
       existingSecret: keycloak-secret
+      
+  extraVolumes:
+    - name: plugins
+      configMap:
+        name: keycloak-plugins
+        
+  extraVolumeMounts:
+    - name: plugins
+      mountPath: /opt/bitnami/keycloak/providers/dome-vc-authenticator-1.0.0.jar
+      subPath: dome-vc-authenticator-1.0.0.jar 
