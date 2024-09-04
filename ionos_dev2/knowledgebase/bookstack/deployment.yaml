@@ -68,7 +68,7 @@ spec:
             - name: OIDC_CLIENT_ID
               value: "bookstack"
             - name: OIDC_CLIENT_SECRET
-              value: "4XthWaqj7gpREsj9NJQBsGIprIZqJsmy"
+              value: "wzrtS4mHaYAFCpPkdcfStJ78zpQUBCbC"
             - name: OIDC_ISSUER
               value: "https://cs-identity.dome-marketplace-dev2.org/realms/dome"
             - name: OIDC_END_SESSION_ENDPOINT
