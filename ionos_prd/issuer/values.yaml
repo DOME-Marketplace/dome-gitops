@@ -64,9 +64,9 @@ issuer:
         port: 587
         existingSecret:
           enabled: true
-          name: issuer-api-mail-secret
-          userKey: username
-          passwordKey: password
+          name: issuer-secret
+          userKey: mail-username
+          passwordKey: mail-password
         properties:
           mail:
             smtp:
@@ -117,7 +117,7 @@ issuer:
           username: user
           existingSecret:
             enabled: true
-            name: issuer-api-auth-secret
+            name: issuer-secret
             clientSecretKey: authServerClientSecret
             clientPasswordKey: authServerClientPassword
         paths:
@@ -141,8 +141,8 @@ issuer:
       username: postgres
       existingSecret:
         enabled: true
-        name: issuer-api-db-secret
-        key: password
+        name: issuer-secret
+        key: db-password
 
   issuer-ui:
     fullnameOverride: issuer-ui
@@ -238,8 +238,8 @@ issuer:
         username: admin
         existingSecret:
           enabled: true
-          name: dome-issuer-keycloak-admin-secrets
-          passwordKey: password
+          name: issuer-secret
+          passwordKey: keycloak-admin-password
       relativePath: "/issuer-keycloak/"
       hostname:
         url:
@@ -266,7 +266,7 @@ issuer:
         trustStoreFile: /opt/keycloak/truststore/truststore.jks
         existingSecret:
           enabled: true
-          name: dome-issuer-keycloak-https-secrets
+          name: issuer-secret
           trustStorePasswordKey: keycloakTrustStorePassword
         clientAuth: request
       db:
@@ -277,8 +277,8 @@ issuer:
         username: postgres
         existingSecret:
           enabled: true
-          name: dome-issuer-keycloak-db-secret
-          passwordKey: password
+          name: issuer-secret
+          passwordKey: keycloak-db-password
 
     # Issuer API Configuration
     issuerApi:
@@ -308,57 +308,57 @@ issuer:
       expiration: "2592000"
 
   issuer-postgres:
-      # -- should the postgresql deployment be enabled
-      enabled: true
-      # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-      fullnameOverride: issuer-postgres
-      # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-      nameOverride: issuer-postgres
-      ## auth configuration for the database
-      auth:
-        # -- username to be used
-        username: postgres
-        # -- should the default postgres user be enabled
-        enablePostgresUser: true
-        # -- password to be used
-        existingSecret: issuer-api-db-secret
-        secretKeys:
-          adminPasswordKey: password
-          userPasswordKey: password
-      ## configuration of the postgres primary replica
-      primary:
-        ## provide db initialization
-        initdb:
-          ## provide scripts for initialization
-          scripts:
-            # -- create the database
-            create.sh: |
-              psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE issuer;"
+    # -- should the postgresql deployment be enabled
+    enabled: true
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    fullnameOverride: issuer-postgres
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    nameOverride: issuer-postgres
+    ## auth configuration for the database
+    auth:
+      # -- username to be used
+      username: postgres
+      # -- should the default postgres user be enabled
+      enablePostgresUser: true
+      # -- password to be used
+      existingSecret: issuer-secret
+      secretKeys:
+        adminPasswordKey: db-password
+        userPasswordKey: db-password
+    ## configuration of the postgres primary replica
+    primary:
+      ## provide db initialization
+      initdb:
+        ## provide scripts for initialization
+        scripts:
+          # -- create the database
+          create.sh: |
+            psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE issuer;"
 
 
   issuer-keycloak-postgres:
-      # -- should the postgresql deployment be enabled
-      enabled: true
-      # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-      fullnameOverride: dome-issuer-keycloak-postgres
-      # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-      nameOverride: dome-issuer-keycloak-postgres
-      ## auth configuration for the database
-      auth:
-        # -- username to be used
-        username: postgres
-        # -- should the default postgres user be enabled
-        enablePostgresUser: true
-        existingSecret: dome-issuer-keycloak-db-secret
-        secretKeys:
-          adminPasswordKey: password
-          userPasswordKey: password
-      ## configuration of the postgres primary replica
-      primary:
-        ## provide db initialization
-        initdb:
-          ## provide scripts for initialization
-          scripts:
-            # -- create the database
-            create.sh: |
-              psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE cred;"
+    # -- should the postgresql deployment be enabled
+    enabled: true
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    fullnameOverride: dome-issuer-keycloak-postgres
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    nameOverride: dome-issuer-keycloak-postgres
+    ## auth configuration for the database
+    auth:
+      # -- username to be used
+      username: postgres
+      # -- should the default postgres user be enabled
+      enablePostgresUser: true
+      existingSecret: issuer-secret
+      secretKeys:
+        adminPasswordKey: keycloak-db-password
+        userPasswordKey: keycloak-db-password
+    ## configuration of the postgres primary replica
+    primary:
+      ## provide db initialization
+      initdb:
+        ## provide scripts for initialization
+        scripts:
+          # -- create the database
+          create.sh: |
+            psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE cred;"
