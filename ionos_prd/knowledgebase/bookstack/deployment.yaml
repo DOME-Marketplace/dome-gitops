@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: bookstack
-          image: sh3rd3n/dome-bookstack:1.0.0
+          image: production.eng.it:8433/dome/knowledgebase:1.1.0
           env:
             - name: DB_HOST
               value: "mysql-knowledgebase:3306"
