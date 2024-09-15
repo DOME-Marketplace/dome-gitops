@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: walt-id-vcwaltid-certs-2
+  namespace: marketplace
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-dev2-issuer
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: dome-marketplace-dev.org
+      http:
+        paths:
+          - path: /certs
+            pathType: Prefix
+            backend:
+              service:
+                name: walt-id-vcwaltid-certs
+                port:
+                  number: 3000
+  tls:
+    - hosts:
+        - dome-marketplace-dev.org
+      secretName: walt-id-vcwaltid-tls-sec-2
