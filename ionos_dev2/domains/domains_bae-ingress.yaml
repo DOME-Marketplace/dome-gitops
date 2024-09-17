@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bae-marketplace-biz-ecosystem-logic-proxy-2
+  namespace: marketplace
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-dev2-issuer
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: dome-marketplace-dev.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: bae-marketplace-biz-ecosystem-logic-proxy
+                port:
+                  number: 8004
+  tls:
+    - hosts:
+        - dome-marketplace-dev.org
+      secretName: walt-id-vcwaltid-tls-sec2

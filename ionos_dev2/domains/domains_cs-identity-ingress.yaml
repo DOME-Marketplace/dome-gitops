@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cs-identity-keycloak-2
+  namespace: cs-identity
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-dev2-issuer
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: cs-identity.dome-marketplace-dev.org
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: cs-identity-keycloak
+                port:
+                  name: http
+  tls:
+    - hosts:
+        - cs-identity.dome-marketplace-dev.org
+      secretName: cs-identity-tls-2
