@@ -97,6 +97,8 @@ spec:
               name: bookstack-uploads
             - mountPath: /var/www/bookstack/storage/uploads
               name: bookstack-storage-uploads
+            - name: datanfs
+              mountPath: /var/nfs
       securityContext:
         runAsUser: 33
         runAsGroup: 33
@@ -108,3 +110,7 @@ spec:
       - name: bookstack-storage-uploads
         persistentVolumeClaim:
           claimName: kb-bookstack-storage-uploads-pvc
+      - name: datanfs
+        nfs:
+          server: 82.165.253.143
+          path: "/mnt/dome/sbx/knowledgebase"
