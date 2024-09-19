@@ -84,6 +84,11 @@ wallet:
 
   ## configuration for the dome-wallet-ui
   dome-wallet-ui:
+    image:
+      repository: in2workspace/wallet-ui
+      pullPolicy: Always
+      # Overrides the image tag whose default is the chart appVersion.
+      tag: v1.2.2-SNAPSHOT
     # -- should be enabled?
     enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
