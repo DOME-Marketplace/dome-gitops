@@ -164,7 +164,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "9.4.9-ld"
+        tag: "9.5.1"
         pullPolicy: Always
 
     ingress: 
@@ -205,3 +205,9 @@ business-api-ecosystem:
         value: did:elsi:VATES-B87798617
       - name: BAE_LP_SEARCH_URL
         value: http://dome-search-svc.search-engine.svc.cluster.local:8080
+      - name: BAE_LP_MATOMO_ID
+        value: "3"
+      - name: BAE_LP_MATOMO_URL
+        value: https://dome-webstats.eurodyn.com/
+      - name: BAE_LP_DOME_TRUST
+        value: https://dome-certification.dome-marketplace-sbx.org
