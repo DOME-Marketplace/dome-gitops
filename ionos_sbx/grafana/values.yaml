@@ -1,0 +1,22 @@
+grafana:
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+    hosts:
+      - host: ticketing-analytics.dome-marketplace-sbx.org
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls:
+      - secretName: grafana-tls-secret
+        hosts:
+          - ticketing-analytics.dome-marketplace-sbx.org
+
+  dashboards:
+    enabled: true
+
+  plugins:
+    - grafana-piechart-panel
+    - grafana-clock-panel
