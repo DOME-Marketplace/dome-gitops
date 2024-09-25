@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ .Release.Name }}-check-cronjob
+  name: vault-check-cronjob
   labels:
     app: {{ .Release.Name }}
 spec:
@@ -29,6 +29,17 @@ spec:
                       VAULT_POD_NAME="{{ .Values.vaultPodName }}"
 
                       echo "Vault pod name: $VAULT_POD_NAME"
+
+                      QUICK_STATUS=$(kubectl exec -n "$NAMESPACE" "$VAULT_POD_NAME" -- /bin/sh -c "vault status -format=json" 2>/dev/null)
+                      if [ -n "$QUICK_STATUS" ]; then
+                        INITIALIZED=$(echo "$QUICK_STATUS" | jq -r '.initialized')
+                        SEALED=$(echo "$QUICK_STATUS" | jq -r '.sealed')
+                        if [ "$INITIALIZED" = "true" ] && [ "$SEALED" = "false" ]; then
+                          echo "Vault is already initialized and unsealed. Exiting script."
+                          exit 0
+                        fi
+                      fi
+                      echo "Proceeding with Vault check..."
 
                       # Check Vault status
                       STATUS=$(kubectl exec -n "$NAMESPACE" "$VAULT_POD_NAME" -- /bin/sh -c "vault status 2>&1")
