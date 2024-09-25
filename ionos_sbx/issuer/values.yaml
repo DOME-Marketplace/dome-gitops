@@ -5,7 +5,7 @@ issuer:
     image:
       repository: in2workspace/issuer-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.1.1-SNAPSHOT
+      tag: v1.1.0-SNAPSHOT
       pullPolicy: Always
     ingress:
       enabled: true
@@ -133,6 +133,8 @@ issuer:
           internalPort: 30000
           path: /
         internalDomain: http://dome-wallet-ui:8080
+      wallet:
+        url: https://wallet.dome-marketplace-sbx.org/
     db:
       host: issuer-postgres
       port: 5432
@@ -194,7 +196,7 @@ issuer:
         externalService: true
         scheme: https
         # change by the external url or set to localhost if deployed locally
-        host: wallet.dome-marketplace.org
+        host: wallet.dome-marketplace-sbx.org
         # internalPort is only used if externalService is false
         internalPort: 30003
         path: /
