@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: dome-dss-vault-check-rolebinding
+  namespace: in2
+subjects:
+- kind: ServiceAccount
+  name: dome-dss-vault-check-sa
+  namespace: in2
+roleRef:
+  kind: Role
+  name: dome-dss-vault-check-role
+  apiGroup: rbac.authorization.k8s.io

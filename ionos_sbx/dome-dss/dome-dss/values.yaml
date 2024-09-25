@@ -8,9 +8,9 @@ dome-dss:
         # -- should an existing secret be used
         enabled: true
         # -- name of the secret
-        name: dome-dss-certificate-secret
+        name: dome-dss-secret
         # -- key to retrieve the token from
-        key: password
+        key: certificate-password
     vault:
       provider: hashicorp
       host: dome-dss-vault-server
@@ -21,11 +21,11 @@ dome-dss:
         # -- should an existing secret be used
         enabled: true
         # -- name of the secret
-        name: dome-dss-token-secret
+        name: dome-dss-vault-unseal-secret
         # -- key to retrieve the token from
-        key: token
+        key: root
       
   authServer:
     internalDomain: "http://dome-issuer-keycloak:8080/issuer-keycloak"
-    externalDomain: "https://issuer.dome-marketplace-sbx.org/issuer-keycloak"
+    externalDomain: "https://issuer.dome-marketplace-prd.org/issuer-keycloak"
     realm: CredentialIssuer
