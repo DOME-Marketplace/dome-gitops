@@ -1,6 +1,3 @@
-vaultPodName: wallet-vault-server-0
-namespace: in2
-unsealSecretName: wallet-vault-unseal-secret
 vault:
   fullnameOverride: wallet-vault
   injector:
