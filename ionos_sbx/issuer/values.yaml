@@ -3,9 +3,9 @@ issuer:
     fullnameOverride: issuer-api
     nameOverride: issuer-api
     image:
-      repository: in2workspace/issuer-api
+      repository: in2workspace/in2-issuer-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.1.0-SNAPSHOT
+      tag: v1.1.0-snapshot
       pullPolicy: Always
     ingress:
       enabled: true
@@ -150,9 +150,9 @@ issuer:
     fullnameOverride: issuer-ui
     nameOverride: issuer-ui
     image:
-      repository: in2workspace/issuer-ui
+      repository: in2workspace/in2-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.0.0
+      tag: v1.1.0-snapshot
       pullPolicy: Always
     ingress:
       enabled: true

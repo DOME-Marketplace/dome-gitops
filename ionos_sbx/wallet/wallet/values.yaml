@@ -6,6 +6,11 @@ wallet:
     enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     fullnameOverride: wallet-api
+    image:
+      repository: in2workspace/in2-wallet-api
+      # Overrides the image tag whose default is the chart appVersion.
+      tag: v1.3.0-snapshot
+      pullPolicy: Always
     ingress:
       enabled: true
       className: nginx
