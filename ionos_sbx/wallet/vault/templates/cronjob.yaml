@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: vault-check-cronjob
+  name: wallet-vault-check-cronjob
   labels:
     app: {{ .Release.Name }}
 spec:
