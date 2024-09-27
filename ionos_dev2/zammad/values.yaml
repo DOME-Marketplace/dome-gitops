@@ -13,3 +13,17 @@ zammad:
       - secretName: ticketing-tls-secret
         hosts:
           - ticketing.dome-marketplace-dev2.org
+
+  zammadConfig:
+
+
+  # Extra volumes for all Zammad Pods.
+  extraVolumes:
+    - name: datanfs
+      nfs:
+        server: 82.165.253.143
+        path: "/mnt/dome/dev2/ticketing"
+
+  extraVolumeMounts:
+    - name: datanfs
+      mountPath: /var/nfs
