@@ -117,6 +117,12 @@ spec:
                     fi
 
                     echo "Vault initialized and unseal keys stored in Kubernetes Secret."
+
+                    kubectl exec -n "$NAMESPACE" "$VAULT_POD_NAME" -- /bin/sh -c "vault login $ROOT_TOKEN"
+
+                    kubectl exec -n "$NAMESPACE" "$VAULT_POD_NAME" -- /bin/sh -c "vault secrets enable -version=1 kv"
+
+                    echo "Secret engine enable."
                   fi
 
                   if [ "$INITIALIZED" = "true" ] && [ "$SEALED" = "true" ]; then
