@@ -28,8 +28,19 @@ spec:
                 name: bae-marketplace-biz-ecosystem-logic-proxy
                 port:
                   number: 8004
+    - host: dome-marketplace.eu
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: bae-marketplace-biz-ecosystem-logic-proxy
+                port:
+                  number: 8004
   tls:
     - hosts:
         - dome-marketplace.org
         - yumket.eu
+        - dome-marketplace.eu
       secretName: walt-id-vcwaltid-tls-sec2

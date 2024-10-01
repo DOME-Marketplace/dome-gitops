@@ -28,8 +28,19 @@ spec:
                 name: zammad-nginx
                 port:
                   number: 8080
+    - host: ticketing.dome-marketplace.eu
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: zammad-nginx
+                port:
+                  number: 8080
   tls:
     - hosts:
         - ticketing.dome-marketplace.org
         - ticketing.yumket.eu
+        - ticketing.dome-marketplace.eu
       secretName: ticketing-tls-secret-2

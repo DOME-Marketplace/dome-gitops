@@ -30,8 +30,19 @@ spec:
               name: argocd-server
               port:
                 name: https
+  - host: argocd.dome-marketplace.eu
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: argocd-server
+              port:
+                name: https
   tls:
   - hosts:
     - argocd.dome-marketplace.org
     - argocd.yumket.eu
+    - argocd.dome-marketplace.eu
     secretName: domains-argo-tls-secret

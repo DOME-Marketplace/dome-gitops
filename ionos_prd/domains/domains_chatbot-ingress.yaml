@@ -30,8 +30,19 @@ spec:
                 name: chatbot-backend
                 port:
                   number: 5000
+    - host: eng-gpt.dome-marketplace.eu
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: chatbot-backend
+                port:
+                  number: 5000
   tls:
     - hosts:
         - eng-gpt.dome-marketplace.org
         - eng-gpt.yumket.eu
+        - eng-gpt.dome-marketplace.eu
       secretName: chatbot-backend-tls-secret-2

@@ -28,8 +28,19 @@ spec:
                 name: dome-wallet-keycloak
                 port:
                   number: 8080
+    - host: wallet.dome-marketplace.eu
+      http:
+        paths:
+          - path: /keycloak
+            pathType: Prefix
+            backend:
+              service:
+                name: dome-wallet-keycloak
+                port:
+                  number: 8080
   tls:
     - hosts:
         - wallet.dome-marketplace.org
         - wallet.yumket.eu
+        - wallet.dome-marketplace.eu
       secretName: wallet-secret-tls-2

@@ -28,8 +28,19 @@ spec:
                 name: walt-id-vcwaltid-certs
                 port:
                   number: 3000
+    - host: dome-marketplace.eu
+      http:
+        paths:
+          - path: /certs
+            pathType: Prefix
+            backend:
+              service:
+                name: walt-id-vcwaltid-certs
+                port:
+                  number: 3000
   tls:
     - hosts:
         - dome-marketplace.org
         - yumket.eu
+        - dome-marketplace.eu
       secretName: walt-id-vcwaltid-tls-sec-2
