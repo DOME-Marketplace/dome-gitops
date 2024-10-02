@@ -19,7 +19,18 @@ spec:
                 name: walt-id-vcwaltid
                 port:
                   number: 7000
+    - host: dome-marketplace.eu
+      http:
+        paths:
+          - path: /.well-known/did.json
+            pathType: Prefix
+            backend:
+              service:
+                name: walt-id-vcwaltid
+                port:
+                  number: 7000
   tls:
     - hosts:
         - dome-marketplace.org
+        - dome-marketplace.eu
       secretName: walt-id-vcwaltid-tls-sec-2

@@ -15,6 +15,7 @@ spec:
           - "dome-marketplace-prd.org"
           - "dome-marketplace.org"
           - "yumket.eu"
+          - "dome-marketplace.eu"
       http01:
         ingress:
           ingressClassName: nginx

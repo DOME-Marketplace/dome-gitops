@@ -30,8 +30,19 @@ spec:
                 name: bookstack
                 port:
                   number: 8080
+    - host: knowledgebase.dome-marketplace.eu
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: bookstack
+                port:
+                  number: 8080
   tls:
     - hosts:
         - knowledgebase.dome-marketplace.org
         - knowledgebase.yumket.eu
+        - knowledgebase.dome-marketplace.eu
       secretName: knowledgebase-tls-secret-2

@@ -28,8 +28,19 @@ spec:
                 name: verifier-marketplace-vcverifier
                 port:
                   number: 3000
+    - host: verifier.dome-marketplace.eu
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: verifier-marketplace-vcverifier
+                port:
+                  number: 3000
   tls:
     - hosts:
         - verifier.dome-marketplace.org
         - verifier.yumket.eu
+        - verifier.dome-marketplace.eu
       secretName: verifier-tls-sec-2
