@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: search
-          image: production.eng.it:8433/dome/search:0.1.7
+          image: production.eng.it:8433/dome/search:0.1.8
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -42,6 +42,10 @@ spec:
               value: http://tm-forum-api-resource-catalog.marketplace.svc.cluster.local:8080
             - name: BAE_URL
               value: http://bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004
+            - name: ANALYZE_URL
+              value: https://deployenv6.expertcustomers.ai:8086/services/dome/analyze
+            - name: CLASSIFY_URL
+              value: https://deployenv6.expertcustomers.ai:8086/services/dome/classify
             - name: LOG_LEVEL
               value: DEBUG
           livenessProbe:
