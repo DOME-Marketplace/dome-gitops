@@ -16,14 +16,17 @@ zammad:
 
   zammadConfig:
 
+    nginx:
+      clientMaxBodySize: 100M
 
-  # Extra volumes for all Zammad Pods.
-  extraVolumes:
-    - name: datanfs
-      nfs:
-        server: 82.165.253.143
-        path: "/mnt/dome/sbx/ticketing"
 
-  extraVolumeMounts:
-    - name: datanfs
-      mountPath: /var/nfs
+    # Extra volumes for all Zammad Pods.
+    extraVolumes:
+      - name: datanfs
+        nfs:
+          server: 82.165.253.143
+          path: "/mnt/dome/sbx/ticketing"
+
+    extraVolumeMounts:
+      - name: datanfs
+        mountPath: /var/nfs
