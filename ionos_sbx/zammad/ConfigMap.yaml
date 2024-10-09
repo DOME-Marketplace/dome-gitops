@@ -23,8 +23,8 @@ data:
       height: 100%;
       border-radius: inherit;
       outline: none;
-      cursor: pointer; /* Cursore pointer per indicare che è cliccabile */
-      background: var(--switch-background-off, #ddd); /* Sfondo spento, più chiaro per contrasto */
+      cursor: pointer; 
+      background: var(--switch-background-off, #ddd); 
       box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1) inset;
       transition: background 200ms, box-shadow 200ms;
     
@@ -42,28 +42,27 @@ data:
         box-shadow:
           0 0 0 1px rgba(0, 0, 0, 0.05),
           0 1px 3px rgba(0, 0, 0, 0.2);
-        background: var(--switch-button-off, #888); /* Pulsante spento, più scuro per contrasto */
+        background: var(--switch-button-off, #888); 
       }
     
       /* Stato acceso (interruttore ON) */
       &[aria-checked="true"] {
-        background: var(--switch-background-on, #4CAF50); /* Colore verde acceso */
+        background: var(--switch-background-on, #4CAF50); 
     
         &::after {
-          background: var(--switch-button-on, #fff); /* Pulsante bianco quando acceso */
-          transform: translateX(100%); /* Sposta il pulsante a destra quando acceso */
+          background: var(--switch-button-on, #fff); 
+          transform: translateX(100%); 
         }
       }
     }
     
-    /* Colore per temi scuri */
     [data-theme="dark"] .zammad-switch label {
-      --switch-background-off: #555; /* Sfondo spento scuro */
-      --switch-button-off: #ccc; /* Pulsante chiaro quando spento */
+      --switch-background-off: #555; 
+      --switch-button-off: #ccc; 
     }
     
-    /* Animazione di clic: feedback visivo */
+
     .zammad-switch label:active {
-      box-shadow: 0 0 10px 3px rgba(0, 123, 255, 0.5); /* Feedback di clic per enfatizzare l'interattività */
+      box-shadow: 0 0 10px 3px rgba(0, 123, 255, 0.5); /
     }
     
