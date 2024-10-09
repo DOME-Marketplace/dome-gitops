@@ -45,7 +45,6 @@ data:
         background: var(--switch-button-off, #888); 
       }
     
-      /* Stato acceso (interruttore ON) */
       &[aria-checked="true"] {
         background: var(--switch-background-on, #4CAF50); 
     
