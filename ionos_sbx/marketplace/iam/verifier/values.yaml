@@ -34,3 +34,7 @@ verifier-api:
         enabled: true
         name: private-key-secret
         key: private-key
+    verifierUiLoginUris:
+      onboardingUri: "https://knowledgebase.dome-marketplace.org/shelves/company-onboarding-process"
+      supportUri: "https://ticketing.dome-marketplace.org"
+      walletUri: "https://wallet.dome-marketplace-sbx.org"

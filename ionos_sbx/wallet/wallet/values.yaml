@@ -86,6 +86,8 @@ wallet:
           domain: scorpio
           port: 9090
         pathsEntities: /ngsi-ld/v1/entities
+      trustedIssuerList:
+        uri: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080/v4/issuers/"
 
   ## configuration for the dome-wallet-ui
   dome-wallet-ui:
