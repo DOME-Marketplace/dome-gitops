@@ -205,9 +205,5 @@ business-api-ecosystem:
         value: did:elsi:VATES-B87798617
       - name: BAE_LP_SEARCH_URL
         value: http://dome-search-svc.search-engine.svc.cluster.local:8080
-      - name: BAE_LP_MATOMO_ID
-        value: "2"
-      - name: BAE_LP_MATOMO_URL
-        value: https://dome-webstats.eurodyn.com/
       - name: BAE_LP_DOME_TRUST
         value: https://dome-certification.dome-marketplace-dev2.org
