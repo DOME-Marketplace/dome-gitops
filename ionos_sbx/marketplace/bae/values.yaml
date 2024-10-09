@@ -51,7 +51,7 @@ business-api-ecosystem:
 
   siop:
     enabled: true
-    clientId: did:key:zDnaedohLFuQf1iPsJBDXyF7f2V5yzzPiCNitMBvCjBJY8Xbe
+    clientId: did:key:zDnaeypyWjzn54GuUP7PmDXiiggCyiG7ksMF7Unm7kjtEKBez
     verifier:
       host: https://verifier.dome-marketplace-sbx.org
       qrCodePath: /oidc/authorize
