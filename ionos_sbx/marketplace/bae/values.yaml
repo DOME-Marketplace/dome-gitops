@@ -51,9 +51,12 @@ business-api-ecosystem:
 
   siop:
     enabled: true
-    clientId: marketplace-client
+    clientId: did:key:zDnaeZfUaoq9MzpUTLWieZrTkcvFozdcpVuo14Xp2eM2AQNTq
     verifier:
       host: https://verifier.dome-marketplace-sbx.org
+      qrCodePath: /oidc/authorize
+      tokenPath: /oidc/token
+      jwksPath: /oidc/jwks
     allowedRoles:
       - seller
       - customer
@@ -164,7 +167,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "9.6.1"
+        tag: "9.8.0-rc1"
         pullPolicy: Always
 
     ingress: 
@@ -195,6 +198,8 @@ business-api-ecosystem:
     initContainers: false
     propagateToken: true
     additionalEnvVars:
+      - name: BAE_LP_SIOP_IS_REDIRECTION
+        value: "true"
       - name: BAE_LP_CHAT_URL
         value: https://eng-gpt.dome-marketplace-sbx.org/predict
       - name: BAE_LP_KNOWLEDGE_BASE_URL
@@ -211,3 +216,8 @@ business-api-ecosystem:
         value: https://dome-webstats.eurodyn.com/
       - name: BAE_LP_DOME_TRUST
         value: https://dome-certification.dome-marketplace-sbx.org
+      - name: BAE_LP_SIOP_PRIVATE_KEY
+        valueFrom:
+          secretKeyRef:
+            name: bae-secret
+            key: privateKey
