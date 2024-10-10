@@ -6,7 +6,7 @@ zammad:
       cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
     hosts:
       - host: ticketing.dome-marketplace-sbx.org
-        paths: 
+        paths:
           - path: /
             pathType: ImplementationSpecific
     tls:
@@ -15,18 +15,15 @@ zammad:
           - ticketing.dome-marketplace-sbx.org
 
   zammadConfig:
-
     nginx:
       clientMaxBodySize: 100M
 
+  extraVolumes:
+    - name: custom-css-volume
+      configMap:
+        name: zammad-custom-css
 
-    # Extra volumes for all Zammad Pods.
-    extraVolumes:
-      - name: datanfs
-        nfs:
-          server: 82.165.253.143
-          path: "/mnt/dome/sbx/ticketing"
-
-    extraVolumeMounts:
-      - name: datanfs
-        mountPath: /var/nfs
+  extraVolumeMounts:
+    - name: custom-css-volume
+      mountPath: /opt/zammad/app/assets/stylesheets/zammad.scss
+      subPath: custom.css
