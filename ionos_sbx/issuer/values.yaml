@@ -135,6 +135,26 @@ issuer:
         internalDomain: http://dome-wallet-ui:8080
       wallet:
         url: https://wallet.dome-marketplace-sbx.org/
+      defaultSigner:
+        commonName: DOME DIGITAL IDENTITY
+        country: ES
+        email: domesupport@in2.es
+        organizationIdentifier: VATEU-B99999999
+        organization: IN2
+        serialNumber: IDCES-56565656P
+      verifier:
+        verifierDidKey: did:key:zDnaekiwkWcXnHaW6au3BpmfWfrtVTJZrA3EHgLvcbm6EZnup
+        externalDomain: https://verifier.dome-marketplace-sbx.org
+        credentialSubjectKey: did:key:zDnaezLhSFWRZ1zrYQRwLxV8nDWmb2REHoUf7N3qvna1TFina
+        existingSecret:
+          enabled: true
+          name: issuer-secret
+          vcKey: vc
+          cryptoPrivateKey: private-key
+        clientAssertion:
+          token:
+            cronUnit: MINUTES
+            expiration: 2
     db:
       host: issuer-postgres
       port: 5432
