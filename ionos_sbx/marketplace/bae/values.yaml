@@ -156,7 +156,10 @@ business-api-ecosystem:
     basePath: /opt/business-ecosystem-charging-backend
     token: 
       enabled: false
-  
+
+  oauth:
+    provider: "vc"
+
   bizEcosystemLogicProxy:
 
     serviceAccount:
@@ -167,7 +170,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "9.8.0-rc1"
+        tag: "9.8.0-rc4"
         pullPolicy: Always
 
     ingress: 
