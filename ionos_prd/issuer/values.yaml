@@ -133,6 +133,8 @@ issuer:
           internalPort: 30000
           path: /
         internalDomain: http://dome-wallet-ui:8080
+      wallet:
+        url: https://wallet.dome-marketplace.org/
     db:
       host: issuer-postgres
       port: 5432
@@ -194,7 +196,7 @@ issuer:
         externalService: true
         scheme: https
         # change by the external url or set to localhost if deployed locally
-        host: wallet.dome-marketplace-prd.org
+        host: wallet.dome-marketplace.org
         # internalPort is only used if externalService is false
         internalPort: 30003
         path: /
