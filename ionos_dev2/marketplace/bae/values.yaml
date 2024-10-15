@@ -8,39 +8,39 @@ business-api-ecosystem:
       catalog:
         host: tm-forum-api-product-catalog
         port: 8080
-        path: 
+        path:
       inventory:
         host: tm-forum-api-product-inventory
         port: 8080
-        path: 
+        path:
       ordering:
         host: tm-forum-api-product-ordering-management
         port: 8080
-        path: 
+        path:
       billing:
         host: tm-forum-api-account
         port: 8080
-        path: 
+        path:
       usage:
         host: tm-forum-api-usage-management
         port: 8080
-        path: 
+        path:
       party:
         host: tm-forum-api-party-catalog
         port: 8080
-        path: 
+        path:
       customer:
         host: tm-forum-api-customer-management
         port: 8080
-        path: 
+        path:
       resources:
         host: tm-forum-api-resource-catalog
         port: 8080
-        path: 
+        path:
       services:
         host: tm-forum-api-service-catalog
         port: 8080
-        path: 
+        path:
       resourceInventory:
         host: tm-forum-api-resource-inventory
         port: 8080
@@ -51,9 +51,12 @@ business-api-ecosystem:
 
   siop:
     enabled: true
-    clientId: marketplace-client
+    clientId: did:key:zDnaeypyWjzn54GuUP7PmDXiiggCyiG7ksMF7Unm7kjtEKBez
     verifier:
       host: https://verifier.dome-marketplace-dev2.org
+      qrCodePath: /oidc/authorize
+      tokenPath: /oidc/token
+      jwksPath: /oidc/jwks
     allowedRoles:
       - seller
       - customer
@@ -64,7 +67,7 @@ business-api-ecosystem:
       defaultOidcScope: "defaultScope"
       # -- Credential configurations for particular scopes
       oidcScopes:
-        didRead: 
+        didRead:
           - type: "VerifiableCredential"
             trustedParticipantsLists: [
               "http://trusted-issuers-list:8080"
@@ -114,7 +117,7 @@ business-api-ecosystem:
   bizEcosystemChargingBackend:
 
     maxUploadSize: "5242880"
-    
+
     serviceAccount:
       create: true
 
@@ -140,7 +143,7 @@ business-api-ecosystem:
       method: None
 
     existingSecret: bae-secret
-    db: 
+    db:
       host: mongodb
       database: charging_db
       user: charging
@@ -151,9 +154,12 @@ business-api-ecosystem:
     initContainers: false
     propagateToken: true
     basePath: /opt/business-ecosystem-charging-backend
-    token: 
+    token:
       enabled: false
-  
+
+  oauth:
+    provider: "vc"
+
   bizEcosystemLogicProxy:
 
     serviceAccount:
@@ -164,21 +170,21 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "9.4.9-ld"
+        tag: "9.8.0-rc4"
         pullPolicy: Always
 
-    ingress: 
+    ingress:
       enabled: true
       className: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-dev2-issuer
-      tls: 
-       -  hosts: 
-            - dome-marketplace-dev2.org
-          secretName: walt-id-vcwaltid-tls-sec
-      hosts: 
+      tls:
+        -  hosts:
+             - dome-marketplace-dev2.org
+           secretName: walt-id-vcwaltid-tls-sec
+      hosts:
         - host: dome-marketplace-dev2.org
-          paths: 
+          paths:
             - "/"
 
     port: 8004
@@ -195,6 +201,8 @@ business-api-ecosystem:
     initContainers: false
     propagateToken: true
     additionalEnvVars:
+      - name: BAE_LP_SIOP_IS_REDIRECTION
+        value: "true"
       - name: BAE_LP_CHAT_URL
         value: https://eng-gpt.dome-marketplace-dev2.org/predict
       - name: BAE_LP_KNOWLEDGE_BASE_URL
@@ -206,6 +214,13 @@ business-api-ecosystem:
       - name: BAE_LP_SEARCH_URL
         value: http://dome-search-svc.search-engine.svc.cluster.local:8080
       - name: BAE_LP_MATOMO_ID
-        value: "2"
+        value: "3"
       - name: BAE_LP_MATOMO_URL
         value: https://dome-webstats.eurodyn.com/
+      - name: BAE_LP_DOME_TRUST
+        value: https://dome-certification.dome-marketplace-dev2.org
+      - name: BAE_LP_SIOP_PRIVATE_KEY
+        valueFrom:
+          secretKeyRef:
+            name: bae-secret
+            key: privateKey
