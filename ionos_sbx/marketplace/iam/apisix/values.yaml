@@ -40,6 +40,7 @@ apisix:
       enabled: true
       hostname: apisix.dome-marketplace-sbx.org
       ingressClassName: nginx
+      pathType: Prefix
       tls: true
       annotations: 
         cert-manager.io/cluster-issuer: letsencrypt-sbx-issue
