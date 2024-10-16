@@ -43,7 +43,7 @@ apisix:
       tls: true
       pathType: Prefix
       annotations: 
-        cert-manager.io/cluster-issuer: letsencrypt-sbx-issue
+        cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
   # -- we need `routes` to declaratively configure the routes
   extraVolumes:
     - name: routes
