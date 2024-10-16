@@ -2,7 +2,7 @@ global:
   dnsService: "coredns"
 
 compactor:
-  enabled: true
+  enabled: false
 
 ingester:
   persistence:
