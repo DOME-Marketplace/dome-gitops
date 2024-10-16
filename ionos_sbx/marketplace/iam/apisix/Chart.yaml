@@ -1,0 +1,11 @@
+apiVersion: v2
+name: apisix
+description: Chart holder for argo-cd
+
+type: application
+version: 3.5.1
+appVersion: 3.10.0
+dependencies:
+- name: apisix
+  version: 3.5.1
+  repository: oci://registry-1.docker.io/bitnamicharts
