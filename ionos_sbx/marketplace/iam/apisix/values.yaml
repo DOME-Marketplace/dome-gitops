@@ -41,6 +41,7 @@ apisix:
       hostname: apisix.dome-marketplace-sbx.org
       ingressClassName: nginx
       tls: true
+      pathType: Prefix
       annotations: 
         cert-manager.io/cluster-issuer: letsencrypt-sbx-issue
   # -- we need `routes` to declaratively configure the routes
