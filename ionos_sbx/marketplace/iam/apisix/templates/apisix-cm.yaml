@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apisix-routes
+  namespace: {{ $.Release.Namespace | quote }}
+data:
+  apisix.yaml: |-
+    routes:
+    {{- if .Values.apisix.routes }}
+      {{ .Values.apisix.routes | nindent 6 }}
+    {{- end }}
+    #END
