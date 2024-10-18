@@ -9,4 +9,12 @@ data:
     {{- if .Values.apisix.routes }}
       {{ .Values.apisix.routes | toYaml | nindent 6 }}
     {{- end }}
+    {{- if .Values.apisix.consumers }}
+    consumers:
+    {{- range .Values.apisix.consumers }}
+      - username: {{ .name }}
+        plugins:
+          key-auth: 
+            key: ${{"{{"}}{{ .varName }}{{"}}"}}
+    {{- end }}
     #END
