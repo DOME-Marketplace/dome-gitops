@@ -26,7 +26,7 @@ verifier-api:
       expirationUnitTime: MINUTES
       expirationTime: 60
     clientsRepository:
-      uri: "https://raw.githubusercontent.com/DOME-Marketplace/dome-services-directory/refs/heads/main/trusted-service-list-"
+      uri: "https://raw.githubusercontent.com/DOME-Marketplace/trust-framework/refs/heads/main/sbx/trusted_services_list.yaml"
     trustedIssuerList:
       uri: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080/v4/issuers/"
     privateKey:
