@@ -17,4 +17,5 @@ data:
           key-auth: 
             key: ${{"{{"}}{{ .varName }}{{"}}"}}
     {{- end }}
+    {{- end }}
     #END
