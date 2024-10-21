@@ -50,7 +50,7 @@ apisix:
       - name: FICODES_API_KEY
         valueFrom:
           secretKeyRef:
-            name: ficodes-env-secret
+            name: ficodes-apikey-secret
             key: API_KEY
   consumers:
     # -- name of the consumer to be created
