@@ -64,7 +64,7 @@ apisix:
       methods: ["GET"]
       upstream:
         nodes:
-            http://tm-forum-api-party-catalog:8080: 1
+            tm-forum-api-party-catalog:8080: 1
         type: roundrobin
       plugins:
         key-auth:
@@ -73,7 +73,7 @@ apisix:
       methods: ["GET"]
       upstream:
         nodes:
-            http://tm-forum-api-customer-bill-management:8080: 1
+            tm-forum-api-customer-bill-management:8080: 1
         type: roundrobin
       plugins:
         key-auth:
@@ -82,7 +82,7 @@ apisix:
       methods: ["GET"]
       upstream:
         nodes:
-            http://tm-forum-api-product-catalog:8080: 1
+            tm-forum-api-product-catalog:8080: 1
         type: roundrobin
       plugins:
         key-auth:
@@ -91,7 +91,7 @@ apisix:
       methods: ["GET"]
       upstream:
         nodes:
-            http://tm-forum-api-product-inventory:8080: 1
+            tm-forum-api-product-inventory:8080: 1
         type: roundrobin
       plugins:
         key-auth:
@@ -100,7 +100,7 @@ apisix:
       methods: ["GET"]
       upstream:
         nodes:
-            http://tm-forum-api-product-ordering-management:8080: 1
+            tm-forum-api-product-ordering-management:8080: 1
         type: roundrobin
       plugins:
         key-auth:
@@ -109,13 +109,13 @@ apisix:
       methods: ["GET"]
       upstream:
         nodes:
-            http://tm-forum-api-resource-catalog:8080: 1
+            tm-forum-api-resource-catalog:8080: 1
         type: roundrobin
     - uri: /resource-function-activation
       methods: ["GET"]
       upstream:
         nodes:
-            http://tm-forum-api-resource-function-activation:8080: 1
+            tm-forum-api-resource-function-activation:8080: 1
         type: roundrobin
       plugins:
         key-auth:
@@ -124,7 +124,7 @@ apisix:
       methods: ["GET"]
       upstream:
         nodes:
-            http://tm-forum-api-resource-inventory:8080: 1
+            tm-forum-api-resource-inventory:8080: 1
         type: roundrobin
       plugins:
         key-auth:
@@ -133,13 +133,13 @@ apisix:
       methods: ["GET"]
       upstream:
         nodes:
-            http://tm-forum-api-service-catalog:8080: 1
+            tm-forum-api-service-catalog:8080: 1
         type: roundrobin
     - uri: /account
       methods: ["GET"]
       upstream:
         nodes:
-            http://tm-forum-api-account:8080: 1
+            tm-forum-api-account:8080: 1
         type: roundrobin
       plugins:
         key-auth:
@@ -148,7 +148,7 @@ apisix:
       methods: ["GET"]
       upstream:
         nodes:
-            http://tm-forum-api-agreement:8080: 1
+            tm-forum-api-agreement:8080: 1
         type: roundrobin
       plugins:
         key-auth:
@@ -157,7 +157,7 @@ apisix:
       methods: ["GET"]
       upstream:
         nodes:
-            http://tm-forum-api-usage-management:8080: 1
+            tm-forum-api-usage-management:8080: 1
         type: roundrobin
       plugins:
         key-auth:
