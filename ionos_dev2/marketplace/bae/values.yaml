@@ -51,9 +51,12 @@ business-api-ecosystem:
 
   siop:
     enabled: true
-    clientId: marketplace-client
+    clientId: did:key:zDnaeqXX5hXoHbX8dSjSdgZkzcH1Sa6RcSsvnvLZUukqFRGx9
     verifier:
       host: https://verifier.dome-marketplace-dev2.org
+      qrCodePath: /oidc/authorize
+      tokenPath: /oidc/token
+      jwksPath: /oidc/jwks
     allowedRoles:
       - seller
       - customer
@@ -153,6 +156,9 @@ business-api-ecosystem:
     basePath: /opt/business-ecosystem-charging-backend
     token: 
       enabled: false
+
+  oauth:
+    provider: "vc"
   
   bizEcosystemLogicProxy:
 
@@ -164,7 +170,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "9.7.0"
+        tag: "9.8.0-rc4"
         pullPolicy: Always
 
     ingress: 
@@ -195,6 +201,8 @@ business-api-ecosystem:
     initContainers: false
     propagateToken: true
     additionalEnvVars:
+      - name: BAE_LP_SIOP_IS_REDIRECTION
+        value: "true"
       - name: BAE_LP_CHAT_URL
         value: https://eng-gpt.dome-marketplace-dev2.org/predict
       - name: BAE_LP_KNOWLEDGE_BASE_URL
@@ -205,3 +213,14 @@ business-api-ecosystem:
         value: did:elsi:VATES-B87798617
       - name: BAE_LP_SEARCH_URL
         value: http://dome-search-svc.search-engine.svc.cluster.local:8080
+      - name: BAE_LP_MATOMO_ID
+        value: "3"
+      - name: BAE_LP_MATOMO_URL
+        value: https://dome-webstats.eurodyn.com/
+      - name: BAE_LP_DOME_TRUST
+        value: https://dome-certification.dome-marketplace-dev2.org
+      - name: BAE_LP_SIOP_PRIVATE_KEY
+        valueFrom:
+          secretKeyRef:
+            name: bae-secret
+            key: privateKey
