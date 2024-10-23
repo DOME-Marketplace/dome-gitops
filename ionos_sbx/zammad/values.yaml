@@ -19,11 +19,24 @@ zammad:
       clientMaxBodySize: 100M
 
   extraVolumes:
-    - name: custom-css-volume
+    - name: zammad-scss-volume
       configMap:
-        name: zammad-custom-css
+        name: zammad-scss-configmap
 
-  extraVolumeMounts:
-    - name: custom-css-volume
-      mountPath: /opt/zammad/app/assets/stylesheets/zammad.scss
-      subPath: custom.css
+    extraVolumeMounts:
+      - name: zammad-scss-volume
+        mountPath: /opt/zammad/app/assets/stylesheets/custom/zammad.scss
+        subPath: zammad.scss
+
+  initContainers:
+    - name: zammad-assets-precompile
+      image: { { .Values.image.repository } }:{{ .Values.image.tag }}
+      command: [ 'sh', '-c' ]
+      args:
+        - |
+          zammad run rails assets:precompile && \
+          zammad restart
+      volumeMounts:
+        - name: zammad-scss-volume
+          mountPath: /opt/zammad/app/assets/stylesheets/custom/zammad.scss
+          subPath: zammad.scss
