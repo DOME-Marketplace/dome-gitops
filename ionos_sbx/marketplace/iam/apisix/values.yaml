@@ -53,11 +53,19 @@ apisix:
           secretKeyRef:
             name: ficodes-apikey-secret
             key: API_KEY
+      - name: EURODYN_API_KEY
+        valueFrom:
+          secretKeyRef:
+            name: eurodyn-apikey-secret
+            key: API_KEY
   consumers:
     # -- name of the consumer to be created
     - name: ficodes
       # -- env var that provides the API Key, needs to match the extraEnvVarsSecret containing the actual key
-      varName: FICODES_API_KEY 
+      varName: FICODES_API_KEY
+    - name: eurodyn
+      # -- env var that provides the API Key, needs to match the extraEnvVarsSecret containing the actual key
+      varName: EURODYN_API_KEY 
   # -- configure the routes to be made available with the api-key plugin enabled. Keys then need to be assigned through the dashboard
   routes:
     - uri: /party-catalog
