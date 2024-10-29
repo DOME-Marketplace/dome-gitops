@@ -68,105 +68,135 @@ apisix:
       varName: EURODYN_API_KEY 
   # -- configure the routes to be made available with the api-key plugin enabled. Keys then need to be assigned through the dashboard
   routes:
-    - uri: /party-catalog
+    - uri: /party-catalog/*
       methods: ["GET"]
       upstream:
         nodes:
             tm-forum-api-party-catalog:8080: 1
         type: roundrobin
       plugins:
+        proxy-rewrite:
+          regex_uri: ["^/party-catalog/(.*)","/$1"]
         key-auth:
           header: api-key
-    - uri: /customer-bill-management
+    - uri: /customer-bill-management/*
       methods: ["GET"]
       upstream:
         nodes:
             tm-forum-api-customer-bill-management:8080: 1
         type: roundrobin
       plugins:
+        proxy-rewrite:
+          regex_uri: ["^/customer-bill-management/(.*)","/$1"]
         key-auth:
           header: api-key
-    - uri: /product-catalog
+    - uri: /product-catalog/*
       methods: ["GET"]
       upstream:
         nodes:
             tm-forum-api-product-catalog:8080: 1
         type: roundrobin
       plugins:
+        proxy-rewrite:
+          regex_uri: ["^/product-catalog/(.*)","/$1"]
         key-auth:
           header: api-key
-    - uri: /product-inventory
+    - uri: /product-inventory/*
       methods: ["GET"]
       upstream:
         nodes:
             tm-forum-api-product-inventory:8080: 1
         type: roundrobin
       plugins:
+        proxy-rewrite:
+          regex_uri: ["^/product-inventory/(.*)","/$1"]
         key-auth:
           header: api-key
-    - uri: /product-ordering-management
+    - uri: /product-ordering-management/*
       methods: ["GET"]
       upstream:
         nodes:
             tm-forum-api-product-ordering-management:8080: 1
         type: roundrobin
       plugins:
+        proxy-rewrite:
+          regex_uri: ["^/product-ordering-management/(.*)","/$1"]
         key-auth:
           header: api-key
-    - uri: /resource-catalog
+    - uri: /resource-catalog/*
       methods: ["GET"]
       upstream:
         nodes:
             tm-forum-api-resource-catalog:8080: 1
         type: roundrobin
-    - uri: /resource-function-activation
+      plugins:
+        proxy-rewrite:
+          regex_uri: ["^/resource-catalog/(.*)","/$1"]
+        key-auth:
+          header: api-key
+    - uri: /resource-function-activation/*
       methods: ["GET"]
       upstream:
         nodes:
             tm-forum-api-resource-function-activation:8080: 1
         type: roundrobin
       plugins:
+        proxy-rewrite:
+          regex_uri: ["^/resource-function-activation/(.*)","/$1"]
         key-auth:
           header: api-key
-    - uri: /resource-inventory
+    - uri: /resource-inventory/*
       methods: ["GET"]
       upstream:
         nodes:
             tm-forum-api-resource-inventory:8080: 1
         type: roundrobin
       plugins:
+        proxy-rewrite:
+          regex_uri: ["^/resource-inventory/(.*)","/$1"]
         key-auth:
           header: api-key
-    - uri: /service-catalog
+    - uri: /service-catalog/*
       methods: ["GET"]
       upstream:
         nodes:
             tm-forum-api-service-catalog:8080: 1
         type: roundrobin
-    - uri: /account
+      plugins:
+        proxy-rewrite:
+          regex_uri: ["^/service-catalog/(.*)","/$1"]
+        key-auth:
+          header: api-key
+    - uri: /account/*
       methods: ["GET"]
       upstream:
         nodes:
             tm-forum-api-account:8080: 1
         type: roundrobin
       plugins:
+        proxy-rewrite:
+          regex_uri: ["^/account/(.*)","/$1"]
         key-auth:
           header: api-key
-    - uri: /agreement
+    - uri: /agreement/*
       methods: ["GET"]
       upstream:
         nodes:
             tm-forum-api-agreement:8080: 1
         type: roundrobin
       plugins:
+        proxy-rewrite:
+          regex_uri: ["^/agreement/(.*)","/$1"]
         key-auth:
           header: api-key
-    - uri: /usage-management
+    - uri: /usage-management/*
       methods: ["GET"]
       upstream:
         nodes:
             tm-forum-api-usage-management:8080: 1
         type: roundrobin
       plugins:
+        proxy-rewrite:
+          regex_uri: ["^/usage-management/(.*)","/$1"]
         key-auth:
           header: api-key
