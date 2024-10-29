@@ -1,7 +1,7 @@
 verifier-api:
   image:
     repository: in2workspace/in2-verifier-api
-    tag: v1.0.0-snapshot
+    tag: v1.0.1-snapshot
     pullPolicy: Always
 
   ingress:
