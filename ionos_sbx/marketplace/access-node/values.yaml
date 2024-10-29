@@ -33,7 +33,7 @@ access-node:
       ## information about the access-node operator
       operator:
         # -- did of the organization running the node
-        organizationIdentifier: did:elsi:VATES-S9999999E
+        organizationIdentifier: did:key:zDnaev2NrT2aiJN7CE8hwMuahRJccCYLaWwCGyqDaB5C81FQQ
       ## connection information for the context broker
       broker:
         # -- provider of the broker
@@ -111,7 +111,7 @@ access-node:
     env:
       DEBUG: "*"
       RPC_ADDRESS: "https://red-t.alastria.io/v0/9461d9f4292b41230527d57ee90652a6"
-      ISS: "0x43b27fef24cfe8a0b797ed8a36de2884f9963c0c2a0da640e3ec7ad6cd0c493d"
+      ISS: "0x6a2f383855cba0fff292455ccd908c4a08d6c07f5ef139b5afcef4cf62d4798b"
 
   ## configuration of postgres to be used for the blockchain-connector - see https://github.com/bitnami/charts/tree/main/bitnami/postgresql for details
   postgresql:
