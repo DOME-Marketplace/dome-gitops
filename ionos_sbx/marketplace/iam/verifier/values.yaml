@@ -1,7 +1,7 @@
 verifier-api:
   image:
     repository: in2workspace/in2-verifier-api
-    tag: v1.0.1-snapshot
+    tag: v1.0.2-snapshot
     pullPolicy: Always
 
   ingress:
@@ -25,6 +25,9 @@ verifier-api:
     accessToken:
       expirationUnitTime: MINUTES
       expirationTime: 60
+    loginQrCode:
+      expirationUnitTime: MINUTES
+      expirationTime: 3
     clientsRepository:
       uri: "https://raw.githubusercontent.com/DOME-Marketplace/trust-framework/refs/heads/main/sbx/trusted_services_list.yaml"
     trustedIssuerList:
