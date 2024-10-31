@@ -1,0 +1,74 @@
+configs:
+  params:
+    server.log.level: debug
+    server.extensions.enabled: "false"
+  rbac:
+    policy.default: role:readonly
+    policy.csv: |
+      g, CgkxNTU3NTY4MjYSBmdpdGh1Yg, role:admin
+      g, CgYyNDEzMTgSBmdpdGh1Yg, role:admin
+  cm:
+    url: https://argocd.dome-marketplace-dev.org
+    admin.enabled: "true"
+    dex.config: |
+      connectors:
+        - type: github
+          id: github
+          name: GitHub
+          config:
+            clientID: Ov23lirzp53vIGHAoesP
+            clientSecret: $github-secret:clientSecret
+            orgs:
+            - name: DOME-Marketplace
+
+redis-ha:
+  enabled: false
+
+controller:
+  replicas: 1
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+server:
+  replicas: 1
+  ingress:
+    enabled: true
+    hostname: argocd.dome-marketplace-dev.org
+    tls: true
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
+      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    ingressClassName: "nginx"
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+repoServer:
+  replicas: 1
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+applicationSet:
+  replicas: 1
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+dex:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+redis:
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
