@@ -6,7 +6,7 @@ configs:
     policy.default: role:readonly
     policy.csv: |
       g, CgkxNTU3NTY4MjYSBmdpdGh1Yg, role:admin
-      g, CggxNzE4MTU4MRIGZ2l0aHVi, role:admin
+      g, CgYyNDEzMTgSBmdpdGh1Yg, role:admin
   cm:
     url: https://argocd.dome-marketplace-dev.org
     admin.enabled: "true"
@@ -16,7 +16,7 @@ configs:
           id: github
           name: GitHub
           config:
-            clientID: 839cdac972b6665e6679
+            clientID: Ov23lirzp53vIGHAoesP
             clientSecret: $github-secret:clientSecret
             orgs:
             - name: DOME-Marketplace

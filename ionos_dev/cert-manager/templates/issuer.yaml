@@ -4,7 +4,7 @@ metadata:
   name: letsencrypt-dev-issuer
 spec:
   acme:
-    email: ivan.ligotino@demetrix.it
+    email: karol.bialas@ionos.com
     preferredChain: ""
     privateKeySecretRef:
       name: lets-encrypt-dev-issuer-account-key
@@ -12,7 +12,7 @@ spec:
     solvers:
     - selector:
         dnsZones:
-          - "dome-marketplace-dev.org" 
+          - "dome-marketplace-dev.org"
       http01:
         ingress:
           ingressClassName: nginx
