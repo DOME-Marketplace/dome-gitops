@@ -29,7 +29,11 @@ grafana:
       #allowed_organizations: ["DOME-Marketplace"]
       client_id: $__file{/etc/secrets/kube-prometheus-stack-sso/client_id}
       client_secret: $__file{/etc/secrets/kube-prometheus-stack-sso/client_secret}
-      role_attribute_path: contains(groups[*], '@DOME-Marketplace/dome-grafana-sbx-admins') && 'GrafanaAdmin' || contains(groups[*], '@DOME-Marketplace/dome-grafana-sbx-rw') && 'Editor' || contains(groups[*], '@DOME-Marketplace/dome-grafana-sbx-ro') && 'Viewer' || ''
+      role_attribute_strict: true
+      role_attribute_path: >-
+        contains(groups[*], '@DOME-Marketplace/dome-grafana-sbx-admins') && 'GrafanaAdmin' ||
+        contains(groups[*], '@DOME-Marketplace/dome-grafana-sbx-rw') && 'Editor' ||
+        contains(groups[*], '@DOME-Marketplace/dome-grafana-sbx-ro') && 'Viewer'
   extraSecretMounts:
     - name: kube-prometheus-stack-sso
       secretName: kube-prometheus-stack-sso
