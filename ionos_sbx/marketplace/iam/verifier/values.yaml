@@ -1,7 +1,7 @@
 verifier-api:
   image:
     repository: in2workspace/in2-verifier-api
-    tag: v1.0.2-snapshot
+    tag: v1.0.3-snapshot
     pullPolicy: Always
 
   ingress:
@@ -32,6 +32,8 @@ verifier-api:
       uri: "https://raw.githubusercontent.com/DOME-Marketplace/trust-framework/refs/heads/main/sbx/trusted_services_list.yaml"
     trustedIssuerList:
       uri: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080/v4/issuers/"
+    revocationList:
+      uri: "https://raw.githubusercontent.com/DOME-Marketplace/trust-framework/refs/heads/main/sbx/revoked_credential_list.yaml"
     privateKey:
       existingSecret:
         enabled: true
