@@ -1,7 +1,7 @@
 verifier-api:
   image:
     repository: in2workspace/in2-verifier-api
-    tag: v1.0.2-rc1
+    tag: v1.0.3-rc1
     pullPolicy: Always
 
   ingress:
@@ -20,7 +20,7 @@ verifier-api:
         secretName: verifier-tls-sec
 
   app:
-    profile: dev
+    profile: test
     externalDomain: "https://verifier.dome-marketplace-dev2.org"
     accessToken:
       expirationUnitTime: MINUTES
@@ -32,6 +32,8 @@ verifier-api:
       uri: "https://raw.githubusercontent.com/DOME-Marketplace/trust-framework/refs/heads/main/dev/trusted_services_list.yaml"
     trustedIssuerList:
       uri: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080/v4/issuers/"
+    revocationList:
+      uri: "https://raw.githubusercontent.com/DOME-Marketplace/trust-framework/refs/heads/main/dev/revoked_credential_list.yaml"
     privateKey:
       existingSecret:
         enabled: true
