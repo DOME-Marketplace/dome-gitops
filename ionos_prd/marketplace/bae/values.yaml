@@ -210,7 +210,7 @@ business-api-ecosystem:
       - name: BAE_LP_TICKETING_URL
         value: https://ticketing.dome-marketplace-prd.org/
       - name: BAE_LP_SIOP_OPERATORS
-        value: did:elsi:VATES-B87798617
+        value: VATES-B87798617
       - name: BAE_LP_SEARCH_URL
         value: http://dome-search-svc.search-engine.svc.cluster.local:8080
       - name: BAE_LP_MATOMO_ID
