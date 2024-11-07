@@ -1,0 +1,226 @@
+business-api-ecosystem:
+  bizEcosystemApis:
+    # should set the path to the new apis.
+    fullnameOverride: tmforum-api-proxy
+    enabled: false
+
+    tmForum:
+      catalog:
+        host: tm-forum-api-product-catalog
+        port: 8080
+        path: 
+      inventory:
+        host: tm-forum-api-product-inventory
+        port: 8080
+        path: 
+      ordering:
+        host: tm-forum-api-product-ordering-management
+        port: 8080
+        path: 
+      billing:
+        host: tm-forum-api-account
+        port: 8080
+        path: 
+      usage:
+        host: tm-forum-api-usage-management
+        port: 8080
+        path: 
+      party:
+        host: tm-forum-api-party-catalog
+        port: 8080
+        path: 
+      customer:
+        host: tm-forum-api-customer-management
+        port: 8080
+        path: 
+      resources:
+        host: tm-forum-api-resource-catalog
+        port: 8080
+        path: 
+      services:
+        host: tm-forum-api-service-catalog
+        port: 8080
+        path: 
+      resourceInventory:
+        host: tm-forum-api-resource-inventory
+        port: 8080
+        path:
+
+  bizEcosystemRss:
+    enabled: false
+
+  siop:
+    enabled: true
+    clientId: did:key:zDnaeqXX5hXoHbX8dSjSdgZkzcH1Sa6RcSsvnvLZUukqFRGx9
+    verifier:
+      host: https://verifier.dome-marketplace-dev2.org
+      qrCodePath: /oidc/authorize
+      tokenPath: /oidc/token
+      jwksPath: /oidc/jwks
+    allowedRoles:
+      - seller
+      - customer
+      - admin
+    # Configuration for the Credential Config Service initiation
+    ccs:
+      endpoint: "http://credentials-config-service:8080"
+      defaultOidcScope: "defaultScope"
+      # -- Credential configurations for particular scopes
+      oidcScopes:
+        didRead: 
+          - type: "VerifiableCredential"
+            trustedParticipantsLists: [
+              "http://trusted-issuers-list:8080"
+            ]
+            trustedIssuersLists: [
+              "http://trusted-issuers-list:8080"
+            ]
+          - type: "LegalPersonCredential"
+            trustedParticipantsLists: [
+              "http://trusted-issuers-list:8080"
+            ]
+            trustedIssuersLists: [
+              "http://trusted-issuers-list:8080"
+            ]
+          - type: "LEARCredentialEmployee"
+            trustedParticipantsLists: [
+              "http://trusted-issuers-list:8080"
+            ]
+            trustedIssuersLists: [
+              "http://trusted-issuers-list:8080"
+            ]
+        defaultScope:
+          - type: "VerifiableCredential"
+            trustedParticipantsLists: [
+              "http://trusted-issuers-list:8080"
+            ]
+            trustedIssuersLists: [
+              "http://trusted-issuers-list:8080"
+            ]
+          - type: "LegalPersonCredential"
+            trustedParticipantsLists: [
+              "http://trusted-issuers-list:8080"
+            ]
+            trustedIssuersLists: [
+              "http://trusted-issuers-list:8080"
+            ]
+          - type: "LEARCredentialEmployee"
+            trustedParticipantsLists: [
+              "http://trusted-issuers-list:8080"
+            ]
+            trustedIssuersLists: [
+              "http://trusted-issuers-list:8080"
+            ]
+
+  externalUrl: https://dome-marketplace-dev.org
+
+  bizEcosystemChargingBackend:
+
+    maxUploadSize: "5242880"
+    
+    serviceAccount:
+      create: true
+
+    deployment:
+      image:
+        repository: fiware/biz-ecosystem-charging-backend
+        tag: 9.1.2
+        pullPolicy: Always
+    
+    plugins:
+      enabled: true
+      annotations:
+        helm.sh/resource-policy: "keep"
+
+    media:
+      enabled: true
+    
+    port: 8006
+
+    loglevel: debug
+
+    payment:
+      method: None
+
+    existingSecret: bae-secret
+    db: 
+      host: mongodb
+      database: charging_db
+      user: charging
+    
+    backup:
+      enabled: false
+
+    initContainers: false
+    propagateToken: true
+    basePath: /opt/business-ecosystem-charging-backend
+    token: 
+      enabled: false
+
+  oauth:
+    provider: "vc"
+  
+  bizEcosystemLogicProxy:
+
+    serviceAccount:
+      create: true
+    
+    existingSecret: bae-secret
+
+    statefulset:
+      image:
+        repository: fiware/biz-ecosystem-logic-proxy
+        tag: "9.9.1"
+        pullPolicy: Always
+
+    ingress: 
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
+      tls: 
+       -  hosts: 
+            - dome-marketplace-dev.org
+          secretName: walt-id-vcwaltid-tls-sec
+      hosts: 
+        - host: dome-marketplace-dev.org
+          paths: 
+            - "/"
+
+    port: 8004
+    nodeEnvironment: production
+
+    db:
+      host: mongodb
+      database: belp_db
+      user: belp
+    basePath: /opt/business-ecosystem-logic-proxy
+
+    externalIdp:
+      enabled: true
+    initContainers: false
+    propagateToken: true
+    additionalEnvVars:
+      - name: BAE_LP_SIOP_IS_REDIRECTION
+        value: "true"
+      - name: BAE_LP_CHAT_URL
+        value: https://eng-gpt.dome-marketplace-dev2.org/predict
+      - name: BAE_LP_KNOWLEDGE_BASE_URL
+        value: https://knowledgebase.dome-marketplace-dev2.org/
+      - name: BAE_LP_TICKETING_URL
+        value: https://ticketing.dome-marketplace-dev2.org/
+      - name: BAE_LP_SIOP_OPERATORS
+        value: VATES-B87798617
+      - name: BAE_LP_SEARCH_URL
+        value: http://dome-search-svc.search-engine.svc.cluster.local:8080
+      - name: BAE_LP_MATOMO_ID
+        value: "3"
+      - name: BAE_LP_MATOMO_URL
+        value: https://dome-webstats.eurodyn.com/
+      - name: BAE_LP_DOME_TRUST
+        value: https://dome-certification.dome-marketplace-dev2.org
+      - name: BAE_LP_SIOP_PRIVATE_KEY
+        valueFrom:
+          secretKeyRef:
+            name: bae-secret
+            key: privateKey
