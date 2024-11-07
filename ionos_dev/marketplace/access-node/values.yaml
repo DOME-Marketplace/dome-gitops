@@ -14,7 +14,7 @@ access-node:
       enabled: true
       className: nginx
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-dev2-issuer
+        cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
       hosts:
         - host: desmos.dome-marketplace-dev2.org
           paths:

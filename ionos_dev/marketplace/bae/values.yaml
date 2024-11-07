@@ -112,7 +112,7 @@ business-api-ecosystem:
               "http://trusted-issuers-list:8080"
             ]
 
-  externalUrl: https://dome-marketplace-dev2.org
+  externalUrl: https://dome-marketplace-dev.org
 
   bizEcosystemChargingBackend:
 
@@ -177,13 +177,13 @@ business-api-ecosystem:
       enabled: true
       className: nginx
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-dev2-issuer
+        cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
       tls: 
        -  hosts: 
-            - dome-marketplace-dev2.org
+            - dome-marketplace-dev.org
           secretName: walt-id-vcwaltid-tls-sec
       hosts: 
-        - host: dome-marketplace-dev2.org
+        - host: dome-marketplace-dev.org
           paths: 
             - "/"
 
