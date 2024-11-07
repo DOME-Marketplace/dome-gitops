@@ -6,6 +6,11 @@ wallet:
     enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     fullnameOverride: wallet-api
+    image:
+      repository: in2workspace/in2-wallet-api
+      # Overrides the image tag whose default is the chart appVersion.
+      tag: v1.3.0-ga
+      pullPolicy: Always
     ingress:
       enabled: true
       className: nginx
@@ -81,6 +86,8 @@ wallet:
           domain: scorpio
           port: 9090
         pathsEntities: /ngsi-ld/v1/entities
+      trustedIssuerList:
+        uri: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080/v4/issuers/"
 
   ## configuration for the dome-wallet-ui
   dome-wallet-ui:
@@ -88,6 +95,11 @@ wallet:
     enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     fullnameOverride: dome-wallet-ui
+    image:
+      repository: in2workspace/in2-wallet-ui
+      pullPolicy: Always
+      # Overrides the image tag whose default is the chart appVersion.
+      tag: v1.3.2-ga
     ## ingress specific configuration
     ingress:
       enabled: true
