@@ -17,3 +17,15 @@ zammad:
   zammadConfig:
     nginx:
       clientMaxBodySize: 100M
+
+    customVolumes:
+      - name: custom-css-volume
+        configMap:
+          name: zammad-scss-configmap
+
+      # Custom volumeMounts for all Zammad Pods.
+    customVolumeMounts:
+      - name: custom-css-volume
+        mountPath: /opt/zammad/app/assets/stylesheets/custom/zammad.scss
+        subPath: zammad.scss
+        readOnly: true
