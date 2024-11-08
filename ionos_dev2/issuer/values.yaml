@@ -5,7 +5,7 @@ issuer:
     image:
       repository: in2workspace/in2-issuer-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.1.0-rc1
+      tag: v1.1.0
       pullPolicy: Always
     ingress:
       enabled: true
@@ -154,7 +154,7 @@ issuer:
     image:
       repository: in2workspace/in2-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.1.0-rc1
+      tag: v1.1.0
       pullPolicy: Always
     ingress:
       enabled: true
