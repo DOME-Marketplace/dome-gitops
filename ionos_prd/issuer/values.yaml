@@ -3,7 +3,7 @@ issuer:
     fullnameOverride: issuer-api
     nameOverride: issuer-api
     image:
-      repository: in2workspace/issuer-api
+      repository: in2workspace/in2-issuer-api
       # Overrides the image tag whose default is the chart appVersion.
       tag: v1.1.0
       pullPolicy: Always
@@ -133,6 +133,10 @@ issuer:
           internalPort: 30000
           path: /
         internalDomain: http://dome-wallet-ui:8080
+      wallet:
+        url: https://wallet.dome-marketplace-prd.org/
+      trustFramework:
+        url: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080"
     db:
       host: issuer-postgres
       port: 5432
@@ -148,9 +152,9 @@ issuer:
     fullnameOverride: issuer-ui
     nameOverride: issuer-ui
     image:
-      repository: in2workspace/issuer-ui
+      repository: in2workspace/in2-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.0.0
+      tag: v1.1.0
       pullPolicy: Always
     ingress:
       enabled: true
@@ -197,6 +201,15 @@ issuer:
         host: wallet.dome-marketplace-prd.org
         # internalPort is only used if externalService is false
         internalPort: 30003
+        path: /
+      knowledgebaseUrl:
+        # if deployed locally set to false
+        externalService: true
+        scheme: https
+        # change by the external url or set to localhost if deployed locally
+        host: knowledgebase.dome-marketplace-prd.org
+        # internalPort is only used if externalService is false
+        internalPort: 30004
         path: /
       procedures: /api/v1/procedures
       saveCredential: /api/v1/credentials?type=LEARCredentialEmployee
