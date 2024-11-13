@@ -15,8 +15,6 @@ zammad:
           - ticketing.dome-marketplace-sbx.org
 
   zammadConfig:
-    nginx:
-      clientMaxBodySize: 100M
 
     customVolumes:
       - name: custom-css-volume
