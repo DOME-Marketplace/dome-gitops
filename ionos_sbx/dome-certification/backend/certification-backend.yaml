@@ -16,19 +16,31 @@ spec:
     spec:
       containers:
         - name: certification-backend
-          image: noeliaguedek/dome-compliance-backend:sbx-1.0.5
+          image: noeliaguedek/dome-compliance-backend:sbx-1.0.6
           env:
-            - name: POSTGRES_DB
-              value: dome
-            - name: SPRING_DATASOURCE_USERNAME
-              value: postgres
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: dekra-postgres-secret
                   key: postgres-password
-            - name: SPRING_DATASOURCE_URL
-              value: "jdbc:postgresql://dekra-postgres:5432/dome"
+            - name: SPRING_MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: certification-backend-secret
+                  key: spring-mail-password
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: certification-backend-secret
+                  key: jwt-secret-key
+            - name: JWT_PRIVATE_KEY_D
+              valueFrom:
+                secretKeyRef:
+                  name: certification-backend-secret
+                  key: jwt-private-key-d
+          envFrom:
+            - configMapRef:
+                name: certification-backend-config
           ports:
             - containerPort: 8080
               name: http
