@@ -19,7 +19,7 @@ data:
   LOGGING_FILE_NAME: dome-certification.log
   LOGGING_LEVEL_ROOT: INFO
   JWT_OAUTH_CLIENT_ID: did:key:zDnaehmkEhoybLgRkVbKpAv47Vu81Rw5TmLUA5PrRKuWSbhxn
-  JWT_OAUTH_REDIRECT_URI: https://dome-certification.dome-marketplace-sbx.org/auth/vc/callback
+  JWT_OAUTH_REDIRECT_URI: https://dome-certification.dome-marketplace-sbx.org/auth/login
   JWT_OAUTH_RESPONSE_TYPE: code
   JWT_OAUTH_SCOPE: openid_learcredential
   JWT_OAUTH_AUD: https://dome-certification.dome-marketplace-sbx.org
