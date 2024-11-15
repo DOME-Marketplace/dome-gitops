@@ -16,6 +16,16 @@ zammad:
 
   zammadConfig:
 
+    railsserver:
+
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        readOnlyRootFilesystem: false
+        privileged: false
+
     customVolumes:
       - name: custom-css-volume
         configMap:
