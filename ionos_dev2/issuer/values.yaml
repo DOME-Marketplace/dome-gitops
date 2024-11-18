@@ -223,7 +223,7 @@ issuer:
       repository: in2workspace/dome-issuer-keycloak
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.0.0
+      tag: v1.0.2
     readinessProbe:
       path: /issuer-keycloak/health
     livenessProbe:
