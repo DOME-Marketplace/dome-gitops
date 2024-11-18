@@ -86,8 +86,6 @@ wallet:
           domain: scorpio
           port: 9090
         pathsEntities: /ngsi-ld/v1/entities
-      trustedIssuerList:
-        uri: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080/v4/issuers/"
 
   ## configuration for the dome-wallet-ui
   dome-wallet-ui:
@@ -137,6 +135,11 @@ wallet:
 
   ## configuration for the dome-wallet-keycloak
   dome-wallet-keycloak:
+    image:
+      repository: in2workspace/dome-wallet-keycloak
+      pullPolicy: Always
+      # Overrides the image tag whose default is the chart appVersion.
+      tag: v1.0.1
     # -- should be enabled?
     enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace

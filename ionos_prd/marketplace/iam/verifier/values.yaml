@@ -1,7 +1,7 @@
 verifier-api:
   image:
     repository: in2workspace/in2-verifier-api
-    tag: v1.0.3-ga
+    tag: v1.0.7
     pullPolicy: Always
 
   ingress:
@@ -25,6 +25,9 @@ verifier-api:
     accessToken:
       expirationUnitTime: MINUTES
       expirationTime: 30
+    idToken:
+      expirationUnitTime: MINUTES
+      expirationTime: 5
     loginQrCode:
       expirationUnitTime: MINUTES
       expirationTime: 2
