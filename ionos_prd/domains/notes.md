@@ -13,3 +13,7 @@ Apply domains manually with commands:
     k apply -f domains_wallet-api-ingress.yaml
     k apply -f domains_knowledgebase-ingress.yaml
     k apply -f domains_waltid-certs-ingress.yaml
+    k apply -f domains_issuer-keycloak-ingress.yaml
+    k apply -f domains_issuer-api-ingress.yaml
+    k apply -f domains_issuer-ui-ingress.yaml
+    k apply -f domains_issuer-well-known-ingress.yaml
