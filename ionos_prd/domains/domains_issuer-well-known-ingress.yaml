@@ -1,0 +1,46 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-well-known-2
+  namespace: in2
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: issuer.dome-marketplace.org
+      http:
+        paths:
+          - path: /issuer-api/.well-known/openid-configuration
+            pathType: Prefix
+            backend:
+              service:
+                name: dome-issuer-keycloak
+                port:
+                  number: 8080
+    - host: issuer.yumket.eu
+      http:
+        paths:
+          - path: /issuer-api/.well-known/openid-configuration
+            pathType: Prefix
+            backend:
+              service:
+                name: dome-issuer-keycloak
+                port:
+                  number: 8080
+    - host: issuer.dome-marketplace.eu
+      http:
+        paths:
+          - path: /issuer-api/.well-known/openid-configuration
+            pathType: Prefix
+            backend:
+              service:
+                name: dome-issuer-keycloak
+                port:
+                  number: 8080
+  tls:
+    - hosts:
+        - issuer.dome-marketplace.org
+        - issuer.yumket.eu
+        - issuer.dome-marketplace.eu
+      secretName: issuer-secret-tls
