@@ -8,7 +8,7 @@ access-node:
     image:
       repository: in2workspace/in2-desmos-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.0.0-rc1
+      tag: v1.0.1
       pullPolicy: Always
     ingress:
       enabled: true
@@ -16,13 +16,13 @@ access-node:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
       hosts:
-        - host: desmos.dome-marketplace-dev2.org
+        - host: desmos.dome-marketplace-dev.org
           paths:
             - path: /
               pathType: Prefix
       tls:
         - hosts:
-            - desmos.dome-marketplace-dev2.org
+            - desmos.dome-marketplace-dev.org
           secretName: desmos-tls-secret
     ## deployment specific configuration
     app:
@@ -63,10 +63,7 @@ access-node:
         # -- a list of entity-types the connector is interested in
         entityTypes: catalog,product-offering,category,individual,organization,product,service-specification,product-offering-price,resource-specification,product-specification
       # -- operator external domain
-      externalDomain: "https://desmos.dome-marketplace-dev2.org"
-      externalAccessNodesUrls:
-        enableCustomUrls: true
-        customUrls: ""
+      externalDomain: "https://desmos.dome-marketplace-dev.org"
       # -- configuration to set your private key
       privateKey:
         existingSecret:
