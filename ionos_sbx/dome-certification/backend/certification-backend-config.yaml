@@ -18,11 +18,6 @@ data:
   SPRINGDOC_SWAGGER_UI_PATH: /api-docs.html
   LOGGING_FILE_NAME: dome-certification.log
   LOGGING_LEVEL_ROOT: INFO
-  JWT_OAUTH_CLIENT_ID: did:key:zDnaehmkEhoybLgRkVbKpAv47Vu81Rw5TmLUA5PrRKuWSbhxn
-  JWT_OAUTH_REDIRECT_URI: https://dome-certification.dome-marketplace-sbx.org/auth/login
-  JWT_OAUTH_RESPONSE_TYPE: code
-  JWT_OAUTH_SCOPE: openid_learcredential
-  JWT_OAUTH_AUD: https://dome-certification.dome-marketplace-sbx.org
   SPRING_MAIL_USERNAME: certification@dome-marketplace.eu
   SPRING_MAIL_ADDRESS: certification@dome-marketplace.eu
   SPRING_MAIL_HOST: smtp.ionos.de
@@ -34,3 +29,6 @@ data:
   SPRING_MAIL_SMPT_DEBUG: "false"
   JWT_PUBLIC_KEY_X: AafPhf-qT_gPc7yvtCd6jSAGUedUalQAFRQBv3fuaUM
   JWT_PUBLIC_KEY_Y: modVruGC6Le8PiD2Bi5vTsPJFoytARsMYTac56XJwz0
+  JWT_OAUTH_CLIENT_ID: did:key:zDnaehmkEhoybLgRkVbKpAv47Vu81Rw5TmLUA5PrRKuWSbhxn
+  JWT_OAUTH_REDIRECT_URI: https://dome-certification.dome-marketplace-sbx.org/auth/login
+  JWT_OAUTH_AUD: https://verifier.dome-marketplace-sbx.org
