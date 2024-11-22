@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: certification-backend-config
+  namespace: dome-certification
+data:
+  POSTGRES_DB: dome
+  SPRING_DATASOURCE_USERNAME: postgres
+  SPRING_DATASOURCE_URL: jdbc:postgresql://dekra-postgres:5432/dome
+  SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+  SPRING_JPA_SHOW_SQL: "true"
+  SPRING_JPA_HIBERNATE_DDL_AUTO: update
+  SPRING_MVC_CONVERTERS_PREFERRED_JSON_MAPPER: jackson
+  FILE_UPLOAD_DIR: /dome-upload
+  SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE: 10MB
+  SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE: 10MB
+  SPRINGDOC_API_DOCS_PATH: /api-docs
+  SPRINGDOC_SWAGGER_UI_PATH: /api-docs.html
+  LOGGING_FILE_NAME: dome-certification.log
+  LOGGING_LEVEL_ROOT: INFO
+  SPRING_MAIL_USERNAME: certification@dome-marketplace.eu
+  SPRING_MAIL_ADDRESS: certification@dome-marketplace.eu
+  SPRING_MAIL_HOST: smtp.ionos.de
+  SPRING_MAIL_PORT: "587"
+  SPRING_MAIL_SMPT_AUTH: "true"
+  SPRING_MAIL_SMPT_START_TLS_ENABLE: "true"
+  SPRING_MAIL_SMPT_START_TLS_REQUIRED: "true"
+  SPRING_MAIL_SMPT_SSL_TRUST: smtp.ionos.de
+  SPRING_MAIL_SMPT_DEBUG: "false"
+  JWT_PUBLIC_KEY_X: AafPhf-qT_gPc7yvtCd6jSAGUedUalQAFRQBv3fuaUM
+  JWT_PUBLIC_KEY_Y: modVruGC6Le8PiD2Bi5vTsPJFoytARsMYTac56XJwz0
+  JWT_OAUTH_CLIENT_ID: did:key:zDnaehmkEhoybLgRkVbKpAv47Vu81Rw5TmLUA5PrRKuWSbhxn
+  JWT_OAUTH_REDIRECT_URI: https://dome-certification.dome-marketplace-dev2.org/auth/login
+  JWT_OAUTH_AUD: https://verifier.dome-marketplace-dev2.org
