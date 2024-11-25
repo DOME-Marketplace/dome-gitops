@@ -9,7 +9,7 @@ wallet:
     image:
       repository: in2workspace/in2-wallet-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.3.2
+      tag: v1.3.3
       pullPolicy: Always
     ingress:
       enabled: true
@@ -93,7 +93,7 @@ wallet:
       repository: in2workspace/in2-wallet-ui
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.3.4
+      tag: v1.3.5
     # -- should be enabled?
     enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
