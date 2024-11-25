@@ -170,7 +170,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "9.9.3"
+        tag: "9.10.1"
         pullPolicy: Always
 
     ingress: 
@@ -221,6 +221,8 @@ business-api-ecosystem:
         value: https://dome-certification.dome-marketplace-sbx.org
       - name: BAE_LP_PURCHASE_ENABLED
         value: "true"
+      - name: BAE_LP_DOME_ABOUT
+        value: https://dome-project.eu/about/
       - name: BAE_LP_SIOP_PRIVATE_KEY
         valueFrom:
           secretKeyRef:
