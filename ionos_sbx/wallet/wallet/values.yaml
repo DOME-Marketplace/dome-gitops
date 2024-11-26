@@ -115,6 +115,7 @@ wallet:
           secretName: wallet-secret-tls
     ## deployment specific configuration
     app:
+      profile: dev
       internalServerPort: 8080
       walletApi:
         # Este internalDomain es en realidad el external
