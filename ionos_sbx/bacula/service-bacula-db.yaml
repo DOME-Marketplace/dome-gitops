@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bacula-db
+  namespace: bacula
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/instance: bacula
+    app.kubernetes.io/name: bacula
+  ports:
+    - name: http
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+
+
+  # db:
+  #   image: fametec/bacula-catalog:11.0.5
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_PASSWORD: bacula
+  #     POSTGRES_USER: bacula
+  #     POSTGRES_DB: bacula
+  #   # volumes:
+  #   #   - pgdata:/var/lib/postgresql/data:rw
+  #   ports:
+  #     - 5432:5432

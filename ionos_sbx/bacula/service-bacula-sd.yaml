@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bacula-sd
+  namespace: bacula
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/instance: bacula
+    app.kubernetes.io/name: bacula
+  ports:
+    - name: http
+      port: 9103
+      protocol: TCP
+      targetPort: 9103
+
+
+    #     bacula-sd:
+    # image: fametec/bacula-storage:11.0.5
+    # restart: unless-stopped
+    # depends_on:
+    #   - bacula-dir
+    #   - db
+    # volumes:
+    #   - ./etc:/opt/bacula/etc:ro
+    # ports:
+    #   - 9103:9103
