@@ -9,7 +9,7 @@ wallet:
     image:
       repository: in2workspace/in2-wallet-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.3.3
+      tag: v1.3.7
       pullPolicy: Always
     ingress:
       enabled: true
@@ -27,12 +27,10 @@ wallet:
           secretName: wallet-secret-tls
     ## deployment specific configuration
     app:
+      profile: test
       internalServerPort: 8080
       logLevel: INFO
       basePath: /wallet-api
-      walletUi:
-        scheme: https
-        domain: wallet.dome-marketplace-dev2.org
       authServer:
         external:
           scheme: https
