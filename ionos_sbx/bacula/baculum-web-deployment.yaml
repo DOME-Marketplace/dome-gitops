@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bacula
+  namespace: bacula
+  labels:
+    app.kubernetes.io/instance: bacula
+    app.kubernetes.io/name: bacula
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: bacula
+      app.kubernetes.io/name: bacula
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: bacula
+        app.kubernetes.io/name: bacula
+    spec:
+      containers:
+        - name: bacula
+          image: fametec/baculum-web:11.0.5 
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9095
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - ./etc/bconsole.conf:/opt/bacula/etc/bconsole.conf:ro
+            - ./etc/baculum:/etc/baculum:rw
+          depends_on: 
+            - bacula-db
+            - bacula-dir
+      securityContext:
+        runAsUser: 33
+        runAsGroup: 33
+        fsGroup: 33
+      volumes:
+        - ./etc/bconsole.conf:/opt/bacula/etc/bconsole.conf:ro
+        - ./etc/baculum:/etc/baculum:rw
