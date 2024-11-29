@@ -29,12 +29,12 @@ spec:
               name: http
               protocol: TCP
           volumeMounts:
-            - ./etc:/opt/bacula/etc:ro
+            #- ./etc:/opt/bacula/etc:ro
+          - mountPath: /opt
+            name: bacula-opt-pvc
           depends_on: 
             - bacula-db 
       securityContext:
         runAsUser: 33
         runAsGroup: 33
         fsGroup: 33
-      volumes: 
-        - ./etc:/opt/bacula/etc:ro
