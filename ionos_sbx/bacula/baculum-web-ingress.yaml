@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: baculum-web-ingress
+  namespace: bacula
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: baculum-web.dome-marketplace-sbx.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: bacula
+            port:
+              number: 9095
+  tls:
+  - hosts:
+    - baculum-web.dome-marketplace-sbx.org

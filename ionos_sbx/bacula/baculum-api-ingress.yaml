@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: bacula-ingress
+  name: baculum-api-ingress
   namespace: bacula
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: bacula.dome-marketplace-sbx.org
+  - host: baculum-api.dome-marketplace-sbx.org
     http:
       paths:
       - path: /
@@ -19,8 +19,7 @@ spec:
           service:
             name: bacula
             port:
-              number: 8080
+              number: 9096
   tls:
   - hosts:
-    - bacula.dome-marketplace-sbx.org
-    secretName: bacula-tls-secret
+    - baculum-api.dome-marketplace-sbx.org
