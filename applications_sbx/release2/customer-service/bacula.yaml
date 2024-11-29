@@ -4,14 +4,14 @@ metadata:
   name: bacula
   namespace: argocd
   labels:
-    purpose: knowledgebase
+    purpose: backup
 spec:
   destination:
-    namespace: knowledgebase
+    namespace: bacula
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos_sbx/knowledgebase/bacula
+    path: ionos_sbx/bacula/bacula
     repoURL: https://github.com/DOME-Marketplace/dome-gitops.git
     targetRevision: HEAD
   syncPolicy:

@@ -22,26 +22,22 @@ spec:
     spec:
       containers:
         - name: bacula
-          image: ---
-
-    # image: fametec/bacula-catalog:11.0.5    db
-    # image: fametec/bacula-director:11.0.5   dir
-    # image: fametec/bacula-storage:11.0.5    sd
-    # image: fametec/bacula-client:11.0.5     fd
-    # image: fametec/baculum-api:11.0.5       api
-    # image: fametec/baculum-web:11.0.5       web
-
+          image: fametec/baculum-web:11.0.5 
           imagePullPolicy: Always
-          env:
-          
           ports:
-            - containerPort: 9096
+            - containerPort: 9095
               name: http
               protocol: TCP
           volumeMounts:
-
+            - ./etc/bconsole.conf:/opt/bacula/etc/bconsole.conf:ro
+            - ./etc/baculum:/etc/baculum:rw
+          depends_on: 
+            - bacula-db
+            - bacula-dir
       securityContext:
         runAsUser: 33
         runAsGroup: 33
         fsGroup: 33
-      volumes: 
+      volumes:
+        - ./etc/bconsole.conf:/opt/bacula/etc/bconsole.conf:ro
+        - ./etc/baculum:/etc/baculum:rw

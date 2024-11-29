@@ -17,7 +17,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: bookstack
+            name: bacula
             port:
               number: 8080
   tls:

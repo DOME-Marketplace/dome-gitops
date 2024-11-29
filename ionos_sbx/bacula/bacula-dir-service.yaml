@@ -13,13 +13,3 @@ spec:
       port: 9101
       protocol: TCP
       targetPort: 9101
-
-    # bacula-dir:
-    # image: fametec/bacula-director:11.0.5
-    # restart: unless-stopped
-    # volumes:
-    #   - ./etc:/opt/bacula/etc:ro
-    # depends_on: 
-    #   - db      
-    # ports:
-    #   - 9101:9101
