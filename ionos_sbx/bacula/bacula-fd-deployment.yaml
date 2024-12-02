@@ -30,7 +30,7 @@ spec:
               protocol: TCP
           volumeMounts:
             - mountPath: /opt
-              name: bbacula-fd-pvc
+              name: bacula-fd-pvc
       volumes:
         - name: bacula-fd-pvc
           persistentVolumeClaim:
