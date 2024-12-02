@@ -31,7 +31,7 @@ spec:
               name: bacula-dir
               protocol: TCP
           volumeMounts:
-            - mountPath: /opt/bacula/etc
+            - mountPath: /opt/bacula/etc/bacula-dir.conf
               name: bacula-dir-pvc
       volumes:
         - name: bacula-dir-pvc
