@@ -30,9 +30,12 @@ spec:
               protocol: TCP
           volumeMounts:
             - mountPath: /opt
-              name: bacula-opt-pvc
+              name: baculum-api-pvc
             - mountPath: /etc
-              name: baculum-storage-pvc
+              name: baculum-api-pvc
+          securityContext:
+            runAsUser: 33
+            runAsGroup: 33
       volumes:
         - name: bacula-opt-pvc
           persistentVolumeClaim:
@@ -41,6 +44,4 @@ spec:
           persistentVolumeClaim:
             claimName: baculum-storage-pvc
       securityContext:
-        runAsUser: 33
-        runAsGroup: 33
         fsGroup: 33
