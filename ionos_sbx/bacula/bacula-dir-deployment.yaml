@@ -39,10 +39,7 @@ spec:
             - name: DB_USER
               value: "bacula"
             - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: bacula-db-secret
-                  key: password
+              value: "bacula"
           ports:
             - containerPort: 9101
               name: bacula-dir
