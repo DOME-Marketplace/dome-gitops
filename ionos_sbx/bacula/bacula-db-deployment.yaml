@@ -36,6 +36,6 @@ spec:
               name: postgres
               protocol: TCP
       securityContext:
-        runAsUser: 33
-        runAsGroup: 33
+        runAsUser: 999
+        runAsGroup: 999
         fsGroup: 999
