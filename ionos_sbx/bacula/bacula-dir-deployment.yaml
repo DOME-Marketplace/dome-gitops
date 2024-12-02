@@ -30,10 +30,6 @@ spec:
         - name: bacula-dir
           image: 'fametec/bacula-director:11.0.5'
           imagePullPolicy: Always
-          ports:
-            - containerPort: 9101
-              name: bacula-dir
-              protocol: TCP
           env:
             - name: DB_HOST
               value: "bacula-db"  # Service name of the PostgreSQL database
@@ -44,31 +40,13 @@ spec:
             - name: DB_USER
               value: "bacula"
             - name: DB_PASSWORD
-              value: "bacula"  # Directly hardcoding the password
-          volumeMounts:
-            - name: config-volume
-              mountPath: /opt/bacula/etc
-            - name: log-volume
-              mountPath: /opt/bacula/log
-          readinessProbe:
-            tcpSocket:
-              port: 9101
-            initialDelaySeconds: 10
-            periodSeconds: 5
-          livenessProbe:
-            tcpSocket:
-              port: 9101
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          resources: {}
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
-      volumes:
-        - name: config-volume
-          configMap:
-            name: bacula-dir-config
-        - name: log-volume
-          emptyDir: {}  # Can be replaced with a PersistentVolume for logs
-      restartPolicy: Always
-      dnsPolicy: ClusterFirst
-      terminationGracePeriodSeconds: 30
+              value: "bacula"
+          ports:
+            - containerPort: 9101
+              name: bacula-dir
+              protocol: TCP
+    securityContext:
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+
