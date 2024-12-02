@@ -61,7 +61,7 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext:
-        fsGroup: 999
-        runAsGroup: 999
-        runAsUser: 999
+        fsGroup: 33
+        runAsGroup: 33
+        runAsUser: 33
       terminationGracePeriodSeconds: 30
