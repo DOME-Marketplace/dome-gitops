@@ -33,9 +33,9 @@ spec:
 #              name: baculum-api-pvc
 #            - mountPath: /etc
 #              name: baculum-api-pvc
-          securityContext:
-            runAsUser: 33
-            runAsGroup: 33
+#          securityContext:
+#            runAsUser: 33
+#            runAsGroup: 33
 #      volumes:
 #        - name: baculum-api-pvc
 #          persistentVolumeClaim:
