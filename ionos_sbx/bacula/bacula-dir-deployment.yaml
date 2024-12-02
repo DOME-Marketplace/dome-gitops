@@ -45,18 +45,18 @@ spec:
               name: bacula-dir
               protocol: TCP
           resources: {}
-          readinessProbe:
-            tcpSocket:
-              port: 9101
-            initialDelaySeconds: 10
-            periodSeconds: 5
-          livenessProbe:
-            tcpSocket:
-              port: 9101
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
+#          readinessProbe:
+#            tcpSocket:
+#              port: 9101
+#            initialDelaySeconds: 10
+#            periodSeconds: 5
+#          livenessProbe:
+#            tcpSocket:
+#              port: 9101
+#            initialDelaySeconds: 30
+#            periodSeconds: 10
+#          terminationMessagePath: /dev/termination-log
+#          terminationMessagePolicy: File
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
