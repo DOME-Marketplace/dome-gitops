@@ -40,7 +40,7 @@ spec:
 #        - name: baculum-api-pvc
 #          persistentVolumeClaim:
 #            claimName: baculum-api-pvc
-      securityContext:
-        fsGroup: 33
-        runAsGroup: 33
-        runAsUser: 33
+#      securityContext:
+#        fsGroup: 33
+#        runAsGroup: 33
+#        runAsUser: 33
