@@ -25,12 +25,15 @@ spec:
           image: fametec/bacula-catalog:11.0.5
           imagePullPolicy: Always
           env:
-            POSTGRES_PASSWORD: bacula
-            POSTGRES_USER: bacula
-            POSTGRES_DB: bacula
+            - name: POSTGRES_PASSWORD
+              value: "bacula"
+            - name: POSTGRES_USER
+              value: "bacula"
+            - name: POSTGRES_DB
+              value: "bacula"
           ports:
             - containerPort: 5432
-              name: http
+              name: postgres
               protocol: TCP
       securityContext:
         runAsUser: 33
