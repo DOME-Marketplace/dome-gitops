@@ -42,3 +42,5 @@ spec:
             claimName: baculum-api-pvc
       securityContext:
         fsGroup: 33
+        runAsGroup: 33
+        runAsUser: 33
