@@ -28,18 +28,18 @@ spec:
             - containerPort: 9096
               name: baculum-api
               protocol: TCP
-          volumeMounts:
-            - mountPath: /opt
-              name: baculum-api-pvc
-            - mountPath: /etc
-              name: baculum-api-pvc
+#          volumeMounts:
+#            - mountPath: /opt
+#              name: baculum-api-pvc
+#            - mountPath: /etc
+#              name: baculum-api-pvc
           securityContext:
             runAsUser: 33
             runAsGroup: 33
-      volumes:
-        - name: baculum-api-pvc
-          persistentVolumeClaim:
-            claimName: baculum-api-pvc
+#      volumes:
+#        - name: baculum-api-pvc
+#          persistentVolumeClaim:
+#            claimName: baculum-api-pvc
       securityContext:
         fsGroup: 33
         runAsGroup: 33
