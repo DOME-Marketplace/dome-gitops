@@ -35,7 +35,7 @@ spec:
 #        - name: bacula-sd-pvc
 #          persistentVolumeClaim:
 #            claimName: bacula-sd-pvc
-      securityContext:
-        runAsUser: 33
-        runAsGroup: 33
-        fsGroup: 33
+#      securityContext:
+#        runAsUser: 33
+#        runAsGroup: 33
+#        fsGroup: 33
