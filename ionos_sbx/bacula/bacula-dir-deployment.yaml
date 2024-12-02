@@ -1,12 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bacula-dir
-  namespace: bacula
+  annotations:
+    deployment.kubernetes.io/revision: '1'
   labels:
     app.kubernetes.io/instance: bacula-dir
     app.kubernetes.io/name: bacula-dir
     argocd.argoproj.io/instance: bacula
+  name: bacula-dir
+  namespace: bacula
 spec:
   replicas: 1
   revisionHistoryLimit: 10
@@ -27,17 +29,25 @@ spec:
         - name: bacula-dir
           image: 'fametec/bacula-director:11.0.5'
           imagePullPolicy: Always
+          env:
+            - name: DB_HOST
+              value: "bacula-db" # Service name of the PostgreSQL deployment
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: "bacula"
+            - name: DB_USER
+              value: "bacula"
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bacula-db-secret
+                  key: password
           ports:
             - containerPort: 9101
               name: bacula-dir
               protocol: TCP
-          resources:
-            requests:
-              memory: "128Mi"
-              cpu: "250m"
-            limits:
-              memory: "256Mi"
-              cpu: "500m"
+          resources: {}
           readinessProbe:
             tcpSocket:
               port: 9101
@@ -53,8 +63,8 @@ spec:
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
-      terminationGracePeriodSeconds: 30
       securityContext:
-        runAsUser: 33
-        runAsGroup: 33
-        fsGroup: 33
+        fsGroup: 999
+        runAsGroup: 999
+        runAsUser: 999
+      terminationGracePeriodSeconds: 30
