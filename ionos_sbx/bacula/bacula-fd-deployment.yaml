@@ -30,11 +30,11 @@ spec:
               protocol: TCP
           volumeMounts:
             - mountPath: /opt
-              name: bacula-opt-pvc
+              name: bbacula-fd-pvc
       volumes:
-        - name: bacula-opt-pvc
+        - name: bacula-fd-pvc
           persistentVolumeClaim:
-            claimName: bacula-opt-pvc
+            claimName: bacula-fd-pvc
       securityContext:
         runAsUser: 33
         runAsGroup: 33

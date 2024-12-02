@@ -29,12 +29,12 @@ spec:
               name: bacula-dir
               protocol: TCP
           volumeMounts:
-            - mountPath: /opt/bacula-dir
-              name: bacula-opt-pvc
+            - mountPath: /opt
+              name: bacula-dir-pvc
       volumes:
-        - name: bacula-opt-pvc
+        - name: bacula-dir-pvc
           persistentVolumeClaim:
-            claimName: bacula-opt-pvc
+            claimName: bacula-dir-pvc
       securityContext:
         runAsUser: 33
         runAsGroup: 33
