@@ -26,18 +26,20 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 9096
-              name: http
+              name: baculum-api
               protocol: TCP
           volumeMounts:
-            #- ./etc/bconsole.conf:/opt/bacula/etc/bconsole.conf:ro
-            #- ./etc/baculum:/etc/baculum:rw
-          - mountPath: /opt
-            name: bacula-opt-pvc
-          - mountPath: /etc
-            name: baculum-storage-pvc
-          depends_on: 
-            - bacula-db
-            - bacula-dir
+            - mountPath: /opt
+              name: bacula-opt-pvc
+            - mountPath: /etc
+              name: baculum-storage-pvc
+      volumes:
+        - name: bacula-opt-pvc
+          persistentVolumeClaim:
+            claimName: bacula-opt-pvc
+        - name: baculum-storage-pvc
+          persistentVolumeClaim:
+            claimName: baculum-storage-pvc
       securityContext:
         runAsUser: 33
         runAsGroup: 33
