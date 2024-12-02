@@ -37,11 +37,8 @@ spec:
             runAsUser: 33
             runAsGroup: 33
       volumes:
-        - name: bacula-opt-pvc
+        - name: baculum-api-pvc
           persistentVolumeClaim:
-            claimName: bacula-opt-pvc
-        - name: baculum-storage-pvc
-          persistentVolumeClaim:
-            claimName: baculum-storage-pvc
+            claimName: baculum-api-pvc
       securityContext:
         fsGroup: 33

@@ -34,9 +34,6 @@ spec:
             - mountPath: /etc
               name: baculum-web-pvc
       volumes:
-        - name: bacula-opt-pvc
-          persistentVolumeClaim:
-            claimName: bacula-opt-pvc
         - name: baculum-web-pvc
           persistentVolumeClaim:
             claimName: baculum-web-pvc
