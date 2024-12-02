@@ -28,13 +28,13 @@ spec:
             - containerPort: 9102
               name: bacula-fd
               protocol: TCP
-          volumeMounts:
-            - mountPath: /opt
-              name: bacula-fd-pvc
-      volumes:
-        - name: bacula-fd-pvc
-          persistentVolumeClaim:
-            claimName: bacula-fd-pvc
+#          volumeMounts:
+#            - mountPath: /opt
+#              name: bacula-fd-pvc
+#      volumes:
+#        - name: bacula-fd-pvc
+#          persistentVolumeClaim:
+#            claimName: bacula-fd-pvc
       securityContext:
         runAsUser: 33
         runAsGroup: 33

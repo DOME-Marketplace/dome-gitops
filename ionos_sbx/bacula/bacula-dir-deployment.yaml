@@ -24,19 +24,19 @@ spec:
         - name: bacula-dir
           image: fametec/bacula-director:11.0.5
           imagePullPolicy: Always
-          command: ["/usr/local/bin/bacula-dir"]  # Replace this path if necessary
-          args: ["-f", "-c", "/opt/bacula/etc/bacula-dir.conf"]
+#          command: ["/usr/local/bin/bacula-dir"]  # Replace this path if necessary
+#          args: ["-f", "-c", "/opt/bacula/etc/bacula-dir.conf"]
           ports:
             - containerPort: 9101
               name: bacula-dir
               protocol: TCP
-          volumeMounts:
-            - mountPath: /opt/bacula/etc
-              name: bacula-dir-pvc
-      volumes:
-        - name: bacula-dir-pvc
-          persistentVolumeClaim:
-            claimName: bacula-dir-pvc
+#          volumeMounts:
+#            - mountPath: /opt/bacula/etc
+#              name: bacula-dir-pvc
+#      volumes:
+#        - name: bacula-dir-pvc
+#          persistentVolumeClaim:
+#            claimName: bacula-dir-pvc
       securityContext:
         runAsUser: 33
         runAsGroup: 33

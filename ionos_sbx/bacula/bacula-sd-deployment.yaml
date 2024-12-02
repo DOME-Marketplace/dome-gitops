@@ -28,13 +28,13 @@ spec:
             - containerPort: 9103
               name: bacula-sd
               protocol: TCP
-          volumeMounts:
-            - mountPath: /opt
-              name: bacula-sd-pvc
-      volumes:
-        - name: bacula-sd-pvc
-          persistentVolumeClaim:
-            claimName: bacula-sd-pvc
+#          volumeMounts:
+#            - mountPath: /opt
+#              name: bacula-sd-pvc
+#      volumes:
+#        - name: bacula-sd-pvc
+#          persistentVolumeClaim:
+#            claimName: bacula-sd-pvc
       securityContext:
         runAsUser: 33
         runAsGroup: 33
