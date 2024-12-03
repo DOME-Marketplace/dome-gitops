@@ -15,10 +15,6 @@ spec:
         app.kubernetes.io/instance: bacula-dir
         app.kubernetes.io/name: bacula-dir
     spec:
-      securityContext:
-        fsGroup: 999
-        runAsGroup: 999
-        runAsUser: 999
       containers:
         - name: bacula-dir
           image: fametec/bacula-director:11.0.5
