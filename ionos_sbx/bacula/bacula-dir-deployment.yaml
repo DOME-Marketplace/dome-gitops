@@ -3,13 +3,8 @@ kind: Deployment
 metadata:
   name: bacula-dir
   namespace: bacula
-  labels:
-    app.kubernetes.io/instance: bacula-dir
-    app.kubernetes.io/name: bacula-dir
 spec:
   replicas: 1
-  strategy:
-    type: Recreate
   selector:
     matchLabels:
       app.kubernetes.io/instance: bacula-dir
@@ -26,15 +21,23 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 9101
-              name: http
+              name: bacula-dir
               protocol: TCP
+          env:
+            - name: DB_HOST
+              value: bacula-db
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: bacula
+            - name: DB_USER
+              value: bacula
+            - name: DB_PASSWORD
+              value: bacula
           volumeMounts:
-            #- ./etc:/opt/bacula/etc:ro
-          - mountPath: /opt
-            name: bacula-opt-pvc
-          depends_on: 
-            - bacula-db 
-      securityContext:
-        runAsUser: 33
-        runAsGroup: 33
-        fsGroup: 33
+            - name: bacula-dir-volume
+              mountPath: /opt/bacula/etc
+      volumes:
+        - name: bacula-dir-volume
+          persistentVolumeClaim:
+            claimName: bacula-dir-pvc

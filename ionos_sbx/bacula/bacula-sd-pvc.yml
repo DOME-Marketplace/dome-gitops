@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: bacula-opt-pvc
+  name: bacula-sd-pvc
   namespace: bacula
 spec:
   accessModes:

@@ -26,16 +26,16 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 9103
-              name: http
+              name: bacula-sd
               protocol: TCP
-          volumeMounts:
-            #- ./etc:/opt/bacula/etc:ro
-          - mountPath: /opt
-            name: bacula-opt-pvc
-          depends_on:
-            - bacula-dir
-            - bacula-db
-      securityContext:
-        runAsUser: 33
-        runAsGroup: 33
-        fsGroup: 33
+#          volumeMounts:
+#            - mountPath: /opt
+#              name: bacula-sd-pvc
+#      volumes:
+#        - name: bacula-sd-pvc
+#          persistentVolumeClaim:
+#            claimName: bacula-sd-pvc
+#      securityContext:
+#        runAsUser: 33
+#        runAsGroup: 33
+#        fsGroup: 33
