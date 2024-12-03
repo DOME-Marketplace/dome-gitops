@@ -3,19 +3,12 @@ kind: Deployment
 metadata:
   name: bacula-dir
   namespace: bacula
-  labels:
-    app.kubernetes.io/instance: bacula-dir
-    app.kubernetes.io/name: bacula-dir
 spec:
   replicas: 1
-  revisionHistoryLimit: 10
-  progressDeadlineSeconds: 600
   selector:
     matchLabels:
       app.kubernetes.io/instance: bacula-dir
       app.kubernetes.io/name: bacula-dir
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
@@ -24,29 +17,46 @@ spec:
     spec:
       securityContext:
         fsGroup: 999
-        runAsUser: 999
         runAsGroup: 999
+        runAsUser: 999
       containers:
         - name: bacula-dir
-          image: 'fametec/bacula-director:11.0.5'
+          image: fametec/bacula-director:11.0.5
           imagePullPolicy: Always
-          env:
-            - name: DB_HOST
-              value: "bacula-db"  # Service name of the PostgreSQL database
-            - name: DB_PORT
-              value: "5432"
-            - name: DB_NAME
-              value: "bacula"
-            - name: DB_USER
-              value: "bacula"
-            - name: DB_PASSWORD
-              value: "bacula"
           ports:
             - containerPort: 9101
               name: bacula-dir
               protocol: TCP
-    securityContext:
-        runAsUser: 999
-        runAsGroup: 999
-        fsGroup: 999
-
+          env:
+            - name: DB_HOST
+              value: bacula-db
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: bacula
+            - name: DB_USER
+              value: bacula
+            - name: DB_PASSWORD
+              value: bacula
+          volumeMounts:
+            - name: bacula-dir-volume
+              mountPath: /opt/bacula/etc
+            - name: bacula-log-volume
+              mountPath: /opt/bacula/log
+            - name: bacula-working-volume
+              mountPath: /opt/bacula/working
+            - name: bacula-storage-volume
+              mountPath: /opt/bacula/storage
+      volumes:
+        - name: bacula-dir-volume
+          persistentVolumeClaim:
+            claimName: bacula-dir-pvc
+        - name: bacula-log-volume
+          persistentVolumeClaim:
+            claimName: bacula-dir-pvc
+        - name: bacula-working-volume
+          persistentVolumeClaim:
+            claimName: bacula-dir-pvc
+        - name: bacula-storage-volume
+          persistentVolumeClaim:
+            claimName: bacula-dir-pvc
