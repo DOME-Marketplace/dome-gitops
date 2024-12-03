@@ -37,22 +37,7 @@ spec:
           volumeMounts:
             - name: bacula-dir-volume
               mountPath: /opt/bacula/etc
-            - name: bacula-log-volume
-              mountPath: /opt/bacula/log
-            - name: bacula-working-volume
-              mountPath: /opt/bacula/working
-            - name: bacula-storage-volume
-              mountPath: /opt/bacula/storage
       volumes:
         - name: bacula-dir-volume
-          persistentVolumeClaim:
-            claimName: bacula-dir-pvc
-        - name: bacula-log-volume
-          persistentVolumeClaim:
-            claimName: bacula-dir-pvc
-        - name: bacula-working-volume
-          persistentVolumeClaim:
-            claimName: bacula-dir-pvc
-        - name: bacula-storage-volume
           persistentVolumeClaim:
             claimName: bacula-dir-pvc
