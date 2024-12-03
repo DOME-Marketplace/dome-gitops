@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bacula
+  namespace: argocd
+  labels:
+    purpose: backup
+spec:
+  destination:
+    namespace: bacula
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: ionos_sbx/bacula
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

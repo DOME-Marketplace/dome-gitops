@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bacula-fd
+  namespace: bacula
+  labels:
+    app.kubernetes.io/instance: bacula-fd
+    app.kubernetes.io/name: bacula-fd
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: bacula-fd
+      app.kubernetes.io/name: bacula-fd
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: bacula-fd
+        app.kubernetes.io/name: bacula-fd
+    spec:
+      containers:
+        - name: bacula-fd
+          image: fametec/bacula-client:11.0.5
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9102
+              name: bacula-fd
+              protocol: TCP
+#          volumeMounts:
+#            - mountPath: /opt
+#              name: bacula-fd-pvc
+#      volumes:
+#        - name: bacula-fd-pvc
+#          persistentVolumeClaim:
+#            claimName: bacula-fd-pvc
+#      securityContext:
+#        runAsUser: 33
+#        runAsGroup: 33
+#        fsGroup: 33

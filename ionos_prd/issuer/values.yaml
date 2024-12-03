@@ -154,7 +154,7 @@ issuer:
     image:
       repository: in2workspace/in2-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.1.0
+      tag: v1.1.6
       pullPolicy: Always
     ingress:
       enabled: true
@@ -223,7 +223,7 @@ issuer:
       repository: in2workspace/dome-issuer-keycloak
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.0.0
+      tag: v1.0.2
     readinessProbe:
       path: /issuer-keycloak/health
     livenessProbe:

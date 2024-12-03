@@ -1,4 +1,10 @@
 zammad:
+
+  image:
+    repository: kingmanfri/dome_ticketing_zammad
+    tag: "1.0"
+    pullPolicy: Always
+
   ingress:
     enabled: true
     className: nginx
@@ -25,15 +31,3 @@ zammad:
             - ALL
         readOnlyRootFilesystem: false
         privileged: false
-
-    customVolumes:
-      - name: custom-css-volume
-        configMap:
-          name: zammad-scss-configmap
-
-      # Custom volumeMounts for all Zammad Pods.
-    customVolumeMounts:
-      - name: custom-css-volume
-        mountPath: /opt/zammad/app/assets/stylesheets/custom/zammad.scss
-        subPath: zammad.scss
-        readOnly: true

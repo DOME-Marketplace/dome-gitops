@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bacula-db
+  namespace: bacula
+  labels:
+    app.kubernetes.io/instance: bacula-db
+    app.kubernetes.io/name: bacula-db
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: bacula-db
+      app.kubernetes.io/name: bacula-db
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: bacula-db
+        app.kubernetes.io/name: bacula-db
+    spec:
+      containers:
+        - name: bacula-db
+          image: fametec/bacula-catalog:11.0.5
+          imagePullPolicy: Always
+          env:
+            - name: POSTGRES_PASSWORD
+              value: "bacula"
+            - name: POSTGRES_USER
+              value: "bacula"
+            - name: POSTGRES_DB
+              value: "bacula"
+          ports:
+            - containerPort: 5432
+              name: postgres
+              protocol: TCP
+      securityContext:
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
