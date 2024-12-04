@@ -29,7 +29,7 @@ serviceMonitor:
       additionalRelabeling: []                        # List of metric relabeling actions to run
     - name: dome-marketplace                           # Human readable URL that will appear in Prometheus / AlertManager
       url: http://dome-marketplace.org                # The URL that blackbox will scrape
-      hostname: yumket.eu                             # HTTP probes can accept an additional `hostname` parameter that will set `Host` header and TLS SNI
+      hostname: dome-marketplace.org                  # HTTP probes can accept an additional `hostname` parameter that will set `Host` header and TLS SNI
       labels: {}                                      # Map of labels for ServiceMonitor. Overrides value set in `defaults`
       interval: 60s                                   # Scraping interval. Overrides value set in `defaults`
       scrapeTimeout: 60s                              # Scrape timeout. Overrides value set in `defaults`
@@ -38,7 +38,7 @@ serviceMonitor:
       additionalRelabeling: []                        # List of metric relabeling actions to run
     - name: dome-marketplace-prd                       # Human readable URL that will appear in Prometheus / AlertManager
       url: http://dome-marketplace-prd.org            # The URL that blackbox will scrape
-      hostname: yumket.eu                             # HTTP probes can accept an additional `hostname` parameter that will set `Host` header and TLS SNI
+      hostname: dome-marketplace-prd.org               # HTTP probes can accept an additional `hostname` parameter that will set `Host` header and TLS SNI
       labels: {}                                      # Map of labels for ServiceMonitor. Overrides value set in `defaults`
       interval: 60s                                   # Scraping interval. Overrides value set in `defaults`
       scrapeTimeout: 60s                              # Scrape timeout. Overrides value set in `defaults`
@@ -47,7 +47,7 @@ serviceMonitor:
       additionalRelabeling: []                        # List of metric relabeling actions to run
     - name: dome-marketplace-dev                      # Human readable URL that will appear in Prometheus / AlertManager
       url: http://dome-marketplace-dev.org            # The URL that blackbox will scrape
-      hostname: yumket.eu                             # HTTP probes can accept an additional `hostname` parameter that will set `Host` header and TLS SNI
+      hostname: dome-marketplace-dev.org              # HTTP probes can accept an additional `hostname` parameter that will set `Host` header and TLS SNI
       labels: {}                                      # Map of labels for ServiceMonitor. Overrides value set in `defaults`
       interval: 60s                                   # Scraping interval. Overrides value set in `defaults`
       scrapeTimeout: 60s                              # Scrape timeout. Overrides value set in `defaults`
@@ -56,7 +56,7 @@ serviceMonitor:
       additionalRelabeling: []                        # List of metric relabeling actions to run
     - name: dome-marketplace-dev2                     # Human readable URL that will appear in Prometheus / AlertManager
       url: http://dome-marketplace-dev2.org           # The URL that blackbox will scrape
-      hostname: yumket.eu                             # HTTP probes can accept an additional `hostname` parameter that will set `Host` header and TLS SNI
+      hostname: dome-marketplace-dev2.org             # HTTP probes can accept an additional `hostname` parameter that will set `Host` header and TLS SNI
       labels: {}                                      # Map of labels for ServiceMonitor. Overrides value set in `defaults`
       interval: 60s                                   # Scraping interval. Overrides value set in `defaults`
       scrapeTimeout: 60s                              # Scrape timeout. Overrides value set in `defaults`
@@ -65,7 +65,7 @@ serviceMonitor:
       additionalRelabeling: []                        # List of metric relabeling actions to run
     - name: dome-marketplace-dev2                     # Human readable URL that will appear in Prometheus / AlertManager
       url: http://dome-marketplace-sbx.org            # The URL that blackbox will scrape
-      hostname: yumket.eu                             # HTTP probes can accept an additional `hostname` parameter that will set `Host` header and TLS SNI
+      hostname: dome-marketplace-sbx.org              # HTTP probes can accept an additional `hostname` parameter that will set `Host` header and TLS SNI
       labels: {}                                      # Map of labels for ServiceMonitor. Overrides value set in `defaults`
       interval: 60s                                   # Scraping interval. Overrides value set in `defaults`
       scrapeTimeout: 60s                              # Scrape timeout. Overrides value set in `defaults`
