@@ -10,21 +10,22 @@ data:
       DIRport = 9101
       QueryFile = "/opt/bacula/etc/query.sql"
       Maximum Concurrent Jobs = 10
-      Password = "director-password" # Replace with your director password
+      Password = "director-password"
       Messages = Standard
+      WorkingDirectory = "/opt/bacula/working"  # Add this directive
     }
     Catalog {
       Name = MyCatalog
       dbdriver = "postgresql"
-      dbaddress = "bacula-db"         # Updated DB_HOST
-      dbport = 5432                  # Default PostgreSQL port
-      dbname = "bacula"              # Database name
-      dbuser = "bacula"              # Database username
-      dbpassword = "bacula-password" # Updated DB_PASSWORD
+      dbaddress = "bacula-db"
+      dbport = 5432
+      dbname = "bacula"
+      dbuser = "bacula"
+      dbpassword = "bacula-password"
     }
   bconsole.conf: |
     Director {
       Name = bacula-dir
       DIRport = 9101
-      Password = "console-password" # Replace with your console password
+      Password = "console-password"
     }
