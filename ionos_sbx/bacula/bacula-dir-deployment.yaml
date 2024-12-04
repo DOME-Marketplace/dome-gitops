@@ -35,9 +35,22 @@ spec:
             - name: DB_PASSWORD
               value: bacula
           volumeMounts:
-            - name: bacula-dir-volume
-              mountPath: /opt/bacula/etc
+            - name: bacula-config
+              mountPath: /opt/bacula/etc/bacula-dir.conf
+              subPath: bacula-dir.conf
+            - name: bacula-config
+              mountPath: /opt/bacula/etc/bconsole.conf
+              subPath: bconsole.conf
+            - name: bacula-dir-storage
+              mountPath: /opt/bacula/log
+            - name: bacula-dir-storage
+              mountPath: /opt/bacula/working
+            - name: bacula-dir-storage
+              mountPath: /opt/bacula/storage
       volumes:
-        - name: bacula-dir-volume
+        - name: bacula-config
+          configMap:
+            name: bacula-dir-config
+        - name: bacula-dir-storage
           persistentVolumeClaim:
             claimName: bacula-dir-pvc
