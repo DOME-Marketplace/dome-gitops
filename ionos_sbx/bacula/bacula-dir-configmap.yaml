@@ -12,7 +12,8 @@ data:
       Maximum Concurrent Jobs = 10
       Password = "director-password"
       Messages = Standard
-      WorkingDirectory = "/opt/bacula/working"  # Add this directive
+      WorkingDirectory = "/opt/bacula/working"
+      PidDirectory = "/opt/bacula/working"
     }
     Catalog {
       Name = MyCatalog
