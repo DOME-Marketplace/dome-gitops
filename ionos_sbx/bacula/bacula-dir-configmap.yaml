@@ -193,9 +193,6 @@ data:
       CommandACL = status, .status
     }
 
-    @/opt/bacula/etc/bacula-dir-cloud.conf
-    @/opt/bacula/etc/bacula-dir-cloud-aws.conf
-
   bconsole.conf: |
     Director {
       Name = bacula-dir
