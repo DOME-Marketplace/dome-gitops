@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bacula-dir-config
+  namespace: bacula
+data:
+  bacula-dir.conf: |
+    Director {
+      Name = bacula-dir
+      DIRport = 9101
+      QueryFile = "/opt/bacula/etc/query.sql"
+      Maximum Concurrent Jobs = 10
+      Password = "director-password"
+      Messages = Standard
+      WorkingDirectory = "/opt/bacula/working"
+      PidDirectory = "/opt/bacula/working"
+    }
+    Catalog {
+      Name = MyCatalog
+      dbdriver = "postgresql"
+      dbaddress = "bacula-db"
+      dbport = 5432
+      dbname = "bacula"
+      dbuser = "bacula"
+      dbpassword = "bacula-password"
+    }
+  bconsole.conf: |
+    Director {
+      Name = bacula-dir
+      DIRport = 9101
+      Password = "console-password"
+    }
