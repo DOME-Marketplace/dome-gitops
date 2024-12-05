@@ -4,30 +4,30 @@ metadata:
   name: billing-engine-deployment
   namespace: billing
 spec:
-  replicas: 1 
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/instance: billing-engine
       app.kubernetes.io/name: billing-engine
-  template: 
+  template:
     metadata:
       labels:
         app.kubernetes.io/instance: billing-engine
         app.kubernetes.io/name: billing-engine
     spec:
       containers:
-      - name: billing-engine-container
-        image: production.eng.it:8433/dome/billing-engine:0.0.3
-        ports:
-        - containerPort: 8080
-          hostPort: 8080
-          protocol: TCP
-        resources: 
-          limits:
-            memory: 1.5Gi
-            cpu: "1" 
+        - name: billing-engine-container
+          image: production.eng.it:8433/dome/billing-engine:0.0.3
+          ports:
+            - containerPort: 8080
+              hostPort: 8080
+              protocol: TCP
+          resources:
+            limits:
+              memory: 1.5Gi
+              cpu: "1"
       env:
-      - name: TMF_ENDPOINT
-        value: https://dome-dev.eng.it
-      - name: LOG_LEVEL
-        value: DEBUG
+        - name: TMF_ENDPOINT
+          value: https://dome-dev.eng.it
+        - name: LOG_LEVEL
+          value: DEBUG
