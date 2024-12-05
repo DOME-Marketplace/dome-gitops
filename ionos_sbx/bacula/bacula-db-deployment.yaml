@@ -31,9 +31,15 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
+              # Ensure the data directory exists and has the right permissions
+              mkdir -p /mnt/data/postgres/data;
+              chmod 700 /mnt/data/postgres/data;
+              chown -R 999:999 /mnt/data/postgres/data;
+              # Initialize the database if empty
               if [ ! "$(ls -A /mnt/data/postgres/data)" ]; then
                 initdb -D /mnt/data/postgres/data;
               fi;
+              # Start PostgreSQL
               postgres -D /mnt/data/postgres/data;
           env:
             - name: POSTGRES_PASSWORD
