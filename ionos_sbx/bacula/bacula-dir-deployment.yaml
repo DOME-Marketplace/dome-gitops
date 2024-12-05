@@ -15,6 +15,20 @@ spec:
         app.kubernetes.io/instance: bacula-dir
         app.kubernetes.io/name: bacula-dir
     spec:
+      initContainers:
+        - name: set-permissions
+          image: busybox
+          command: ["sh", "-c", "chown -R bacula:bacula /opt/bacula/working /opt/bacula/log /opt/bacula/storage"]
+          volumeMounts:
+            - name: bacula-dir-storage
+              mountPath: /opt/bacula/working
+              subPath: working
+            - name: bacula-dir-storage
+              mountPath: /opt/bacula/log
+              subPath: log
+            - name: bacula-dir-storage
+              mountPath: /opt/bacula/storage
+              subPath: storage
       containers:
         - name: bacula-dir
           image: fametec/bacula-director:11.0.5
@@ -43,10 +57,13 @@ spec:
               subPath: bconsole.conf
             - name: bacula-dir-storage
               mountPath: /opt/bacula/log
+              subPath: log
             - name: bacula-dir-storage
               mountPath: /opt/bacula/working
+              subPath: working
             - name: bacula-dir-storage
               mountPath: /opt/bacula/storage
+              subPath: storage
       volumes:
         - name: bacula-config
           configMap:
