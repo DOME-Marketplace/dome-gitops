@@ -36,14 +36,14 @@ spec:
             - name: POSTGRES_DB
               value: "bacula"
             - name: PGDATA
-              value: /var/lib/postgresql/data/pgdata
+              value: /mnt/data/postgres
           ports:
             - containerPort: 5432
               name: postgres
               protocol: TCP
           volumeMounts:
             - name: postgres-data
-              mountPath: /var/lib/postgresql/data/pgdata
+              mountPath: /mnt/data/postgres
           livenessProbe:
             exec:
               command:
