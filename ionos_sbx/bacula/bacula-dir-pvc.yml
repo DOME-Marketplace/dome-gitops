@@ -6,6 +6,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  storageClassName: ionos-enterprise-hdd
   resources:
     requests:
       storage: 5Gi
