@@ -21,8 +21,9 @@ spec:
         app.kubernetes.io/name: bacula-db
     spec:
       securityContext:
-        runAsUser: 0
-        runAsGroup: 0
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
       containers:
         - name: bacula-db
           image: fametec/bacula-catalog:11.0.5
