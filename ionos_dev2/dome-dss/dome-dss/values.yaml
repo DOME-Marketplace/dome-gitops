@@ -24,8 +24,8 @@ dome-dss:
         name: dome-dss-vault-unseal-secret
         # -- key to retrieve the token from
         key: root
-      
+
   authServer:
     internalDomain: "http://dome-issuer-keycloak:8080/issuer-keycloak"
     externalDomain: "https://issuer.dome-marketplace-dev2.org/issuer-keycloak"
-    realm: CredentialIssuer
+    realm: issuer-dome
