@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: bacula-dir-config
+  name: bacula-config
   namespace: bacula
 data:
   bacula-dir.conf: |
     #
-    # Default Bacula Director Configuration file
+    # Bacula Director Configuration
     #
     Director {
       Name = bacula-dir
@@ -15,111 +15,8 @@ data:
       WorkingDirectory = "/opt/bacula/working"
       PidDirectory = "/opt/bacula/working"
       Maximum Concurrent Jobs = 300
-      Password = "bacula" # Console password
+      Password = "XDnaVZYU9F4QhqUGMPxiOXsJaji23mNG3FaAM9Z2q1c/" # Console password
       Messages = Daemon
-    }
-
-    Storage {
-      Name = FileChgr1
-      Address = bacula-sd                # Hostname or IP of the Storage Daemon
-      SDPort = 9103                      # Port of the Storage Daemon
-      Device = FileChgr1                 # Matches the device in bacula-sd.conf
-      MediaType = File1                  # Matches the Media Type
-      Password = "bacula" # Match Autochanger
-    }
-
-    Storage {
-      Name = FileChgr2
-      Address = bacula-sd                # Hostname or IP of the Storage Daemon
-      SDPort = 9103                      # Port of the Storage Daemon
-      Device = FileChgr2                 # Matches the device in bacula-sd.conf
-      MediaType = File2                  # Matches the Media Type
-      Password = "bacula" # Match Autochanger
-    }
-
-    JobDefs {
-      Name = "DefaultJob"
-      Type = Backup
-      Level = Incremental
-      Client = bacula-fd
-      FileSet = "Full Set"
-      Schedule = "WeeklyCycle"
-      Storage = File1
-      Messages = Standard
-      Pool = File
-      SpoolAttributes = yes
-      Priority = 10
-      Write Bootstrap = "/opt/bacula/working/%c.bsr"
-    }
-
-    Job {
-      Name = "BackupClient1"
-      JobDefs = "DefaultJob"
-    }
-
-    Job {
-      Name = "BackupCatalog"
-      JobDefs = "DefaultJob"
-      Level = Full
-      FileSet="Catalog"
-      Schedule = "WeeklyCycleAfterBackup"
-      ClientRunBeforeJob = "/opt/bacula/scripts/make_catalog_backup.pl MyCatalog"
-      ClientRunAfterJob = "/opt/bacula/scripts/delete_catalog_backup"
-      Write Bootstrap = "/opt/bacula/working/%n.bsr"
-      Priority = 11
-    }
-
-    Job {
-      Name = "RestoreFiles"
-      Type = Restore
-      Client = bacula-fd
-      Storage = File1
-      FileSet="Full Set"
-      Pool = File
-      Messages = Standard
-      Where = /tmp/bacula-restores
-    }
-
-    FileSet {
-      Name = "Full Set"
-      Include {
-        Options {
-          signature = MD5
-        }
-        File = /opt/bacula/bin
-        File = /opt/bacula
-        File = /opt/bacula/etc
-      }
-      Exclude {
-        File = /opt/bacula/working
-        File = /tmp
-        File = /proc
-        File = /sys
-        File = /.journal
-        File = /.fsck
-      }
-    }
-
-    Schedule {
-      Name = "WeeklyCycle"
-      Run = Full 1st sun at 23:05
-      Run = Differential 2nd-5th sun at 23:05
-      Run = Incremental mon-sat at 23:05
-    }
-
-    Schedule {
-      Name = "WeeklyCycleAfterBackup"
-      Run = Full sun-sat at 23:10
-    }
-
-    FileSet {
-      Name = "Catalog"
-      Include {
-        Options {
-          signature = MD5
-        }
-        File = "/opt/bacula/working/bacula.sql"
-      }
     }
 
     Client {
@@ -127,93 +24,49 @@ data:
       Address = bacula-fd
       FDPort = 9102
       Catalog = MyCatalog
-      Password = "bacula"
+      Password = "eso80TrxzhXkRgaQVI6ZYrSzAZ4E9KFNp0Y+T1HHVWBi"
       File Retention = 60 days
       Job Retention = 6 months
       AutoPrune = yes
     }
 
-    Autochanger {
+    Storage {
       Name = File1
       Address = bacula-sd
       SDPort = 9103
-      Password = "bacula"
       Device = FileChgr1
-      Media Type = File1
-      Maximum Concurrent Jobs = 10
-      Autochanger = File1
+      MediaType = File1
+      Password = "TS8EQJ99iLFSK39oJy33YqkZ98v4ZapjRcA+j1N6ED1n"
     }
 
-    Autochanger {
-      Name = File2
-      Address = bacula-sd
-      SDPort = 9103
-      Password = "bacula"
-      Device = FileChgr2
-      Media Type = File2
-      Autochanger = File2
-      Maximum Concurrent Jobs = 10
+  bacula-fd.conf: |
+    #
+    # Bacula File Daemon Configuration
+    #
+    FileDaemon {
+      Name = bacula-fd
+      FDport = 9102
+      WorkingDirectory = /opt/bacula/working
+      PidDirectory = /opt/bacula/working
+      Maximum Concurrent Jobs = 20
     }
 
-    Catalog {
-      Name = MyCatalog
-      dbdriver = "postgresql"
-      dbaddress = "bacula-db"
-      dbport = 5432
-      dbname = "bacula"
-      dbuser = "bacula"
-      dbpassword = "bacula"
+    Director {
+      Name = bacula-dir
+      Password = "eso80TrxzhXkRgaQVI6ZYrSzAZ4E9KFNp0Y+T1HHVWBi"
     }
 
     Messages {
       Name = Standard
-      operator = root@localhost = mount
-      console = all, !skipped, !saved
-      stdout = all, !skipped
-      catalog = all
-    }
-
-    Messages {
-      Name = Daemon
-      console = all, !skipped, !saved
-      stdout = all, !skipped
-    }
-
-    Pool {
-      Name = Default
-      Pool Type = Backup
-      Recycle = yes
-      AutoPrune = yes
-      Volume Retention = 365 days
-      Maximum Volume Bytes = 50G
-      Maximum Volumes = 100
-    }
-
-    Pool {
-      Name = File
-      Pool Type = Backup
-      Recycle = yes
-      AutoPrune = yes
-      Volume Retention = 365 days
-      Maximum Volume Bytes = 50G
-      Maximum Volumes = 100
-      Label Format = "Vol-"
-    }
-
-    Pool {
-      Name = Scratch
-      Pool Type = Backup
-    }
-
-    Console {
-      Name = bacula-mon
-      Password = "bacula"
-      CommandACL = status, .status
+      director = bacula-dir = all
     }
 
   bconsole.conf: |
+    #
+    # Bacula Console Configuration
+    #
     Director {
       Name = bacula-dir
       DIRport = 9101
-      Password = "bacula"
+      Password = "XDnaVZYU9F4QhqUGMPxiOXsJaji23mNG3FaAM9Z2q1c/"
     }
