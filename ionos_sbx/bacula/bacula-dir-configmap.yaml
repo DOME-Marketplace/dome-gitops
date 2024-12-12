@@ -15,7 +15,7 @@ data:
       WorkingDirectory = "/opt/bacula/working"
       PidDirectory = "/opt/bacula/working"
       Maximum Concurrent Jobs = 300
-      Password = "XDnaVZYU9F4QhqUGMPxiOXsJaji23mNG3FaAM9Z2q1c/" # Console password
+      Password = "bacula" # Console password
       Messages = Daemon
     }
 
