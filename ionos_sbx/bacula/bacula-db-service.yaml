@@ -6,8 +6,8 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app.kubernetes.io/instance: bacula
-    app.kubernetes.io/name: bacula
+    app.kubernetes.io/instance: bacula-db
+    app.kubernetes.io/name: bacula-db
   ports:
     - name: http
       port: 5432
