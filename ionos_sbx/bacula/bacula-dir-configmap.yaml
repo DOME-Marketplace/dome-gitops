@@ -16,7 +16,7 @@ data:
       PidDirectory = "/opt/bacula/working"
       Maximum Concurrent Jobs = 300
       Password = "bacula" # Console password
-      Messages = Daemon
+      Messages = Standard
     }
 
     Client {
@@ -50,7 +50,7 @@ data:
     }
 
     Messages {
-      Name = Daemon
+      Name = Standard
       console = all, !skipped, !saved
       stdout = all, !skipped
     }
