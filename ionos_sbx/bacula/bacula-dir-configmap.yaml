@@ -19,6 +19,24 @@ data:
       Messages = Daemon
     }
 
+    Storage {
+      Name = FileChgr1
+      Address = bacula-sd                # Hostname or IP of the Storage Daemon
+      SDPort = 9103                      # Port of the Storage Daemon
+      Device = FileChgr1                 # Matches the device in bacula-sd.conf
+      MediaType = File1                  # Matches the Media Type
+      Password = "bacula" # Match Autochanger
+    }
+
+    Storage {
+      Name = FileChgr2
+      Address = bacula-sd                # Hostname or IP of the Storage Daemon
+      SDPort = 9103                      # Port of the Storage Daemon
+      Device = FileChgr2                 # Matches the device in bacula-sd.conf
+      MediaType = File2                  # Matches the Media Type
+      Password = "bacula" # Match Autochanger
+    }
+
     JobDefs {
       Name = "DefaultJob"
       Type = Backup
