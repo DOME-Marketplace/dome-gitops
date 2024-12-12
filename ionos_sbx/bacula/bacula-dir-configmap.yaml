@@ -14,7 +14,7 @@ data:
       QueryFile = "/opt/bacula/scripts/query.sql"
       WorkingDirectory = "/opt/bacula/working"
       PidDirectory = "/opt/bacula/working"
-      Maximum Concurrent Jobs = 50
+      Maximum Concurrent Jobs = 300
       Password = "XDnaVZYU9F4QhqUGMPxiOXsJaji23mNG3FaAM9Z2q1c/" # Console password
       Messages = Daemon
     }
