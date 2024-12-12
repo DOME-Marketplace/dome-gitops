@@ -21,9 +21,9 @@ data:
 
     Catalog {
       Name = MyCatalog
-      dbdriver = "postgresql"         # Use "mysql" if MySQL is used
+      dbdriver = "postgresql"
       dbaddress = "bacula-db"
-      dbport = 5432                  # 5432 for PostgreSQL, 3306 for MySQL
+      dbport = 5432
       dbname = "bacula"
       dbuser = "bacula"
       dbpassword = "bacula"
@@ -45,16 +45,16 @@ data:
     Job {
       Name = BackupClient1
       JobDefs = DefaultJob
-      Client = bacula-fd 
+      Client = bacula-fd
     }
 
     Job {
       Name = BackupCatalog
       JobDefs = DefaultJob
-      Client = bacula-fd 
       Level = Full
       FileSet = Catalog
       Schedule = WeeklyCycleAfterBackup
+      Client = bacula-fd
       ClientRunBeforeJob = "/opt/bacula/scripts/make_catalog_backup.pl MyCatalog"
       ClientRunAfterJob = "/opt/bacula/scripts/delete_catalog_backup"
       Write Bootstrap = "/opt/bacula/working/%n.bsr"
@@ -206,12 +206,12 @@ data:
     Device {
       Name = FileChgr1
       MediaType = File
-      ArchiveDevice = /backups          # Directory for storing backups
-      LabelMedia = yes                  # Automatically label new media
-      RandomAccess = yes                # Enables random access to files
-      AutomaticMount = yes              # Automatically mount media
-      RemovableMedia = no               # Set to 'yes' for removable drives/tapes
-      AlwaysOpen = no                   # Set to 'yes' for persistent device access
+      ArchiveDevice = /backups
+      LabelMedia = yes
+      RandomAccess = yes
+      AutomaticMount = yes
+      RemovableMedia = no
+      AlwaysOpen = no
     }
 
     Messages {
