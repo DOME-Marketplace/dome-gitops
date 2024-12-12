@@ -45,11 +45,13 @@ data:
     Job {
       Name = BackupClient1
       JobDefs = DefaultJob
+      Client = bacula-fd 
     }
 
     Job {
       Name = BackupCatalog
       JobDefs = DefaultJob
+      Client = bacula-fd 
       Level = Full
       FileSet = Catalog
       Schedule = WeeklyCycleAfterBackup
