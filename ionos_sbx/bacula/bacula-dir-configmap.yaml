@@ -19,6 +19,98 @@ data:
       Messages = Standard
     }
 
+    Catalog {
+      Name = MyCatalog
+      dbdriver = "postgresql"         # Use "mysql" if MySQL is used
+      dbaddress = "bacula-db"
+      dbport = 5432                  # 5432 for PostgreSQL, 3306 for MySQL
+      dbname = "bacula"
+      dbuser = "bacula"
+      dbpassword = "bacula"
+    }
+
+    JobDefs {
+      Name = DefaultJob
+      Type = Backup
+      Level = Incremental
+      FileSet = "Full Set"
+      Schedule = WeeklyCycle
+      Storage = File1
+      Messages = Standard
+      Pool = File
+      Priority = 10
+      Write Bootstrap = "/opt/bacula/working/%c.bsr"
+    }
+
+    Job {
+      Name = BackupClient1
+      JobDefs = DefaultJob
+    }
+
+    Job {
+      Name = BackupCatalog
+      JobDefs = DefaultJob
+      Level = Full
+      FileSet = Catalog
+      Schedule = WeeklyCycleAfterBackup
+      ClientRunBeforeJob = "/opt/bacula/scripts/make_catalog_backup.pl MyCatalog"
+      ClientRunAfterJob = "/opt/bacula/scripts/delete_catalog_backup"
+      Write Bootstrap = "/opt/bacula/working/%n.bsr"
+      Priority = 11
+    }
+
+    Job {
+      Name = RestoreFiles
+      Type = Restore
+      Client = bacula-fd
+      Storage = File1
+      FileSet = "Full Set"
+      Pool = File
+      Messages = Standard
+      Where = /tmp/bacula-restores
+    }
+
+    FileSet {
+      Name = "Full Set"
+      Include {
+        Options {
+          signature = MD5
+        }
+        File = /etc
+        File = /home
+        File = /var
+      }
+      Exclude {
+        File = /tmp
+        File = /proc
+        File = /sys
+        File = /.journal
+        File = /.fsck
+      }
+    }
+
+    FileSet {
+      Name = Catalog
+      Include {
+        Options {
+          signature = MD5
+        }
+        File = "/opt/bacula/working/bacula.sql"
+      }
+    }
+
+    Schedule {
+      Name = WeeklyCycle
+      Run = Full 1st sun at 23:05
+      Run = Differential 2nd-5th sun at 23:05
+      Run = Incremental mon-sat at 23:05
+    }
+
+    Schedule {
+      Name = WeeklyCycleAfterBackup
+      Run = Full sun-sat at 23:10
+    }
+
     Client {
       Name = bacula-fd
       Address = bacula-fd
@@ -35,24 +127,8 @@ data:
       Address = bacula-sd
       SDPort = 9103
       Device = FileChgr1
-      MediaType = File1
+      MediaType = File
       Password = "bacula"
-    }
-
-    Catalog {
-      Name = MyCatalog
-      dbdriver = "postgresql"
-      dbaddress = bacula-db
-      dbport = 5432
-      dbname = "bacula"
-      dbuser = "bacula"
-      dbpassword = "bacula"
-    }
-
-    Messages {
-      Name = Standard
-      console = all, !skipped, !saved
-      stdout = all, !skipped
     }
 
     Pool {
@@ -74,6 +150,24 @@ data:
       Maximum Volume Bytes = 50G
       Maximum Volumes = 100
       Label Format = "Vol-"
+    }
+
+    Pool {
+      Name = Scratch
+      Pool Type = Backup
+    }
+
+    Messages {
+      Name = Standard
+      console = all, !skipped, !saved
+      stdout = all, !skipped
+      catalog = all
+    }
+
+    Messages {
+      Name = Daemon
+      console = all, !skipped, !saved
+      stdout = all, !skipped
     }
 
   bacula-fd.conf: |
@@ -109,7 +203,7 @@ data:
 
     Device {
       Name = FileChgr1
-      MediaType = File1
+      MediaType = File
       ArchiveDevice = /backups          # Directory for storing backups
       LabelMedia = yes                  # Automatically label new media
       RandomAccess = yes                # Enables random access to files
