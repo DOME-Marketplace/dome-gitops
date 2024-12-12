@@ -67,7 +67,7 @@ spec:
       volumes:
         - name: bacula-config
           configMap:
-            name: bacula-dir-config
+            name: bacula-config
         - name: bacula-dir-storage
           persistentVolumeClaim:
             claimName: bacula-dir-pvc
