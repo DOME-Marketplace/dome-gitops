@@ -28,14 +28,14 @@ spec:
             - containerPort: 9102
               name: bacula-fd
               protocol: TCP
+          volumeMounts:
+            - name: bacula-config
+              mountPath: /opt/bacula/etc/bacula-fd.conf
+              subPath: bacula-fd.conf
 #          volumeMounts:
 #            - mountPath: /opt
 #              name: bacula-fd-pvc
-#      volumes:
-#        - name: bacula-fd-pvc
-#          persistentVolumeClaim:
-#            claimName: bacula-fd-pvc
-#      securityContext:
-#        runAsUser: 33
-#        runAsGroup: 33
-#        fsGroup: 33
+      volumes:
+        - name: bacula-config
+          configMap:
+            name: bacula-config
