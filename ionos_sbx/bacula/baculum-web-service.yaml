@@ -6,8 +6,8 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app.kubernetes.io/instance: bacula
-    app.kubernetes.io/name: bacula
+    app.kubernetes.io/instance: baculum-web
+    app.kubernetes.io/name: baculum-web
   ports:
     - name: http
       port: 9095
