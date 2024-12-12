@@ -22,7 +22,7 @@ data:
     Catalog {
       Name = MyCatalog
       dbdriver = "postgresql"         # Use "mysql" if MySQL is used
-      dbaddress = "bacula-db"
+      dbaddress = "10.233.60.123"
       dbport = 5432                  # 5432 for PostgreSQL, 3306 for MySQL
       dbname = "bacula"
       dbuser = "bacula"
