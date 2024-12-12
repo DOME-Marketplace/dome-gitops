@@ -15,7 +15,7 @@ data:
       WorkingDirectory = "/opt/bacula/working"
       PidDirectory = "/opt/bacula/working"
       Maximum Concurrent Jobs = 300
-      Password = "XDnaVZYU9F4QhqUGMPxiOXsJaji23mNG3FaAM9Z2q1c/" # Console password
+      Password = "bacula" # Console password
       Messages = Daemon
     }
 
@@ -24,7 +24,7 @@ data:
       Address = bacula-fd
       FDPort = 9102
       Catalog = MyCatalog
-      Password = "eso80TrxzhXkRgaQVI6ZYrSzAZ4E9KFNp0Y+T1HHVWBi"
+      Password = "bacula"
       File Retention = 60 days
       Job Retention = 6 months
       AutoPrune = yes
@@ -36,7 +36,7 @@ data:
       SDPort = 9103
       Device = FileChgr1
       MediaType = File1
-      Password = "TS8EQJ99iLFSK39oJy33YqkZ98v4ZapjRcA+j1N6ED1n"
+      Password = "bacula"
     }
 
   bacula-fd.conf: |
@@ -53,7 +53,7 @@ data:
 
     Director {
       Name = bacula-dir
-      Password = "eso80TrxzhXkRgaQVI6ZYrSzAZ4E9KFNp0Y+T1HHVWBi"
+      Password = "bacula"
     }
 
     Messages {
@@ -68,5 +68,5 @@ data:
     Director {
       Name = bacula-dir
       DIRport = 9101
-      Password = "XDnaVZYU9F4QhqUGMPxiOXsJaji23mNG3FaAM9Z2q1c/"
+      Password = "bacula"
     }
