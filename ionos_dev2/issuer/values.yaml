@@ -154,7 +154,7 @@ issuer:
     image:
       repository: in2workspace/in2-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.2.2
+      tag: v1.2.3
       pullPolicy: Always
     ingress:
       enabled: true
@@ -211,6 +211,7 @@ issuer:
         # internalPort is only used if externalService is false
         internalPort: 30004
         path: /
+      profile: dev
       procedures: /api/v1/procedures
       saveCredential: /api/v1/credentials?type=LEARCredentialEmployee
       credentialOfferUrl: /api/v1/credential-offer
