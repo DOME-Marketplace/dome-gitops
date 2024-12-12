@@ -57,6 +57,13 @@ spec:
           volumeMounts:
             - name: postgres-data
               mountPath: /mnt/data/postgres
+            # Mount the Bacula config (excluding postgresql.conf)
+            - name: bacula-config
+              mountPath: /opt/bacula/etc/bacula-dir.conf
+              subPath: bacula-dir.conf  # Mount Bacula Director's config
+            - name: bacula-config
+              mountPath: /opt/bacula/etc/bacula-fd.conf
+              subPath: bacula-fd.conf  # Mount Bacula File Daemon's config
           livenessProbe:
             exec:
               command:
@@ -73,3 +80,6 @@ spec:
         - name: postgres-data
           persistentVolumeClaim:
             claimName: bacula-db-pvc
+        - name: bacula-config
+          configMap:
+            name: bacula-config  # The ConfigMap that contains Bacula configurations
