@@ -109,7 +109,7 @@ data:
       Address = bacula-fd
       FDPort = 9102
       Catalog = MyCatalog
-      Password = "eso80TrxzhXkRgaQVI6ZYrSzAZ4E9KFNp0Y+T1HHVWBi"
+      Password = "bacula"
       File Retention = 60 days
       Job Retention = 6 months
       AutoPrune = yes
@@ -119,7 +119,7 @@ data:
       Name = File1
       Address = bacula-sd
       SDPort = 9103
-      Password = "TS8EQJ99iLFSK39oJy33YqkZ98v4ZapjRcA+j1N6ED1n"
+      Password = "bacula"
       Device = FileChgr1
       Media Type = File1
       Maximum Concurrent Jobs = 10
@@ -130,7 +130,7 @@ data:
       Name = File2
       Address = bacula-sd
       SDPort = 9103
-      Password = "TS8EQJ99iLFSK39oJy33YqkZ98v4ZapjRcA+j1N6ED1n"
+      Password = "bacula"
       Device = FileChgr2
       Media Type = File2
       Autochanger = File2
@@ -189,7 +189,7 @@ data:
 
     Console {
       Name = bacula-mon
-      Password = "r0V/Hx0TUwQ4TlnX1lyUHf8J8v9XvRBqnHTRW9+CB614"
+      Password = "bacula"
       CommandACL = status, .status
     }
 
@@ -197,5 +197,5 @@ data:
     Director {
       Name = bacula-dir
       DIRport = 9101
-      Password = "console-password"
+      Password = "bacula"
     }
