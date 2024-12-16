@@ -64,6 +64,8 @@ spec:
             - name: bacula-dir-storage
               mountPath: /opt/bacula/storage
               subPath: storage
+            - name: bacula-nfs-storage   # Mount the NFS share here
+              mountPath: /var/nfs        # Mount path inside the container
       volumes:
         - name: bacula-config
           configMap:
@@ -71,3 +73,7 @@ spec:
         - name: bacula-dir-storage
           persistentVolumeClaim:
             claimName: bacula-dir-pvc
+        - name: bacula-nfs-storage    # NFS volume definition
+          nfs:
+            server: 82.165.253.143   # NFS server IP address
+            path: "/mnt/dome/sbx/knowledgebase"  # NFS share path

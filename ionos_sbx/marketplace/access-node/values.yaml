@@ -8,7 +8,7 @@ access-node:
     image:
       repository: in2workspace/in2-desmos-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.0.2-snapshot
+      tag: v1.0.2
       pullPolicy: Always
     readinessProbe:
       failureThreshold: 10
@@ -48,8 +48,6 @@ access-node:
         externalDomain: http://scorpio:9090
       ## configuration of ngsi-ld entities to listen for
       ngsiSubscription:
-        # -- local address of the blockchain-connectors notification endpoint for ngsi-ld events
-        notificationEndpoint: http://desmos:80/api/v1/notifications/broker
         # -- a list of entity-types the connector is interested in
         entityTypes: catalog,product-offering,category,individual,organization,product,service-specification,product-offering-price,resource-specification,product-specification
       ## configuration to connect to the dlt-adapter
@@ -62,8 +60,6 @@ access-node:
         externalDomain: http://dlt-adapter:8080
         ## configuration of subscriptions at the blockchain
       txSubscription:
-        # -- local address of the blockchain-connectors notification endpoint for dlt events
-        notificationEndpoint: http://desmos:80/api/v1/notifications/dlt
         # -- a list of entity-types the connector is interested in
         entityTypes: catalog,product-offering,category,individual,organization,product,service-specification,product-offering-price,resource-specification,product-specification
       # -- operator external domain
