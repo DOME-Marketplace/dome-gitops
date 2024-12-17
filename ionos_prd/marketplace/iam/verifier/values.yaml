@@ -24,7 +24,7 @@ verifier-api:
     externalDomain: "https://verifier.dome-marketplace-prd.org"
     accessToken:
       expirationUnitTime: MINUTES
-      expirationTime: 30
+      expirationTime: 60
     idToken:
       expirationUnitTime: MINUTES
       expirationTime: 5
