@@ -28,16 +28,16 @@ spec:
             - containerPort: 9095
               name: baculum-web
               protocol: TCP
-#          volumeMounts:
-#            - mountPath: /opt
-#              name: baculum-web-pvc
-#            - mountPath: /etc
-#              name: baculum-web-pvc
-#      volumes:
-#        - name: baculum-web-pvc
-#          persistentVolumeClaim:
-#            claimName: baculum-web-pvc
-#      securityContext:
-#        runAsUser: 33
-#        runAsGroup: 33
-#        fsGroup: 33
+          volumeMounts:
+            - mountPath: /opt/bacula
+              name: baculum-web-pvc
+              subPath: opt/bacula  # Mount only the /opt/bacula subdirectory of the PVC
+            - mountPath: /etc/bacula
+              name: baculum-web-pvc
+              subPath: etc/bacula  # Mount only the /etc/bacula subdirectory of the PVC
+      volumes:
+        - name: baculum-web-pvc
+          persistentVolumeClaim:
+            claimName: baculum-web-pvc
+
+
