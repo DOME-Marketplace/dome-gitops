@@ -5,8 +5,8 @@ metadata:
   namespace: bacula
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
-    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"  # Redirect HTTP to HTTPS
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"  # Backend is HTTP
 spec:
   ingressClassName: nginx
   rules:
