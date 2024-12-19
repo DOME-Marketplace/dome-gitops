@@ -1,4 +1,10 @@
 zammad:
+
+  image:
+    repository: kingmanfri/dome_ticketing
+    tag: "1.0"
+    pullPolicy: Always
+
   ingress:
     enabled: true
     className: nginx
@@ -13,3 +19,15 @@ zammad:
       - secretName: ticketing-tls-secret
         hosts:
           - ticketing.dome-marketplace-sbx.org
+
+    zammadConfig:
+
+      railsserver:
+
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+          readOnlyRootFilesystem: false
+          privileged: false
