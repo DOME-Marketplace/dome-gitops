@@ -35,9 +35,12 @@ spec:
             - mountPath: /etc/bacula
               name: baculum-web-pvc
               subPath: etc/bacula  # Mount only the /etc/bacula subdirectory of the PVC
+            - mountPath: /etc/baculum
+              name: bacula-config-volume  # Mount the ConfigMap into /etc/baculum
       volumes:
         - name: baculum-web-pvc
           persistentVolumeClaim:
             claimName: baculum-web-pvc
-
-
+        - name: bacula-config-volume
+          configMap:
+            name: bacula-config  # Reference the ConfigMap named 'bacula-config'
