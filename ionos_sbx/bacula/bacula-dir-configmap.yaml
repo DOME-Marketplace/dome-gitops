@@ -228,3 +228,23 @@ data:
       DIRport = 9101
       Password = "bacula"
     }
+
+  baculum.conf: |
+    #
+    # Baculum Web and API Configuration
+    #
+    [General]
+    Listen = 0.0.0.0
+    Port = 9095
+    LogDir = /var/log/baculum
+    ConfigDir = /etc/baculum
+
+    [Web]
+    DocumentRoot = /usr/share/baculum/www
+    AdminUser = admin
+    AdminPassword = admin
+
+    [API]
+    ApiRoot = /usr/share/baculum/api
+    ApiUser = baculum-api
+    ApiPassword = secureapipassword
