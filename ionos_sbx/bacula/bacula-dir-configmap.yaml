@@ -246,5 +246,5 @@ data:
 
     [API]
     ApiRoot = /usr/share/baculum/api
-    ApiUser = baculum-api
-    ApiPassword = secureapipassword
+    ApiUser = admin
+    ApiPassword = admin
