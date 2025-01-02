@@ -43,4 +43,4 @@ spec:
         - issuer.dome-marketplace.org
         - issuer.yumket.eu
         - issuer.dome-marketplace.eu
-      secretName: issuer-secret-tls-2
+      secretName: issuer-secret-tls
