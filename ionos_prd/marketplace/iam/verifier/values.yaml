@@ -43,6 +43,6 @@ verifier-api:
         name: private-key-secret
         key: private-key
     verifierUiLoginUris:
-      onboardingUri: "https://knowledgebase.dome-marketplace.org/shelves/company-onboarding-process"
-      supportUri: "https://ticketing.dome-marketplace.org"
-      walletUri: "https://wallet.dome-marketplace.org"
+      onboardingUri: "https://knowledgebase.dome-marketplace.eu/shelves/company-onboarding-process"
+      supportUri: "https://ticketing.dome-marketplace.eu"
+      walletUri: "https://wallet.dome-marketplace.eu"
