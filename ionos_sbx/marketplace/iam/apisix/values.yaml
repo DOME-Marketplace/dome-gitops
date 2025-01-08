@@ -9,7 +9,14 @@ apisix:
   # -- configuration in regard to the apisix etcd
   etcd:
     # -- should it be enabled
-    enabled: true   
+    enabled: true  
+    # -- increase number of instances to ensure quorum in restart situations 
+    replicaCount: 5
+    # -- configure pod disruption budget to survive node restarts
+    pdb:
+      create: true
+      # -- if (n-1)/2 members are failing, no quorum can be reaches -> we need 1 more than that available 
+      minAvailable: 3
   # -- configuration in regard to the apisix dashboard
   dashboard:
     # -- configure consumers and there keys
