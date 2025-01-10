@@ -67,8 +67,8 @@ issuer:
         existingSecret:
           enabled: true
           name: issuer-secret
-          userKey: mail-username
-          passwordKey: mail-password
+          mailUsernameKey: username
+          mailPasswordKey: password
         properties:
           mail:
             smtp:
@@ -121,7 +121,7 @@ issuer:
             enabled: true
             name: issuer-secret
             clientSecretKey: authServerClientSecret
-            clientPasswordKey: authServerClientPassword
+            clientPasswordKey: issuer-api-user-password
         paths:
           tokenPath: /realms/issuer-dome/protocol/openid-connect/token
       ui:
