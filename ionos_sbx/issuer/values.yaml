@@ -67,8 +67,8 @@ issuer:
         existingSecret:
           enabled: true
           name: issuer-secret
-          mailUsernameKey: username
-          mailPasswordKey: password
+          userKey: username
+          passwordKey: password
         properties:
           mail:
             smtp:
