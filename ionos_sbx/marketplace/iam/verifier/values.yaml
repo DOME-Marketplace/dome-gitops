@@ -1,7 +1,7 @@
 verifier-api:
   image:
     repository: in2workspace/in2-verifier-api
-    tag: v1.0.16
+    tag: v1.1.0-snapshot
     pullPolicy: Always
 
   ingress:
@@ -24,7 +24,7 @@ verifier-api:
     externalDomain: "https://verifier.dome-marketplace-sbx.org"
     accessToken:
       expirationUnitTime: MINUTES
-      expirationTime: 60
+      expirationTime: 10
     idToken:
       expirationUnitTime: MINUTES
       expirationTime: 5
