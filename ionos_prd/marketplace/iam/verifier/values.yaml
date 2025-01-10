@@ -10,18 +10,18 @@ verifier-api:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
     hosts:
-      - host: verifier.dome-marketplace-prd.org
+      - host: verifier.dome-marketplace.eu
         paths:
           - path: /
             pathType: Prefix
     tls:
       - hosts:
-          - verifier.dome-marketplace-prd.org
+          - verifier.dome-marketplace.eu
         secretName: verifier-tls-sec
 
   app:
     profile: prod
-    externalDomain: "https://verifier.dome-marketplace-prd.org"
+    externalDomain: "https://verifier.dome-marketplace.eu"
     accessToken:
       expirationUnitTime: MINUTES
       expirationTime: 60
@@ -43,6 +43,6 @@ verifier-api:
         name: private-key-secret
         key: private-key
     verifierUiLoginUris:
-      onboardingUri: "https://knowledgebase.dome-marketplace.org/shelves/company-onboarding-process"
-      supportUri: "https://ticketing.dome-marketplace.org"
-      walletUri: "https://wallet.dome-marketplace.org"
+      onboardingUri: "https://knowledgebase.dome-marketplace.eu/shelves/company-onboarding-process"
+      supportUri: "https://ticketing.dome-marketplace.eu"
+      walletUri: "https://wallet.dome-marketplace.eu"
