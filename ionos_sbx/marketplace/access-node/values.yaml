@@ -12,9 +12,10 @@ access-node:
       pullPolicy: Always
     readinessProbe:
       failureThreshold: 10
-      periodSeconds: 10
+      periodSeconds: 20
     livenessProbe:
       failureThreshold: 10
+      periodSeconds: 20
     ingress:
       enabled: true
       className: nginx
