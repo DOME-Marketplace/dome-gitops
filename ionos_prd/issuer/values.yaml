@@ -13,13 +13,13 @@ issuer:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
       hosts:
-        - host: issuer.dome-marketplace.eu
+        - host: issuer.dome-marketplace-prd.org
           paths:
             - path: /issuer-api
               pathType: Prefix
       tls:
         - hosts:
-            - issuer.dome-marketplace.eu
+            - issuer.dome-marketplace-prd.org
           secretName: issuer-secret-tls
     ingressWellKnown:
       enabled: true
@@ -28,7 +28,7 @@ issuer:
         cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
         nginx.ingress.kubernetes.io/rewrite-target: /issuer-keycloak/realms/CredentialIssuer/verifiable-credential/did:key:z6MkqmaCT2JqdUtLeKah7tEVfNXtDXtQyj4yxEgV11Y5CqUa/.well-known/openid-configuration
       hosts:
-        - host: issuer.dome-marketplace.eu
+        - host: issuer.dome-marketplace-prd.org
           paths:
             - path: /issuer-api/.well-known/openid-configuration
               pathType: Prefix
@@ -36,7 +36,7 @@ issuer:
               servicePort: 8080
       tls:
         - hosts:
-            - issuer.dome-marketplace.eu
+            - issuer.dome-marketplace-prd.org
           secretName: issuer-secret-tls
       ingressToken:
         enabled: true
@@ -45,7 +45,7 @@ issuer:
           cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
           nginx.ingress.kubernetes.io/rewrite-target: /issuer-keycloak/realms/CredentialIssuer/verifiable-credential/did:key:z6MkqmaCT2JqdUtLeKah7tEVfNXtDXtQyj4yxEgV11Y5CqUa/token
         hosts:
-          - host: issuer.dome-marketplace.eu
+          - host: issuer.dome-marketplace-prd.org
             paths:
               - path: /issuer-api/token
                 pathType: Prefix
@@ -53,7 +53,7 @@ issuer:
                 servicePort: 8080
         tls:
           - hosts:
-              - issuer.dome-marketplace.eu
+              - issuer.dome-marketplace-prd.org
             secretName: issuer-secret-tls
     app:
       profile: default
@@ -91,7 +91,7 @@ issuer:
           externalService: true
           scheme: https
           # change by the external url or set to localhost if deployed locally
-          host: issuer.dome-marketplace.eu
+          host: issuer.dome-marketplace-prd.org
           # internalPort is only used if externalService is false
           internalPort: 30001
           path: /issuer-api
@@ -106,7 +106,7 @@ issuer:
           externalService: true
           scheme: https
           # change by the external url or set to localhost if deployed locally
-          host: issuer.dome-marketplace.eu
+          host: issuer.dome-marketplace-prd.org
           # internalPort is only used if externalService is false
           internalPort: 30002
           path: /issuer-keycloak
@@ -128,13 +128,13 @@ issuer:
           externalService: true
           scheme: https
           # change by the external url or set to localhost if deployed locally
-          host: issuer.dome-marketplace.eu
+          host: issuer.dome-marketplace-prd.org
           # internalPort is only used if externalService is false
           internalPort: 30000
           path: /
         internalDomain: http://dome-wallet-ui:8080
       wallet:
-        url: https://wallet.dome-marketplace.eu/
+        url: https://wallet.dome-marketplace-prd.org/
       trustFramework:
         url: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080"
     db:
@@ -162,13 +162,13 @@ issuer:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
       hosts:
-        - host: issuer.dome-marketplace.eu
+        - host: issuer.dome-marketplace-prd.org
           paths:
             - path: /
               pathType: Prefix
       tls:
         - hosts:
-            - issuer.dome-marketplace.eu
+            - issuer.dome-marketplace-prd.org
           secretName: issuer-secret-tls
     app:
       internalServerPort: 8080
@@ -177,7 +177,7 @@ issuer:
         externalService: true
         scheme: https
         # change by the external url or set to localhost if deployed locally
-        host: issuer.dome-marketplace.eu
+        host: issuer.dome-marketplace-prd.org
         # internalPort is only used if externalService is false
         internalPort: 30002
         path: /issuer-keycloak/realms/CredentialIssuer
@@ -189,7 +189,7 @@ issuer:
         externalService: true
         scheme: https
         # change by the external url or set to localhost if deployed locally
-        host: issuer.dome-marketplace.eu
+        host: issuer.dome-marketplace-prd.org
         # internalPort is only used if externalService is false
         internalPort: 30001
         path: /issuer-api
@@ -198,7 +198,7 @@ issuer:
         externalService: true
         scheme: https
         # change by the external url or set to localhost if deployed locally
-        host: wallet.dome-marketplace.eu
+        host: wallet.dome-marketplace-prd.org
         # internalPort is only used if externalService is false
         internalPort: 30003
         path: /
@@ -207,7 +207,7 @@ issuer:
         externalService: true
         scheme: https
         # change by the external url or set to localhost if deployed locally
-        host: knowledgebase.dome-marketplace.eu
+        host: knowledgebase.dome-marketplace-prd.org
         # internalPort is only used if externalService is false
         internalPort: 30004
         path: /
@@ -234,13 +234,13 @@ issuer:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
       hosts:
-        - host: issuer.dome-marketplace.eu
+        - host: issuer.dome-marketplace-prd.org
           paths:
             - path: /issuer-keycloak
               pathType: Prefix
       tls:
         - hosts:
-            - issuer.dome-marketplace.eu
+            - issuer.dome-marketplace-prd.org
           secretName: issuer-secret-tls
     # Keycloak Configuration
     keycloak:
@@ -260,7 +260,7 @@ issuer:
           externalService: true
           scheme: https
           # change by the external url or set to localhost if deployed locally
-          host: issuer.dome-marketplace.eu
+          host: issuer.dome-marketplace-prd.org
           # internalPort is only used if externalService is false
           internalPort: 30002
           path: /issuer-keycloak
@@ -269,7 +269,7 @@ issuer:
           externalService: true
           scheme: https
           # change by the external url or set to localhost if deployed locally
-          host: issuer.dome-marketplace.eu
+          host: issuer.dome-marketplace-prd.org
           # internalPort is only used if externalService is false
           internalPort: 30002
           path: /issuer-keycloak
@@ -301,7 +301,7 @@ issuer:
         externalService: true
         scheme: https
         # change by the external url or set to localhost if deployed locally
-        host: issuer.dome-marketplace.eu
+        host: issuer.dome-marketplace-prd.org
         # internalPort is only used if externalService is false
         internalPort: 30001
         path: /issuer-api
