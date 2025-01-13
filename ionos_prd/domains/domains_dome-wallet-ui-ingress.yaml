@@ -28,7 +28,7 @@ spec:
                 name: dome-wallet-ui
                 port:
                   number: 8080
-    - host: wallet.dome-marketplace-prd.org
+    - host: wallet.dome-marketplace.eu
       http:
         paths:
           - path: /
@@ -42,5 +42,5 @@ spec:
     - hosts:
         - wallet.dome-marketplace.org
         - wallet.yumket.eu
-        - wallet.dome-marketplace-prd.org
+        - wallet.dome-marketplace.eu
       secretName: wallet-secret-tls-2

@@ -28,7 +28,7 @@ spec:
                 name: dome-issuer-keycloak
                 port:
                   number: 8080
-    - host: issuer.dome-marketplace-prd.org
+    - host: issuer.dome-marketplace.eu
       http:
         paths:
           - path: /issuer-api/.well-known/openid-configuration
@@ -42,5 +42,5 @@ spec:
     - hosts:
         - issuer.dome-marketplace.org
         - issuer.yumket.eu
-        - issuer.dome-marketplace-prd.org
+        - issuer.dome-marketplace.eu
       secretName: issuer-secret-tls-2
