@@ -137,7 +137,7 @@ business-api-ecosystem:
     
     port: 8006
 
-    loglevel: debug
+    loglevel: warn
 
     payment:
       method: None
