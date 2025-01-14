@@ -2,7 +2,7 @@ apiVersion: v2
 name: dome-dss
 description: A Helm chart for Kubernetes
 type: application
-version: 0.0.10
+version: 0.0.11
 appVersion: "v0.6.0"
 dependencies:
   - name: dome-dss

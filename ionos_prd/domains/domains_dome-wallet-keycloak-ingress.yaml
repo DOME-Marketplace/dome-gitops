@@ -28,7 +28,7 @@ spec:
                 name: dome-wallet-keycloak
                 port:
                   number: 8080
-    - host: wallet.dome-marketplace.eu
+    - host: wallet.dome-marketplace-prd.org
       http:
         paths:
           - path: /keycloak
@@ -42,5 +42,5 @@ spec:
     - hosts:
         - wallet.dome-marketplace.org
         - wallet.yumket.eu
-        - wallet.dome-marketplace.eu
+        - wallet.dome-marketplace-prd.org
       secretName: wallet-secret-tls-2
