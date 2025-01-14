@@ -80,7 +80,7 @@ spec:
             - name: MAIL_FROM_NAME
               value: "BookStack"
             - name: MAIL_FROM
-              value: "dome_knowledgebase@no-reply.com"
+              value: "customer-service@dome-marketplace.eu"
             - name: MAIL_HOST
               value: "smtp.ionos.de"
             - name: MAIL_PORT
