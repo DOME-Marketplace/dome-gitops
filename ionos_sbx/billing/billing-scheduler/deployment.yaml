@@ -28,7 +28,8 @@ spec:
               cpu: "1"
           env:
             - name: TMF_ENDPOINT
-              value: http://tm-forum-api-envoy.marketplace.svc.cluster.local:8080
+              value: https://dome-dev.eng.it
+            #  value: http://tm-forum-api-envoy.marketplace.svc.cluster.local:8080
             - name: BILLING_ENGINE
               value: http://billing-engine-svc.billing.svc.cluster.local:8080
             - name: INVOICING_SERVICE
