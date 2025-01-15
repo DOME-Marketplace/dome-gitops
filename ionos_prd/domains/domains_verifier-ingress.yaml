@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: verifier-marketplace-vcverifier-2
+  name: verifier-marketplace-verifier-api-2
   namespace: marketplace
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
@@ -15,9 +15,9 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: verifier-marketplace-vcverifier
+                name: verifier-marketplace-verifier-api
                 port:
-                  number: 3000
+                  number: 8080
     - host: verifier.yumket.eu
       http:
         paths:
@@ -25,22 +25,22 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: verifier-marketplace-vcverifier
+                name: verifier-marketplace-verifier-api
                 port:
-                  number: 3000
-    - host: verifier.dome-marketplace.eu
+                  number: 8080
+    - host: verifier.dome-marketplace-prd.org
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: verifier-marketplace-vcverifier
+                name: verifier-marketplace-verifier-api
                 port:
-                  number: 3000
+                  number: 8080
   tls:
     - hosts:
         - verifier.dome-marketplace.org
         - verifier.yumket.eu
-        - verifier.dome-marketplace.eu
+        - verifier.dome-marketplace-prd.org
       secretName: verifier-tls-sec-2

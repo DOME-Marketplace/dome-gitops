@@ -53,7 +53,7 @@ business-api-ecosystem:
     enabled: true
     clientId: did:key:zDnaeTU39Wx9KXgmEwmfXsZSyEVxgCqwCVmoPyVQUTD8bhW8a
     verifier:
-      host: https://verifier.dome-marketplace-prd.org
+      host: https://verifier.dome-marketplace.eu
       qrCodePath: /oidc/authorize
       tokenPath: /oidc/token
       jwksPath: /oidc/jwks
