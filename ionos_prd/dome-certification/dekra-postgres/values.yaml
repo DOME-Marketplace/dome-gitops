@@ -1,0 +1,14 @@
+postgresql:
+  fullnameOverride: dekra-postgres
+  auth:
+    username: root  
+    enablePostgresUser: true
+    existingSecret: dekra-postgres-secret
+    secretKeys:
+      adminPasswordKey: postgres-password
+      userPasswordKey: postgres-password
+  primary:
+    initdb:
+      scripts:
+        create.sh: |
+          psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -tc "SELECT 1 FROM pg_database WHERE datname = 'dome'" | grep -q 1 || psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE dome;"  
