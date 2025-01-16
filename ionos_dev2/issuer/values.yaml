@@ -5,7 +5,7 @@ issuer:
     image:
       repository: in2workspace/in2-issuer-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.1.1
+      tag: v1.2.1
       pullPolicy: Always
     ingress:
       enabled: true
@@ -65,8 +65,8 @@ issuer:
         existingSecret:
           enabled: true
           name: issuer-secret
-          userKey: mail-username
-          passwordKey: mail-password
+          userKey: username
+          passwordKey: password
         properties:
           mail:
             smtp:
@@ -119,7 +119,7 @@ issuer:
             enabled: true
             name: issuer-secret
             clientSecretKey: authServerClientSecret
-            clientPasswordKey: authServerClientPassword
+            clientPasswordKey: issuer-api-user-password
         paths:
           tokenPath: /realms/issuer-dome/protocol/openid-connect/token
       ui:
@@ -135,8 +135,27 @@ issuer:
         internalDomain: http://dome-wallet-ui:8080
       wallet:
         url: https://wallet.dome-marketplace.org/
+      knowledgebase:
+        url: "https://knowledgebase.dome-marketplace-dev2.org"
       trustFramework:
         url: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080"
+      defaultSigner:
+        existingSecret:
+          enabled: true
+          name: issuer-secret
+          commonName: common-name
+          country: country
+          email: email
+          organizationIdentifier: organization-identifier
+          organization: organization
+          serialNumber: serial-number
+      issuerIdentity:
+        existingSecret:
+          enabled: true
+          name: issuer-secret
+          vc: vc
+          cryptoPrivateKey: private-key
+          credentialDidKey: did-key
     db:
       host: issuer-postgres
       port: 5432
@@ -154,7 +173,7 @@ issuer:
     image:
       repository: in2workspace/in2-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.2.6
+      tag: v1.4.1
       pullPolicy: Always
     ingress:
       enabled: true
@@ -193,6 +212,15 @@ issuer:
         # internalPort is only used if externalService is false
         internalPort: 30001
         path: /issuer-api
+      walletUrlTest:
+        # if deployed locally set to false
+        externalService: true
+        scheme: https
+        # change by the external url or set to localhost if deployed locally
+        host: wallet.dome-marketplace-dev2.org
+        # internalPort is only used if externalService is false
+        internalPort: 30003
+        path: /
       walletUrl:
         # if deployed locally set to false
         externalService: true
@@ -224,7 +252,7 @@ issuer:
       repository: in2workspace/dome-issuer-keycloak
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.0.2
+      tag: v1.0.3
     readinessProbe:
       path: /issuer-keycloak/health
     livenessProbe:
@@ -311,11 +339,6 @@ issuer:
     preAuth:
       lifespan: 10
       lifespanTimeUnit: MINUTES
-
-    # Transaction Code Configuration
-    txCode:
-      size: 4
-      description: Enter the PIN code
 
     # Token Configuration
     token:
