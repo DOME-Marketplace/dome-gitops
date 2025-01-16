@@ -175,7 +175,7 @@ issuer:
     image:
       repository: in2workspace/in2-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.4.0
+      tag: v1.4.1
       pullPolicy: Always
     ingress:
       enabled: true
@@ -214,6 +214,15 @@ issuer:
         # internalPort is only used if externalService is false
         internalPort: 30001
         path: /issuer-api
+      walletUrlTest:
+        # if deployed locally set to false
+        externalService: true
+        scheme: https
+        # change by the external url or set to localhost if deployed locally
+        host: wallet.dome-marketplace-lcl.org
+        # internalPort is only used if externalService is false
+        internalPort: 30003
+        path: /
       walletUrl:
         # if deployed locally set to false
         externalService: true
