@@ -211,73 +211,69 @@ access-node:
     enabled: true
 
     defaultConfig:
-      serverHost: http://tm-forum-api-envoy:8080
       additionalEnvVars: 
       - name: MAPPING_STRICT_RELATIONSHIPS
         value: "false"
       - name: API_EXTENSION_ENABLED
         value: "true"
-      
-    apiProxy:
-      enabled: true
 
     apis:
     - name: party-catalog
       image: tmforum-party-catalog
-      basePath: /tmf-api/party/v4
+      basePath: /
 
     - name: customer-bill-management
       image: tmforum-customer-bill-management
-      basePath: /tmf-api/customerBillManagement/v4
+      basePath: /
 
     - name: customer-management
       image: tmforum-customer-management
-      basePath: /tmf-api/customerManagement/v4
+      basePath: /
 
     - name: product-catalog
       image: tmforum-product-catalog
-      basePath: /tmf-api/productCatalogManagement/v4
+      basePath: /
 
     - name: product-inventory
       image: tmforum-product-inventory
-      basePath: /tmf-api/productInventory/v4
+      basePath: /
 
     - name: product-ordering-management
       image: tmforum-product-ordering-management
-      basePath: /tmf-api/productOrderingManagement/v4
+      basePath: /
 
     - name: resource-catalog
       image: tmforum-resource-catalog
-      basePath: /tmf-api/resourceCatalog/v4
+      basePath: /
 
     - name: resource-function-activation
       image: tmforum-resource-function-activation
-      basePath: /tmf-api/resourceFunctionActivation/v4
+      basePath: /
 
     - name: resource-inventory
       image: tmforum-resource-inventory
-      basePath: /tmf-api/resourceInventoryManagement/v4
+      basePath: /
 
     - name: service-catalog
       image: tmforum-service-catalog
-      basePath: /tmf-api/serviceCatalogManagement/v4
+      basePath: /
 
     - name: service-inventory
       image: tmforum-service-inventory
-      basePath: /tmf-api/serviceInventory/v4
+      basePath: /
 
-    - name: account-management
+    - name: account
       image: tmforum-account
-      basePath: /tmf-api/accountManagement/v4
+      basePath: /
 
-    - name: agreement-management
+    - name: agreement
       image: tmforum-agreement
-      basePath: /tmf-api/agreementManagement/v4
+      basePath: /
 
     - name: party-role
       image: tmforum-party-role
-      basePath: /tmf-api/partyRoleManagement/v4
+      basePath: /
 
     - name: usage-management
       image: tmforum-usage-management
-      basePath: /tmf-api/usageManagement/v4 
+      basePath: / 
