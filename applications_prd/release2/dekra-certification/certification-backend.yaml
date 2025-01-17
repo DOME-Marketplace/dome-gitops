@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: certification-backend
+  namespace: argocd
+  labels:
+    purpose: dome-certification
+spec:
+  destination:
+    namespace: dome-certification
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: ionos_prd/dome-certification/backend
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
