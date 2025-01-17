@@ -4,11 +4,11 @@ metadata:
   name: invoicing-service-deployment
   namespace: billing
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/instance: invoicing-service
       app.kubernetes.io/name: invoicing-service
-  replicas: 1
   template:
     metadata:
       labels:
@@ -17,12 +17,26 @@ spec:
     spec:
       containers:
         - name: invoicing-service-container
-          image: production.eng.it:8433/dome/invoicing-service:0.0.3
+          image: production.eng.it:8433/dome/invoicing-service:0.0.4
           ports:
             - containerPort: 8080
               hostPort: 8080
               protocol: TCP
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: "1"
           env:
+            - name: TMF_ENDPOINT
+              value: http://tm-forum-api #http://tm-forum-api-envoy.marketplace.svc.cluster.local:8080
+            - name: TMF_ENVOY
+              value: "false"
+            - name: TMF_NAMESPACE
+              value: marketplace
+            - name: TMF_POSTFIX
+              value: svc.cluster.local  
+            - name: TMF_PORT
+              value: "8080"            
             - name: LOG_LEVEL
               value: DEBUG
           livenessProbe:
@@ -33,7 +47,3 @@ spec:
             failureThreshold: 5
             periodSeconds: 10
             timeoutSeconds: 10
-          resources:
-            limits:
-              memory: 1.5Gi
-              cpu: "1"
