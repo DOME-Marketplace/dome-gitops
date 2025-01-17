@@ -4,7 +4,7 @@ metadata:
   name: dome-certification-frontend-ingress
   namespace: dome-certification
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-dev2-issuer
+    cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
