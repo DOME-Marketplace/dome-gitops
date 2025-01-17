@@ -56,7 +56,7 @@ issuer:
             - issuer.dome-marketplace-dev2.org
           secretName: issuer-secret-tls
     app:
-      profile: default
+      profile: test
       logLevel: DEBUG
       internalServerPort: 8080
       mail:
@@ -173,7 +173,7 @@ issuer:
     image:
       repository: in2workspace/in2-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.4.1
+      tag: v1.4.2
       pullPolicy: Always
     ingress:
       enabled: true
