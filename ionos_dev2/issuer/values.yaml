@@ -57,7 +57,8 @@ issuer:
           secretName: issuer-secret-tls
     app:
       profile: test
-      logLevel: DEBUG
+      logLevel:
+        app: DEBUG
       internalServerPort: 8080
       mail:
         host: smtp.ionos.de
