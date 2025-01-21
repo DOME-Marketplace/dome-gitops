@@ -24,7 +24,7 @@ verifier-api:
     externalDomain: "https://verifier.dome-marketplace-sbx.org"
     accessToken:
       expirationUnitTime: MINUTES
-      expirationTime: 10
+      expirationTime: 60
     idToken:
       expirationUnitTime: MINUTES
       expirationTime: 5
