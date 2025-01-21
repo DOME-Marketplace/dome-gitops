@@ -74,6 +74,7 @@ prometheus:
     probeSelectorNilUsesHelmValues: false
     ruleSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
+    retention: "30d"
 alertmanager:
   config:
     route:
