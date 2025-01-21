@@ -34,6 +34,10 @@ grafana:
         contains(groups[*], '@DOME-Marketplace/dome-grafana-sbx-admins') && 'GrafanaAdmin' ||
         contains(groups[*], '@DOME-Marketplace/dome-grafana-sbx-rw') && 'Editor' ||
         contains(groups[*], '@DOME-Marketplace/dome-grafana-sbx-ro') && 'Viewer'
+  resources:
+    requests:
+      cpu: 150m
+      memory: 350Mi
   extraSecretMounts:
     - name: kube-prometheus-stack-sso
       secretName: kube-prometheus-stack-sso
@@ -68,6 +72,27 @@ grafana:
       maxOpenConns: 100
       maxIdleConns: 10
       connMaxLifetime: 14400
+prometheusOperator:
+  resources:
+    requests:
+      cpu: 20m
+      memory: 50Mi
+  admissionWebhooks:
+    deployment:
+      resources:
+        requests:
+          cpu: 20m
+          memory: 50Mi
+    patch:
+      resources:
+        requests:
+          cpu: 20m
+          memory: 50Mi
+  prometheusConfigReloader:
+    resources:
+      requests:
+        cpu: 20m
+        memory: 50Mi
 prometheus:
   prometheusSpec:
     podMonitorSelectorNilUsesHelmValues: false
@@ -75,6 +100,20 @@ prometheus:
     ruleSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
     retention: "30d"
+    resources:
+      requests:
+        cpu: 200m
+        memory: 1000Mi
+prometheus-node-exporter:
+  resources:
+    requests:
+      cpu: 5m
+      memory: 20Mi
+kube-state-metrics:
+  resources:
+    requests:
+      cpu: 3m
+      memory: 50Mi
 alertmanager:
   config:
     route:
@@ -95,6 +134,10 @@ alertmanager:
       # - webhook_url_file: /etc/alertmanager/secrets/kube-prometheus-stack-discord-infrastructure-webhook-secret/webhook_url
     templates:
     - '/etc/alertmanager/config/*.tmpl'
-  # alertmanagerSpec:
+  alertmanagerSpec:
+    resources:
+      requests:
+        cpu: 20m
+        memory: 50Mi
   #   secrets:
   #     - kube-prometheus-stack-discord-infrastructure-webhook-secret
