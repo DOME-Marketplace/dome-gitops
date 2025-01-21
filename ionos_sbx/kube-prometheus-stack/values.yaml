@@ -135,6 +135,7 @@ alertmanager:
     templates:
     - '/etc/alertmanager/config/*.tmpl'
   alertmanagerSpec:
+    retention: "960h"
     resources:
       requests:
         cpu: 20m
