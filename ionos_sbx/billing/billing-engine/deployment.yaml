@@ -20,7 +20,7 @@ spec:
           image: production.eng.it:8433/dome/billing-engine:0.0.7
           ports:
             - containerPort: 8080
-              hostPort: 8080
+              hostPort: 8280
               protocol: TCP
           resources:
             limits:
