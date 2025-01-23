@@ -88,7 +88,6 @@ spec:
             - name: MAIL_USERNAME
               value: "customer-service@dome-marketplace.eu"
             - name: MAIL_PASSWORD
-              value: "Dome@2023"
               valueFrom:
                 secretKeyRef:
                   name: bookstack-secret
