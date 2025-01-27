@@ -9,7 +9,7 @@ wallet:
     image:
       repository: in2workspace/in2-wallet-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.3.7
+      tag: v1.3.10
       pullPolicy: Always
     ingress:
       enabled: true
@@ -84,8 +84,6 @@ wallet:
           domain: scorpio
           port: 9090
         pathsEntities: /ngsi-ld/v1/entities
-      trustedIssuerList:
-        uri: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080/v4/issuers/"
 
   ## configuration for the dome-wallet-ui
   dome-wallet-ui:
@@ -97,7 +95,7 @@ wallet:
       repository: in2workspace/in2-wallet-ui
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.3.5
+      tag: v1.5.0
     ## ingress specific configuration
     ingress:
       enabled: true
