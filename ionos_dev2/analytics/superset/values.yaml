@@ -7,3 +7,9 @@ superset:
   supersetNode:
     env:
       SUPERSET_SECRET_KEY: IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT
+
+  # Persistence
+  persistence: 
+    enabled: true
+    pvc:
+      size: 5Gi
