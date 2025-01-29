@@ -18,6 +18,10 @@ business-api-ecosystem:
         port: 8080
         path: 
       billing:
+        host: tm-forum-api-customer-bill-management
+        port: 8080
+        path:
+      account:
         host: tm-forum-api-account
         port: 8080
         path: 
@@ -124,7 +128,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: "10.0.0-rc1"
+        tag: "10.0.0-rc2"
         pullPolicy: Always
     
     plugins:
@@ -157,6 +161,10 @@ business-api-ecosystem:
     token: 
       enabled: false
 
+    extraEnvVars:
+      - name: BAE_CB_ACCOUNT
+        value: "http://tm-forum-api-account:8080"
+
   oauth:
     provider: "vc"
 
@@ -170,7 +178,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "10.0.0-rc2"
+        tag: "10.0.0-rc3"
         pullPolicy: Always
 
     ingress: 
@@ -224,7 +232,7 @@ business-api-ecosystem:
       - name: BAE_LP_DOME_ABOUT
         value: https://dome-project.eu/about/
       - name: BAE_LP_BILLING_ENGINE_URL
-        value: http://billing-engine-svc.billing.svc.cluster.local:8080
+        value: http://billing-proxy-svc.billing.svc.cluster.local:8080
       - name: BAE_LP_SIOP_PRIVATE_KEY
         valueFrom:
           secretKeyRef:
