@@ -20,7 +20,7 @@ spec:
           image: production.eng.it:8433/dome/billing-scheduler:0.0.5
           ports:
             - containerPort: 8080
-              hostPort: 8080
+              hostPort: 8180
               protocol: TCP
           resources:
             limits:
