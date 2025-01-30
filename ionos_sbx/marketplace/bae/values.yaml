@@ -18,13 +18,9 @@ business-api-ecosystem:
         port: 8080
         path: 
       billing:
-        host: tm-forum-api-customer-bill-management
-        port: 8080
-        path:
-      account:
         host: tm-forum-api-account
         port: 8080
-        path: 
+        path:
       usage:
         host: tm-forum-api-usage-management
         port: 8080
@@ -128,7 +124,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: "10.0.0-rc4"
+        tag: "10.0.0-rc5"
         pullPolicy: Always
     
     plugins:
@@ -162,8 +158,8 @@ business-api-ecosystem:
       enabled: false
 
     extraEnvVars:
-      - name: BAE_CB_ACCOUNT
-        value: "http://tm-forum-api-account:8080"
+      - name: BAE_CB_CUSTOMER_BILL
+        value: "http://tm-forum-api-customer-bill-management:8080"
 
   oauth:
     provider: "vc"
@@ -178,7 +174,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "10.0.0-rc5"
+        tag: "10.0.0-rc6"
         pullPolicy: Always
 
     ingress: 
