@@ -174,7 +174,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "10.0.0-rc6"
+        tag: "10.0.0-rc7"
         pullPolicy: Always
 
     ingress: 
@@ -229,6 +229,10 @@ business-api-ecosystem:
         value: https://dome-project.eu/about/
       - name: BAE_LP_BILLING_ENGINE_URL
         value: http://billing-proxy-svc.billing.svc.cluster.local:8080
+      - name: BAE_LP_ENDPOINT_CUSTOMER_BILL_HOST
+        value: tm-forum-api-customer-bill-management
+      - name: BAE_LP_ENDPOINT_CUSTOMER_BILL_PORT
+        value: "8080"
       - name: BAE_LP_SIOP_PRIVATE_KEY
         valueFrom:
           secretKeyRef:
