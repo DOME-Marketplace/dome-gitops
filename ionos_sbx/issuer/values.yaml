@@ -78,6 +78,13 @@ issuer:
               ssl:
                 trust: smtp.ionos.de
       remoteSignature:
+        existingSecret:
+          enabled: true
+          name: issuer-secret
+          clientId: client-id
+          clientSecret: client-secret
+          credentialId: credential-id
+          credentialPassword: credential-password
         domain:
           scheme: http
           # change by the external url or set to localhost if deployed locally
