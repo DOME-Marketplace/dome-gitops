@@ -182,7 +182,7 @@ issuer:
     image:
       repository: in2workspace/in2-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.6.1
+      tag: v1.6.2
       pullPolicy: Always
     ingress:
       enabled: true
@@ -230,6 +230,13 @@ issuer:
         # internalPort is only used if externalService is false
         internalPort: 30003
         path: /
+      colors:
+        primary: "#2d58a7"
+        primaryContrast: "#ffffff"
+        secondary: "#2cb6b2"
+        secondaryContrast: "#dde6f6"
+      logoSrc: "assets/logos/logo-dome-issuer-reduced.png"
+      faviconSrc: "assets/icon/favicon.png"
       walletUrl:
         # if deployed locally set to false
         externalService: true
