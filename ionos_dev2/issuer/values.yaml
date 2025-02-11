@@ -234,8 +234,8 @@ issuer:
         primaryContrast: "#ffffff"
         secondary: "#2cb6b2"
         secondaryContrast: "#dde6f6"
-        logoSrc: "assets/logos/logo-dome-issuer-reduced.png"
-        faviconSrc: "assets/icon/favicon.png"
+      logoSrc: "assets/logos/logo-dome-issuer-reduced.png"
+      faviconSrc: "assets/icon/favicon.png"
       walletUrl:
         # if deployed locally set to false
         externalService: true
