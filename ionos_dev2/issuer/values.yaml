@@ -5,7 +5,7 @@ issuer:
     image:
       repository: in2workspace/in2-issuer-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.2.2
+      tag: v1.2.3
       pullPolicy: Always
     ingress:
       enabled: true
@@ -77,15 +77,17 @@ issuer:
               ssl:
                 trust: smtp.ionos.de
       remoteSignature:
-        externalDomain:
-          # if deployed locally set to false
-          externalService: true
+        existingSecret:
+          enabled: true
+          name: issuer-secret
+          clientId: client-id
+          clientSecret: client-secret
+          credentialId: credential-id
+          credentialPassword: credential-password
+        domain:
           scheme: http
           # change by the external url or set to localhost if deployed locally
           host: dome-dss:8080
-          # internalPort is only used if externalService is false
-          internalPort: 30003
-        internalDomain: http://dome-dss:8080
       api:
         externalDomain:
           # if deployed locally set to false
@@ -157,6 +159,11 @@ issuer:
           vc: vc
           cryptoPrivateKey: private-key
           credentialDidKey: did-key
+      cors:
+        default:
+          allowedOrigins: "https://issuer.dome-marketplace-dev2.org"
+        external:
+          allowedOrigins: "https://issuer.dome-marketplace-dev2.org, https://dome-certification.dome-marketplace-dev2.org"
     db:
       host: issuer-postgres
       port: 5432
@@ -174,7 +181,7 @@ issuer:
     image:
       repository: in2workspace/in2-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.4.3
+      tag: v1.6.1
       pullPolicy: Always
     ingress:
       enabled: true
@@ -222,6 +229,13 @@ issuer:
         # internalPort is only used if externalService is false
         internalPort: 30003
         path: /
+      colors:
+        primary: "#2d58a7"
+        primaryContrast: "#ffffff"
+        secondary: "#2cb6b2"
+        secondaryContrast: "#dde6f6"
+        logoSrc: "assets/logos/logo-dome-issuer-reduced.png"
+        faviconSrc: "assets/icon/favicon.png"
       walletUrl:
         # if deployed locally set to false
         externalService: true
