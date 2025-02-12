@@ -230,20 +230,20 @@ wallet:
             psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE keycloak;"
 
     ## configuration of postgres
-    wallet-postgresql:
-      # -- should the postgresql deployment be enabled
-      enabled: true
-      auth:
-        # -- username to be used
-        username: postgres
-        # -- should the default postgres user be enabled
-        enablePostgresUser: true
-        # -- password to be used
-        existingSecret: wallet-secret
-        secretKeys:
-          adminPasswordKey: db-password
-          userPasswordKey: db-password
+  wallet-postgresql:
+    # -- should the postgresql deployment be enabled
+    enabled: true
+    auth:
+      # -- username to be used
+      username: postgres
+      # -- should the default postgres user be enabled
+      enablePostgresUser: true
+      # -- password to be used
+      existingSecret: wallet-secret
+      secretKeys:
+        adminPasswordKey: db-password
+        userPasswordKey: db-password
 
-    wallet-external-database:
-      # -- should the postgresql deployment be enabled
-      enabled: false
+  wallet-external-database:
+    # -- should the postgresql deployment be enabled
+    enabled: false
