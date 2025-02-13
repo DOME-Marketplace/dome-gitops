@@ -38,23 +38,23 @@ issuer:
         - hosts:
             - issuer.dome-marketplace.eu
           secretName: issuer-secret-tls
-      ingressToken:
-        enabled: true
-        className: nginx
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
-          nginx.ingress.kubernetes.io/rewrite-target: /issuer-keycloak/realms/issuer-dome/verifiable-credential/did:key:z6MkqmaCT2JqdUtLeKah7tEVfNXtDXtQyj4yxEgV11Y5CqUa/token
-        hosts:
-          - host: issuer.dome-marketplace.eu
-            paths:
-              - path: /issuer-api/token
-                pathType: Prefix
-                serviceName: dome-issuer-keycloak
-                servicePort: 8080
-        tls:
-          - hosts:
-              - issuer.dome-marketplace.eu
-            secretName: issuer-secret-tls
+    ingressToken:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
+        nginx.ingress.kubernetes.io/rewrite-target: /issuer-keycloak/realms/issuer-dome/verifiable-credential/did:key:z6MkqmaCT2JqdUtLeKah7tEVfNXtDXtQyj4yxEgV11Y5CqUa/token
+      hosts:
+        - host: issuer.dome-marketplace.eu
+          paths:
+            - path: /issuer-api/token
+              pathType: Prefix
+              serviceName: dome-issuer-keycloak
+              servicePort: 8080
+      tls:
+        - hosts:
+            - issuer.dome-marketplace.eu
+          secretName: issuer-secret-tls
     app:
       profile: prod
       logLevel:
