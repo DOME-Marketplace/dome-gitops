@@ -5,7 +5,7 @@ issuer:
     image:
       repository: in2workspace/in2-issuer-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.1.1
+      tag: v1.2.3
       pullPolicy: Always
     ingress:
       enabled: true
@@ -26,7 +26,7 @@ issuer:
       className: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
-        nginx.ingress.kubernetes.io/rewrite-target: /issuer-keycloak/realms/CredentialIssuer/verifiable-credential/did:key:z6MkqmaCT2JqdUtLeKah7tEVfNXtDXtQyj4yxEgV11Y5CqUa/.well-known/openid-configuration
+        nginx.ingress.kubernetes.io/rewrite-target: /issuer-keycloak/realms/issuer-dome/verifiable-credential/did:key:z6MkqmaCT2JqdUtLeKah7tEVfNXtDXtQyj4yxEgV11Y5CqUa/.well-known/openid-configuration
       hosts:
         - host: issuer.dome-marketplace.eu
           paths:
@@ -43,7 +43,7 @@ issuer:
         className: nginx
         annotations:
           cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
-          nginx.ingress.kubernetes.io/rewrite-target: /issuer-keycloak/realms/CredentialIssuer/verifiable-credential/did:key:z6MkqmaCT2JqdUtLeKah7tEVfNXtDXtQyj4yxEgV11Y5CqUa/token
+          nginx.ingress.kubernetes.io/rewrite-target: /issuer-keycloak/realms/issuer-dome/verifiable-credential/did:key:z6MkqmaCT2JqdUtLeKah7tEVfNXtDXtQyj4yxEgV11Y5CqUa/token
         hosts:
           - host: issuer.dome-marketplace.eu
             paths:
@@ -56,8 +56,9 @@ issuer:
               - issuer.dome-marketplace.eu
             secretName: issuer-secret-tls
     app:
-      profile: default
-      logLevel: DEBUG
+      profile: prod
+      logLevel:
+        app: DEBUG
       internalServerPort: 8080
       mail:
         host: smtp.ionos.de
@@ -65,8 +66,8 @@ issuer:
         existingSecret:
           enabled: true
           name: issuer-secret
-          userKey: mail-username
-          passwordKey: mail-password
+          userKey: username
+          passwordKey: password
         properties:
           mail:
             smtp:
@@ -76,15 +77,17 @@ issuer:
               ssl:
                 trust: smtp.ionos.de
       remoteSignature:
-        externalDomain:
-          # if deployed locally set to false
-          externalService: true
+        existingSecret:
+          enabled: true
+          name: issuer-secret
+          clientId: client-id
+          clientSecret: client-secret
+          credentialId: credential-id
+          credentialPassword: credential-password
+        domain:
           scheme: http
           # change by the external url or set to localhost if deployed locally
           host: dome-dss:8080
-          # internalPort is only used if externalService is false
-          internalPort: 30003
-        internalDomain: http://dome-dss:8080
       api:
         externalDomain:
           # if deployed locally set to false
@@ -111,17 +114,17 @@ issuer:
           internalPort: 30002
           path: /issuer-keycloak
         internalDomain: http://dome-issuer-keycloak:8080/issuer-keycloak
-        realm: CredentialIssuer
+        realm: issuer-dome
         client:
-          clientId: oidc4vci-wallet-client
-          username: user
+          clientId: issuer-api-client
+          username: issuer-api-user
           existingSecret:
             enabled: true
             name: issuer-secret
             clientSecretKey: authServerClientSecret
-            clientPasswordKey: authServerClientPassword
+            clientPasswordKey: issuer-api-user-password
         paths:
-          tokenPath: /realms/CredentialIssuer/protocol/openid-connect/token
+          tokenPath: /realms/issuer-dome/protocol/openid-connect/token
       ui:
         externalDomain:
           # if deployed locally set to false
@@ -135,8 +138,32 @@ issuer:
         internalDomain: http://dome-wallet-ui:8080
       wallet:
         url: https://wallet.dome-marketplace.eu/
+      knowledgebase:
+        url: "https://knowledgebase.dome-marketplace.eu"
       trustFramework:
         url: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080"
+      defaultSigner:
+        existingSecret:
+          enabled: true
+          name: issuer-secret
+          commonName: common-name
+          country: country
+          email: email
+          organizationIdentifier: organization-identifier
+          organization: organization
+          serialNumber: serial-number
+      issuerIdentity:
+        existingSecret:
+          enabled: true
+          name: issuer-secret
+          vc: vc
+          cryptoPrivateKey: private-key
+          credentialDidKey: did-key
+      cors:
+        default:
+          allowedOrigins: "https://issuer.dome-marketplace.eu"
+        external:
+          allowedOrigins: "https://issuer.dome-marketplace.eu, https://dome-certification.dome-marketplace.eu"
     db:
       host: issuer-postgres
       port: 5432
@@ -154,7 +181,7 @@ issuer:
     image:
       repository: in2workspace/in2-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.1.6
+      tag: v1.6.3
       pullPolicy: Always
     ingress:
       enabled: true
@@ -180,9 +207,9 @@ issuer:
         host: issuer.dome-marketplace.eu
         # internalPort is only used if externalService is false
         internalPort: 30002
-        path: /issuer-keycloak/realms/CredentialIssuer
-      clientId: account-console
-      scope: openid profile email offline_access
+        path: /issuer-keycloak/realms/issuer-dome
+      clientId: vc-auth-client
+      scope: openid profile email offline_access vc mandator
       grantType: code
       baseUrl:
         # if deployed locally set to false
@@ -193,6 +220,22 @@ issuer:
         # internalPort is only used if externalService is false
         internalPort: 30001
         path: /issuer-api
+      walletUrlTest:
+        # if deployed locally set to false
+        externalService: true
+        scheme: https
+        # change by the external url or set to localhost if deployed locally
+        host: wallet.dome-marketplace.eu
+        # internalPort is only used if externalService is false
+        internalPort: 30003
+        path: /
+      colors:
+        primary: "#2d58a7"
+        primaryContrast: "#ffffff"
+        secondary: "#2cb6b2"
+        secondaryContrast: "#dde6f6"
+      logoSrc: "assets/logos/logo-dome-issuer-reduced.png"
+      faviconSrc: "assets/icon/favicon.png"
       walletUrl:
         # if deployed locally set to false
         externalService: true
@@ -211,6 +254,7 @@ issuer:
         # internalPort is only used if externalService is false
         internalPort: 30004
         path: /
+      profile: prod
       procedures: /api/v1/procedures
       saveCredential: /api/v1/credentials?type=LEARCredentialEmployee
       credentialOfferUrl: /api/v1/credential-offer
@@ -223,7 +267,7 @@ issuer:
       repository: in2workspace/dome-issuer-keycloak
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.0.2
+      tag: v1.0.3
     readinessProbe:
       path: /issuer-keycloak/health
     livenessProbe:
@@ -310,11 +354,6 @@ issuer:
     preAuth:
       lifespan: 10
       lifespanTimeUnit: MINUTES
-
-    # Transaction Code Configuration
-    txCode:
-      size: 4
-      description: Enter the PIN code
 
     # Token Configuration
     token:
