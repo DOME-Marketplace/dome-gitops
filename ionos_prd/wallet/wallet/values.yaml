@@ -9,7 +9,7 @@ wallet:
     image:
       repository: in2workspace/in2-wallet-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.3.10
+      tag: v1.4.0
       pullPolicy: Always
     ingress:
       enabled: true
@@ -51,7 +51,7 @@ wallet:
             # -- should an existing secret be used
             enabled: true
             # -- name of the secret
-            name: wallet-api-client-secret
+            name: wallet-secret
             # -- key to retrieve the password from
             key: client-secret
         userData:
@@ -60,7 +60,7 @@ wallet:
             # -- should an existing secret be used
             enabled: true
             # -- name of the secret
-            name: wallet-api-user-password
+            name: wallet-secret
             # -- key to retrieve the password from
             key: user-password
       vault:
@@ -77,13 +77,18 @@ wallet:
           name: wallet-vault-unseal-secret
           # -- key to retrieve the token from
           key: root
-      broker:
-        provider: scorpio
-        internal:
-          scheme: http
-          domain: scorpio
-          port: 9090
-        pathsEntities: /ngsi-ld/v1/entities
+    db:
+      externalService: false
+      schema: wallet
+      host: wallet-postgres
+      port: 5432
+      name: wallet
+      username: postgres
+      password: postgres
+      existingSecret:
+        enabled: true
+        name: wallet-secret
+        key: db-password
 
   ## configuration for the dome-wallet-ui
   dome-wallet-ui:
@@ -175,7 +180,7 @@ wallet:
           # -- should an existing secret be used
           enabled: true
           # -- name of the secret
-          name: dome-wallet-keycloak-secret
+          name: wallet-secret
           # -- key to retrieve the password from
           key: keycloak-password
     db:
@@ -189,7 +194,7 @@ wallet:
         # -- should an existing secret be used
         enabled: true
         # -- name of the secret
-        name: dome-wallet-keycloak-db-secret
+        name: wallet-secret
         # -- key to retrieve the password from
         key: keycloak-db-password
 
@@ -210,7 +215,7 @@ wallet:
       # -- should the default postgres user be enabled
       enablePostgresUser: true
       # -- existing secret
-      existingSecret: dome-wallet-keycloak-db-secret
+      existingSecret: wallet-secret
       secretKeys:
         adminPasswordKey: keycloak-db-password
         userPasswordKey: keycloak-db-password
@@ -224,73 +229,21 @@ wallet:
           create.sh: |
             psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE keycloak;"
 
-  ## configuration of the context-broker - see https://github.com/FIWARE/helm-charts/tree/main/charts/scorpio-broker-aaio for details
-  scorpio:
-    # -- should scorpio be enabled
+  ## configuration of postgres
+  wallet-postgresql:
+    # -- should the postgresql deployment be enabled
     enabled: true
-    ## configuration of the image to be used
-    image:
-      # -- repository to be used - resource friendly all-in-one-runner without kafka
-      repository: scorpiobroker/all-in-one-runner
-      # -- tag of the image to be used - latest java image without kafka
-      tag: java-4.1.15
-    ## configuration of the database to be used by broker
-    db:
-      # -- host of the db
-      dbhost: postgis
-      # -- username to be used
-      user: postgres
-      # -- password to be used
-      existingSecret:
-        # -- should an existing secret be used
-        enabled: true
-        # -- name of the secret
-        name: scorpio-secret
-        # -- key to retrieve the password from
-        key: postgres-password
-    ## configuration of the readiness probe
-    readinessProbe:
-      # -- path to be used for the readiness probe, older versions used /actuator/health
-      path: /q/health
-    ## configuration of the liveness probe
-    livenessProbe:
-      # -- path to be used for the readiness probe, older versions used /actuator/health
-      path: /q/health
-    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-    fullnameOverride: scorpio
-    ## configuration to be used for the service offered by scorpio
-    service:
-      # -- ClusterIP is the recommended type for most clusters
-      type: ClusterIP
-
-  ## configuration of postgis to be used for scorpio - see https://github.com/bitnami/charts/tree/main/bitnami/postgresql for details
-  postgis:
-    # -- should postgis be enabled
-    enabled: true
-    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-    fullnameOverride: postgis
-    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-    nameOverride: postgis
-    ## auth configuration for the database
     auth:
       # -- username to be used
       username: postgres
-      # -- password to be used
-      password: postgres
       # -- should the default postgres user be enabled
       enablePostgresUser: true
-      # -- existing secret
-      existingSecret: scorpio-secret
+      # -- password to be used
+      existingSecret: wallet-secret
       secretKeys:
-        adminPasswordKey: postgres-password
-        userPasswordKey: postgres-password
-    ## configuration of the postgres primary replicas
-    primary:
-      ## provide db initialization
-      initdb:
-        ## provide scripts for initialization
-        scripts:
-          # -- enable the postgis extension and create the database as expected by scorpio
-          enable.sh: |
-            psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE EXTENSION postgis;"
-            psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE ngb;"
+        adminPasswordKey: db-password
+        userPasswordKey: db-password
+
+  wallet-external-database:
+    # -- should the postgresql deployment be enabled
+    enabled: false
