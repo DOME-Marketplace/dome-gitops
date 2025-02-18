@@ -100,7 +100,7 @@ wallet:
       repository: in2workspace/in2-wallet-ui
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.5.0
+      tag: v1.6.3
     ## ingress specific configuration
     ingress:
       enabled: true
@@ -119,6 +119,12 @@ wallet:
     ## deployment specific configuration
     app:
       internalServerPort: 8080
+      colors:
+        primary: "#00ADD3"
+        primaryContrast: "#ffffff"
+        secondary: "#50c8ff"
+        secondaryContrast: "#000000"
+      logoSrc: "assets/logos/dome_white_logo.png"
       walletApi:
         # Este internalDomain es en realidad el external
         internalDomain: https://wallet.dome-marketplace.eu/wallet-api
