@@ -148,7 +148,7 @@ wallet:
       repository: in2workspace/dome-wallet-keycloak
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.0.1
+      tag: v1.0.2
     # -- should be enabled?
     enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
