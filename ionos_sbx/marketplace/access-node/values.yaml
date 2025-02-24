@@ -78,7 +78,7 @@ access-node:
       # -- should be true if is an external service
       externalService: true
       # -- name of the db
-      name: desmos?ssl=true&sslMode=prefer
+      name: desmos?ssl=true&sslmode=require
       # -- username to be used
       username: desmosuser
       # -- existing secret to retrieve the db password
