@@ -8,7 +8,7 @@ access-node:
     image:
       repository: in2workspace/in2-desmos-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.0.7
+      tag: v1.0.8
       pullPolicy: Always
     readinessProbe:
       failureThreshold: 10
@@ -72,15 +72,15 @@ access-node:
     ## configuration of the database to be used by the blockchain-connector
     db:
       # -- host of the db
-      host: desmos-postgres
+      host: pg-7ibhgq9r54fl3acm.postgresql.de-txl.ionos.com
       # -- port of the host of the db
       port: 5432
       # -- should be true if is an external service
-      externalService: false
+      externalService: true
       # -- name of the db
-      name: desmos
+      name: accessnode?ssl=true&sslmode=require
       # -- username to be used
-      username: postgres
+      username: desmosdevuser
       # -- existing secret to retrieve the db password
       existingSecret:
         # -- should an existing secret be used
