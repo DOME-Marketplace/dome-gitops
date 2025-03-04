@@ -139,7 +139,7 @@ issuer:
       wallet:
         url: https://wallet.dome-marketplace.org/
       knowledgebase:
-        url: "https://knowledgebase.dome-marketplace-dev2.org/books/dome-digital-wallet-user-guide"
+        walletUrl: "https://knowledgebase.dome-marketplace-dev2.org/books/dome-digital-wallet-user-guide"
       trustFramework:
         url: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080"
       defaultSigner:
