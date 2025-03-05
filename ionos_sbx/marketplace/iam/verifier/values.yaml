@@ -1,7 +1,7 @@
 verifier-api:
   image:
     repository: in2workspace/in2-verifier-api
-    tag: v1.2.0
+    tag: v1.2.1
     pullPolicy: Always
 
   ingress:
@@ -39,7 +39,7 @@ verifier-api:
           secondaryContrast: "#00ADD3"
         # Placeholder for logo source path (REQUIRED)
         # This routes must point to internal folder: src/main/resources/static/img/<file_name.png>
-        logoSrc: "dome_logo_white.png"
+        logoSrc: "dome_logo_white.svg"
         # Placeholder for favicon source path (OPTIONAL)
         # This routes must point to internal folder: src/main/resources/static/img/<file_name.png>
         faviconSrc: "dome_logo_favicon.png"
