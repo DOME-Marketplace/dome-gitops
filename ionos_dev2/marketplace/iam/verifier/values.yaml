@@ -45,7 +45,7 @@ verifier-api:
         faviconSrc: "dome_logo_favicon.png"
       backend:
         # Placeholder for backend URL (REQUIRED)
-        url: "https://verifier.dome-marketplace-sbx.org"
+        url: "https://verifier.dome-marketplace-dev2.org"
         identity:
           # Placeholder for private key used in identity verification (REQUIRED)
           privateKey:
@@ -59,6 +59,6 @@ verifier-api:
             # Placeholder for trusted issuers list URL
             trustedIssuersListUrl: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080/v4/issuers/"
             # Placeholder for trusted services list URL
-            trustedServicesListUrl: "https://raw.githubusercontent.com/DOME-Marketplace/trust-framework/refs/heads/main/sbx/trusted_services_list.yaml"
+            trustedServicesListUrl: "https://raw.githubusercontent.com/DOME-Marketplace/trust-framework/refs/heads/main/dev/trusted_services_list.yaml"
             # Placeholder for revoked credentials list URL
-            revokedCredentialListUrl: "https://raw.githubusercontent.com/DOME-Marketplace/trust-framework/refs/heads/main/sbx/revoked_credential_list.yaml"
+            revokedCredentialListUrl: "https://raw.githubusercontent.com/DOME-Marketplace/trust-framework/refs/heads/main/dev/revoked_credential_list.yaml"
