@@ -56,6 +56,20 @@ grafana:
     type: loki
     url: http://loki-distributed-gateway.loki-distributed.svc.cluster.local
     version: 1
+  - name: zammad-postgres
+    type: postgres
+    url: 10.233.10.150:5432
+    access: proxy
+    user: zammad
+    secureJsonData:
+      password: zammad
+    database: zammad_production
+    isDefault: false
+    editable: true
+    jsonData:
+      postgresVersion: 15
+      sslmode: disable
+    version: 1  
 prometheusOperator:
   resources:
     requests:
