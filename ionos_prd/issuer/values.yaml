@@ -5,7 +5,7 @@ issuer:
     image:
       repository: in2workspace/in2-issuer-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.2.3
+      tag: v1.2.5
       pullPolicy: Always
     ingress:
       enabled: true
@@ -139,7 +139,7 @@ issuer:
       wallet:
         url: https://wallet.dome-marketplace.eu/
       knowledgebase:
-        url: "https://knowledgebase.dome-marketplace.eu"
+        walletUrl: "https://knowledgebase.dome-marketplace.eu/books/dome-digital-wallet-user-guide"
       trustFramework:
         url: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080"
       defaultSigner:
@@ -181,7 +181,7 @@ issuer:
     image:
       repository: in2workspace/in2-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.6.3
+      tag: v1.7.1
       pullPolicy: Always
     ingress:
       enabled: true
@@ -254,6 +254,7 @@ issuer:
         # internalPort is only used if externalService is false
         internalPort: 30004
         path: /
+        walletPath: "books/dome-digital-wallet-user-guide"
       profile: production
       procedures: /api/v1/procedures
       saveCredential: /api/v1/credentials?type=LEARCredentialEmployee
