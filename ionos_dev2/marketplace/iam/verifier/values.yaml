@@ -1,7 +1,7 @@
 verifier-api:
   image:
     repository: in2workspace/in2-verifier-api
-    tag: v1.2.1
+    tag: v1.3.3
     pullPolicy: Always
 
   ingress:
@@ -24,7 +24,7 @@ verifier-api:
       frontend:
         urls:
           # Placeholder for onboarding URL (REQUIRED)
-          onboarding: "https://knowledgebase.dome-marketplace.org/shelves/company-onboarding-process"
+          onboarding: "https://onboarding.dome-marketplace.eu/"
           # Placeholder for support URL (REQUIRED)
           support: "https://ticketing.dome-marketplace.org"
           # Placeholder for wallet URL (REQUIRED)
