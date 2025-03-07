@@ -102,6 +102,13 @@ prometheus:
       requests:
         cpu: 200m
         memory: 1000Mi
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 300Gi
 prometheus-node-exporter:
   resources:
     requests:
