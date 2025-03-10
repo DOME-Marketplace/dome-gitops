@@ -8,7 +8,7 @@ access-node:
     image:
       repository: in2workspace/in2-desmos-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.0.8
+      tag: v1.1.0
       pullPolicy: Always
     readinessProbe:
       failureThreshold: 10
@@ -69,6 +69,11 @@ access-node:
           name: access-node-secret
           # -- key to retrieve the password from
           key: desmos-private-key
+      learCredentialMachineInBase64:
+        existingSecret:
+          enabled: true
+          name: access-node-secret
+          key: lear-credential-machine
     ## configuration of the database to be used by the blockchain-connector
     db:
       # -- host of the db
