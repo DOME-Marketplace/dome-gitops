@@ -1,0 +1,968 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    grafana_dashboard: "1"
+  name: ticketing-analytics
+data:
+  ticketing-analytics.json: |-
+    {
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": {
+              "type": "grafana",
+              "uid": "-- Grafana --"
+            },
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "type": "dashboard"
+          }
+        ]
+      },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "id": 33,
+      "links": [],
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "P68D0D9E587DEE267"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "max": 100,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "#EAB839",
+                    "value": 10
+                  },
+                  {
+                    "color": "red",
+                    "value": 30
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 15,
+            "x": 0,
+            "y": 0
+          },
+          "id": 1,
+          "options": {
+            "displayMode": "basic",
+            "maxVizHeight": 300,
+            "minVizHeight": 16,
+            "minVizWidth": 8,
+            "namePlacement": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": true
+            },
+            "showUnfilled": true,
+            "sizing": "auto",
+            "valueMode": "color"
+          },
+          "pluginVersion": "11.0.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "P68D0D9E587DEE267"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n    g.name AS group_name,\r\n    COUNT(CASE WHEN t.state_id NOT IN (4, 7) THEN 1 END) AS \"OPEN TICKETS\"\r\nFROM\r\n    tickets t\r\nRIGHT JOIN\r\n    groups g ON t.group_id = g.id\r\nWHERE\r\n    g.id IN (27, 26, 18, 12, 11, 10, 7, 6, 5, 4, 3)\r\nGROUP BY\r\n    g.name\r\nORDER BY\r\n    g.name ASC;",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "OPEN TICKETS BY COMPETENCE CENTER",
+          "type": "bargauge"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "P68D0D9E587DEE267"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 19,
+            "x": 0,
+            "y": 13
+          },
+          "id": 2,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true
+          },
+          "pluginVersion": "11.0.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "P68D0D9E587DEE267"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "WITH query1 AS (\r\n    WITH filtered_events AS (\r\n        -- Seleziona i distinct o_id con history_type_id = 1, history_object_id = 4 e created_at più vecchio di 7 giorni\r\n        SELECT DISTINCT o_id\r\n        FROM histories\r\n        WHERE history_type_id = 1\r\n          AND history_object_id = 4\r\n          AND created_at < NOW() - INTERVAL '7 days'\r\n    ),  \r\n    latest_history AS (\r\n        -- Trova il record più recente per ogni o_id con history_type_id = 2 e history_attribute_id = 11\r\n        SELECT DISTINCT ON (o_id) o_id, id_to, id_from, created_at\r\n        FROM histories\r\n        WHERE history_type_id = 2\r\n          AND history_attribute_id = 11\r\n        ORDER BY o_id, created_at DESC\r\n    ),  \r\n    valid_o_ids AS (\r\n        -- Filtra gli o_id che soddisfano le condizioni richieste\r\n        SELECT fe.o_id\r\n        FROM filtered_events fe\r\n        JOIN latest_history lh ON fe.o_id = lh.o_id\r\n        WHERE (lh.id_to NOT IN (4, 7))\r\n           OR (lh.id_to IN (4, 7) AND lh.created_at > NOW() - INTERVAL '7 days')\r\n    ),  \r\n    missing_history AS (\r\n        -- Trova gli o_id che sono in filtered_events ma non hanno alcun record in latest_history\r\n        SELECT fe.o_id\r\n        FROM filtered_events fe\r\n        LEFT JOIN latest_history lh ON fe.o_id = lh.o_id\r\n        WHERE lh.o_id IS NULL\r\n    ),  \r\n    final_o_ids AS (\r\n        -- Combina gli o_id validi e quelli che mancano nei history_type_id = 2 e history_attribute_id = 11\r\n        SELECT o_id FROM valid_o_ids\r\n        UNION ALL\r\n        SELECT o_id FROM missing_history\r\n    )  \r\n    SELECT \r\n        g.name AS group_name,\r\n        COALESCE(COUNT(DISTINCT t.id), 0) AS \"PENDING SINCE LAST WEEK\"\r\n    FROM \r\n        (VALUES (27), (26), (18), (12), (11), (10), (7), (6), (5), (4), (3)) AS group_ids(group_id) -- I gruppi specificati\r\n    LEFT JOIN tickets t ON t.group_id = group_ids.group_id AND t.id IN (SELECT o_id FROM final_o_ids) -- Associa i ticket agli o_id filtrati\r\n    LEFT JOIN groups g ON group_ids.group_id = g.id -- Associa la tabella groups\r\n    GROUP BY g.name, group_ids.group_id -- Raggruppa per nome del gruppo e id del gruppo\r\n    ORDER BY g.name ASC\r\n),\r\nquery2 AS (\r\n    WITH latest_actions AS (\r\n        SELECT \r\n            o_id,\r\n            history_type_id,\r\n            history_attribute_id,\r\n            created_at,\r\n            id_to,\r\n            ROW_NUMBER() OVER (PARTITION BY o_id ORDER BY created_at DESC) AS rn\r\n        FROM histories\r\n        WHERE history_type_id = 2\r\n          AND created_at < NOW() - INTERVAL '7 days'\r\n          AND history_attribute_id = 11\r\n    ),\r\n    group_list AS (\r\n        SELECT id, name\r\n        FROM groups\r\n        WHERE id IN (27, 26, 18, 12, 11, 10, 7, 6, 5, 4, 3)\r\n    )\r\n    SELECT \r\n        gl.name AS group_name,\r\n        COALESCE(COUNT(DISTINCT la.o_id), 0) AS \"LAST WEEK TICKET CLOSED\"\r\n    FROM group_list gl\r\n    LEFT JOIN tickets t ON gl.id = t.group_id\r\n    LEFT JOIN latest_actions la ON la.o_id = t.id\r\n      AND la.rn = 1\r\n      AND la.id_to != 4\r\n      AND la.id_to != 7\r\n      AND t.state_id IN (4, 7)\r\n    GROUP BY gl.name\r\n    ORDER BY gl.name\r\n),\r\nquery3 AS (\r\n    SELECT\r\n        g.name AS \"COMPETENCE CENTER\",\r\n        COUNT(CASE WHEN t.created_at > NOW() - INTERVAL '7 days' THEN 1 END) AS \"OPEN THIS WEEK\",\r\n        COUNT(CASE WHEN t.created_at > NOW() - INTERVAL '7 days' AND t.state_id IN (4, 7) THEN 1 END) AS \"NEW CLOSED THIS WEEK\"\r\n    FROM\r\n        tickets t\r\n    RIGHT JOIN\r\n        groups g ON t.group_id = g.id\r\n    WHERE\r\n        g.id IN (27, 26, 18, 12, 11, 10, 7, 6, 5, 4, 3)\r\n    GROUP BY\r\n        g.name\r\n    ORDER BY\r\n        g.name ASC\r\n)\r\nSELECT  \r\n    q1.group_name AS \"COMPETENCE CENTER\",  -- Rinomina group_name come \"COMPETENCE CENTER\"\r\n    q1.\"PENDING SINCE LAST WEEK\",\r\n    q2.\"LAST WEEK TICKET CLOSED\",\r\n    q3.\"OPEN THIS WEEK\",\r\n    q3.\"NEW CLOSED THIS WEEK\"\r\n    \r\nFROM query1 q1\r\nJOIN query2 q2 ON q1.group_name = q2.group_name\r\nJOIN query3 q3 ON q1.group_name = q3.\"COMPETENCE CENTER\"\r\nORDER BY q1.group_name;",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "TICKETS OVERVIEW",
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "P68D0D9E587DEE267"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 14,
+            "x": 0,
+            "y": 26
+          },
+          "id": 3,
+          "options": {
+            "barRadius": 0,
+            "barWidth": 0.97,
+            "fullHighlight": false,
+            "groupWidth": 0.7,
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "orientation": "auto",
+            "showValue": "auto",
+            "stacking": "none",
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "single",
+              "sort": "none"
+            },
+            "xTickLabelRotation": 0,
+            "xTickLabelSpacing": 0
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "P68D0D9E587DEE267"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n    g.name AS group_name,\r\n    COUNT(CASE WHEN t.state_id NOT IN (4, 7) AND t.escalation_at IS NOT NULL AND t.escalation_at <= NOW() THEN 1 END) AS \"ESCALATED TICKETS\",\r\n    MAX(CASE WHEN t.state_id NOT IN (4, 7) AND t.escalation_at IS NOT NULL AND t.escalation_at <= NOW() THEN EXTRACT(EPOCH FROM (NOW() - t.escalation_at)) / 86400 END) AS \"AVERAGE ESCALATION TIME (DAYS)\"\r\nFROM\r\n    tickets t\r\nRIGHT JOIN\r\n    groups g ON t.group_id = g.id\r\nWHERE\r\n    g.id IN (27, 26, 18, 12, 11, 10, 7, 6, 5, 4, 3)\r\nGROUP BY\r\n    g.name\r\nHAVING\r\n    COUNT(CASE WHEN t.state_id NOT IN (4, 7) AND t.escalation_at IS NOT NULL AND t.escalation_at <= NOW() THEN 1 END) > 0\r\nORDER BY\r\n    g.name ASC;",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "ESCALATED TICKET BY COMPETENCE CENTER",
+          "type": "barchart"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "P68D0D9E587DEE267"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 14,
+            "x": 0,
+            "y": 39
+          },
+          "id": 5,
+          "options": {
+            "barRadius": 0,
+            "barWidth": 0.97,
+            "fullHighlight": false,
+            "groupWidth": 0.7,
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "orientation": "auto",
+            "showValue": "auto",
+            "stacking": "none",
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "single",
+              "sort": "none"
+            },
+            "xTickLabelRotation": 0,
+            "xTickLabelSpacing": 0
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "P68D0D9E587DEE267"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n    g.name AS group_name,\r\n    COUNT(CASE WHEN t.state_id = 1 AND t.owner_id = 1 and t.created_at < NOW() - INTERVAL '7 days' THEN 1 END) AS \"NEW NOT ASSIGNED TICKETS (> 1dd)\",\r\n    COUNT(CASE WHEN t.state_id = 2 AND t.owner_id = 1 THEN 1 END) AS \"OPEN NOT ASSIGNED TICKETS\"\r\nFROM\r\n    tickets t\r\nRIGHT JOIN\r\n    groups g ON t.group_id = g.id\r\nWHERE  \r\n    g.id IN (27, 26, 18, 12, 11, 10, 7, 6, 5, 4, 3)\r\nGROUP BY\r\n    g.name\r\nHAVING\r\n    COUNT(CASE WHEN t.state_id NOT IN (1,3, 4, 7) AND t.owner_id = 1 THEN 1 END) > 0\r\nORDER BY\r\n    g.name ASC;",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "UNASSIGNED TICKETS COUNT BY COMPETENCE CENTER",
+          "type": "barchart"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "P68D0D9E587DEE267"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "max": 10,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "#EAB839",
+                    "value": 5
+                  },
+                  {
+                    "color": "red",
+                    "value": 10
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 15,
+            "x": 0,
+            "y": 52
+          },
+          "id": 6,
+          "options": {
+            "displayMode": "basic",
+            "maxVizHeight": 300,
+            "minVizHeight": 16,
+            "minVizWidth": 8,
+            "namePlacement": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": true
+            },
+            "showUnfilled": true,
+            "sizing": "auto",
+            "valueMode": "color"
+          },
+          "pluginVersion": "11.0.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "P68D0D9E587DEE267"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n    g.name AS group_name,\r\n    COUNT(CASE WHEN t.state_id NOT IN (4, 7) THEN 1 END) AS \"REOPENED TICKETS\"\r\nFROM\r\n    tickets t\r\nRIGHT JOIN\r\n    groups g ON t.group_id = g.id\r\nWHERE\r\n    (state_id NOT IN (4, 7) and close_at is not null)\r\n    AND g.id IN (27, 26, 18, 12, 11, 10, 7, 6, 5, 4, 3)\r\nGROUP BY\r\n    g.name\r\nHAVING\r\n    COUNT(CASE WHEN t.state_id NOT IN (4, 7) THEN 1 END) > 0\r\nORDER BY\r\n    g.name ASC;",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "REOPENING TICKETS COUNT BY COMPETENCE CENTER",
+          "type": "bargauge"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "P68D0D9E587DEE267"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "max": 180,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "#EAB839",
+                    "value": 20
+                  },
+                  {
+                    "color": "red",
+                    "value": 30
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 0,
+            "y": 65
+          },
+          "id": 7,
+          "options": {
+            "displayMode": "basic",
+            "maxVizHeight": 300,
+            "minVizHeight": 16,
+            "minVizWidth": 8,
+            "namePlacement": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": true
+            },
+            "showUnfilled": true,
+            "sizing": "auto",
+            "valueMode": "color"
+          },
+          "pluginVersion": "11.0.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "P68D0D9E587DEE267"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n    g.name AS group_name,\r\n    AVG(EXTRACT(EPOCH FROM NOW() - t.created_at) / 86400) AS \"AVERAGE TICKET AGE (DAYS)\"\r\nFROM\r\n    groups g\r\nLEFT JOIN\r\n    tickets t ON t.group_id = g.id\r\n    AND t.state_id NOT IN (3, 4, 7)  -- Considera solo i ticket aperti\r\nWHERE\r\n    g.id IN (27, 26, 18, 12, 11, 10, 7, 6, 5, 4, 3)\r\n    AND t.id IS NOT NULL  -- Assicura che solo gruppi con ticket aperti siano inclusi\r\nGROUP BY\r\n    g.name\r\nORDER BY\r\n    g.name ASC;",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "AVERAGE OPEN TICKET AGE BY COMPETENCE CENTER (IN DAYS)",
+          "type": "bargauge"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "P68D0D9E587DEE267"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "smooth",
+                "lineWidth": 3,
+                "pointSize": 6,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 17,
+            "w": 19,
+            "x": 0,
+            "y": 74
+          },
+          "id": 8,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "P68D0D9E587DEE267"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "WITH intervals AS (\r\n    SELECT \r\n        generate_series(\r\n            DATE_TRUNC('week', NOW()), \r\n            DATE_TRUNC('week', NOW()) - INTERVAL '180 days', \r\n            '-7 days'\r\n        ) AS week_start\r\n)\r\nSELECT \r\n    intervals.week_start,\r\n    COUNT(*) FILTER (WHERE group_id = 18) AS \"01 - Marketing Information\",\r\n    COUNT(*) FILTER (WHERE group_id = 11) AS \"02 - Privacy & Legal\",\r\n    COUNT(*) FILTER (WHERE group_id = 4) AS \"03 - Access Management\",\r\n    COUNT(*) FILTER (WHERE group_id = 5) AS \"04 - Marketplace Features\",\r\n    COUNT(*) FILTER (WHERE group_id = 10) AS \"05 - Customer Service Tools\",\r\n    COUNT(*) FILTER (WHERE group_id = 3) AS \"06 - Certification Process\",\r\n    COUNT(*) FILTER (WHERE group_id = 7) AS \"07 - Marketplace Integration\",\r\n    COUNT(*) FILTER (WHERE group_id = 12) AS \"08 - Infrastructure\",\r\n    COUNT(*) FILTER (WHERE group_id = 6) AS \"09 - DevOps Deployments\",\r\n    COUNT(*) FILTER (WHERE group_id = 26) AS \"10 - Collaboration Tools\",\r\n    COUNT(*) FILTER (WHERE group_id = 27) AS \"11 - Project Website Features\"\r\nFROM \r\n    intervals\r\nLEFT JOIN \r\n    tickets \r\nON \r\n    tickets.created_at >= intervals.week_start\r\n    AND tickets.created_at < intervals.week_start + INTERVAL '7 days'\r\nGROUP BY \r\n    intervals.week_start\r\nORDER BY \r\n    intervals.week_start ASC;",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "OPENED TICKETS TREND",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "P68D0D9E587DEE267"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "smooth",
+                "lineWidth": 3,
+                "pointSize": 6,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 17,
+            "w": 19,
+            "x": 0,
+            "y": 91
+          },
+          "id": 9,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "P68D0D9E587DEE267"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "WITH intervals AS (\r\n    SELECT \r\n        generate_series(\r\n            DATE_TRUNC('week', NOW()), \r\n            DATE_TRUNC('week', NOW()) - INTERVAL '180 days', \r\n            '-7 days'\r\n        ) AS week_start\r\n)\r\nSELECT \r\n    intervals.week_start,\r\n    COUNT(*) FILTER (WHERE group_id = 18 OR tickets.state_id = 7) AS \"01 - Marketing Information\",\r\n    COUNT(*) FILTER (WHERE group_id = 11 OR tickets.state_id = 7) AS \"02 - Privacy & Legal\",\r\n    COUNT(*) FILTER (WHERE group_id = 4 OR tickets.state_id = 7) AS \"03 - Access Management\",\r\n    COUNT(*) FILTER (WHERE group_id = 5 OR tickets.state_id = 7) AS \"04 - Marketplace Features\",\r\n    COUNT(*) FILTER (WHERE group_id = 10 OR tickets.state_id = 7) AS \"05 - Customer Service Tools\",\r\n    COUNT(*) FILTER (WHERE group_id = 3 OR tickets.state_id = 7) AS \"06 - Certification Process\",\r\n    COUNT(*) FILTER (WHERE group_id = 7 OR tickets.state_id = 7) AS \"07 - Marketplace Integration\",\r\n    COUNT(*) FILTER (WHERE group_id = 12 OR tickets.state_id = 7) AS \"08 - Infrastructure\",\r\n    COUNT(*) FILTER (WHERE group_id = 6 OR tickets.state_id = 7) AS \"09 - DevOps Deployments\",\r\n    COUNT(*) FILTER (WHERE group_id = 26 OR tickets.state_id = 7) AS \"10 - Collaboration Tools\",\r\n    COUNT(*) FILTER (WHERE group_id = 27 OR tickets.state_id = 7) AS \"11 - Project Website Features\"\r\nFROM \r\n    intervals\r\nLEFT JOIN \r\n    tickets \r\nON \r\n    tickets.last_close_at >= intervals.week_start\r\n    AND tickets.last_close_at < intervals.week_start + INTERVAL '7 days'\r\nGROUP BY \r\n    intervals.week_start\r\nORDER BY \r\n    intervals.week_start ASC;",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "CLOSED TICKETS TREND",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "P68D0D9E587DEE267"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "smooth",
+                "lineWidth": 3,
+                "pointSize": 6,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 17,
+            "w": 19,
+            "x": 0,
+            "y": 108
+          },
+          "id": 10,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "maxHeight": 600,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "P68D0D9E587DEE267"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n    DATE_TRUNC('day', h.updated_at) AS day,\r\n    COUNT(DISTINCT CASE WHEN g.id = 18 THEN h.o_id END) AS \"01 - Marketing Information\",\r\n    COUNT(DISTINCT CASE WHEN g.id = 11 THEN h.o_id END) AS \"02 - Privacy & Legal\",\r\n    COUNT(DISTINCT CASE WHEN g.id = 4 THEN h.o_id END) AS \"03 - Access Management\",\r\n    COUNT(DISTINCT CASE WHEN g.id = 5 THEN h.o_id END) AS \"04 - Marketplace Features\",\r\n    COUNT(DISTINCT CASE WHEN g.id = 10 THEN h.o_id END) AS \"05 - Customer Service Tools\",\r\n    COUNT(DISTINCT CASE WHEN g.id = 3 THEN h.o_id END) AS \"06 - Certification Process\",\r\n    COUNT(DISTINCT CASE WHEN g.id = 7 THEN h.o_id END) AS \"07 - Marketplace Integration\",\r\n    COUNT(DISTINCT CASE WHEN g.id = 12 THEN h.o_id END) AS \"08 - Infrastructure\",\r\n    COUNT(DISTINCT CASE WHEN g.id = 6 THEN h.o_id END) AS \"09 - DevOps Deployments\",\r\n    COUNT(DISTINCT CASE WHEN g.id = 26 THEN h.o_id END) AS \"10 - Collaboration Tools\",\r\n    COUNT(DISTINCT CASE WHEN g.id = 27 THEN h.o_id END) AS \"11 - Project Website Features\"\r\nFROM\r\n    histories h\r\nJOIN\r\n    tickets t ON h.o_id = t.id\r\nJOIN\r\n    groups g ON t.group_id = g.id\r\nWHERE\r\n    h.value_to LIKE '%escalation%'\r\n    AND h.updated_at >= NOW() - INTERVAL '90 days'\r\n    AND DATE(h.updated_at) < CURRENT_DATE\r\n    AND g.id IN (27, 26, 18, 12, 11, 10, 7, 6, 5, 4, 3)\r\nGROUP BY\r\n    DATE_TRUNC('day', h.updated_at)\r\nORDER BY\r\n    day DESC;",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "SLA BREACH TREND (until 00:00 am)",
+          "type": "timeseries"
+        }
+      ],
+      "schemaVersion": 39,
+      "tags": [],
+      "templating": {
+        "list": []
+      },
+      "time": {
+        "from": "now-90d",
+        "to": "now"
+      },
+      "timeRangeUpdatedDuringEditOrView": false,
+      "timepicker": {},
+      "timezone": "browser",
+      "title": "Ticketing Analytics",
+      "uid": "eefeqggpmpbeof",
+      "version": 8,
+      "weekStart": ""
+    }
