@@ -77,7 +77,7 @@ access-node:
     ## configuration of the database to be used by the blockchain-connector
     db:
       # -- host of the db
-      host: desmos-postgrespg-3oc0026pnl3p1gi0.postgresql.de-fra.ionos.com
+      host: pg-3oc0026pnl3p1gi0.postgresql.de-fra.ionos.com
       # -- port of the host of the db
       port: 5432
       # -- should be true if is an external service
