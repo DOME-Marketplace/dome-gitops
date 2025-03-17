@@ -63,8 +63,6 @@ grafana:
       postgresVersion: 15
       sslmode: disable
     version: 1
-    secureJsonData:
-      password: "${ZAMMAD_DB_PASSWORD}"
     secureJsonDataFromSecrets:
       password:
         name: ticketing-postgres
