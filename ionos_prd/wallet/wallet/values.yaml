@@ -100,7 +100,7 @@ wallet:
       repository: in2workspace/in2-wallet-ui
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.6.3
+      tag: v1.7.0
     ## ingress specific configuration
     ingress:
       enabled: true
