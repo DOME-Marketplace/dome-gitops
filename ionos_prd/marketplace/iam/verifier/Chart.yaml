@@ -3,7 +3,7 @@ name: vcverifier
 description: Chart holder for argo-cd
 
 type: application
-version: 2.3.2
+version: 2.3.3
 appVersion: 1.1.0
 
 dependencies:
