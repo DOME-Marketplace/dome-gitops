@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: chatbot-backend
-          image: kingmanfri/dome_chatbot_backend:v1.0
+          image: kingmanfri/dome_chatbot_backend:2.0
           env:
             - name: CHATBOT_URL
               value: "https://93.90.201.67/"
