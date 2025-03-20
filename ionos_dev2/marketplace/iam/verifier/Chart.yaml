@@ -3,10 +3,10 @@ name: verifier-api
 description: Chart holder for argo-cd
 
 type: application
-version: 3.3.3
+version: 3.3.4
 appVersion: 1.1.0
 
 dependencies:
   - name: verifier-api
-    version: 1.2.11
+    version: 1.2.15
     repository: https://in2workspace.github.io/helm-charts
