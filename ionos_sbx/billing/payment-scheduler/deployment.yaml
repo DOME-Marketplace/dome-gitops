@@ -39,6 +39,11 @@ spec:
               value: "8080"
             - name: LOG_LEVEL
               value: DEBUG
+            - name: PRIVATE_KEY_HEX
+              valueFrom:
+                secretKeyRef:
+                  name: private-key-verifier
+                  key: PRIVATE_TOKEN_KEY
           livenessProbe:
             httpGet:
               path: /health
