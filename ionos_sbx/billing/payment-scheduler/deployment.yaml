@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: payment-scheduler-container
-          image: production.eng.it:8433/dome/payment-scheduler:0.0.7a
+          image: production.eng.it:8433/dome/payment-scheduler:0.0.7b
           ports:
             - containerPort: 8080
               hostPort: 8480
@@ -39,11 +39,11 @@ spec:
               value: "8080"
             - name: LOG_LEVEL
               value: DEBUG
-            - name: PRIVATE_KEY_HEX
-              valueFrom:
-                secretKeyRef:
-                  name: private-key-verifier
-                  key: PRIVATE_TOKEN_KEY
+            #- name: PRIVATE_KEY_HEX
+            #  valueFrom:
+            #    secretKeyRef:
+            #      name: private-key-verifier
+            #      key: PRIVATE_TOKEN_KEY
           livenessProbe:
             httpGet:
               path: /health
