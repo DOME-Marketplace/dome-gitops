@@ -165,8 +165,8 @@ issuer:
           allowedOrigins: "https://issuer.dome-marketplace-sbx.org"
         external:
           allowedOrigins: "https://issuer.dome-marketplace-sbx.org, https://dome-certification.dome-marketplace-sbx.org"
-    verifier:
-      url: "https://verifier.dome-marketplace-sbx.org"
+      verifier:
+        url: "https://verifier.dome-marketplace-sbx.org"
     db:
       host: issuer-postgres
       port: 5432
