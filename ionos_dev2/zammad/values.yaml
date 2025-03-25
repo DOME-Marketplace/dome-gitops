@@ -24,6 +24,10 @@ zammad:
 
     railsserver:
 
+      env:
+        - name: WEB_CONCURRENCY
+          value: "3"
+
       securityContext:
         allowPrivilegeEscalation: false
         capabilities:
