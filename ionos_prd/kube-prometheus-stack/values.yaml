@@ -63,10 +63,8 @@ grafana:
       postgresVersion: 15
       sslmode: disable
     version: 1
-    secureJsonDataFromSecrets:
-      password:
-        name: ticketing-postgres
-        key: AUTH_KEY
+    secureJsonData:
+      password: $AUTH_KEY
 prometheus:
   prometheusSpec:
     podMonitorSelectorNilUsesHelmValues: false
