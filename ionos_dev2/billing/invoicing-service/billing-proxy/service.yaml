@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: billing-proxy-svc
+  namespace: billing
+spec:
+  selector:
+    app.kubernetes.io/instance: billing-proxy
+    app.kubernetes.io/name: billing-proxy
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
