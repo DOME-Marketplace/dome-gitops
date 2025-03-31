@@ -1,11 +1,11 @@
-issuer:
-  issuer-api:
+dome-issuer:
+  dome-issuer-api:
     fullnameOverride: issuer-api
     nameOverride: issuer-api
     image:
       repository: in2workspace/in2-issuer-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.4.3
+      tag: v1.5.1
       pullPolicy: Always
     ingress:
       enabled: true
@@ -85,10 +85,12 @@ issuer:
           clientSecret: client-secret
           credentialId: credential-id
           credentialPassword: credential-password
+        #types allowed: server, cloud
+        type: cloud
         domain:
-          scheme: http
+          scheme: https
           # change by the external url or set to localhost if deployed locally
-          host: dome-dss:8080
+          host: dts-component-rdss-csc.pre-api.digitelts.com
       api:
         externalDomain:
           # if deployed locally set to false
@@ -179,13 +181,13 @@ issuer:
         name: issuer-secret
         key: db-password
 
-  issuer-ui:
+  dome-issuer-ui:
     fullnameOverride: issuer-ui
     nameOverride: issuer-ui
     image:
       repository: in2workspace/in2-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.8.2
+      tag: v1.10.1
       pullPolicy: Always
     ingress:
       enabled: true
@@ -362,7 +364,7 @@ issuer:
     token:
       expiration: "2592000"
 
-  issuer-postgres:
+  dome-issuer-postgres:
       # -- should the postgresql deployment be enabled
       enabled: true
       # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
@@ -391,7 +393,7 @@ issuer:
               psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE issuer;"
 
 
-  issuer-keycloak-postgres:
+  dome-issuer-keycloak-postgres:
       # -- should the postgresql deployment be enabled
       enabled: true
       # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
