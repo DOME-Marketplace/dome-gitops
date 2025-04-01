@@ -1,15 +1,14 @@
-wallet:
-
+dome-wallet:
   ## configuration for the wallet-api
-  wallet-api:
+  dome-wallet-api:
     # -- should be enabled?
     enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-    fullnameOverride: wallet-api
+    fullnameOverride: dome-wallet-api
     image:
       repository: in2workspace/in2-wallet-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.4.0
+      tag: v1.4.2
       pullPolicy: Always
     ingress:
       enabled: true
@@ -92,15 +91,15 @@ wallet:
 
   ## configuration for the dome-wallet-ui
   dome-wallet-ui:
-    # -- should be enabled?
-    enabled: true
-    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-    fullnameOverride: dome-wallet-ui
     image:
       repository: in2workspace/in2-wallet-ui
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.7.0
+      tag: v1.8.0
+    # -- should be enabled?
+    enabled: true
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    fullnameOverride: dome-wallet-ui
     ## ingress specific configuration
     ingress:
       enabled: true
@@ -235,7 +234,7 @@ wallet:
           create.sh: |
             psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE keycloak;"
 
-  ## configuration of postgres
+    ## configuration of postgres
   wallet-postgresql:
     # -- should the postgresql deployment be enabled
     enabled: true
