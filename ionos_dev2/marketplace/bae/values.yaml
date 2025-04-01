@@ -124,7 +124,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: 9.1.2
+        tag: 10.0.0-rc9
         pullPolicy: Always
     
     plugins:
@@ -157,6 +157,12 @@ business-api-ecosystem:
     token: 
       enabled: false
 
+    extraEnvVars:
+      - name: BAE_CB_CUSTOMER_BILL
+        value: "http://tm-forum-api-customer-bill-management:8080"
+      - name: BAE_CB_DPAS_CLIENT_API_URL
+        value: "https://dpas-sbx.egroup.hu/api/payment-start"
+
   oauth:
     provider: "vc"
   
@@ -170,7 +176,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "9.11.5"
+        tag: "10.0.0-rc18"
         pullPolicy: Always
 
     ingress: 
@@ -210,7 +216,7 @@ business-api-ecosystem:
       - name: BAE_LP_TICKETING_URL
         value: https://ticketing.dome-marketplace-dev2.org/
       - name: BAE_LP_SIOP_OPERATORS
-        value: VATES-B87798617
+        value: VATES-B87798617,VATIT-05724831002
       - name: BAE_LP_SEARCH_URL
         value: http://dome-search-svc.search-engine.svc.cluster.local:8080
       - name: BAE_LP_MATOMO_ID
@@ -219,8 +225,16 @@ business-api-ecosystem:
         value: https://dome-webstats.eurodyn.com/
       - name: BAE_LP_DOME_TRUST
         value: https://dome-certification.dome-marketplace-dev2.org
+      - name: BAE_LP_PURCHASE_ENABLED
+        value: "true"
       - name: BAE_LP_DOME_ABOUT
         value: https://dome-project.eu/about/
+      - name: BAE_LP_BILLING_ENGINE_URL
+        value: http://bae-marketplace-biz-ecosystem-charging-backend.marketplace.svc.cluster.local:8006
+      - name: BAE_LP_ENDPOINT_CUSTOMER_BILL_HOST
+        value: tm-forum-api-customer-bill-management
+      - name: BAE_LP_ENDPOINT_CUSTOMER_BILL_PORT
+        value: "8080"
       - name: BAE_LP_SIOP_PRIVATE_KEY
         valueFrom:
           secretKeyRef:
