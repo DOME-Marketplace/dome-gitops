@@ -1,15 +1,25 @@
 superset:
   extraSecretEnv:
-    SUPERSET_SECRET_KEY: IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT
+    SUPERSET_SECRET_KEY:
+      valueFrom:
+        secretKeyRef:
+          name: superset-secrets
+          key: SUPERSET_SECRET_KEY
+
   configOverrides:
     secret: |
-      SECRET_KEY = 'IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT'
+      SECRET_KEY = os.environ.get('SUPERSET_SECRET_KEY', 'default_secret')
+
   supersetNode:
     env:
-      SUPERSET_SECRET_KEY: IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT
+      - name: SUPERSET_SECRET_KEY
+        valueFrom:
+          secretKeyRef:
+            name: superset-secrets
+            key: SUPERSET_SECRET_KEY
 
   # Persistence
-  persistence: 
+  persistence:
     enabled: true
     pvc:
       size: 5Gi
