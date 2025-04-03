@@ -5,6 +5,11 @@ superset:
         secretKeyRef:
           name: superset-secrets
           key: SUPERSET_SECRET_KEY
+    SUPERSET_DATABASE_URI:
+      valueFrom:
+        secretKeyRef:
+          name: supersetdb-secrets
+          key: SUPERSET_DATABASE_URI
 
   configOverrides:
     secret: |
@@ -17,9 +22,8 @@ superset:
           secretKeyRef:
             name: superset-secrets
             key: SUPERSET_SECRET_KEY
-
-  # Persistence
-  persistence:
-    enabled: true
-    pvc:
-      size: 5Gi
+      - name: SUPERSET_DATABASE_URI
+        valueFrom:
+          secretKeyRef:
+            name: supersetdb-secrets
+            key: SUPERSET_DATABASE_URI
