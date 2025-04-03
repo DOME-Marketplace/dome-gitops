@@ -8,7 +8,7 @@ dome-wallet:
     image:
       repository: in2workspace/in2-wallet-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.4.3
+      tag: v1.4.2
       pullPolicy: Always
     ingress:
       enabled: true
@@ -26,14 +26,22 @@ dome-wallet:
           secretName: wallet-secret-tls
     ## deployment specific configuration
     app:
+      profile: dev
       internalServerPort: 8080
-      basePath: /wallet-api
       logLevel: INFO
+      basePath: /wallet-api
       authServer:
-        externalUrl: https://wallet.dome-marketplace-sbx.org/keycloak/realms/wallet
-        internalUrl: http://dome-wallet-keycloak:8080/keycloak/realms/wallet
-      cors:
-        allowedOrigins: "https://wallet.dome-marketplace-sbx.org"
+        external:
+          scheme: https
+          domain: wallet.dome-marketplace-sbx.org
+          port: 443
+          path: /keycloak/realms/wallet
+        internal:
+          scheme: http
+          domain: dome-wallet-keycloak
+          port: 8080
+          path: /keycloak/realms/wallet
+        jwtDecoderPath: /protocol/openid-connect/certs
       ebsiTest:
         url: http://dome-wallet-keycloak:8080/keycloak/realms/wallet/protocol/openid-connect/token
         client:
@@ -57,7 +65,9 @@ dome-wallet:
       vault:
         provider: hashicorp
         # host needs to match with the service name of the vault server
-        url: http://wallet-vault-server:8200
+        host: wallet-vault-server # fullnameOverride: wallet-vault
+        scheme: http
+        port: 8200
         # cambiar por valores dummy
         existingSecret:
           # -- should an existing secret be used
@@ -85,7 +95,7 @@ dome-wallet:
       repository: in2workspace/in2-wallet-ui
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.9.0
+      tag: v1.8.0
     # -- should be enabled?
     enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
@@ -113,15 +123,23 @@ dome-wallet:
         primaryContrast: "#ffffff"
         secondary: "#50c8ff"
         secondaryContrast: "#000000"
-      logoSrc: "assets/logos/dome-logo.png"
-      faviconSrc: "assets/icons/dome-favicon.png"
+      logoSrc: "assets/logos/dome_white_logo.png"
       walletApi:
         # Este internalDomain es en realidad el external
         internalDomain: https://wallet.dome-marketplace-sbx.org/wallet-api
         # ws = sin certificado, wss = con certificado
         websocketExternalDomain: wss://wallet.dome-marketplace-sbx.org/wallet-api
+      #        websocketPath: /api/v1/pin
+      #        executeContentPath: /api/v1/execute-content
+      #        requestCredentialPath: /api/v1/request-credential
+      #        verifiablePresentationPath: /api/v1/vp
+      #        credentialsPath: /api/v1/credentials
+      #        credentialsByIdPath: /api/v1/credentials?credentialId=
+      #        requestSignedCredentialPath: /api/v1/request-signed-credential
+      #        cborPath: /api/v1/vp/cbor
       iam:
-        externalUrl: https://wallet.dome-marketplace-sbx.org/keycloak/realms/wallet
+        external_domain: https://wallet.dome-marketplace-sbx.org/keycloak
+  #        realm_path: /realms/wallet
 
   ## configuration for the dome-wallet-keycloak
   dome-wallet-keycloak:
