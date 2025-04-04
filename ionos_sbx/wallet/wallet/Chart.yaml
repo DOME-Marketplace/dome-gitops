@@ -8,4 +8,4 @@ dependencies:
   - name: dome-wallet
     condition: wallet.enabled
     repository: https://in2workspace.github.io/helm-charts
-    version: 1.3.16
+    version: 1.3.5
