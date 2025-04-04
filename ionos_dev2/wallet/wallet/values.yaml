@@ -8,7 +8,7 @@ dome-wallet:
     image:
       repository: in2workspace/in2-wallet-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.4.2
+      tag: v1.4.3
       pullPolicy: Always
     ingress:
       enabled: true
@@ -26,22 +26,14 @@ dome-wallet:
           secretName: wallet-secret-tls
     ## deployment specific configuration
     app:
-      profile: test
       internalServerPort: 8080
-      logLevel: INFO
       basePath: /wallet-api
+      logLevel: INFO
       authServer:
-        external:
-          scheme: https
-          domain: wallet.dome-marketplace-dev2.org
-          port: 443
-          path: /keycloak/realms/wallet
-        internal:
-          scheme: http
-          domain: dome-wallet-keycloak
-          port: 8080
-          path: /keycloak/realms/wallet
-        jwtDecoderPath: /protocol/openid-connect/certs
+        externalUrl: https://wallet.dome-marketplace-dev2.org/keycloak/realms/wallet
+        internalUrl: http://dome-wallet-keycloak:8080/keycloak/realms/wallet
+      cors:
+        allowedOrigins: "https://wallet.dome-marketplace-dev.org, https://wallet.dome-marketplace-dev2.org"
       ebsiTest:
         url: http://dome-wallet-keycloak:8080/keycloak/realms/wallet/protocol/openid-connect/token
         client:
@@ -65,9 +57,7 @@ dome-wallet:
       vault:
         provider: hashicorp
         # host needs to match with the service name of the vault server
-        host: wallet-vault-server # fullnameOverride: wallet-vault
-        scheme: http
-        port: 8200
+        url: http://wallet-vault-server:8200
         # cambiar por valores dummy
         existingSecret:
           # -- should an existing secret be used
@@ -95,7 +85,7 @@ dome-wallet:
       repository: in2workspace/in2-wallet-ui
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.8.0
+      tag: v1.9.0
     # -- should be enabled?
     enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
@@ -123,23 +113,15 @@ dome-wallet:
         primaryContrast: "#ffffff"
         secondary: "#50c8ff"
         secondaryContrast: "#000000"
-      logoSrc: "assets/logos/dome_white_logo.png"
+      logoSrc: "assets/logos/dome-logo.png"
+      faviconSrc: "assets/icons/dome-favicon.png"
       walletApi:
         # Este internalDomain es en realidad el external
         internalDomain: https://wallet.dome-marketplace-dev2.org/wallet-api
         # ws = sin certificado, wss = con certificado
         websocketExternalDomain: wss://wallet.dome-marketplace-dev2.org/wallet-api
-      #        websocketPath: /api/v1/pin
-      #        executeContentPath: /api/v1/execute-content
-      #        requestCredentialPath: /api/v1/request-credential
-      #        verifiablePresentationPath: /api/v1/vp
-      #        credentialsPath: /api/v1/credentials
-      #        credentialsByIdPath: /api/v1/credentials?credentialId=
-      #        requestSignedCredentialPath: /api/v1/request-signed-credential
-      #        cborPath: /api/v1/vp/cbor
       iam:
-        external_domain: https://wallet.dome-marketplace-dev2.org/keycloak
-  #        realm_path: /realms/wallet
+        externalUrl: https://wallet.dome-marketplace-dev2.org/keycloak/realms/wallet
 
   ## configuration for the dome-wallet-keycloak
   dome-wallet-keycloak:
@@ -208,7 +190,7 @@ dome-wallet:
         key: keycloak-db-password
 
   ## configuration of postgres to be used for the blockchain-connector - see https://github.com/bitnami/charts/tree/main/bitnami/postgresql for details
-  postgresql:
+  dome-wallet-keycloak-postgresql:
     # -- should the postgresql deployment be enabled
     enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
@@ -243,7 +225,7 @@ dome-wallet:
             psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE keycloak;"
 
     ## configuration of postgres
-  wallet-postgresql:
+  dome-wallet-postgresql:
     # -- should the postgresql deployment be enabled
     enabled: true
     auth:
@@ -256,7 +238,3 @@ dome-wallet:
       secretKeys:
         adminPasswordKey: db-password
         userPasswordKey: db-password
-
-  wallet-external-database:
-    # -- should the postgresql deployment be enabled
-    enabled: false
