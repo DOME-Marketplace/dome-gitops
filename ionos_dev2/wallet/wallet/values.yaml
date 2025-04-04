@@ -152,6 +152,10 @@ dome-wallet:
     enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     fullnameOverride: dome-wallet-keycloak
+    podAnnotations:
+      # This annotation tells Velero to back up the volume mounted as 'data' in the Keycloak pod.
+      # Make sure the volumeMount inside the Keycloak deployment is named 'data'.
+      backup.velero.io/backup-volumes: data
     # -- Added because the rollout is not working
     readinessProbe:
       path: /keycloak/health
@@ -211,6 +215,10 @@ dome-wallet:
     fullnameOverride: dome-wallet-keycloak-postgres
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     nameOverride: dome-wallet-keycloak-postgres
+    # this label indicates to Velero that a backup has to be done for the PVC
+    persistence:
+      labels:
+        backup: "true"
     ## auth configuration for the database
     auth:
       # -- username to be used
