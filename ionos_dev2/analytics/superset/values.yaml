@@ -1,29 +1,9 @@
 superset:
   extraSecretEnv:
-    SUPERSET_SECRET_KEY:
-      valueFrom:
-        secretKeyRef:
-          name: superset-secrets
-          key: SUPERSET_SECRET_KEY
-    SUPERSET_DATABASE_URI:
-      valueFrom:
-        secretKeyRef:
-          name: supersetdb-secrets
-          key: SUPERSET_DATABASE_URI
-
+    SUPERSET_SECRET_KEY: IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT
   configOverrides:
     secret: |
-      SECRET_KEY = os.environ.get('SUPERSET_SECRET_KEY', 'default_secret')
-
+      SECRET_KEY = 'IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT'
   supersetNode:
     env:
-      - name: SUPERSET_SECRET_KEY
-        valueFrom:
-          secretKeyRef:
-            name: superset-secrets
-            key: SUPERSET_SECRET_KEY
-      - name: SUPERSET_DATABASE_URI
-        valueFrom:
-          secretKeyRef:
-            name: supersetdb-secrets
-            key: SUPERSET_DATABASE_URI
+      SUPERSET_SECRET_KEY: IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT
