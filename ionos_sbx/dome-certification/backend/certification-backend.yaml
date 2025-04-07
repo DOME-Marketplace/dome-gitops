@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: certification-backend
-          image: noeliaguedek/dome-compliance-backend:sbx-1.0.15
+          image: noeliaguedek/dome-compliance-backend:sbx-1.0.16
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
@@ -38,6 +38,11 @@ spec:
                 secretKeyRef:
                   name: certification-backend-secret
                   key: jwt-private-key-d
+            - name: JWT_LEAR_CREDENTIAL
+              valueFrom:
+                secretKeyRef:
+                  name: certification-backend-secret
+                  key: jwt-lear-credential
           envFrom:
             - configMapRef:
                 name: certification-backend-config
