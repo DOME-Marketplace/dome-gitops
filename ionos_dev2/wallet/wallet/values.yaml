@@ -215,10 +215,6 @@ dome-wallet:
     fullnameOverride: dome-wallet-keycloak-postgres
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     nameOverride: dome-wallet-keycloak-postgres
-    # this label indicates to Velero that a backup has to be done for the PVC
-    persistence:
-      labels:
-        backup: "true"
     ## auth configuration for the database
     auth:
       # -- username to be used
@@ -234,6 +230,10 @@ dome-wallet:
         userPasswordKey: keycloak-db-password
     ## configuration of the postgres primary replica
     primary:
+      # this label indicates to Velero that a backup has to be done for the PVC
+      persistence:
+        labels:
+          backup: "true"
       ## provide db initialization
       initdb:
         ## provide scripts for initialization
