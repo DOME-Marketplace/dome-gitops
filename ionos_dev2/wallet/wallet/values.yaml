@@ -228,12 +228,6 @@ dome-wallet:
       secretKeys:
         adminPasswordKey: keycloak-db-password
         userPasswordKey: keycloak-db-password
-    ## configuration of the postgres primary replica
-    primary:
-      # this label indicates to Velero that a backup has to be done for the PVC
-      persistence:
-        labels:
-          backup: "true"
       ## provide db initialization
       initdb:
         ## provide scripts for initialization
