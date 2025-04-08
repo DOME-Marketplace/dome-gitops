@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: certification-backend
-          image: noeliaguedek/dome-compliance-backend:sbx-1.0.18
+          image: noeliaguedek/dome-compliance-backend:sbx-1.0.19
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
@@ -50,3 +50,10 @@ spec:
             - containerPort: 8080
               name: http
               protocol: TCP
+          volumeMounts:
+            - name: uploads
+              mountPath: /dome-upload
+      volumes:
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: dome-certification-upload-pvc
