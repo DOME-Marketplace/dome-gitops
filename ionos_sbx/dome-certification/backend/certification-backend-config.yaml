@@ -32,3 +32,4 @@ data:
   JWT_OAUTH_CLIENT_ID: did:key:zDnaehmkEhoybLgRkVbKpAv47Vu81Rw5TmLUA5PrRKuWSbhxn
   JWT_OAUTH_REDIRECT_URI: https://dome-certification.dome-marketplace-sbx.org/auth/login
   JWT_OAUTH_AUD: https://verifier.dome-marketplace-sbx.org
+  JWT_ISSUER_URL: https://issuer.dome-marketplace-sbx.org
