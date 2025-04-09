@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: superset
+  namespace: analytics
+  labels:
+    app.kubernetes.io/instance: superset
+    app.kubernetes.io/name: superset
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: superset
+      app.kubernetes.io/name: superset
+  template:
+    metadata:
+      labels:
+       app.kubernetes.io/instance: superset
+       app.kubernetes.io/name: superset
+    spec:
+      containers:
+        - name: superset
+          image: apache/superset:latest
+          ports:
+            - containerPort: 8088
+          volumeMounts:
+            - name: superset-db
+              mountPath: /app/superset_home
+            - name: superset-config
+              mountPath: /app/pythonpath/superset_config.py
+              subPath: superset_config.py 
+      volumes:
+        - name: superset-db
+          persistentVolumeClaim:
+            claimName: superset-db-pvc
+        - name: superset-config
+          configMap:
+            name: superset-config
