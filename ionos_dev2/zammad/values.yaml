@@ -23,7 +23,7 @@ zammad:
   zammadConfig:
 
     railsserver:
-      webConcurrency: 3
+      webConcurrency: 4
 
       securityContext:
         allowPrivilegeEscalation: false
