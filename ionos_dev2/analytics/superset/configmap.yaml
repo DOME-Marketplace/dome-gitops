@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: superset-config
-  namespace: analytics
-data:
-  superset_config.py: |
-    SECRET_KEY = 'rUip0t+UttxrsWhEALMkTTCNNkpcdbOCV8ssYRbHimFu09K1hAAUOVOy'
