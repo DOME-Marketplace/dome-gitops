@@ -39,6 +39,11 @@ grafana:
       defaultMode: 0440
       mountPath: /etc/secrets/kube-prometheus-stack-sso
       readOnly: true
+    - name: ticketing-postgres-secret
+      secretName: ticketing-postgres
+      defaultMode: 0440
+      mountPath: /etc/secrets/ticketing-postgres
+      readOnly: true
   additionalDataSources:
   - name: loki-distributed
     access: proxy
@@ -64,7 +69,7 @@ grafana:
       sslmode: disable
     version: 1
     secureJsonData:
-      password: $AUTH_KEY
+      password: $__file{/etc/secrets/ticketing-postgres/AUTH_KEY}
 prometheus:
   prometheusSpec:
     podMonitorSelectorNilUsesHelmValues: false
