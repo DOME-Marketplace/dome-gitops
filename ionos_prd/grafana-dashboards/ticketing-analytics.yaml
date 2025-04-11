@@ -294,7 +294,7 @@ data:
               "editorMode": "code",
               "format": "table",
               "rawQuery": true,
-              "rawSql": "SELECT\r\n    g.name AS group_name,\r\n    COUNT(CASE WHEN t.state_id NOT IN (4, 7) AND t.escalation_at IS NOT NULL AND t.escalation_at <= NOW() THEN 1 END) AS \"ESCALATED TICKETS\",\r\n    MAX(CASE WHEN t.state_id NOT IN (4, 7) AND t.escalation_at IS NOT NULL AND t.escalation_at <= NOW() THEN EXTRACT(EPOCH FROM (NOW() - t.escalation_at)) / 86400 END) AS \"AVERAGE ESCALATION TIME (DAYS)\"\r\nFROM\r\n    tickets t\r\nRIGHT JOIN\r\n    groups g ON t.group_id = g.id\r\nWHERE\r\n    g.id IN (27, 26, 18, 12, 11, 10, 7, 6, 5, 4, 3)\r\nGROUP BY\r\n    g.name\r\nHAVING\r\n    COUNT(CASE WHEN t.state_id NOT IN (4, 7) AND t.escalation_at IS NOT NULL AND t.escalation_at <= NOW() THEN 1 END) > 0\r\nORDER BY\r\n    g.name ASC;",
+              "rawSql": "SELECT\r\n    g.name AS group_name,\r\n    COUNT(CASE WHEN t.state_id NOT IN (4, 7) AND t.escalation_at IS NOT NULL AND t.escalation_at <= NOW() THEN 1 END) AS \"ESCALATED TICKETS\",\r\n    MAX(CASE WHEN t.state_id NOT IN (4, 7) AND t.escalation_at IS NOT NULL AND t.escalation_at <= NOW() THEN EXTRACT(EPOCH FROM (NOW() - t.escalation_at)) / 86400 END) AS \"MAX ESCALATION TIME (DAYS)\"\r\nFROM\r\n    tickets t\r\nRIGHT JOIN\r\n    groups g ON t.group_id = g.id\r\nWHERE\r\n    g.id IN (27, 26, 18, 12, 11, 10, 7, 6, 5, 4, 3)\r\nGROUP BY\r\n    g.name\r\nHAVING\r\n    COUNT(CASE WHEN t.state_id NOT IN (4, 7) AND t.escalation_at IS NOT NULL AND t.escalation_at <= NOW() THEN 1 END) > 0\r\nORDER BY\r\n    g.name ASC;",
               "refId": "A",
               "sql": {
                 "columns": [
