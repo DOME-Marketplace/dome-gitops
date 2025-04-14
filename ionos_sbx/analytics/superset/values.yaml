@@ -1,9 +1,35 @@
-superset:
-  extraSecretEnv:
-    SUPERSET_SECRET_KEY: IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT
-  configOverrides:
-    secret: |
-      SECRET_KEY = 'IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT'
-  supersetNode:
-    env:
-      SUPERSET_SECRET_KEY: IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT
+image:
+  repository: apache/superset
+  tag: latest
+
+extraEnvSecrets:
+  SUPERSET_SECRET_KEY:
+    name: superset-secrets
+    key: SUPERSET_SECRET_KEY
+  ADMIN_PASSWORD:
+    name: superset-secrets
+    key: admin_password
+  ADMIN_USERNAME:
+    name: superset-secrets
+    key: admin_username
+  DB_PASS:
+    name: superset-secrets
+    key: external_db_password
+
+configOverrides:
+  superset_config.py: |
+    import os
+    SECRET_KEY = os.environ.get('SUPERSET_SECRET_KEY', 'default-key')
+    SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://supersetuser:{os.environ.get('DB_PASS')}@pg-7ibhgq9r54fl3acm.postgresql.de-txl.ionos.com:5432/supersetdb"
+
+init:
+  createAdmin: true
+
+persistence:
+  enabled: true
+
+postgresql:
+  enabled: false
+
+redis:
+  enabled: true
