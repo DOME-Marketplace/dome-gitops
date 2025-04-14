@@ -29,10 +29,15 @@ grafana:
       #allowed_organizations: ["DOME-Marketplace"]
       client_id: $__file{/etc/secrets/kube-prometheus-stack-sso/client_id}
       client_secret: $__file{/etc/secrets/kube-prometheus-stack-sso/client_secret}
-      role_attribute_path: >-
-        contains(groups[*], '@DOME-Marketplace/dome-grafana-prod-admins') && 'GrafanaAdmin' ||
-        contains(groups[*], '@DOME-Marketplace/dome-grafana-prod-rw') && 'Editor' ||
-        contains(groups[*], '@DOME-Marketplace/dome-grafana-prod-ro') && 'Viewer'
+      role_attribute_strict: true
+      role_attribute_path:
+        contains(groups[*], '@DOME-Marketplace/dome-grafana-prd-admins') && 'GrafanaAdmin' ||
+        contains(groups[*], '@DOME-Marketplace/dome-grafana-prd-rw') && 'Editor' ||
+        contains(groups[*], '@DOME-Marketplace/dome-grafana-prd-ro') && 'Viewer'
+  resources:
+    requests:
+      cpu: 150m
+      memory: 350Mi
   extraSecretMounts:
     - name: kube-prometheus-stack-sso
       secretName: kube-prometheus-stack-sso
@@ -70,12 +75,55 @@ grafana:
     version: 1
     secureJsonData:
       password: $__file{/etc/secrets/ticketing-postgres/AUTH_KEY}
+prometheusOperator:
+  resources:
+    requests:
+      cpu: 20m
+      memory: 50Mi
+  admissionWebhooks:
+    deployment:
+      resources:
+        requests:
+          cpu: 20m
+          memory: 50Mi
+    patch:
+      resources:
+        requests:
+          cpu: 20m
+          memory: 50Mi
+  prometheusConfigReloader:
+    resources:
+      requests:
+        cpu: 20m
+        memory: 50Mi
 prometheus:
   prometheusSpec:
     podMonitorSelectorNilUsesHelmValues: false
     probeSelectorNilUsesHelmValues: false
     ruleSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
+    retention: "30d"
+    resources:
+      requests:
+        cpu: 200m
+        memory: 1000Mi
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 300Gi
+prometheus-node-exporter:
+  resources:
+    requests:
+      cpu: 5m
+      memory: 20Mi
+kube-state-metrics:
+  resources:
+    requests:
+      cpu: 3m
+      memory: 50Mi
 alertmanager:
   config:
     route:
@@ -96,6 +144,11 @@ alertmanager:
       # - webhook_url_file: /etc/alertmanager/secrets/kube-prometheus-stack-discord-infrastructure-webhook-secret/webhook_url
     templates:
     - '/etc/alertmanager/config/*.tmpl'
-  # alertmanagerSpec:
+  alertmanagerSpec:
+    retention: "960h"
+    resources:
+      requests:
+        cpu: 20m
+        memory: 50Mi
   #   secrets:
   #     - kube-prometheus-stack-discord-infrastructure-webhook-secret
