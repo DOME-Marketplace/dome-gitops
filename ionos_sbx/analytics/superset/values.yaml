@@ -1,35 +1,28 @@
-image:
-  repository: apache/superset
-  tag: latest
+auth:
+  username: admin
+  password: admin
+  email: georgios.peppas@eurodyn.com
 
-extraEnvSecrets:
-  SUPERSET_SECRET_KEY:
-    name: superset-secrets
-    key: SUPERSET_SECRET_KEY
-  ADMIN_PASSWORD:
-    name: superset-secrets
-    key: admin_password
-  ADMIN_USERNAME:
-    name: superset-secrets
-    key: admin_username
-  DB_PASS:
-    name: superset-secrets
-    key: external_db_password
-
-configOverrides:
-  superset_config.py: |
-    import os
-    SECRET_KEY = os.environ.get('SUPERSET_SECRET_KEY', 'default-key')
-    SQLALCHEMY_DATABASE_URI = f"postgresql+psycopg2://supersetuser:{os.environ.get('DB_PASS')}@pg-7ibhgq9r54fl3acm.postgresql.de-txl.ionos.com:5432/supersetdb"
-
-init:
-  createAdmin: true
-
-persistence:
-  enabled: true
+externalDatabase:
+  host: pg-75qkrjg6i4d7tlg2.postgresql.de-txl.ionos.com
+  port: 5432
+  user: supersetuser
+  password: jijikos
+  database: supersetdb
 
 postgresql:
   enabled: false
+  image:
+    registry: docker.io
+    repository: bitnami/postgresql
+    tag: 14.6.0-debian-11-r13
 
 redis:
   enabled: true
+
+ingress:
+  enabled: false
+
+service:
+  type: ClusterIP
+  port: 8088
