@@ -18,11 +18,7 @@ postgresql:
     tag: 14.6.0-debian-11-r13
 
 redis:
-  enabled: true
-
-ingress:
   enabled: false
 
-service:
-  type: ClusterIP
-  port: 8088
+ingress:
+  enabled: true
