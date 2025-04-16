@@ -1,6 +1,12 @@
 apiVersion: v2
 name: superset
-description: A Helm chart for deploying Apache Superset with an external PostgreSQL database.
+description: Chart holder for argo-cd
+
 type: application
 version: 0.14.2
-appVersion: "4.1.2"
+appVersion: "0.14.2"
+
+dependencies:
+- name: superset
+  version: 0.14.2
+  repository: https://charts.bitnami.com/bitnami
