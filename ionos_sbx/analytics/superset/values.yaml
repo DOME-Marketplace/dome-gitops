@@ -18,7 +18,19 @@ postgresql:
     tag: 14.6.0-debian-11-r13
 
 redis:
-  enabled: false
-
-ingress:
   enabled: true
+  image:
+    registry: docker.io
+    repository: bitnami/redis
+    tag: 7.0.11-debian-11-r19
+    pullPolicy: IfNotPresent
+
+superset:
+  image:
+    registry: docker.io
+    repository: bitnami/superset
+    tag: 4.1.2-debian-11-r0
+    pullPolicy: IfNotPresent
+
+  init:
+    dbMigration: true
