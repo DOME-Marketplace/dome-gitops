@@ -1,0 +1,33 @@
+driver:
+  kind: ebpf
+falcosidekick:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+  prometheusRules:
+    # -- enable the creation of PrometheusRules for alerting
+    enabled: true
+  config:
+    loki:
+      # -- Loki <http://host:port>, if not `empty`, Loki is *enabled*
+      hostport: "http://loki-distributed-gateway.loki-distributed.svc.cluster.local"
+      # -- user for Grafana Logs
+      user: ""
+      # -- API Key for Grafana Logs
+      apikey: ""
+      # -- Loki endpoint URL path, more info: <https://grafana.com/docs/loki/latest/api/#post-apiprompush>
+      endpoint: "/loki/api/v1/push"
+      # -- Loki tenant, if not `empty`, Loki tenant is *enabled*
+      tenant: ""
+      # -- comma separated list of fields to use as labels additionally to rule, source, priority, tags and custom_fields
+      extralabels: ""
+      # -- a list of comma separated custom headers to add, syntax is "key:value,key:value"
+      customheaders: ""
+      # -- minimum priority of event to use this output, order is `emergency\|alert\|critical\|error\|warning\|notice\|informational\|debug or ""`
+      minimumpriority: ""
+      # -- if true, checkcert flag will be ignored (server cert will always be checked)
+      mutualtls: false
+      # -- check if ssl certificate of the output is valid
+      checkcert: false
+tty: true
+
