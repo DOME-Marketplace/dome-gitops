@@ -31,6 +31,22 @@ superset:
     repository: bitnami/superset
     tag: 4.1.2-debian-11-r0
     pullPolicy: IfNotPresent
-
   init:
     dbMigration: true
+
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+  hostname: analytics.dome-marketplace-sbx.org
+  tls: true
+  extraTls:
+    - hosts:
+        - analytics.dome-marketplace-sbx.org
+      secretName: analytics-tls-secret
+  path: /
+  pathType: Prefix
+  servicePort: http
