@@ -5,7 +5,7 @@ dome-issuer:
     image:
       repository: in2workspace/in2-issuer-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.6.3
+      tag: v1.6.4
       pullPolicy: Always
     ingress:
       enabled: true
@@ -21,44 +21,11 @@ dome-issuer:
         - hosts:
             - issuer.dome-marketplace-dev2.org
           secretName: issuer-secret-tls
-    ingressWellKnown:
-      enabled: true
-      className: nginx
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-dev2-issuer
-        nginx.ingress.kubernetes.io/rewrite-target: /issuer-keycloak/realms/issuer-dome/verifiable-credential/did:key:z6MkqmaCT2JqdUtLeKah7tEVfNXtDXtQyj4yxEgV11Y5CqUa/.well-known/openid-configuration
-      hosts:
-        - host: issuer.dome-marketplace-dev2.org
-          paths:
-            - path: /issuer-api/.well-known/openid-configuration
-              pathType: Prefix
-              serviceName: dome-issuer-keycloak
-              servicePort: 8080
-      tls:
-        - hosts:
-            - issuer.dome-marketplace-dev2.org
-          secretName: issuer-secret-tls
-    ingressToken:
-      enabled: true
-      className: nginx
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-dev2-issuer
-        nginx.ingress.kubernetes.io/rewrite-target: /issuer-keycloak/realms/issuer-dome/verifiable-credential/did:key:z6MkqmaCT2JqdUtLeKah7tEVfNXtDXtQyj4yxEgV11Y5CqUa/token
-      hosts:
-        - host: issuer.dome-marketplace-dev2.org
-          paths:
-            - path: /issuer-api/token
-              pathType: Prefix
-              serviceName: dome-issuer-keycloak
-              servicePort: 8080
-      tls:
-        - hosts:
-            - issuer.dome-marketplace-dev2.org
-          secretName: issuer-secret-tls
     app:
       profile: test
       logLevel:
-        app: DEBUG
+        app: INFO
+        security: INFO
       internalServerPort: 8080
       mail:
         host: smtp.ionos.de
@@ -186,7 +153,7 @@ dome-issuer:
     image:
       repository: in2workspace/in2-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.10.1
+      tag: v1.10.3
       pullPolicy: Always
     ingress:
       enabled: true
@@ -262,8 +229,8 @@ dome-issuer:
         walletPath: "books/dome-digital-wallet-user-guide"
       profile: test
       procedures: /api/v1/procedures
-      saveCredential: /api/v1/credentials?type=LEARCredentialEmployee
-      credentialOfferUrl: /api/v1/credential-offer
+      saveCredential: /oid4vci/v1/credentials?type=LEARCredentialEmployee
+      credentialOfferUrl: /oid4vci/v1/credential-offer
       notification: /api/v1/notifications
 
   dome-issuer-keycloak:
