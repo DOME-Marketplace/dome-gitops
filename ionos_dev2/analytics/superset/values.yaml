@@ -1,9 +1,52 @@
+auth:
+  username: admin
+  password: admin
+  email: georgios.peppas@eurodyn.com
+
+externalDatabase:
+  host: pg-7ibhgq9r54fl3acm.postgresql.de-txl.ionos.com
+  port: 5432
+  user: supersetuser
+  password: jijikos
+  database: supersetdb
+
+postgresql:
+  enabled: false
+  image:
+    registry: docker.io
+    repository: bitnami/postgresql
+    tag: 14.6.0-debian-11-r13
+
+redis:
+  enabled: true
+  image:
+    registry: docker.io
+    repository: bitnami/redis
+    tag: 7.0.11-debian-11-r19
+    pullPolicy: IfNotPresent
+
 superset:
-  extraSecretEnv:
-    SUPERSET_SECRET_KEY: IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT
-  configOverrides:
-    secret: |
-      SECRET_KEY = 'IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT'
-  supersetNode:
-    env:
-      SUPERSET_SECRET_KEY: IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT
+  image:
+    registry: docker.io
+    repository: bitnami/superset
+    tag: 4.1.2-debian-11-r0
+    pullPolicy: IfNotPresent
+  init:
+    dbMigration: true
+
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-dev2-issuer
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+  hostname: analytics.dome-marketplace-dev2.org
+  tls: true
+  extraTls:
+    - hosts:
+        - analytics.dome-marketplace-dev2.org
+      secretName: analytics-tls-secret
+  path: /
+  pathType: Prefix
+  servicePort: 8088
