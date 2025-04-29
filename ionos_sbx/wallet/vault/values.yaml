@@ -7,7 +7,7 @@ vault:
     enabled: false
   server:
     podAnnotations:
-      backup.velero.io/backup-volumes: data,config,home
+      backup.velero.io/backup-volumes: data
     persistence:
       enabled: true
       persistentVolumeClaimRetentionPolicy:
