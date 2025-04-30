@@ -32,5 +32,4 @@ spec:
     - hosts:
         - wallet.dome-marketplace.org
         - wallet.yumket.eu
-        - wallet.dome-marketplace-prd.org
       secretName: wallet-secret-tls-2
