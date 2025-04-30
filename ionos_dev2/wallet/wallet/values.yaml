@@ -7,10 +7,11 @@ global:
     annotations:
       nginx.ingress.kubernetes.io/ssl-redirect: "false"
       nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-      nginx.ingress.kubernetes.io/use-regex: "true"
-      nginx.ingress.kubernetes.io/rewrite-target: /$2
     enableTLS: true
     clusterIssuer: "letsencrypt-dev2-issuer"
+    secondary:
+      enabled: true
+      domain: "wallet.example-secondary-domain.org"
 
 dome-wallet:
 
@@ -28,7 +29,7 @@ dome-wallet:
         externalUrl: https://wallet.dome-marketplace-dev2.org/keycloak/realms/wallet
         internalUrl: http://dome-wallet-keycloak:80/realms/wallet
       cors:
-        allowedOrigins: "https://wallet.dome-marketplace-dev.org, https://wallet.dome-marketplace-dev2.org"
+        allowedOrigins: "https://wallet.dome-marketplace-dev.org, https://wallet.dome-marketplace-dev2.org, wallet.example-secondary-domain.org"
       vault:
         provider: hashicorp
         # host needs to match with the service name of the vault server
@@ -78,7 +79,7 @@ dome-wallet:
     image:
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.9.1
+      tag: v1.9.2
     ## deployment specific configuration
     app:
       logsEnabled: true
@@ -91,9 +92,9 @@ dome-wallet:
       faviconSrc: "assets/icons/dome-favicon.png"
       walletApi:
         # Este internalDomain es en realidad el external
-        internalUrl: https://wallet.dome-marketplace-dev2.org/api
+        internalUrl: https://wallet.dome-marketplace-dev2.org
         # ws = sin certificado, wss = con certificado
-        websocketExternalUrl: wss://wallet.dome-marketplace-dev2.org/api
+        websocketExternalUrl: wss://wallet.dome-marketplace-dev2.org
       iam:
         externalUrl: https://wallet.dome-marketplace-dev2.org/keycloak/realms/wallet
 
