@@ -11,6 +11,9 @@ global:
       nginx.ingress.kubernetes.io/rewrite-target: /$2
     enableTLS: true
     clusterIssuer: "letsencrypt-prd-issuer"
+    secondary:
+      enabled: true
+      domain: "wallet.dome-marketplace-prd.org"
 
 dome-wallet:
 
@@ -78,7 +81,7 @@ dome-wallet:
     image:
       pullPolicy: IfNotPresent
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.9.1
+      tag: v1.9.2
     ## deployment specific configuration
     app:
       logsEnabled: false
@@ -91,9 +94,9 @@ dome-wallet:
       faviconSrc: "assets/icons/dome-favicon.png"
       walletApi:
         # Este internalDomain es en realidad el external
-        internalUrl: https://wallet.dome-marketplace.eu/api
+        internalUrl: https://wallet.dome-marketplace.eu
         # ws = sin certificado, wss = con certificado
-        websocketExternalUrl: wss://wallet.dome-marketplace.eu/api
+        websocketExternalUrl: wss://wallet.dome-marketplace.eu
       iam:
         externalUrl: https://wallet.dome-marketplace.eu/keycloak/realms/wallet
 

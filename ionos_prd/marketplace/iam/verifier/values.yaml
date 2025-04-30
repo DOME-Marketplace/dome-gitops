@@ -28,7 +28,7 @@ verifier-api:
           # Placeholder for support URL (REQUIRED)
           support: "https://ticketing.dome-marketplace.org"
           # Placeholder for wallet URL (REQUIRED)
-          wallet: "https://wallet.dome-marketplace.org"
+          wallet: "https://wallet.dome-marketplace.eu"
         colors:
           primary: "#2D58A7"
           # Defines contrasting text color for primary color (OPTIONAL with default value)
