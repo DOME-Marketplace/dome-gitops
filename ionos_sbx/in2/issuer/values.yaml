@@ -92,17 +92,17 @@ dome-issuer:
           allowedOrigins: "https://issuer.dome-marketplace-sbx.org"
         external:
           allowedOrigins: "https://issuer.dome-marketplace-sbx.org, https://dome-certification.dome-marketplace-sbx.org"
-    db:
-      host: issuer-postgres
-      port: 5432
-      externalService: false
-      name: issuer
-      schema: issuer
-      username: postgres
-      existingSecret:
-        enabled: true
-        name: issuer-secret
-        key: db-password
+      db:
+        host: issuer-postgres
+        port: 5432
+        externalService: false
+        name: issuer
+        schema: issuer
+        username: postgres
+        existingSecret:
+          enabled: true
+          name: issuer-secret
+          key: db-password
 
   dome-issuer-frontend:
     fullNameOverride: "dome-issuer-frontend"
@@ -150,16 +150,16 @@ dome-issuer:
         https:
           clientAuth: request
 
-        db:
-          host: dome-issuer-keycloak-postgres
-          port: 5432
-          externalService: false
-          name: cred
-          username: postgres
-          existingSecret:
-            enabled: true
-            name: issuer-secret
-            passwordKey: keycloak-db-password
+      db:
+        host: dome-issuer-keycloak-postgres
+        port: 5432
+        externalService: false
+        name: cred
+        username: postgres
+        existingSecret:
+          enabled: true
+          name: issuer-secret
+          passwordKey: keycloak-db-password
 
   dome-issuer-postgresql:
       # -- should the postgresql deployment be enabled
