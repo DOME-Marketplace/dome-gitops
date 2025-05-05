@@ -1,32 +1,35 @@
 dome-issuer:
-  dome-issuer-api:
-    fullnameOverride: issuer-api
-    nameOverride: issuer-api
-    image:
-      repository: in2workspace/in2-issuer-api
-      # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.6.4
-      pullPolicy: Always
+
+  global:
+    domain: "issuer.dome-marketplace-sbx.org"
     ingress:
       enabled: true
-      className: nginx
+      className: "nginx"
+      labels: { }
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
-      hosts:
-        - host: issuer.dome-marketplace-sbx.org
-          paths:
-            - path: /issuer-api
-              pathType: Prefix
-      tls:
-        - hosts:
-            - issuer.dome-marketplace-sbx.org
-          secretName: issuer-secret-tls
+        nginx.ingress.kubernetes.io/ssl-redirect: "false"
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+      enableTLS: true
+      clusterIssuer: "letsencrypt-sbx-issuer"
+
+  dome-issuer-backend:
+    fullNameOverride: "dome-issuer-backend"
+    image:
+      repository: in2workspace/in2-issuer-backend
+      # Overrides the image tag whose default is the chart appVersion.
+      tag: v1.6.5
+      pullPolicy: Always
     app:
-      profile: dev
       logLevel:
         app: INFO
         security: INFO
-      internalServerPort: 8080
+      url: https://issuer.dome-marketplace-sbx.org
+      issuerFrontendUrl: https://issuer.dome-marketplace-sbx.org
+      knowledgeBase:
+        walletGuideUrl: "https://knowledgebase.dome-marketplace-sbx.org/books/dome-digital-wallet-user-guide"
+        uploadCertificationGuideUrl: "https://knowledgebase.dome-marketplace-sbx.org"
+      trustFrameworkUrl: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080"
+      verifierUrl: "https://verifier.dome-marketplace-sbx.org"
       mail:
         host: smtp.ionos.de
         port: 587
@@ -53,36 +56,11 @@ dome-issuer:
           credentialPassword: credential-password
         #types allowed: server, cloud
         type: cloud
-        domain:
-          scheme: https
-          # change by the external url or set to localhost if deployed locally
-          host: dts-component-rdss-csc.pre-api.digitelts.com
-      api:
-        externalDomain:
-          # if deployed locally set to false
-          externalService: true
-          scheme: https
-          # change by the external url or set to localhost if deployed locally
-          host: issuer.dome-marketplace-sbx.org
-          # internalPort is only used if externalService is false
-          internalPort: 30001
-          path: /issuer-api
-        internalDomain: http://issuer-api:8080
-        configSource: yaml
-        cacheLifetimeCredentialOffer: 10
-        cacheLifetimeVerifiableCredential: 10
+        url: https://dts-component-rdss-csc.pre-api.digitelts.com
       authServer:
         provider: keycloak
-        externalDomain:
-          # if deployed locally set to false
-          externalService: true
-          scheme: https
-          # change by the external url or set to localhost if deployed locally
-          host: issuer.dome-marketplace-sbx.org
-          # internalPort is only used if externalService is false
-          internalPort: 30002
-          path: /issuer-keycloak
-        internalDomain: http://dome-issuer-keycloak:8080/issuer-keycloak
+        externalUrl: https://issuer.dome-marketplace-sbx.org
+        internalDomain: http://dome-issuer-keycloak:80
         realm: issuer-dome
         client:
           clientId: issuer-api-client
@@ -92,25 +70,6 @@ dome-issuer:
             name: issuer-secret
             clientSecretKey: authServerClientSecret
             clientPasswordKey: issuer-api-user-password
-        paths:
-          tokenPath: /realms/issuer-dome/protocol/openid-connect/token
-      ui:
-        externalDomain:
-          # if deployed locally set to false
-          externalService: true
-          scheme: https
-          # change by the external url or set to localhost if deployed locally
-          host: issuer.dome-marketplace-sbx.org
-          # internalPort is only used if externalService is false
-          internalPort: 30000
-          path: /
-        internalDomain: http://dome-wallet-ui:8080
-      wallet:
-        url: https://wallet.dome-marketplace.org/
-      knowledgebase:
-        walletUrl: "https://knowledgebase.dome-marketplace-sbx.org/books/dome-digital-wallet-user-guide"
-      trustFramework:
-        url: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080"
       defaultSigner:
         existingSecret:
           enabled: true
@@ -126,15 +85,13 @@ dome-issuer:
           enabled: true
           name: issuer-secret
           vc: vc
-          cryptoPrivateKey: private-key
+          privateKey: private-key
           credentialDidKey: did-key
       cors:
         default:
           allowedOrigins: "https://issuer.dome-marketplace-sbx.org"
         external:
           allowedOrigins: "https://issuer.dome-marketplace-sbx.org, https://dome-certification.dome-marketplace-sbx.org"
-      verifier:
-        url: "https://verifier.dome-marketplace-sbx.org"
     db:
       host: issuer-postgres
       port: 5432
@@ -147,60 +104,14 @@ dome-issuer:
         name: issuer-secret
         key: db-password
 
-  dome-issuer-ui:
-    fullnameOverride: issuer-ui
-    nameOverride: issuer-ui
+  dome-issuer-frontend:
+    fullNameOverride: "dome-issuer-frontend"
     image:
       repository: in2workspace/in2-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.10.3
+      tag: v1.11.0
       pullPolicy: Always
-    ingress:
-      enabled: true
-      className: nginx
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
-      hosts:
-        - host: issuer.dome-marketplace-sbx.org
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - hosts:
-            - issuer.dome-marketplace-sbx.org
-          secretName: issuer-secret-tls
     app:
-      internalServerPort: 8080
-      loginUrl:
-        # if deployed locally set to false
-        externalService: true
-        scheme: https
-        # change by the external url or set to localhost if deployed locally
-        host: issuer.dome-marketplace-sbx.org
-        # internalPort is only used if externalService is false
-        internalPort: 30002
-        path: /issuer-keycloak/realms/issuer-dome
-      clientId: vc-auth-client
-      scope: openid profile email offline_access vc mandator
-      grantType: code
-      baseUrl:
-        # if deployed locally set to false
-        externalService: true
-        scheme: https
-        # change by the external url or set to localhost if deployed locally
-        host: issuer.dome-marketplace-sbx.org
-        # internalPort is only used if externalService is false
-        internalPort: 30001
-        path: /issuer-api
-      walletUrlTest:
-        # if deployed locally set to false
-        externalService: true
-        scheme: https
-        # change by the external url or set to localhost if deployed locally
-        host: wallet.dome-marketplace-sbx.org
-        # internalPort is only used if externalService is false
-        internalPort: 30003
-        path: /
       colors:
         primary: "#2d58a7"
         primaryContrast: "#ffffff"
@@ -208,129 +119,49 @@ dome-issuer:
         secondaryContrast: "#dde6f6"
       logoSrc: "assets/logos/logo-dome-issuer-reduced.png"
       faviconSrc: "assets/icon/favicon.png"
-      walletUrl:
-        # if deployed locally set to false
-        externalService: true
-        scheme: https
-        # change by the external url or set to localhost if deployed locally
-        host: wallet.dome-marketplace.org
-        # internalPort is only used if externalService is false
-        internalPort: 30003
-        path: /
-      knowledgebaseUrl:
-        # if deployed locally set to false
-        externalService: true
-        scheme: https
-        # change by the external url or set to localhost if deployed locally
-        host: knowledgebase.dome-marketplace-sbx.org
-        path: /
-        walletPath: "books/dome-digital-wallet-user-guide"
-      profile: sbx
-      procedures: /api/v1/procedures
-      saveCredential: /oid4vci/v1/credentials?type=LEARCredentialEmployee
-      credentialOfferUrl: /oid4vci/v1/credential-offer
-      notification: /api/v1/notifications
+      keycloakUrl: "https://issuer.dome-marketplace-sbx.org/realms/issuer-dome"
+      backendUrl: "https://issuer.dome-marketplace-sbx.org"
+      walletUrl: "https://wallet.dome-marketplace.eu"
+      knowledgeBaseUrl: "https://knowledgebase.dome-marketplace-sbx.org"
 
   dome-issuer-keycloak:
     fullnameOverride: dome-issuer-keycloak
     nameOverride: dome-issuer-keycloak
+    enabled: true
     image:
-      repository: in2workspace/dome-issuer-keycloak
+      repository: in2workspace/in2-dome-keycloak
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.0.3
-    readinessProbe:
-      path: /issuer-keycloak/health
-    livenessProbe:
-      path: /issuer-keycloak/health
-    ingress:
-      enabled: true
-      className: nginx
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
-      hosts:
-        - host: issuer.dome-marketplace-sbx.org
-          paths:
-            - path: /issuer-keycloak
-              pathType: Prefix
-      tls:
-        - hosts:
-            - issuer.dome-marketplace-sbx.org
-          secretName: issuer-secret-tls
+      tag: v1.1.0
     # Keycloak Configuration
-    keycloak:
-      proxy: edge
-      logsCertsLevel: DEBUG
-      logLevel: DEBUG
-      admin:
-        username: admin
-        existingSecret:
-          enabled: true
-          name: issuer-secret
-          passwordKey: keycloak-admin-password
-      relativePath: "/issuer-keycloak/"
-      hostname:
-        url:
-          # if deployed locally set to false
-          externalService: true
-          scheme: https
-          # change by the external url or set to localhost if deployed locally
-          host: issuer.dome-marketplace-sbx.org
-          # internalPort is only used if externalService is false
-          internalPort: 30002
-          path: /issuer-keycloak
-        adminUrl:
-          # if deployed locally set to false
-          externalService: true
-          scheme: https
-          # change by the external url or set to localhost if deployed locally
-          host: issuer.dome-marketplace-sbx.org
-          # internalPort is only used if externalService is false
-          internalPort: 30002
-          path: /issuer-keycloak
-      https:
-        certificateKeyFile: /opt/keycloak/pem/server.key.pem
-        certificateFile: /opt/keycloak/pem/server.crt.pem
-        trustStoreFile: /opt/keycloak/truststore/truststore.jks
-        existingSecret:
-          enabled: true
-          name: issuer-secret
-          trustStorePasswordKey: keycloakTrustStorePassword
-        clientAuth: request
-      db:
-        host: dome-issuer-keycloak-postgres
-        port: 5432
-        externalService: false
-        name: cred
-        username: postgres
-        existingSecret:
-          enabled: true
-          name: issuer-secret
-          passwordKey: keycloak-db-password
+    app:
+      keycloak:
+        proxyHeader: edge
+        logsCertsLevel: INFO
+        logLevel: INFO
+        admin:
+          username: admin
+          existingSecret:
+            enabled: true
+            name: issuer-secret
+            passwordKey: keycloak-admin-password
+        hostnameUrl: https://issuer.dome-marketplace-sbx.org
+        adminUrl: https://issuer.dome-marketplace-sbx.org
+        https:
+          clientAuth: request
 
-    # Issuer API Configuration
-    issuerApi:
-      url: http://issuer-api:8080/issuer-api
-      externalUrl:
-        # if deployed locally set to false
-        externalService: true
-        scheme: https
-        # change by the external url or set to localhost if deployed locally
-        host: issuer.dome-marketplace-sbx.org
-        # internalPort is only used if externalService is false
-        internalPort: 30001
-        path: /issuer-api
+        db:
+          host: dome-issuer-keycloak-postgres
+          port: 5432
+          externalService: false
+          name: cred
+          username: postgres
+          existingSecret:
+            enabled: true
+            name: issuer-secret
+            passwordKey: keycloak-db-password
 
-    # Pre-authorization Configuration
-    preAuth:
-      lifespan: 10
-      lifespanTimeUnit: MINUTES
-
-    # Token Configuration
-    token:
-      expiration: "2592000"
-
-  dome-issuer-postgres:
+  dome-issuer-postgresql:
       # -- should the postgresql deployment be enabled
       enabled: true
       # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
@@ -350,6 +181,11 @@ dome-issuer:
           userPasswordKey: db-password
       ## configuration of the postgres primary replica
       primary:
+        # Configuration for Velero backup
+        annotations:
+          backup.velero.io/backup-volumes: data
+        podAnnotations:
+          backup.velero.io/backup-volumes: data
         ## provide db initialization
         initdb:
           ## provide scripts for initialization
@@ -359,7 +195,7 @@ dome-issuer:
               psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE issuer;"
 
 
-  dome-issuer-keycloak-postgres:
+  dome-issuer-keycloak-postgresql:
       # -- should the postgresql deployment be enabled
       enabled: true
       # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
@@ -378,6 +214,11 @@ dome-issuer:
           userPasswordKey: keycloak-db-password
       ## configuration of the postgres primary replica
       primary:
+        # Configuration for Velero backup
+        annotations:
+          backup.velero.io/backup-volumes: data
+        podAnnotations:
+          backup.velero.io/backup-volumes: data
         ## provide db initialization
         initdb:
           ## provide scripts for initialization
