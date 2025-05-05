@@ -12,7 +12,7 @@ keycloak:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-in2-test-issuer
+      cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
     hosts:
       - host: keycloak.dome-marketplace-sbx.org
         paths:
