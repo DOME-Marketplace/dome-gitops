@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
-    path: ionos_prd/dome-dss/dome-dss
+    path: ionos_prd/in2/dome-dss/dome-dss
   destination:
     server: https://kubernetes.default.svc
     namespace: in2
