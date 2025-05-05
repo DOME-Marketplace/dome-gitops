@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
-    path: ionos_sbx/wallet/wallet
+    path: ionos_sbx/in2/wallet
   destination:
     server: https://kubernetes.default.svc
     namespace: in2
