@@ -56,7 +56,7 @@ dome-issuer:
           credentialPassword: credential-password
         #types allowed: server, cloud
         type: cloud
-        url: https://dts-component-rdss-csc.pre-api.digitelts.com
+        url: https://dts-component-rdss-csc.api.digitelts.com
       authServer:
         provider: keycloak
         externalUrl: https://issuer.dome-marketplace-sbx.org
