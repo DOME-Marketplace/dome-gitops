@@ -60,7 +60,7 @@ dome-issuer:
       authServer:
         provider: keycloak
         externalUrl: https://issuer.dome-marketplace-sbx.org
-        internalDomain: http://dome-issuer-keycloak:80
+        internalUrl: http://dome-issuer-keycloak:80
         realm: issuer-dome
         client:
           clientId: issuer-api-client
