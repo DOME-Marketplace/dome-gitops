@@ -12,7 +12,7 @@ dome-issuer:
       enableTLS: true
       clusterIssuer: "letsencrypt-dev2-issuer"
 
-  dome-issuer-api:
+  dome-issuer-backend:
     fullNameOverride: "dome-issuer-backend"
     image:
       repository: in2workspace/in2-issuer-backend
@@ -104,7 +104,7 @@ dome-issuer:
           name: issuer-secret
           key: db-password
 
-  dome-issuer-ui:
+  dome-issuer-frontend:
     fullNameOverride: "dome-issuer-frontend"
     image:
       repository: in2workspace/in2-issuer-ui
