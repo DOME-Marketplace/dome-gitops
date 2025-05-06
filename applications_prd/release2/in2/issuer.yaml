@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
-    path: ionos_prd/issuer
+    path: ionos_prd/in2/issuer
   destination:
     server: https://kubernetes.default.svc
     namespace: in2

@@ -1,0 +1,63 @@
+keycloak:
+  image:
+    repository: in2workspace/in2-dome-keycloak
+    pullPolicy: Always
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: v1.1.0
+
+  fullnameOverride: keycloak
+  nameOverride: keycloak
+
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+    hosts:
+      - host: keycloak.dome-marketplace-sbx.org
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+          - keycloak.dome-marketplace-sbx.org
+        secretName: keycloak-tls-sec
+
+  keycloak:
+    admin:
+      existingSecret:
+        enabled: true
+        name: keycloak-secret
+        passwordKey: admin-password
+    hostname:
+      url:
+        # if deployed locally set to false
+        externalService: true
+        scheme: https
+        # change by the external url or set to localhost if deployed locally
+        host: keycloak.dome-marketplace-sbx.org
+        # internalPort is only used if externalService is false
+        internalPort: 30002
+        path: /
+      adminUrl:
+        # if deployed locally set to false
+        externalService: true
+        scheme: https
+        # change by the external url or set to localhost if deployed locally
+        host: keycloak.dome-marketplace-sbx.org
+        # internalPort is only used if externalService is false
+        internalPort: 30002
+        path: /
+
+  db:
+    existingSecret:
+      enabled: true
+      name: keycloak-secret
+      passwordKey: db-password
+
+  postgresKeycloak:
+    auth:
+      existingSecret: keycloak-secret
+      secretKeys:
+        adminPasswordKey: db-password
+        userPasswordKey: db-password
