@@ -59,9 +59,9 @@ dome-issuer:
         url: https://dts-component-rdss-csc.api.digitelts.com
       authServer:
         provider: keycloak
-        externalUrl: https://issuer.dome-marketplace-dev2.org
-        internalUrl: http://dome-issuer-keycloak:80
-        realm: issuer-dome
+        externalUrl: https://keycloak.dome-marketplace-dev2.org
+        internalUrl: http://keycloak:80
+        realm: dome-issuer
         client:
           clientId: issuer-api-client
           username: issuer-api-user
@@ -119,7 +119,7 @@ dome-issuer:
         secondaryContrast: "#dde6f6"
       logoSrc: "dome-issuer.png"
       faviconSrc: "DOME_Icon.png"
-      keycloakUrl: "https://issuer.dome-marketplace-dev2.org/realms/issuer-dome"
+      keycloakUrl: "https://keycloak.dome-marketplace-dev2.org/realms/dome-issuer"
       backendUrl: "https://issuer.dome-marketplace-dev2.org"
       walletUrl: "https://wallet.dome-marketplace.eu"
       knowledgeBaseUrl: "https://knowledgebase.dome-marketplace-dev2.org"
