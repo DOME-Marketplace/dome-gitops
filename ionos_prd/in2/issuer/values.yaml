@@ -59,7 +59,7 @@ dome-issuer:
       authServer:
         provider: keycloak
         externalUrl: https://issuer.dome-marketplace.eu
-        internalUrl: http://dome-issuer-keycloak:80/issuer-keycloak
+        internalUrl: http://dome-issuer-keycloak:80
         realm: issuer-dome
         client:
           clientId: issuer-api-client
