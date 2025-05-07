@@ -49,4 +49,4 @@ ingress:
       secretName: analytics-tls-secret
   path: /
   pathType: Prefix
-  servicePort: 8088
+  servicePort: 8080
