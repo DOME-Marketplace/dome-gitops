@@ -26,7 +26,7 @@ dome-wallet:
     app:
       logLevel: INFO
       authServer:
-        externalUrl: https://keycloak.dome-marketplace-dev2.org/keycloak/realms/dome-wallet
+        externalUrl: https://keycloak.dome-marketplace-dev2.org/realms/dome-wallet
         internalUrl: http://keycloak:80/realms/dome-wallet
       cors:
         allowedOrigins: "https://wallet.dome-marketplace-dev.org, https://wallet.dome-marketplace-dev2.org, wallet.example-secondary-domain.org"
