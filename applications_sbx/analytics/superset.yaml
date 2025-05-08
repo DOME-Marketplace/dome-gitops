@@ -1,19 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: superset
+  name: superset2
   namespace: argocd
   labels:
-    purpose: analytics
+    purpose: superset
 spec:
   destination:
-    namespace: analytics
+    namespace: superset
     server: https://kubernetes.default.svc
   project: default
   source:
     path: ionos_sbx/analytics/superset
     repoURL: https://github.com/DOME-Marketplace/dome-gitops.git
-    targetRevision: HEAD
+    targetRevision: superset
   syncPolicy:
     automated:
       prune: true
