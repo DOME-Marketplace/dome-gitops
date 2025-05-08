@@ -19,6 +19,21 @@ dome-issuer:
       # Overrides the image tag whose default is the chart appVersion.
       tag: v1.6.5
       pullPolicy: Always
+    ingressIssuerApi:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-dev2-issuer
+        nginx.ingress.kubernetes.io/rewrite-target: /vci/v1/issuances
+      hosts:
+        - host: issuer.dome-marketplace-dev2.org
+          paths:
+            - path: /issuer-api/vci/v1/issuances
+              pathType: ImplementationSpecific
+      tls:
+        - hosts:
+            - issuer.dome-marketplace-dev2.org
+          secretName: issuer-tls-secret
     app:
       logLevel:
         app: INFO
