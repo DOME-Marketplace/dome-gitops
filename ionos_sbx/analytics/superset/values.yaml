@@ -13,6 +13,12 @@ externalDatabase:
 
 postgresql:
   enabled: false
+  external:
+    host: pg-75qkrjg6i4d7tlg2.postgresql.de-txl.ionos.com
+    port: 5432
+    database: supersetdb
+    user: supersetuser
+    password: jijikos
   image:
     registry: docker.io
     repository: bitnami/postgresql
