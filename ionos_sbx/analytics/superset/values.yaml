@@ -4,6 +4,8 @@ auth:
   email: georgios.peppas@eurodyn.com
 
 externalDatabase:
+  enabled: true
+  type: postgresql
   host: pg-75qkrjg6i4d7tlg2.postgresql.de-txl.ionos.com
   port: 5432
   user: supersetuser
@@ -54,3 +56,4 @@ ingress:
   path: /
   pathType: Prefix
   servicePort: 8080
+  serviceType: ClusterIP
