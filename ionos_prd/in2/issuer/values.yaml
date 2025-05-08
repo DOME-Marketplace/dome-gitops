@@ -18,6 +18,21 @@ dome-issuer:
       repository: in2workspace/in2-issuer-backend
       # Overrides the image tag whose default is the chart appVersion.
       tag: v1.6.5
+    ingressIssuerApi:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
+        nginx.ingress.kubernetes.io/rewrite-target: /vci/v1/issuances
+      hosts:
+        - host: issuer.dome-marketplace.eu
+          paths:
+            - path: /issuer-api/vci/v1/issuances
+              pathType: ImplementationSpecific
+      tls:
+        - hosts:
+            - issuer.dome-marketplace.eu
+          secretName: issuer-tls-secret
     app:
       logLevel:
         app: INFO
