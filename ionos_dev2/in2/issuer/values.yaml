@@ -125,41 +125,7 @@ dome-issuer:
       knowledgeBaseUrl: "https://knowledgebase.dome-marketplace-dev2.org"
 
   dome-issuer-keycloak:
-    fullnameOverride: dome-issuer-keycloak
-    nameOverride: dome-issuer-keycloak
-    enabled: true
-    image:
-      repository: in2workspace/in2-dome-keycloak
-      pullPolicy: Always
-      # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.1.0
-    # Keycloak Configuration
-    app:
-      keycloak:
-        proxyHeader: edge
-        logsCertsLevel: INFO
-        logLevel: INFO
-        admin:
-          username: admin
-          existingSecret:
-            enabled: true
-            name: issuer-secret
-            passwordKey: keycloak-admin-password
-        hostnameUrl: https://issuer.dome-marketplace-dev2.org
-        adminUrl: https://issuer.dome-marketplace-dev2.org
-        https:
-          clientAuth: request
-
-      db:
-        host: dome-issuer-keycloak-postgres
-        port: 5432
-        externalService: false
-        name: cred
-        username: postgres
-        existingSecret:
-          enabled: true
-          name: issuer-secret
-          passwordKey: keycloak-db-password
+    enabled: false
 
   dome-issuer-postgresql:
     # -- should the postgresql deployment be enabled
@@ -197,32 +163,4 @@ dome-issuer:
 
   dome-issuer-keycloak-postgresql:
     # -- should the postgresql deployment be enabled
-    enabled: true
-    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-    fullnameOverride: dome-issuer-keycloak-postgres
-    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-    nameOverride: dome-issuer-keycloak-postgres
-    ## auth configuration for the database
-    auth:
-      # -- username to be used
-      username: postgres
-      # -- should the default postgres user be enabled
-      enablePostgresUser: true
-      existingSecret: issuer-secret
-      secretKeys:
-        adminPasswordKey: keycloak-db-password
-        userPasswordKey: keycloak-db-password
-    ## configuration of the postgres primary replica
-    primary:
-      # Configuration for Velero backup
-      annotations:
-        backup.velero.io/backup-volumes: data
-      podAnnotations:
-        backup.velero.io/backup-volumes: data
-      ## provide db initialization
-      initdb:
-        ## provide scripts for initialization
-        scripts:
-          # -- create the database
-          create.sh: |
-            psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE cred;"
+    enabled: false
