@@ -73,7 +73,7 @@ dome-issuer:
         url: https://dts-component-rdss-csc.api.digitelts.com
       authServer:
         provider: keycloak
-        externalUrl: https://issuer.dome-marketplace.eu
+        externalUrl: https://keycloak.dome-marketplace.eu
         internalUrl: http://keycloak:80
         realm: dome-issuer
         client:
