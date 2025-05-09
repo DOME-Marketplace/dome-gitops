@@ -74,8 +74,8 @@ dome-issuer:
       authServer:
         provider: keycloak
         externalUrl: https://issuer.dome-marketplace.eu
-        internalUrl: http://dome-issuer-keycloak:80
-        realm: issuer-dome
+        internalUrl: http://keycloak:80
+        realm: dome-issuer
         client:
           clientId: issuer-api-client
           username: issuer-api-user
@@ -132,7 +132,7 @@ dome-issuer:
         secondaryContrast: "#dde6f6"
       logoSrc: "dome-issuer.png"
       faviconSrc: "DOME_Icon.png"
-      keycloakUrl: "https://issuer.dome-marketplace.eu/realms/issuer-dome"
+      keycloakUrl: "https://keycloak.dome-marketplace.eu/realms/dome-issuer"
       backendUrl: "https://issuer.dome-marketplace.eu"
       walletUrl: "https://wallet.dome-marketplace.eu"
       knowledgeBaseUrl: "https://knowledgebase.dome-marketplace.eu"
