@@ -13,10 +13,10 @@ elasticsearch:
   resources:
     requests:
       cpu: "500m"
-      memory: "512Mi"
+      memory: "2Gi"
     limits:
-      cpu: "500m"
-      memory: "512Mi"
+      cpu: "1"
+      memory: "4Gi"
 
   networkHost: "0.0.0.0"
 
