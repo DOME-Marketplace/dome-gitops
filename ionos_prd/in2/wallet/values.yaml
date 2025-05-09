@@ -26,8 +26,8 @@ dome-wallet:
     app:
       logLevel: INFO
       authServer:
-        externalUrl: https://wallet.dome-marketplace.eu/keycloak/realms/wallet
-        internalUrl: http://dome-wallet-keycloak:80/realms/wallet
+        externalUrl: https://keycloak.dome-marketplace.eu/realms/dome-wallet
+        internalUrl: http://keycloak:80/realms/dome-wallet
       cors:
         allowedOrigins: "https://wallet.dome-marketplace-prd.org, https://wallet.dome-marketplace.org, https://wallet.dome-marketplace.eu, https://wallet.yumket.eu"
       vault:
@@ -42,7 +42,7 @@ dome-wallet:
           # -- key to retrieve the token from
           key: root
       ebsiTest:
-        url: http://dome-wallet-keycloak:80/realms/wallet/protocol/openid-connect/token
+        url: http://keycloak:80/realms/dome-wallet/protocol/openid-connect/token
         client:
           id: user-registry-client
           existingSecret:
@@ -96,7 +96,7 @@ dome-wallet:
         # ws = sin certificado, wss = con certificado
         websocketExternalUrl: wss://wallet.dome-marketplace.eu
       iam:
-        externalUrl: https://wallet.dome-marketplace.eu/keycloak/realms/wallet
+        externalUrl: https://keycloak.dome-marketplace.eu/realms/dome-wallet
 
   ## configuration for the dome-wallet-keycloak
   dome-wallet-keycloak:
