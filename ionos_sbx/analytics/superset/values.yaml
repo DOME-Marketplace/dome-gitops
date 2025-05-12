@@ -7,7 +7,7 @@ superset:
     host: pg-75qkrjg6i4d7tlg2.postgresql.de-txl.ionos.com
     port: 5432
     user: supersetuser
-    password: ******
+    password: jijikos
     database: supersetdb
     existingSecret: ""  # Required to prevent fallback to internal DB
   postgresql:
