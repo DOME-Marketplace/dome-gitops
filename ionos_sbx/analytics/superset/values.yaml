@@ -1,15 +1,4 @@
 superset:
-  externalDatabase:
-    type: postgresql
-    host: pg-75qkrjg6i4d7tlg2.postgresql.de-txl.ionos.com
-    port: 5432
-    database: supersetdb
-    username: supersetuser
-    password: jijikos
-    existingSecret: ""  # If you want to reference a K8s secret instead, specify the name here
-
-  postgresql:
-    enabled: false  # Disable internal PostgreSQL
   extraSecretEnv:
     SUPERSET_SECRET_KEY: IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT
   configOverrides:
