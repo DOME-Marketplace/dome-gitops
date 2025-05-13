@@ -1,8 +1,7 @@
-configOverrides:
+superset:
+  configOverrides:
   superset_config.py: |
     SECRET_KEY = "j21mBrR92c3qEoL5OTL1A8Y5CjDbVvGzShPcS9RUpZk="
-
-superset:
   auth:
     username: admin
     password: admin
