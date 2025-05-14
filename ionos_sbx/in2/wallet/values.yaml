@@ -80,7 +80,7 @@ dome-wallet:
     image:
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.9.1
+      tag: v1.9.4
     ## deployment specific configuration
     app:
       logsEnabled: true
@@ -92,8 +92,7 @@ dome-wallet:
       logoSrc: "assets/logos/dome-logo.png"
       faviconSrc: "assets/icons/dome-favicon.png"
       walletApi:
-        # Este internalDomain es en realidad el external
-        internalUrl: https://wallet.dome-marketplace-sbx.org
+        externalUrl: https://wallet.dome-marketplace-sbx.org
         # ws = sin certificado, wss = con certificado
         websocketExternalUrl: wss://wallet.dome-marketplace-sbx.org
       iam:
