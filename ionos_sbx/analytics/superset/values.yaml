@@ -1,12 +1,8 @@
 superset:
-  extraSecretEnv:
-    SUPERSET_SECRET_KEY: IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT
-  configOverrides:
-    secret: |
-      SECRET_KEY = 'IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT'
-  supersetNode:
-    env:
-      SUPERSET_SECRET_KEY: IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT
+  extraEnvVarsSecret:
+    - name: SUPERSET_SECRET_KEY
+      secretName: superset-env
+      secretKey: SUPERSET_SECRET_KEY
   auth:
     username: admin
     password: admin
