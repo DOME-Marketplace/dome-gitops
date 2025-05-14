@@ -1,7 +1,8 @@
 superset:
-  extraEnvSecrets:
-    superset-env:
-      SUPERSET_SECRET_KEY: "pWsnyc2pl+d4TKzckki8Sujke5vcI9uOUuM4K3W5H31t0QLM8Hddvh9N"
+  extraEnvVarsSecret:
+    - name: SUPERSET_SECRET_KEY
+      secretName: superset-env
+      secretKey: SUPERSET_SECRET_KEY
   auth:
     username: admin
     password: admin
