@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cs-identity
+  namespace: argocd
+  labels:
+    purpose: cs-identity
+spec:
+  destination:
+    namespace: cs-identity
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: ionos_dev/cs-identity
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
