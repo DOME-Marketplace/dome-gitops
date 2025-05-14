@@ -36,7 +36,7 @@ spec:
                   name: bookstack-secret
                   key: DB_PASSWORD
             - name: APP_URL
-              value: "https://knowledgebase.dome-marketplace-prd.org"
+              value: "https://knowledgebase.dome-marketplace.eu"
             - name: APP_KEY
               valueFrom:
                 secretKeyRef:
@@ -56,9 +56,9 @@ spec:
             - name: OIDC_CLIENT_SECRET
               value: "4XthWaqj7gpREsj9NJQBsGIprIZqJsmy"
             - name: OIDC_ISSUER
-              value: "https://cs-identity.dome-marketplace-prd.org/realms/dome"
+              value: "https://cs-identity.dome-marketplace.eu/realms/dome"
             - name: OIDC_END_SESSION_ENDPOINT
-              value: "https://cs-identity.dome-marketplace-prd.org/realms/dome/protocol/openid-connect/logout"
+              value: "https://cs-identity.dome-marketplace.eu/realms/dome/protocol/openid-connect/logout"
             - name: OIDC_ISSUER_DISCOVER
               value: "true"
             - name: OIDC_USER_TO_GROUPS
