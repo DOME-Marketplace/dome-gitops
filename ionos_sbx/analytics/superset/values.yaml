@@ -1,8 +1,8 @@
 superset:
   extraEnvVarsSecret:
-    - name: SUPERSET_SECRET_KEY
+    - name: SECRET_KEY
       secretName: superset-env
-      secretKey: SUPERSET_SECRET_KEY
+      secretKey: SECRET_KEY
   auth:
     username: admin
     password: admin
