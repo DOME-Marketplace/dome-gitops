@@ -56,7 +56,9 @@ access-node:
         # -- (external) address of the dlt-adapter
         externalDomain: http://dlt-adapter:8080
       # -- operator external domain
-      externalDomain: "https://desmos.dome-marketplace-dev2.org"
+      externalDomain:
+        protocol: "https"
+        domain: "desmos.dome-marketplace-dev2.org"
       externalAccessNodesUrls:
         enableCustomUrls: true
         customUrls: ""
