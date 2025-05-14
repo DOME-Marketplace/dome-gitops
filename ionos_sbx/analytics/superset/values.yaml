@@ -20,8 +20,10 @@ superset:
       registry: docker.io
       repository: bitnami/postgresql
       tag: 14.17.0-debian-12-r5
+  celery:
+    enabled: false
   redis:
-    enabled: true
+    enabled: false
     image:
       registry: docker.io
       repository: bitnami/redis
