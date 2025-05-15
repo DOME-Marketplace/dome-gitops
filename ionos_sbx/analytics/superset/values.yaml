@@ -1,18 +1,37 @@
 superset:
-  enabled: true
-
-  env:
-    - name: SUPERSET_SECRET_KEY
-      value: IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT
-
-  configOverrides:
-    superset_config.py: |
-      SECRET_KEY = 'IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT'
-      WTF_CSRF_ENABLED = True
-
-  service:
-    type: ClusterIP
-    port: 8088
+  auth:
+    username: admin
+    password: admin
+    email: georgios.peppas@eurodyn.com
+  externalDatabase:
+    host: pg-75qkrjg6i4d7tlg2.postgresql.de-txl.ionos.com
+    port: 5432
+    user: supersetuser
+    password: jijikos
+    database: supersetdb
+    existingSecret: ""  # Required to prevent fallback to internal DB
+  postgresql:
+    enabled: false
+    image:
+      registry: docker.io
+      repository: bitnami/postgresql
+      tag: 14.17.0-debian-12-r5
+  redis:
+    enabled: true
+    image:
+      registry: docker.io
+      repository: bitnami/redis
+      tag: 7.4.2-debian-12-r5
+      pullPolicy: IfNotPresent
+  superset:
+    image:
+      registry: docker.io
+      repository: bitnami/superset
+      tag: 4.1.2-debian-12-r5
+      pullPolicy: IfNotPresent
+      digest: ""  # Add this to satisfy the chart helper
+    init:
+      dbMigration: false
 
   ingress:
     enabled: true
@@ -21,39 +40,12 @@ superset:
       cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
       nginx.ingress.kubernetes.io/ssl-passthrough: "true"
       nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    hosts:
-      - host: analytics.dome-marketplace-sbx.org
-        paths:
-          - path: /
-            pathType: Prefix
-    tls:
-      - secretName: analytics-tls-secret
-        hosts:
+    hostname: analytics.dome-marketplace-sbx.org
+    tls: true
+    extraTls:
+      - hosts:
           - analytics.dome-marketplace-sbx.org
-
-  persistence:
-    enabled: true
-    accessMode: ReadWriteOnce
-    size: 8Gi
-    storageClass: ""  # Optional: set if needed
-
-  readinessProbe:
-    enabled: true
-
-  livenessProbe:
-    enabled: true
-
-postgresql:
-  enabled: true
-  auth:
-    username: superset
-    password: supersetpass
-    database: superset
-  primary:
-    persistence:
-      enabled: true
-      storageClass: ""  # Optional: specify your class if needed
-      size: 8Gi
-
-redis:
-  enabled: false
+        secretName: analytics-tls-secret
+    path: /
+    pathType: Prefix
+    servicePort: 8080
