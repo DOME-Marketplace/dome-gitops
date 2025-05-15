@@ -1,9 +1,59 @@
 superset:
-  extraSecretEnv:
-    SUPERSET_SECRET_KEY: IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT
+  enabled: true
+
+  env:
+    - name: SUPERSET_SECRET_KEY
+      value: IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT
+
   configOverrides:
-    secret: |
+    superset_config.py: |
       SECRET_KEY = 'IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT'
-  supersetNode:
-    env:
-      SUPERSET_SECRET_KEY: IxkEOM23EqV7aA+OvdwXlcJceDMT76IvxxC5xd1u9Fo0qsMSPJRFD/ZT
+      WTF_CSRF_ENABLED = True
+
+  service:
+    type: ClusterIP
+    port: 8088
+
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    hosts:
+      - host: analytics.dome-marketplace-sbx.org
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: analytics-tls-secret
+        hosts:
+          - analytics.dome-marketplace-sbx.org
+
+  persistence:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 8Gi
+    storageClass: ""  # Optional: set if needed
+
+  readinessProbe:
+    enabled: true
+
+  livenessProbe:
+    enabled: true
+
+postgresql:
+  enabled: true
+  auth:
+    username: superset
+    password: supersetpass
+    database: superset
+  primary:
+    persistence:
+      enabled: true
+      storageClass: ""  # Optional: specify your class if needed
+      size: 8Gi
+
+redis:
+  enabled: false
