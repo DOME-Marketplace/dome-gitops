@@ -3,17 +3,12 @@ superset:
     username: admin
     password: admin
     email: georgios.peppas@eurodyn.com
-  externalDatabase:
-    host: pg-75qkrjg6i4d7tlg2.postgresql.de-txl.ionos.com
-    port: 5432
-    user: supersetuser
-    password: jijikos
-    database: supersetdb
-    existingSecret: ""  # Required to prevent fallback to internal DB
   postgresql:
-    enabled: false
-    pdb:
-      create: false
+    enabled: true
+    auth:
+      username: superset
+      password: superset
+      database: superset
     image:
       registry: docker.io
       repository: bitnami/postgresql
