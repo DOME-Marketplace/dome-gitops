@@ -12,6 +12,8 @@ superset:
     existingSecret: ""  # Required to prevent fallback to internal DB
   postgresql:
     enabled: false
+    pdb:
+      create: false
     image:
       registry: docker.io
       repository: bitnami/postgresql
