@@ -1,7 +1,7 @@
 superset:
   auth:
     username: admin
-    password: admin
+    password: admin1
     email: georgios.peppas@eurodyn.com
   postgresql:
     enabled: true
