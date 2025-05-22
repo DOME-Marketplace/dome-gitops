@@ -71,8 +71,7 @@ dome-issuer:
           credentialPassword: credential-password
         # types allowed: server, cloud
         type: cloud
-        # temporary broken for test
-        url: https://broken-dts-component-rdss-csc.api.digitelts.com
+        url: https://dts-component-rdss-csc.api.digitelts.com
       authServer:
         provider: keycloak
         externalUrl: https://keycloak.dome-marketplace-sbx.org
