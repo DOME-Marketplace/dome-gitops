@@ -202,63 +202,84 @@ access-node:
       - name: API_EXTENSION_ENABLED
         value: "true"
 
-    apis:
-    - name: party-catalog
-      image: tmforum-party-catalog
-      basePath: /
+    ingress:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+      hosts:
+# To Be Discussed: Jesús told us tmf subdomain in dome-marketplace-sbx.org is already created and reserved for this, but we still prefer to check it with you in case we didn´t understand this properly
+        - host: tmf.dome-marketplace-sbx.org
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - tmf.dome-marketplace-sbx.org
+# To Be Discussed: how is secrets issuance managed?
+          secretName: tm-forum-api-tls-secret
 
-    - name: customer-bill-management
-      image: tmforum-customer-bill-management
-      basePath: /
-
-    - name: customer-management
-      image: tmforum-customer-management
-      basePath: /
-
-    - name: product-catalog
-      image: tmforum-product-catalog
-      basePath: /
-
-    - name: product-inventory
-      image: tmforum-product-inventory
-      basePath: /
-
-    - name: product-ordering-management
-      image: tmforum-product-ordering-management
-      basePath: /
-
-    - name: resource-catalog
-      image: tmforum-resource-catalog
-      basePath: /
-
-    - name: resource-function-activation
-      image: tmforum-resource-function-activation
-      basePath: /
-
-    - name: resource-inventory
-      image: tmforum-resource-inventory
-      basePath: /
-
-    - name: service-catalog
-      image: tmforum-service-catalog
-      basePath: /
-
-    - name: service-inventory
-      image: tmforum-service-inventory
-      basePath: /
-
-    - name: account
-      image: tmforum-account
-      basePath: /
-
-    - name: agreement
-      image: tmforum-agreement
-      basePath: /
-
-    - name: party-role
-      image: tmforum-party-role
-      basePath: /
-
-    - name: usage-management
-      image: tmforum-usage-management
-      basePath: / 
+# apis is commented as we need to use default configuration for services, following /tmf-api/<module>/v4 schema.
+# Ingress will be using this for service's requests routing.
+# At this point we don't understand why this configuration overwrite is needed,
+#  using / as base path for all tm-forum-api modules.
+#    apis:
+#    - name: party-catalog
+#      image: tmforum-party-catalog
+#      basePath: /
+#
+#    - name: customer-bill-management
+#      image: tmforum-customer-bill-management
+#      basePath: /
+#
+#    - name: customer-management
+#      image: tmforum-customer-management
+#      basePath: /
+#
+#    - name: product-catalog
+#      image: tmforum-product-catalog
+#      basePath: /
+#
+#    - name: product-inventory
+#      image: tmforum-product-inventory
+#      basePath: /
+#
+#    - name: product-ordering-management
+#      image: tmforum-product-ordering-management
+#      basePath: /
+#
+#    - name: resource-catalog
+#      image: tmforum-resource-catalog
+#      basePath: /
+#
+#    - name: resource-function-activation
+#      image: tmforum-resource-function-activation
+#      basePath: /
+#
+#    - name: resource-inventory
+#      image: tmforum-resource-inventory
+#      basePath: /
+#
+#    - name: service-catalog
+#      image: tmforum-service-catalog
+#      basePath: /
+#
+#    - name: service-inventory
+#      image: tmforum-service-inventory
+#      basePath: /
+#
+#    - name: account
+#      image: tmforum-account
+#      basePath: /
+#
+#    - name: agreement
+#      image: tmforum-agreement
+#      basePath: /
+#
+#    - name: party-role
+#      image: tmforum-party-role
+#      basePath: /
+#
+#    - name: usage-management
+#      image: tmforum-usage-management
+#      basePath: /
