@@ -1,6 +1,4 @@
 superset:
-  podAnnotations:
-    dome.eu/chart-version: "0.1.3"
   auth:
     username: admin
     password: admin
