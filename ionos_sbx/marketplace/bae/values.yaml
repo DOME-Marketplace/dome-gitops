@@ -124,7 +124,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: "10.0.0-PRE-1"
+        tag: "10.0.0-PRE-2"
         pullPolicy: Always
     
     plugins:
@@ -176,7 +176,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "10.0.0-PRE-4"
+        tag: "10.0.0-PRE-5"
         pullPolicy: Always
 
     ingress: 
@@ -208,7 +208,7 @@ business-api-ecosystem:
     propagateToken: true
     additionalEnvVars:
       - name: MIGRATE_DATA
-        value: "True"
+        value: "False"
       - name: BAE_LP_SIOP_IS_REDIRECTION
         value: "true"
       - name: BAE_LP_CHAT_URL
