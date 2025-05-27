@@ -17,7 +17,7 @@ dome-issuer:
     image:
       repository: in2workspace/in2-issuer-backend
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.6.5
+      tag: v1.6.9
     ingressIssuerApi:
       enabled: true
       className: nginx
@@ -123,7 +123,7 @@ dome-issuer:
     image:
       repository: in2workspace/in2-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.11.0
+      tag: v1.12.2
     app:
       colors:
         primary: "#2d58a7"

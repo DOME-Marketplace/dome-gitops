@@ -9,18 +9,14 @@ global:
       nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     enableTLS: true
     clusterIssuer: "letsencrypt-prd-issuer"
-    secondary:
-      enabled: true
-      domain: "wallet.dome-marketplace-prd.org"
 
 dome-wallet:
-
   ## configuration for the wallet-backend
   dome-wallet-backend:
     fullNameOverride: "dome-wallet-backend"
     image:
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.4.6
+      tag: v1.4.7
       pullPolicy: IfNotPresent
     ## deployment specific configuration
     app:
@@ -29,7 +25,7 @@ dome-wallet:
         externalUrl: https://keycloak.dome-marketplace.eu/realms/dome-wallet
         internalUrl: http://keycloak:80/realms/dome-wallet
       cors:
-        allowedOrigins: "https://wallet.dome-marketplace-prd.org, https://wallet.dome-marketplace.org, https://wallet.dome-marketplace.eu, https://wallet.yumket.eu"
+        allowedOrigins: "https://wallet.dome-marketplace.eu"
       vault:
         provider: hashicorp
         # host needs to match with the service name of the vault server
@@ -79,7 +75,7 @@ dome-wallet:
     image:
       pullPolicy: IfNotPresent
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.9.2
+      tag: v1.9.4
     ## deployment specific configuration
     app:
       logsEnabled: false
@@ -91,8 +87,7 @@ dome-wallet:
       logoSrc: "assets/logos/dome-logo.png"
       faviconSrc: "assets/icons/dome-favicon.png"
       walletApi:
-        # Este internalDomain es en realidad el external
-        internalUrl: https://wallet.dome-marketplace.eu
+        externalUrl: https://wallet.dome-marketplace.eu
         # ws = sin certificado, wss = con certificado
         websocketExternalUrl: wss://wallet.dome-marketplace.eu
       iam:
