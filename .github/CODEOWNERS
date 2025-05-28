@@ -3,3 +3,7 @@
 # to following users will be requested for
 # review when someone opens a pull request.
 *       @AdriTB-B @jaclavijo @raulmzabala 
+
+# Engineering service list 
+/ionos_sbx/billing/ @pasquy73 @cdizenzo
+/ionos_sbx/search-engine @pasquy73 @cdizenzo
