@@ -26,7 +26,7 @@
 # PRD service list
 /ionos_prd/argocd/ @bialask-daiteap
 /ionos_prd/cert-manager/ @bialask-daiteap
-/ionos_prd/chatbot/ @andmanfrin
+/ionos_prd/chatbot/ @kingmanfri
 /ionos_prd/cs-identity/ 
 /ionos_prd/domains/ @bialask-daiteap
 /ionos_prd/dome-certification/ 
@@ -36,44 +36,44 @@
 /ionos_prd/grafana-dashboards/ @groundnuty
 /ionos_prd/in2/
 /ionos_prd/ingress/ @bialask-daiteap
-/ionos_prd/knowledgebase/ @robbalzano
+/ionos_prd/knowledgebase/ @BazRoe
 /ionos_prd/kube-prometheus-stack/ @groundnuty
 /ionos_prd/loki-distributed/ @groundnuty
 /ionos_prd/marketplace/ 
 /ionos_prd/namespaces/ @bialask-daiteap
 /ionos_prd/sealed-secrets/ @bialask-daiteap
 /ionos_prd/search-engine/ @pasquy73 @cdizenzo
-/ionos_prd/zammad/ @andmanfrin
+/ionos_prd/zammad/ @kingmanfri
 
 # DEV service list
 /ionos_dev/argocd/ @bialask-daiteap
 /ionos_dev/cert-manager/ @bialask-daiteap
 /ionos_dev/cs-identity/ 
 /ionos_dev/marketplace/ 
-/ionos_dev/zammad/ @andmanfrin
+/ionos_dev/zammad/ @kingmanfri
 
 # DEV2 service list
 /ionos_dev2/analytics/ @peppasnet
 /ionos_dev2/argocd/ @bialask-daiteap
 /ionos_dev2/billing/ @pasquy73 @cdizenzo
 /ionos_dev2/cert-manager/ @bialask-daiteap
-/ionos_dev2/chatbot/ @andmanfrin
+/ionos_dev2/chatbot/ @kingmanfri
 /ionos_dev2/cs-identity/ 
 /ionos_dev2/domains/ @bialask-daiteap
 /ionos_dev2/dome-certification/ 
 /ionos_dev2/in2/
-/ionos_dev2/knowledgebase/ @robbalzano
+/ionos_dev2/knowledgebase/ @BazRoe
 /ionos_dev2/marketplace/ 
 /ionos_dev2/search-engine/ @pasquy73 @cdizenzo
-/ionos_dev2/zammad/ @andmanfrin
+/ionos_dev2/zammad/ @kingmanfri
 
 # SBX service list
 /ionos_sbx/analytics/ @peppasnet
 /ionos_sbx/argocd/ @bialask-daiteap
-/ionos_sbx/bacula/ @robbalzano
+/ionos_sbx/bacula/ @BazRoe
 /ionos_sbx/billing/ @pasquy73 @cdizenzo
 /ionos_sbx/cert-manager/ @bialask-daiteap
-/ionos_sbx/chatbot/ @andmanfrin
+/ionos_sbx/chatbot/ @kingmanfri
 /ionos_sbx/cs-identity/ 
 /ionos_sbx/domains/ @bialask-daiteap
 /ionos_sbx/dome-certification/ 
@@ -82,11 +82,11 @@
 /ionos_sbx/falco/ @groundnuty
 /ionos_sbx/grafana-dashboards/ @groundnuty
 /ionos_sbx/in2/
-/ionos_sbx/knowledgebase/ @robbalzano
+/ionos_sbx/knowledgebase/ @BazRoe
 /ionos_sbx/kube-prometheus-stack/ @groundnuty
 /ionos_sbx/loki-distributed/ @groundnuty
 /ionos_sbx/marketplace/ 
 /ionos_sbx/namespaces/ @bialask-daiteap
 /ionos_sbx/promtail/ @groundnuty
 /ionos_sbx/search-engine/ @pasquy73 @cdizenzo
-/ionos_sbx/zammad/ @andmanfrin
+/ionos_sbx/zammad/ @kingmanfri
