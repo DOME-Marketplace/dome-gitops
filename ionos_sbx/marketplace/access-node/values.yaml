@@ -262,11 +262,11 @@ access-node:
         image: tmforum-service-inventory
         basePath: /tmf-api/serviceInventory/v4
 
-      - name: account-management
+      - name: account
         image: tmforum-account
         basePath: /tmf-api/accountManagement/v4
 
-      - name: agreement-management
+      - name: agreement
         image: tmforum-agreement
         basePath: /tmf-api/agreementManagement/v4
 
