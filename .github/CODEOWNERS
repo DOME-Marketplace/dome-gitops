@@ -3,6 +3,7 @@
 
 
 
+##DEVOPS
 
 #PRD reviewer
 /applications_prd/ @Gerbinix @bialask-daiteap
@@ -19,6 +20,73 @@
 /ionos_sbx/ @Gerbinix @bialask-daiteap @maxmarii @PolitiRoberto @fneto-ubiwhere
 
 
-# Engineering service list 
+
+##APPLICATION OWNER
+
+# PRD service list
+/ionos_prd/argocd/ @bialask-daiteap
+/ionos_prd/cert-manager/ @bialask-daiteap
+/ionos_prd/chatbot/ @andmanfrin
+/ionos_prd/cs-identity/ 
+/ionos_prd/domains/ @bialask-daiteap
+/ionos_prd/dome-certification/ 
+/ionos_prd/dome-trust/
+/ionos_prd/external-dns-ionos-webhook/ @bialask-daiteap
+/ionos_prd/falco/ @groundnuty
+/ionos_prd/grafana-dashboards/ @groundnuty
+/ionos_prd/in2/
+/ionos_prd/ingress/ @bialask-daiteap
+/ionos_prd/knowledgebase/ @robbalzano
+/ionos_prd/kube-prometheus-stack/ @groundnuty
+/ionos_prd/loki-distributed/ @groundnuty
+/ionos_prd/marketplace/ 
+/ionos_prd/namespaces/ @bialask-daiteap
+/ionos_prd/sealed-secrets/ @bialask-daiteap
+/ionos_prd/search-engine/ @pasquy73 @cdizenzo
+/ionos_prd/zammad/ @andmanfrin
+
+# DEV service list
+/ionos_dev/argocd/ @bialask-daiteap
+/ionos_dev/cert-manager/ @bialask-daiteap
+/ionos_dev/cs-identity/ 
+/ionos_dev/marketplace/ 
+/ionos_dev/zammad/ @andmanfrin
+
+# DEV2 service list
+/ionos_dev2/analytics/ @peppasnet
+/ionos_dev2/argocd/ @bialask-daiteap
+/ionos_dev2/billing/ @pasquy73 @cdizenzo
+/ionos_dev2/cert-manager/ @bialask-daiteap
+/ionos_dev2/chatbot/ @andmanfrin
+/ionos_dev2/cs-identity/ 
+/ionos_dev2/domains/ @bialask-daiteap
+/ionos_dev2/dome-certification/ 
+/ionos_dev2/in2/
+/ionos_dev2/knowledgebase/ @robbalzano
+/ionos_dev2/marketplace/ 
+/ionos_dev2/search-engine/ @pasquy73 @cdizenzo
+/ionos_dev2/zammad/ @andmanfrin
+
+# SBX service list
+/ionos_sbx/analytics/ @peppasnet
+/ionos_sbx/argocd/ @bialask-daiteap
+/ionos_sbx/bacula/ @robbalzano
 /ionos_sbx/billing/ @pasquy73 @cdizenzo
-/ionos_sbx/search-engine @pasquy73 @cdizenzo
+/ionos_sbx/cert-manager/ @bialask-daiteap
+/ionos_sbx/chatbot/ @andmanfrin
+/ionos_sbx/cs-identity/ 
+/ionos_sbx/domains/ @bialask-daiteap
+/ionos_sbx/dome-certification/ 
+/ionos_sbx/dome-trust/
+/ionos_sbx/external-dns-ionos-webhook/ @bialask-daiteap
+/ionos_sbx/falco/ @groundnuty
+/ionos_sbx/grafana-dashboards/ @groundnuty
+/ionos_sbx/in2/
+/ionos_sbx/knowledgebase/ @robbalzano
+/ionos_sbx/kube-prometheus-stack/ @groundnuty
+/ionos_sbx/loki-distributed/ @groundnuty
+/ionos_sbx/marketplace/ 
+/ionos_sbx/namespaces/ @bialask-daiteap
+/ionos_sbx/promtail/ @groundnuty
+/ionos_sbx/search-engine/ @pasquy73 @cdizenzo
+/ionos_sbx/zammad/ @andmanfrin
