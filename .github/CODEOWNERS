@@ -1,8 +1,23 @@
-# These owners will be the default owners for everything in
-# the repo. Unless a later match takes precedence,
-# to following users will be requested for
-# review when someone opens a pull request.
+# Repository Owner
 *       @Gerbinix @bialask-daiteap
+
+
+
+
+#PRD reviewer
+/applications_prd/ @Gerbinix @bialask-daiteap
+/ionos_prd/ @Gerbinix @bialask-daiteap
+
+#DEV reviewer
+/applications_dev/ @Gerbinix @bialask-daiteap @maxmarii @PolitiRoberto
+/ionos_dev/ @Gerbinix @bialask-daiteap @maxmarii @PolitiRoberto
+/applications_dev2/ @Gerbinix @bialask-daiteap @maxmarii @PolitiRoberto
+/ionos_dev2/ @Gerbinix @bialask-daiteap @maxmarii @PolitiRoberto
+
+#SBX reviewer
+/applications_sbx/ @Gerbinix @bialask-daiteap @maxmarii @PolitiRoberto @fneto-ubiwhere
+/ionos_sbx/ @Gerbinix @bialask-daiteap @maxmarii @PolitiRoberto @fneto-ubiwhere
+
 
 # Engineering service list 
 /ionos_sbx/billing/ @pasquy73 @cdizenzo
