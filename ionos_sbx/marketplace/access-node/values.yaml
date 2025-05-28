@@ -208,7 +208,6 @@ access-node:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
       hosts:
-# To Be Discussed: Jesús told us tmf subdomain in dome-marketplace-sbx.org is already created and reserved for this, but we still prefer to check it with you in case we didn´t understand this properly
         - host: tmf.dome-marketplace-sbx.org
           paths:
             - path: /
@@ -216,70 +215,65 @@ access-node:
       tls:
         - hosts:
             - tmf.dome-marketplace-sbx.org
-# To Be Discussed: how is secrets issuance managed?
           secretName: tm-forum-api-tls-secret
 
-# apis is commented as we need to use default configuration for services, following /tmf-api/<module>/v4 schema.
-# Ingress will be using this for service's requests routing.
-# At this point we don't understand why this configuration overwrite is needed,
-#  using / as base path for all tm-forum-api modules.
-#    apis:
-#    - name: party-catalog
-#      image: tmforum-party-catalog
-#      basePath: /
-#
-#    - name: customer-bill-management
-#      image: tmforum-customer-bill-management
-#      basePath: /
-#
-#    - name: customer-management
-#      image: tmforum-customer-management
-#      basePath: /
-#
-#    - name: product-catalog
-#      image: tmforum-product-catalog
-#      basePath: /
-#
-#    - name: product-inventory
-#      image: tmforum-product-inventory
-#      basePath: /
-#
-#    - name: product-ordering-management
-#      image: tmforum-product-ordering-management
-#      basePath: /
-#
-#    - name: resource-catalog
-#      image: tmforum-resource-catalog
-#      basePath: /
-#
-#    - name: resource-function-activation
-#      image: tmforum-resource-function-activation
-#      basePath: /
-#
-#    - name: resource-inventory
-#      image: tmforum-resource-inventory
-#      basePath: /
-#
-#    - name: service-catalog
-#      image: tmforum-service-catalog
-#      basePath: /
-#
-#    - name: service-inventory
-#      image: tmforum-service-inventory
-#      basePath: /
-#
-#    - name: account
-#      image: tmforum-account
-#      basePath: /
-#
-#    - name: agreement
-#      image: tmforum-agreement
-#      basePath: /
-#
-#    - name: party-role
-#      image: tmforum-party-role
-#      basePath: /
-#
-#    - name: usage-management
-#      image: tmforum-usage-management
-#      basePath: /
+    apis:
+      - name: party-catalog
+        image: tmforum-party-catalog
+        basePath: /tmf-api/party/v4
+
+      - name: customer-bill-management
+        image: tmforum-customer-bill-management
+        basePath: /tmf-api/customerBillManagement/v4
+
+      - name: customer-management
+        image: tmforum-customer-management
+        basePath: /tmf-api/customerManagement/v4
+
+      - name: product-catalog
+        image: tmforum-product-catalog
+        basePath: /tmf-api/productCatalogManagement/v4
+
+      - name: product-inventory
+        image: tmforum-product-inventory
+        basePath: /tmf-api/productInventory/v4
+
+      - name: product-ordering-management
+        image: tmforum-product-ordering-management
+        basePath: /tmf-api/productOrderingManagement/v4
+
+      - name: resource-catalog
+        image: tmforum-resource-catalog
+        basePath: /tmf-api/resourceCatalog/v4
+
+      - name: resource-function-activation
+        image: tmforum-resource-function-activation
+        basePath: /tmf-api/resourceFunctionActivation/v4
+
+      - name: resource-inventory
+        image: tmforum-resource-inventory
+        basePath: /tmf-api/resourceInventoryManagement/v4
+
+      - name: service-catalog
+        image: tmforum-service-catalog
+        basePath: /tmf-api/serviceCatalogManagement/v4
+
+      - name: service-inventory
+        image: tmforum-service-inventory
+        basePath: /tmf-api/serviceInventory/v4
+
+      - name: account-management
+        image: tmforum-account
+        basePath: /tmf-api/accountManagement/v4
+
+      - name: agreement-management
+        image: tmforum-agreement
+        basePath: /tmf-api/agreementManagement/v4
+
+      - name: party-role
+        image: tmforum-party-role
+        basePath: /tmf-api/partyRoleManagement/v4
+
+      - name: usage-management
+        image: tmforum-usage-management
+        basePath: /tmf-api/usageManagement/v4
