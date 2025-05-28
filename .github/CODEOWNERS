@@ -2,7 +2,7 @@
 # the repo. Unless a later match takes precedence,
 # to following users will be requested for
 # review when someone opens a pull request.
-*       @AdriTB-B @jaclavijo @raulmzabala 
+*       @Gerbinix @bialask-daiteap
 
 # Engineering service list 
 /ionos_sbx/billing/ @pasquy73 @cdizenzo
