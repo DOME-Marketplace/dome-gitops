@@ -34,12 +34,13 @@
 /ionos_prd/external-dns-ionos-webhook/ @bialask-daiteap
 /ionos_prd/falco/ @groundnuty
 /ionos_prd/grafana-dashboards/ @groundnuty
-/ionos_prd/in2/
+/ionos_prd/in2/ @oriolcanades @albertrodriguezin2 @rogermiretin2 @victorpoquetin2 @rubenmodamioin2 @mmirrab @AlbaLopez552
 /ionos_prd/ingress/ @bialask-daiteap
 /ionos_prd/knowledgebase/ @BazRoe
 /ionos_prd/kube-prometheus-stack/ @groundnuty
 /ionos_prd/loki-distributed/ @groundnuty
-/ionos_prd/marketplace/ 
+/ionos_prd/marketplace/
+/ionos_prd/marketplace/iam/verifier/ @oriolcanades @albertrodriguezin2 @rogermiretin2 @victorpoquetin2 @rubenmodamioin2 @mmirrab @AlbaLopez552
 /ionos_prd/namespaces/ @bialask-daiteap
 /ionos_prd/promtail/ @groundnuty
 /ionos_prd/sealed-secrets/ @bialask-daiteap
@@ -50,7 +51,8 @@
 /ionos_dev/argocd/ @bialask-daiteap
 /ionos_dev/cert-manager/ @bialask-daiteap
 /ionos_dev/cs-identity/ 
-/ionos_dev/marketplace/ 
+/ionos_dev/marketplace/
+/ionos_dev/marketplace/iam/verifier/ @oriolcanades @albertrodriguezin2 @rogermiretin2 @victorpoquetin2 @rubenmodamioin2 @mmirrab @AlbaLopez552 
 /ionos_dev/zammad/ @kingmanfri
 
 # DEV2 service list
@@ -62,9 +64,10 @@
 /ionos_dev2/cs-identity/ 
 /ionos_dev2/domains/ @bialask-daiteap
 /ionos_dev2/dome-certification/ 
-/ionos_dev2/in2/
+/ionos_dev2/in2/ @oriolcanades @albertrodriguezin2 @rogermiretin2 @victorpoquetin2 @rubenmodamioin2 @mmirrab @AlbaLopez552
 /ionos_dev2/knowledgebase/ @BazRoe
-/ionos_dev2/marketplace/ 
+/ionos_dev2/marketplace/
+/ionos_dev2/marketplace/iam/verifier/ @oriolcanades @albertrodriguezin2 @rogermiretin2 @victorpoquetin2 @rubenmodamioin2 @mmirrab @AlbaLopez552
 /ionos_dev2/search-engine/ @pasquy73 @cdizenzo
 /ionos_dev2/zammad/ @kingmanfri
 
@@ -82,11 +85,12 @@
 /ionos_sbx/external-dns-ionos-webhook/ @bialask-daiteap
 /ionos_sbx/falco/ @groundnuty
 /ionos_sbx/grafana-dashboards/ @groundnuty
-/ionos_sbx/in2/
+/ionos_sbx/in2/ @oriolcanades @albertrodriguezin2 @rogermiretin2 @victorpoquetin2 @rubenmodamioin2 @mmirrab @AlbaLopez552
 /ionos_sbx/knowledgebase/ @BazRoe
 /ionos_sbx/kube-prometheus-stack/ @groundnuty
 /ionos_sbx/loki-distributed/ @groundnuty
-/ionos_sbx/marketplace/ 
+/ionos_sbx/marketplace/
+/ionos_sbx/marketplace/iam/verifier/ @oriolcanades @albertrodriguezin2 @rogermiretin2 @victorpoquetin2 @rubenmodamioin2 @mmirrab @AlbaLopez552
 /ionos_sbx/namespaces/ @bialask-daiteap
 /ionos_sbx/promtail/ @groundnuty
 /ionos_sbx/search-engine/ @pasquy73 @cdizenzo
