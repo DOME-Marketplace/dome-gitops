@@ -41,6 +41,7 @@
 /ionos_prd/loki-distributed/ @groundnuty
 /ionos_prd/marketplace/ 
 /ionos_prd/namespaces/ @bialask-daiteap
+/ionos_prd/promtail/ @groundnuty
 /ionos_prd/sealed-secrets/ @bialask-daiteap
 /ionos_prd/search-engine/ @pasquy73 @cdizenzo
 /ionos_prd/zammad/ @kingmanfri
