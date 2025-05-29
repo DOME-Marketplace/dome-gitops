@@ -1,0 +1,4 @@
+config:
+  clients:
+    - url: >-
+        http://loki-distributed-gateway.loki-distributed.svc.cluster.local/loki/api/v1/push
