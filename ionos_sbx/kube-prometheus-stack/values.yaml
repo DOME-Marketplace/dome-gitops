@@ -93,6 +93,9 @@ prometheusOperator:
         memory: 50Mi
 prometheus:
   prometheusSpec:
+    additionalScrapeConfigs:
+      name: alastria-scrape-config
+      key: alastria-scrape.yaml
     podMonitorSelectorNilUsesHelmValues: false
     probeSelectorNilUsesHelmValues: false
     ruleSelectorNilUsesHelmValues: false
