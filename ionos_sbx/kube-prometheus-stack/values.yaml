@@ -34,6 +34,8 @@ grafana:
         contains(groups[*], '@DOME-Marketplace/dome-grafana-sbx-admins') && 'GrafanaAdmin' ||
         contains(groups[*], '@DOME-Marketplace/dome-grafana-sbx-rw') && 'Editor' ||
         contains(groups[*], '@DOME-Marketplace/dome-grafana-sbx-ro') && 'Viewer'
+    users:
+      viewers_can_edit: true
   resources:
     requests:
       cpu: 150m
