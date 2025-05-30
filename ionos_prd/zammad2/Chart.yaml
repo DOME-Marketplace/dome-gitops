@@ -1,0 +1,11 @@
+apiVersion: v2
+name: zammad2
+description: Chart holder for argo-cd
+
+type: application
+version: 12.1.0
+
+dependencies:
+- name: zammad
+  version: 12.1.0
+  repository: https://zammad.github.io/zammad-helm
