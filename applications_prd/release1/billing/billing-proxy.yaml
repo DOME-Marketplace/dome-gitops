@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: billing-proxy
+  namespace: argocd
+  labels:
+    purpose: billing
+spec:
+  destination:
+    namespace: billing
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: ionos_prd/billing/billing-proxy
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
