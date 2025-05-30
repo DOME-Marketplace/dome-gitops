@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-scheduler-deployment
+  namespace: billing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: payment-scheduler
+      app.kubernetes.io/name: payment-scheduler
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: payment-scheduler
+        app.kubernetes.io/name: payment-scheduler
+    spec:
+      containers:
+        - name: payment-scheduler-container
+          image: production.eng.it:8433/dome/payment-scheduler:0.1.0f
+          ports:
+            - containerPort: 8080
+              hostPort: 8480
+              protocol: TCP
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: "1"
+          env:
+            - name: TMF_ENDPOINT
+              value: http://tm-forum-api
+            - name: TMF_ENVOY
+              value: "false"
+            - name: TMF_NAMESPACE
+              value: marketplace
+            - name: TMF_POSTFIX
+              value: svc.cluster.local  
+            - name: TMF_PORT
+              value: "8080"
+            - name: PAYMENT_BASE_URL
+              value: https://dpas.egroup.hu/api
+            - name: PAYMENT_START_NON_INTERACTIVE
+              value: /payment-start-non-interactive
+            - name: VC_VERIFIER_ISSUER
+              value: https://verifier.dome-marketplace.eu
+            - name: VC_VERIFIER_TOKEN_URL
+              value: https://verifier.dome-marketplace.eu/oidc/token
+            - name: VC_VERIFIER_EXTERNAL_DOMAIN
+              value: https://verifier.dome-marketplace.eu
+            - name: SCHEDULING_CRON_JOB_TASK
+              value: "0 30 */3 * * ?"
+            - name: LOG_LEVEL
+              value: DEBUG
+            - name: PRIVATE_KEY_BASE64
+              valueFrom:
+                secretKeyRef:
+                  name: private-key-verifier
+                  key: PRIVATE_KEY_BASE64
+            - name: LEAR_CREDENTIAL_BASE64
+              valueFrom:
+                secretKeyRef:
+                  name: lear-credential-machine
+                  key: LEAR_CREDENTIAL_BASE64
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 9000
+            initialDelaySeconds: 30
+            failureThreshold: 5
+            periodSeconds: 10
+            timeoutSeconds: 10
