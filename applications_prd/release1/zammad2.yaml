@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: zammad2
+  namespace: argocd
+  labels:
+    purpose: zammad2
+spec:
+  destination:
+    namespace: zammad2
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: ionos_prd/zammad2
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
