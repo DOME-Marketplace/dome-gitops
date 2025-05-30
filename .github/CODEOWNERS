@@ -25,6 +25,7 @@
 
 # PRD service list
 /ionos_prd/argocd/ @bialask-daiteap
+/ionos_prd/billing/ @pasquy73 @cdizenzo
 /ionos_prd/cert-manager/ @bialask-daiteap
 /ionos_prd/chatbot/ @kingmanfri
 /ionos_prd/cs-identity/ 
