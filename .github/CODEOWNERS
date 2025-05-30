@@ -41,6 +41,7 @@
 /ionos_prd/kube-prometheus-stack/ @groundnuty
 /ionos_prd/loki-distributed/ @groundnuty
 /ionos_prd/marketplace/
+/ionos_prd/marketplace/bae/ @fdelavega
 /ionos_prd/marketplace/iam/verifier/ @oriolcanades @albertrodriguezin2 @rogermiretin2 @rubenmodamioin2
 /ionos_prd/namespaces/ @bialask-daiteap
 /ionos_prd/promtail/ @groundnuty
@@ -68,6 +69,7 @@
 /ionos_dev2/in2/ @oriolcanades @albertrodriguezin2 @rogermiretin2 @rubenmodamioin2
 /ionos_dev2/knowledgebase/ @BazRoe
 /ionos_dev2/marketplace/
+/ionos_dev2/marketplace/bae/ @fdelavega
 /ionos_dev2/marketplace/iam/verifier/ @oriolcanades @albertrodriguezin2 @rogermiretin2 @rubenmodamioin2
 /ionos_dev2/search-engine/ @pasquy73 @cdizenzo
 /ionos_dev2/zammad/ @kingmanfri
@@ -91,6 +93,7 @@
 /ionos_sbx/kube-prometheus-stack/ @groundnuty
 /ionos_sbx/loki-distributed/ @groundnuty
 /ionos_sbx/marketplace/
+/ionos_sbx/marketplace/bae/ @fdelavega
 /ionos_sbx/marketplace/iam/verifier/ @oriolcanades @albertrodriguezin2 @rogermiretin2 @rubenmodamioin2
 /ionos_sbx/namespaces/ @bialask-daiteap
 /ionos_sbx/promtail/ @groundnuty
