@@ -4,4 +4,4 @@ metadata:
   name: tcp-services
   namespace: ingress-nginx
 data:
-  "5432": "default/postgres-proxy:5432"
+  "5432": "ingress-nginx/postgres-proxy:5432"
