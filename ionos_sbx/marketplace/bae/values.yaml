@@ -1,6 +1,6 @@
 business-api-ecosystem:
   bizEcosystemApis:
-    # should set the path to the new apis.
+    # Reverted the paths to empty strings
     fullnameOverride: tmforum-api-proxy
     enabled: false
 
