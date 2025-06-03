@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ingress
+  name: billing-scheduler
   namespace: argocd
   labels:
-    purpose: infra
+    purpose: billing
 spec:
   destination:
-    namespace: ingress-nginx
+    namespace: billing
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos_sbx/ingress
+    path: ionos_prd/billing/billing-scheduler
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
   syncPolicy:

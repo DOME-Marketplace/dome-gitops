@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-postgres
+spec:
+  type: ExternalName
+  externalName: pg-75qkrjg6i4d7tlg2.postgresql.de-txl.ionos.com
+  ports:
+    - port: 5432
+      targetPort: 5432

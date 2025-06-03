@@ -11,14 +11,14 @@ zammad:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
     hosts:
-      - host: ticketing-int.dome-marketplace.eu
+      - host: ticketing.dome-marketplace.eu
         paths:
           - path: /
             pathType: ImplementationSpecific
     tls:
       - secretName: ticketing-tls-secret
         hosts:
-          - ticketing-int.dome-marketplace.eu
+          - ticketing.dome-marketplace.eu
 
   zammadConfig:
 
@@ -34,7 +34,7 @@ zammad:
         privileged: false
 
   elasticsearch:
-    clusterName: zammad
+    clusterName: zammad2
     coordinating:
       replicaCount: 0
     data:
