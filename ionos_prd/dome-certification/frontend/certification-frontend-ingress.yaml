@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: dome-certification.dome-marketplace-prd.org
+    - host: dome-certification.dome-marketplace.eu
       http:
         paths:
           - path: /
@@ -22,5 +22,5 @@ spec:
                   number: 80
   tls:
     - hosts:
-        - dome-certification.dome-marketplace-prd.org
+        - dome-certification.dome-marketplace.eu
       secretName: dome-certification-tls-secret
