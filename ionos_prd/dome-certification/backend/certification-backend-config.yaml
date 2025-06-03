@@ -16,8 +16,8 @@ data:
   SPRING_SERVLET_MULTIPART_MAX_REQUEST_SIZE: 10MB
   SPRINGDOC_API_DOCS_PATH: /api-docs
   SPRINGDOC_SWAGGER_UI_PATH: /api-docs.html
-  LOGGING_FILE_NAME: dome-certification.log
-  LOGGING_LEVEL_ROOT: INFO
+  # LOGGING_FILE_NAME: dome-certification.log
+  # LOGGING_LEVEL_ROOT: INFO
   SPRING_MAIL_USERNAME: certification@dome-marketplace.eu
   SPRING_MAIL_ADDRESS: certification@dome-marketplace.eu
   SPRING_MAIL_HOST: smtp.ionos.de
@@ -30,5 +30,6 @@ data:
   JWT_PUBLIC_KEY_X: PwNDhtQdvbbHGt6uU9GCaHrcdn16R80PaQ8tDe0O9yg
   JWT_PUBLIC_KEY_Y: 8rTQYRipfQ6RCAMJE3e-6qVeSfsRHtq3qSWSpBUMjPM
   JWT_OAUTH_CLIENT_ID: did:key:zDnaemuFzGnbeSpxGUKmXMo354Nhvivfao3UjrNqLyJKX34gw
-  JWT_OAUTH_REDIRECT_URI: https://dome-certification.dome-marketplace-prd.org/auth/login
-  JWT_OAUTH_AUD: https://verifier.dome-marketplace-prd.org
+  JWT_OAUTH_REDIRECT_URI: https://dome-certification.dome-marketplace.eu/auth/login
+  JWT_OAUTH_AUD: https://verifier.dome-marketplace.eu
+  JWT_ISSUER_URL: https://issuer.dome-marketplace.eu
