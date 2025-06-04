@@ -77,7 +77,6 @@
 # SBX service list
 /ionos_sbx/analytics/ @peppasnet
 /ionos_sbx/argocd/ @bialask-daiteap
-/ionos_sbx/bacula/ @BazRoe
 /ionos_sbx/billing/ @pasquy73 @cdizenzo
 /ionos_sbx/cert-manager/ @bialask-daiteap
 /ionos_sbx/chatbot/ @kingmanfri
