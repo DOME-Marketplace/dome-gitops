@@ -9,9 +9,6 @@ global:
       nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     enableTLS: true
     clusterIssuer: "letsencrypt-sbx-issuer"
-    secondary:
-      enabled: true
-      domain: "wallet.example-secondary-domain.org"
 
 
 dome-wallet:
@@ -80,7 +77,7 @@ dome-wallet:
     image:
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.9.4
+      tag: v1.9.5
     ## deployment specific configuration
     app:
       logsEnabled: true
