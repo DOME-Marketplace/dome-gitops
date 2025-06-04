@@ -1,4 +1,6 @@
 superset:
+  secretKey: "uVNx9GjEsy9h93KZjmP+Zf7UYBfRg9Q+nEYzM3KvhvU="
+  
   auth:
     username: admin
     password: admin
