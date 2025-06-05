@@ -77,7 +77,7 @@ dome-wallet:
     image:
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.9.5
+      tag: v1.9.6
     ## deployment specific configuration
     app:
       logsEnabled: true
