@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   labels:
     grafana_dashboard: "1"
-  name: alastria-dashboard-rev2
+  name: alastria-dashboard-redT
 data:
   alastria-dashboard.json: |-
     {
