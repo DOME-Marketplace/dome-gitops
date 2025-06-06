@@ -1,10 +1,25 @@
 superset:
-  secretKey: "uVNx9GjEsy9h93KZjmP+Zf7UYBfRg9Q+nEYzM3KvhvU="
-  
   auth:
     username: admin
     password: admin
     email: georgios.peppas@eurodyn.com
+    secretKey: '5l4DbZGMnsj7QPFf4LoqI66Iv2P4bwLh/e9S6GYT9jdclSg4EF8OhYOR'
+
+  superset:
+    image:
+      registry: docker.io
+      repository: bitnami/superset
+      tag: 4.1.2-debian-12-r5
+      pullPolicy: IfNotPresent
+      digest: ""
+    init:
+      dbMigration: true
+    extraEnvVarsSecret: superset
+    extraConfig:
+      superset_config.py: |
+        import os
+        SECRET_KEY = open(os.environ["SUPERSET_SECRET_KEY_FILE"]).read().strip()
+
   postgresql:
     enabled: true
     auth:
@@ -15,6 +30,7 @@ superset:
       registry: docker.io
       repository: bitnami/postgresql
       tag: 14.17.0-debian-12-r5
+
   redis:
     enabled: true
     image:
@@ -22,15 +38,6 @@ superset:
       repository: bitnami/redis
       tag: 7.4.2-debian-12-r5
       pullPolicy: IfNotPresent
-  superset:
-    image:
-      registry: docker.io
-      repository: bitnami/superset
-      tag: 4.1.2-debian-12-r5
-      pullPolicy: IfNotPresent
-      digest: ""  # Add this to satisfy the chart helper
-    init:
-      dbMigration: true
 
   ingress:
     enabled: true
