@@ -9,9 +9,6 @@ global:
       nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     enableTLS: true
     clusterIssuer: "letsencrypt-dev2-issuer"
-    secondary:
-      enabled: true
-      domain: "wallet.example-secondary-domain.org"
 
 dome-wallet:
 
@@ -20,7 +17,7 @@ dome-wallet:
     fullNameOverride: "dome-wallet-backend"
     image:
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.4.6
+      tag: v1.4.9
       pullPolicy: Always
     ## deployment specific configuration
     app:
@@ -79,7 +76,7 @@ dome-wallet:
     image:
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.9.2
+      tag: v1.9.7
     ## deployment specific configuration
     app:
       logsEnabled: true
@@ -91,8 +88,7 @@ dome-wallet:
       logoSrc: "assets/logos/dome-logo.png"
       faviconSrc: "assets/icons/dome-favicon.png"
       walletApi:
-        # Este internalDomain es en realidad el external
-        internalUrl: https://wallet.dome-marketplace-dev2.org
+        externalUrl: https://wallet.dome-marketplace-dev2.org
         # ws = sin certificado, wss = con certificado
         websocketExternalUrl: wss://wallet.dome-marketplace-dev2.org
       iam:

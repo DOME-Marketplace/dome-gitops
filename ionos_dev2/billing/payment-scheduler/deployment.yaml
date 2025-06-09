@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: payment-scheduler-container
-          image: production.eng.it:8433/dome/payment-scheduler:0.1.0a
+          image: production.eng.it:8433/dome/payment-scheduler:1.2.1
           ports:
             - containerPort: 8080
               hostPort: 8480

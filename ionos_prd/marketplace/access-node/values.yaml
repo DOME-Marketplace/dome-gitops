@@ -8,7 +8,7 @@ access-node:
     image:
       repository: in2workspace/in2-desmos-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.1.3
+      tag: v1.1.4
       pullPolicy: IfNotPresent
     readinessProbe:
       failureThreshold: 10
@@ -56,7 +56,9 @@ access-node:
         # -- (external) address of the dlt-adapter
         externalDomain: http://dlt-adapter:8080
       # -- operator external domain
-      externalDomain: "https://desmos.dome-marketplace.eu"
+      externalDomain:
+        protocol: "https"
+        domain: "desmos.dome-marketplace.eu"
       externalAccessNodesUrls:
         enableCustomUrls: true
         customUrls: ""

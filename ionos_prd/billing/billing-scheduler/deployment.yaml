@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: billing-scheduler-deployment
+  namespace: billing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: billing-scheduler
+      app.kubernetes.io/name: billing-scheduler
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: billing-scheduler
+        app.kubernetes.io/name: billing-scheduler
+    spec:
+      containers:
+        - name: billing-scheduler-container
+          image: production.eng.it:8433/dome/billing-scheduler:0.0.13c
+          ports:
+            - containerPort: 8080
+              hostPort: 8180
+              protocol: TCP
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: "1"
+          env:
+            - name: TMF_ENDPOINT
+              value: http://tm-forum-api
+              #  value: http://tm-forum-api-envoy.marketplace.svc.cluster.local:8080
+            - name: TMF_ENVOY
+              value: "false"
+            - name: TMF_NAMESPACE
+              value: marketplace
+            - name: TMF_POSTFIX
+              value: svc.cluster.local  
+            - name: TMF_PORT
+              value: "8080"            
+            - name: BILLING_PROXY
+              value: http://billing-proxy-svc.billing.svc.cluster.local:8080
+            - name: INVOICING_SERVICE
+              value: http://invoicing-service-svc.billing.svc.cluster.local:8080
+            - name: LOG_LEVEL
+              value: DEBUG
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 9000
+            initialDelaySeconds: 30
+            failureThreshold: 5
+            periodSeconds: 10
+            timeoutSeconds: 10

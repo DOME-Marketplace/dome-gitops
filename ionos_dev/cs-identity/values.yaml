@@ -1,0 +1,36 @@
+keycloak:
+  service:
+    type: ClusterIP
+  logging:
+    level: INFO
+  replicaCount: 1
+  auth:
+    existingSecret: keycloak-secret
+    passwordSecretKey: keycloak-admin
+    adminUser: csAdmin
+  serviceAccount:
+    create: true
+
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hostname: cs-identity.dome-marketplace-dev.org
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
+    tls: true
+
+  extraEnvVars:
+    - name: KEYCLOAK_PROXY_ADDRESS_FORWARDING
+      value: "true"
+    - name: KC_HOSTNAME_ADMIN_URL
+      value: https://cs-identity.dome-marketplace-dev.org
+    - name: KC_HOSTNAME_URL
+      value: https://cs-identity.dome-marketplace-dev.org
+    - name: KEYCLOAK_LOG_LEVEL
+      value: INFO
+
+  postgresql:
+    enabled: true
+    auth:
+      database: keycloak
+      existingSecret: keycloak-secret

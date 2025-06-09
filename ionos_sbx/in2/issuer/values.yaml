@@ -17,7 +17,7 @@ dome-issuer:
     image:
       repository: in2workspace/in2-issuer-backend
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.6.6
+      tag: v1.7.0
       pullPolicy: Always
     ingressIssuerApi:
       enabled: true
@@ -69,7 +69,7 @@ dome-issuer:
           clientSecret: client-secret
           credentialId: credential-id
           credentialPassword: credential-password
-        #types allowed: server, cloud
+        # types allowed: server, cloud
         type: cloud
         url: https://dts-component-rdss-csc.api.digitelts.com
       authServer:
@@ -107,6 +107,12 @@ dome-issuer:
           allowedOrigins: "https://issuer.dome-marketplace-sbx.org"
         external:
           allowedOrigins: "https://issuer.dome-marketplace-sbx.org, https://dome-certification.dome-marketplace-sbx.org"
+      vault:
+        url: http://wallet-vault-server:8200
+        existingSecret:
+          enabled: true
+          name: wallet-vault-unseal-secret
+          key: root
       db:
         host: issuer-postgres
         port: 5432
@@ -124,7 +130,7 @@ dome-issuer:
     image:
       repository: in2workspace/in2-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.11.0
+      tag: v1.13.1
       pullPolicy: Always
     app:
       colors:

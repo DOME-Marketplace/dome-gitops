@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: payment-scheduler-container
-          image: production.eng.it:8433/dome/payment-scheduler:0.1.0e
+          image: production.eng.it:8433/dome/payment-scheduler:1.2.1
           ports:
             - containerPort: 8080
               hostPort: 8480
@@ -48,7 +48,7 @@ spec:
             - name: VC_VERIFIER_EXTERNAL_DOMAIN
               value: https://verifier.dome-marketplace-sbx.org
             - name: SCHEDULING_CRON_JOB_TASK
-              value: "0 30 0,4,8,12,16,20 * * ?"
+              value: "0 30 */3 * * ?"
             - name: LOG_LEVEL
               value: DEBUG
             - name: PRIVATE_KEY_BASE64
