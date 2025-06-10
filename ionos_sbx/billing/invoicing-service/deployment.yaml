@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: invoicing-service-container
-          image: production.eng.it:8433/dome/invoicing-service:0.0.9
+          image: production.eng.it:8433/dome/invoicing-service:1.2.0
           ports:
             - containerPort: 8080
               hostPort: 8380
