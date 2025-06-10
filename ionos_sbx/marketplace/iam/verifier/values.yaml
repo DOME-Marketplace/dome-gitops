@@ -1,4 +1,4 @@
-verifier-api:
+dome-verifier:
   image:
     repository: in2workspace/in2-verifier-api
     tag: v1.3.9
