@@ -193,6 +193,15 @@ access-node:
     # -- should tm-forum-api be enabled
     enabled: true
 
+    defaultConfig:
+      image:
+        tag: 0.31.2
+      additionalEnvVars: 
+      - name: MAPPING_STRICT_RELATIONSHIPS
+        value: "false"
+      - name: API_EXTENSION_ENABLED
+        value: "true"
+
     apis:
     - name: party-catalog
       image: tmforum-party-catalog
