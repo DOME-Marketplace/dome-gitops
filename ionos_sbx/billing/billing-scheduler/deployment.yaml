@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: billing-scheduler-container
-          image: production.eng.it:8433/dome/billing-scheduler:0.0.13c
+          image: production.eng.it:8433/dome/billing-scheduler:1.2.0
           ports:
             - containerPort: 8080
               hostPort: 8180
