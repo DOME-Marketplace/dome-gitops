@@ -36,7 +36,7 @@ spec:
                   name: bookstack-secret
                   key: DB_PASSWORD
             - name: APP_URL
-              value: "https://knowledgebase.dome-marketplace-prd.org"
+              value: "https://knowledgebase.dome-marketplace.eu"
             - name: APP_KEY
               valueFrom:
                 secretKeyRef:
