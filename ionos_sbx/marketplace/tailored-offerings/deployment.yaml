@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: quote-management
-  namespace: tailored-offerings
+  namespace: marketplace
 spec:
   replicas: 1
   selector:
