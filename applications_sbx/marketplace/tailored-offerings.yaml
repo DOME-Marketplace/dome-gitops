@@ -11,7 +11,11 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
+<<<<<<< sbx_tailored_offering_backend_deployment
+    path: ionos_sbx/marketplace/tailored-offerings
+=======
     path: ionos_sbx/tailored-offerings
+>>>>>>> main
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
   syncPolicy:
