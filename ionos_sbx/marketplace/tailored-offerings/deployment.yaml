@@ -22,10 +22,6 @@ spec:
             - containerPort: 8080
               hostPort: 8080
               protocol: TCP
-          resources:
-            limits:
-              memory: 256Mi
-              cpu: "1"
           livenessProbe:
             httpGet:
               path: /actuator/health
