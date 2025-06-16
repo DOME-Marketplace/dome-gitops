@@ -102,6 +102,7 @@
 /ionos_sbx/marketplace/iam/verifier/ @oriolcanades @albertrodriguezin2 @rogermiretin2 @rubenmodamioin2
 /ionos_sbx/marketplace/iam/trusted-issuers-list/ @alejandro-nieto-git @alejandroalffer @urielrp
 /ionos_sbx/marketplace/iam/mysql/ @alejandro-nieto-git @alejandroalffer @urielrp
+/ionos_sbx/marketplace/tailored-offerings/ @kingmanfri @BazRoe
 /ionos_sbx/namespaces/ @bialask-daiteap
 /ionos_sbx/promtail/ @groundnuty
 /ionos_sbx/search-engine/ @pasquy73 @cdizenzo
