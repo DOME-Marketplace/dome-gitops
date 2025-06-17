@@ -18,6 +18,9 @@ spec:
       containers:
         - name: quote-management-container
           image: production.eng.it:8433/dome/quote_management_backend:1.0
+          env:
+            - name: TMFORUM_API_BASE_URL
+              value: https://an-dhub-sbx.dome-project.eu/tmf-api
           ports:
             - containerPort: 8080
               hostPort: 8080
