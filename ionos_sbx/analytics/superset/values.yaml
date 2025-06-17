@@ -12,6 +12,8 @@ superset:
       tag: 4.1.2-debian-12-r5
       pullPolicy: IfNotPresent
       digest: ""
+    extraPipPackages:
+      - psycopg2-binary
     init:
       dbMigration: true
     extraEnvVarsSecret: superset
