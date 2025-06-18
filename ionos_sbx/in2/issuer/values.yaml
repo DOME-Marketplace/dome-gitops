@@ -36,7 +36,7 @@ dome-issuer:
           secretName: issuer-tls-secret
     app:
       logLevel:
-        app: INFO
+        app: DEBUG
         security: INFO
       url: https://issuer.dome-marketplace-sbx.org
       issuerFrontendUrl: https://issuer.dome-marketplace-sbx.org
