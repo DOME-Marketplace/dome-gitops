@@ -1,12 +1,12 @@
 apiVersion: v2
-name: vcverifier
+name: dome-verifier
 description: Chart holder for argo-cd
 
 type: application
-version: 2.4.2
+version: 2.4.3
 appVersion: 1.1.0
 
 dependencies:
-  - name: verifier-api
-    version: 1.2.15
+  - name: dome-verifier
+    version: 1.2.20
     repository: https://in2workspace.github.io/helm-charts

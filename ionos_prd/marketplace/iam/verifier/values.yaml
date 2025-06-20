@@ -1,7 +1,7 @@
-verifier-api:
+dome-verifier:
   image:
     repository: in2workspace/in2-verifier-api
-    tag: v1.3.8
+    tag: v1.3.10
     pullPolicy: IfNotPresent
 
   ingress:
@@ -20,54 +20,47 @@ verifier-api:
         secretName: verifier-tls-sec
 
   app:
-    verifier:
-      frontend:
-        urls:
-          # Placeholder for onboarding URL (REQUIRED)
-          onboarding: "https://onboarding.dome-marketplace.eu/"
-          # Placeholder for support URL (REQUIRED)
-          support: "https://ticketing.dome-marketplace.org"
-          # Placeholder for wallet URL (REQUIRED)
-          wallet: "https://wallet.dome-marketplace.eu"
-        colors:
-          primary: "#2D58A7"
-          # Defines contrasting text color for primary color (OPTIONAL with default value)
-          primaryContrast: "#ffffff"
-          # Defines secondary color for the frontend (OPTIONAL with default value)
-          secondary: "#14274A"
-          # Defines contrasting text color for secondary color (OPTIONAL with default value)
-          secondaryContrast: "#00ADD3"
-        # Placeholder for logo source path (REQUIRED)
-        # This routes must point to internal folder: src/main/resources/static/img/<file_name.png>
-        logoSrc: "dome_logo_white.svg"
-        # Placeholder for favicon source path (OPTIONAL)
-        # This routes must point to internal folder: src/main/resources/static/img/<file_name.png>
-        faviconSrc: "dome_logo_favicon.png"
-      backend:
-        # Placeholder for backend URL (REQUIRED)
-        url: "https://verifier.dome-marketplace.eu"
-        security:
-          serviceIdentity:
-            # Placeholder for private key used in identity verification (REQUIRED)
-            privateKey:
-              existingSecret:
-                enabled: true
-                name: verifier-secret
-                key: private-key
-            # Placeholder for DID Key (REQUIRED)
-            didKey: "did:key:zDnaeVYnWTZu5nbrH1qmBVMvNwSrtKnkRbCZ4xH5h2LQPnzdr"
-            # Placeholder for LEARCredentialMachine in Base64 format (REQUIRED)
-            verifiableCredential:
-              existingSecret:
-                enabled: true
-                name: verifier-secret
-                key: verifiable-credential
-        trustFrameworks:
-          # Placeholder for the name of a trust framework (REQUIRED)
-          - name: DOME
-            # Placeholder for trusted issuers list URL
-            trustedIssuersListUrl: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080/v4/issuers/"
-            # Placeholder for trusted services list URL
-            trustedServicesListUrl: "https://raw.githubusercontent.com/DOME-Marketplace/trust-framework/refs/heads/main/prd/trusted_services_list.yaml"
-            # Placeholder for revoked credentials list URL
-            revokedCredentialListUrl: "https://raw.githubusercontent.com/DOME-Marketplace/trust-framework/refs/heads/main/prd/revoked_credential_list.yaml"
+    frontend:
+      urls:
+        # Placeholder for onboarding URL (REQUIRED)
+        onboarding: "https://onboarding.dome-marketplace.eu/"
+        # Placeholder for support URL (REQUIRED)
+        support: "https://ticketing.dome-marketplace.org"
+        # Placeholder for wallet URL (REQUIRED)
+        wallet: "https://wallet.dome-marketplace.eu"
+      colors:
+        primary: "#2D58A7"
+        # Defines contrasting text color for primary color (OPTIONAL with default value)
+        primaryContrast: "#ffffff"
+        # Defines secondary color for the frontend (OPTIONAL with default value)
+        secondary: "#14274A"
+        # Defines contrasting text color for secondary color (OPTIONAL with default value)
+        secondaryContrast: "#00ADD3"
+      # Placeholder for logo source path (REQUIRED)
+      # This routes must point to internal folder: src/main/resources/static/img/<file_name.png>
+      logoSrc: "dome_logo_white.svg"
+      # Placeholder for favicon source path (OPTIONAL)
+      # This routes must point to internal folder: src/main/resources/static/img/<file_name.png>
+      faviconSrc: "dome_logo_favicon.png"
+    backend:
+      # Placeholder for backend URL (REQUIRED)
+      url: "https://verifier.dome-marketplace.eu"
+      security:
+        serviceIdentity:
+          # Placeholder for private key used in identity verification (REQUIRED)
+          existingSecret:
+            enabled: true
+            name: verifier-secret
+            privateKey: private-key
+            verifiableCredential: verifiable-credential
+          # Placeholder for DID Key (REQUIRED)
+          didKey: "did:key:zDnaeVYnWTZu5nbrH1qmBVMvNwSrtKnkRbCZ4xH5h2LQPnzdr"
+      trustFrameworks:
+        # Placeholder for the name of a trust framework (REQUIRED)
+        - name: DOME
+          # Placeholder for trusted issuers list URL
+          trustedIssuersListUrl: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080/v4/issuers/"
+          # Placeholder for trusted services list URL
+          trustedServicesListUrl: "https://raw.githubusercontent.com/DOME-Marketplace/trust-framework/refs/heads/main/prd/trusted_services_list.yaml"
+          # Placeholder for revoked credentials list URL
+          revokedCredentialListUrl: "https://raw.githubusercontent.com/DOME-Marketplace/trust-framework/refs/heads/main/prd/revoked_credential_list.yaml"
