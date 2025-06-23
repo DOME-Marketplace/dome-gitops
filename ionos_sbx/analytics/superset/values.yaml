@@ -24,6 +24,14 @@ superset:
       superset_config.py: |
         import os
         SECRET_KEY = open(os.environ["SUPERSET_SECRET_KEY_FILE"]).read().strip()
+    worker:
+      resources:
+        requests:
+          memory: 4Gi
+          cpu: 2
+        limits:
+          memory: 6Gi
+          cpu: 3
 
   postgresql:
     enabled: true
