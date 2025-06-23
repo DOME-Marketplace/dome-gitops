@@ -61,3 +61,15 @@ zammad:
         limits:
           cpu: 1000m
           memory: 3Gi
+
+  # Specific configuration for PostgreSQL subchart
+  postgresql:
+    primary:
+      # Annotations for PostgreSQL pod
+      podAnnotations:
+        backup.velero.io/backup-volumes: "data"
+
+      # Persistence volume configuration with annotations
+      persistence:
+        annotations:
+          backup: "true"
