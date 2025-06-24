@@ -40,6 +40,21 @@ superset:
       repository: bitnami/redis
       tag: 7.4.2-debian-12-r5
       pullPolicy: IfNotPresent
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: nodepool
+                  operator: NotIn
+                  values:
+                    - ingress
+    tolerations:
+      - key: "dedicated"
+        operator: "Equal"
+        value: "redis"
+        effect: "NoSchedule"
+
 
   ingress:
     enabled: true
