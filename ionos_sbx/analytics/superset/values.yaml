@@ -181,29 +181,19 @@ spec:
     targetPort: 8088
   type: ClusterIP
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: superset-ingress
-  namespace: analytics
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
-    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-spec:
-  ingressClassName: nginx
-  tls:
-  - hosts:
-    - analytics.dome-marketplace-sbx.org
-    secretName: analytics-tls-secret
-  rules:
-  - host: analytics.dome-marketplace-sbx.org
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: superset-service
-            port:
-              number: 8088
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    hostname: analytics.dome-marketplace-sbx.org
+    tls: true
+    extraTls:
+      - hosts:
+          - analytics.dome-marketplace-sbx.org
+        secretName: analytics-tls-secret
+    path: /
+    pathType: Prefix
+    servicePort: 8088
