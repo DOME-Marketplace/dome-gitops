@@ -5,3 +5,13 @@ mysql:
   initdbScripts:
     create.sql: |
       CREATE DATABASE bookstack;
+  # Velero backup configuration
+  primary:
+    # Annotations for MySQL pod
+    podAnnotations:
+      backup.velero.io/backup-volumes: "data"
+    # Persistence volume configuration with annotations
+    persistence:
+      annotations:
+        backup: "true"
+
