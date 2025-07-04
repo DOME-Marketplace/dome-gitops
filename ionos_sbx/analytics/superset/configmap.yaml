@@ -1,0 +1,103 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: superset-startup
+  namespace: analytics
+data:
+  startup.sh: |
+    #!/bin/bash
+    set -e
+    
+    echo "Updating package lists..."
+    apt-get update -qq
+    
+    echo "Installing Redis..."
+    DEBIAN_FRONTEND=noninteractive apt-get install -y redis-server
+    
+    echo "Starting Redis server..."
+    redis-server --daemonize yes --bind 127.0.0.1 --port 6379 --maxmemory 256mb --maxmemory-policy allkeys-lru
+    
+    echo "Waiting for Redis to start..."
+    sleep 5
+    
+    # Test Redis connection
+    redis-cli ping || (echo "Redis failed to start" && exit 1)
+    
+    echo "Setting up Superset environment..."
+    export SUPERSET_CONFIG_PATH=/app/pythonpath/superset_config.py
+    export PYTHONPATH=/app/pythonpath:$PYTHONPATH
+    
+    # Create config directory
+    mkdir -p /app/pythonpath
+    
+    # Create superset config
+    cat > /app/pythonpath/superset_config.py << 'EOF'
+    import os
+    
+    # Database - using SQLite for simplicity
+    SQLALCHEMY_DATABASE_URI = 'sqlite:////app/superset.db'
+    
+    # Redis configuration
+    REDIS_HOST = '127.0.0.1'
+    REDIS_PORT = 6379
+    
+    # Celery configuration
+    CELERY_CONFIG = {
+        'broker_url': f'redis://{REDIS_HOST}:{REDIS_PORT}/0',
+        'result_backend': f'redis://{REDIS_HOST}:{REDIS_PORT}/0',
+        'worker_log_level': 'INFO',
+        'worker_prefetch_multiplier': 1,
+        'task_acks_late': True,
+    }
+    
+    # Cache configuration
+    CACHE_CONFIG = {
+        'CACHE_TYPE': 'RedisCache',
+        'CACHE_REDIS_HOST': REDIS_HOST,
+        'CACHE_REDIS_PORT': REDIS_PORT,
+        'CACHE_REDIS_DB': 1,
+        'CACHE_DEFAULT_TIMEOUT': 300,
+    }
+    
+    # Security
+    SECRET_KEY = 'your-secret-key-change-in-production'
+    WTF_CSRF_ENABLED = False
+    
+    # Feature flags
+    FEATURE_FLAGS = {
+        'ENABLE_TEMPLATE_PROCESSING': True,
+    }
+    
+    # Load examples
+    SUPERSET_LOAD_EXAMPLES = True
+    
+    # Webserver config
+    SUPERSET_WEBSERVER_PORT = 8088
+    SUPERSET_WEBSERVER_ADDRESS = '0.0.0.0'
+    EOF
+    
+    echo "Initializing Superset database..."
+    superset db upgrade
+    
+    echo "Creating admin user..."
+    superset fab create-admin \
+        --username admin \
+        --firstname Admin \
+        --lastname User \
+        --email admin@example.com \
+        --password admin 2>/dev/null || echo "Admin user may already exist"
+    
+    echo "Loading examples..."
+    superset load_examples 2>/dev/null || echo "Examples may already be loaded"
+    
+    echo "Initializing Superset..."
+    superset init
+    
+    echo "Starting Celery worker in background..."
+    nohup celery --app=superset.tasks.celery_app:app worker --loglevel=info > /tmp/celery.log 2>&1 &
+    
+    echo "Waiting for Celery to start..."
+    sleep 10
+    
+    echo "Starting Superset web server..."
+    exec superset run -h 0.0.0.0 -p 8088 --with-threads
