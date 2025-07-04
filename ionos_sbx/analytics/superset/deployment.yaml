@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: superset-all-in-one
+  namespace: analytics
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: superset-all-in-one
+  template:
+    metadata:
+      labels:
+        app: superset-all-in-one
+    spec:
+      containers:
+      - name: superset
+        image: apache/superset:4.0.2
+        command: ["/bin/bash", "/startup.sh"]
+        ports:
+        - containerPort: 8088
+          name: web
+        env:
+        - name: SUPERSET_CONFIG_PATH
+          value: "/app/pythonpath/superset_config.py"
+        - name: PYTHONPATH
+          value: "/app/pythonpath"
+        volumeMounts:
+        - name: startup-script
+          mountPath: /startup.sh
+          subPath: startup.sh
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1.5Gi
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+        livenessProbe:
+          httpGet:
+            path: /login/
+            port: 8088
+          initialDelaySeconds: 300
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /login/
+            port: 8088
+          initialDelaySeconds: 240
+          periodSeconds: 15
+          timeoutSeconds: 10
+          failureThreshold: 5
+      volumes:
+      - name: startup-script
+        configMap:
+          name: superset-startup
+          defaultMode: 0755
+      restartPolicy: Always
