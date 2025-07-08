@@ -1,0 +1,23 @@
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: superset-analytics-daily
+  namespace: velero
+  labels:
+    app.kubernetes.io/name: superset-analytics
+spec:
+  # Template for the backups that will be created
+  template:
+    # Target all resources with our application label
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/name: superset-analytics
+    # Keep each backup for 7 days
+    ttl: 168h0m0s
+    # Include cluster-scoped resources
+    includeClusterResources: false
+    # Include the analytics namespace
+    includedNamespaces:
+    - analytics
+  # Run daily at 2:00 AM
+  schedule: "0 2 * * *"
