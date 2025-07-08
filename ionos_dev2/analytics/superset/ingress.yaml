@@ -3,6 +3,10 @@ kind: Ingress
 metadata:
   name: superset-ingress
   namespace: analytics
+  labels:
+    app.kubernetes.io/name: superset-analytics
+    app.kubernetes.io/instance: superset
+    app.kubernetes.io/component: ingress
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-dev2-issuer
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"

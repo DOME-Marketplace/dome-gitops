@@ -3,6 +3,9 @@ kind: ConfigMap
 metadata:
   name: superset-startup
   namespace: analytics
+  labels:
+    app.kubernetes.io/name: superset-analytics
+    app.kubernetes.io/component: config
 data:
   startup.sh: |
     #!/bin/bash
@@ -34,8 +37,8 @@ data:
     cat > /app/pythonpath/superset_config.py << 'EOF'
     import os
     
-    # Database - using SQLite for simplicity
-    SQLALCHEMY_DATABASE_URI = 'sqlite:////app/superset.db'
+    # Database - using SQLite with persistent storage
+    SQLALCHEMY_DATABASE_URI = 'sqlite:////app/data/superset.db'
     
     # Redis configuration
     REDIS_HOST = '127.0.0.1'
@@ -75,6 +78,9 @@ data:
     SUPERSET_WEBSERVER_PORT = 8088
     SUPERSET_WEBSERVER_ADDRESS = '0.0.0.0'
     EOF
+    
+    # Ensure data directory exists
+    mkdir -p /app/data
     
     echo "Initializing Superset database..."
     superset db upgrade
