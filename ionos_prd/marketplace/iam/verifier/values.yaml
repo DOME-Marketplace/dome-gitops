@@ -45,6 +45,14 @@ dome-verifier:
     backend:
       # Placeholder for backend URL (REQUIRED)
       url: "https://verifier.dome-marketplace.eu"
+      logging:
+        level:
+          # Sets logging level for Spring Security
+          org.springframework.security: DEBUG
+          # Sets logging level for web filters
+          org.springframework.web.filter: DEBUG
+          # Sets logging level for the custom package "es.in2.vcverifier"
+          es.in2.vcverifier: DEBUG
       security:
         serviceIdentity:
           # Placeholder for private key used in identity verification (REQUIRED)
