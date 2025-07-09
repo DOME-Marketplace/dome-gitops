@@ -6,3 +6,13 @@ mysql:
     create.sql: |
       CREATE DATABASE til;
       CREATE DATABASE ccs;
+      
+  primary:
+    podAnnotations:
+      backup.velero.io/backup-volumes: data
+      pre.hook.backup.velero.io/command: '["/bin/sh", "-c", "mysqldump -uroot -p$MYSQL_ROOT_PASSWORD --all-databases > /bitnami/mysql/backup.sql"]'
+      pre.hook.backup.velero.io/container: mysql
+      pre.hook.backup.velero.io/timeout: 5m
+
+  labels:
+    app.kubernetes.io/name: mysql-til    
