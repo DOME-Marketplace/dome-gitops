@@ -6,6 +6,8 @@ mysql:
     create.sql: |
       CREATE DATABASE bookstack;
   # Velero backup configuration
+  commonLabels:
+    backup: "true"
   primary:
     # Annotations for MySQL pod
     podAnnotations:
