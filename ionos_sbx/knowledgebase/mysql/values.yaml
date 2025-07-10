@@ -9,10 +9,10 @@ mysql:
   commonLabels:
     backup: "true"
   primary:
-    # Annotations for MySQL pod
+    annotations:
+      backup.velero.io/backup-volumes: "data"
     podAnnotations:
       backup.velero.io/backup-volumes: "data"
-    # Persistence volume configuration with annotations
     persistence:
       annotations:
         backup: "true"
