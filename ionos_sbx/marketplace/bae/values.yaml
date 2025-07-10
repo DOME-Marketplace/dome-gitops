@@ -124,7 +124,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: "10.1.0"
+        tag: "10.1.1"
         pullPolicy: Always
     
     plugins:
@@ -147,7 +147,17 @@ business-api-ecosystem:
       host: mongodb
       database: charging_db
       user: charging
-    
+
+    email:
+      ## -- Mail address
+      mail: no.reply.dome.sbx@gmail.com
+      ## -- SMTP configuration
+      smtp:
+        ## -- User name
+        user: no.reply.dome.sbx
+        ## -- SMTP server hostname
+        server: smtp.gmail.com
+
     backup:
       enabled: false
 
@@ -178,7 +188,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "10.2.0-PRE-3"
+        tag: "10.2.0-PRE-4"
         pullPolicy: Always
 
     ingress: 
