@@ -1,9 +1,5 @@
 trusted-issuers-list:
 
-  # Standard labels for identification on backups
-  labels:
-    app.kubernetes.io/name: trusted-issuers-list
-
   # Image
   deployment:
     image:  
