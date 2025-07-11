@@ -122,12 +122,11 @@ zammad:
   # Specific configuration for PostgreSQL subchart
   postgresql:
     primary:
-      annotations:
-        backup.velero.io/backup-volumes: data
       podAnnotations:
         backup.velero.io/backup-volumes: data
 
       # Persistence volume configuration with annotations
       persistence:
         annotations:
-          backup: "true"
+          backup.velero.io/backup-volumes: data
+          velero.io/backup: true
