@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: billing-engine-container
-          image: production.eng.it:8433/dome/billing-engine:1.0.1
+          image: production.eng.it:8433/dome/billing-engine:1.3.0
           ports:
             - containerPort: 8080
               hostPort: 8080
