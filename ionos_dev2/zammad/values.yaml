@@ -92,14 +92,6 @@ zammad:
           cpu: 2000m
           memory: 4Gi
 
-      podAnnotations:
-        backup.velero.io/backup-volumes: "data"
-
-      persistence:
-        annotations:
-          backup.velero.io/backup-volumes: "data"
-          velero.io/backup: "true"
-
     data:
       replicaCount: 1
       heapSize: 4g
@@ -111,22 +103,8 @@ zammad:
           cpu: 3000m
           memory: 8Gi
 
-      podAnnotations:
-        backup.velero.io/backup-volumes: data
-
-      persistence:
-        annotations:
-          backup.velero.io/backup-volumes: data
-          velero.io/backup: "true"
-
   # Specific configuration for PostgreSQL subchart
   postgresql:
     primary:
       podAnnotations:
         backup.velero.io/backup-volumes: data
-
-      # Persistence volume configuration with annotations
-      persistence:
-        annotations:
-          backup.velero.io/backup-volumes: data
-          velero.io/backup: true
