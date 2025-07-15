@@ -45,7 +45,6 @@ dome-verifier:
     backend:
       # Placeholder for backend URL (REQUIRED)
       url: "https://verifier.dome-marketplace.eu"
-      logging:
       security:
         serviceIdentity:
           # Placeholder for private key used in identity verification (REQUIRED)
