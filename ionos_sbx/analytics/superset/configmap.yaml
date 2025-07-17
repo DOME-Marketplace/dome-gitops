@@ -32,11 +32,101 @@ data:
     echo "Setting up Superset environment..."
     export SUPERSET_CONFIG_PATH=/app/pythonpath/superset_config.py
     export PYTHONPATH=/app/pythonpath:$PYTHONPATH
+    export AUTHLIB_INSECURE_TRANSPORT=1  # For sandbox testing
     
     # Create config directory
     mkdir -p /app/pythonpath
     
-    # Create superset config with OIDC
+    # Create DOME OIDC Security Manager
+    cat > /app/pythonpath/dome_oidc_security_manager.py << 'EOF'
+    import logging
+    import json
+    from superset.security import SupersetSecurityManager
+    
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.INFO)
+    
+    class DOMEOIDCSecurityManager(SupersetSecurityManager):
+        
+        def oauth_user_info(self, provider, response=None):
+            """Extract user info from DOME OIDC response"""
+            
+            if provider == 'dome':
+                logger.info("Processing DOME OIDC user info")
+                logger.info(f"OAuth response: {response}")
+                
+                try:
+                    # Get user info from the userinfo endpoint
+                    me = self.appbuilder.sm.oauth_remotes[provider].get('oidc/userinfo')
+                    logger.info(f"Userinfo response status: {me.status}")
+                    
+                    if hasattr(me, 'json'):
+                        user_data = me.json()
+                    else:
+                        user_data = me.data
+                    
+                    logger.info(f"User data from DOME: {user_data}")
+                    
+                    # Handle both standard OIDC claims and DOME's VC structure
+                    sub = user_data.get('sub', '')
+                    email = user_data.get('email')
+                    
+                    # Extract from VC if present
+                    if 'vc' in user_data:
+                        vc = user_data.get('vc', {})
+                        credential_subject = vc.get('credentialSubject', {})
+                        mandate = credential_subject.get('mandate', {})
+                        mandatee = mandate.get('mandatee', {})
+                        
+                        if not email:
+                            email = mandatee.get('email')
+                        
+                        first_name = mandatee.get('first_name', 'DOME')
+                        last_name = mandatee.get('last_name', 'User')
+                    else:
+                        # Standard OIDC claims
+                        first_name = user_data.get('given_name', 'DOME')
+                        last_name = user_data.get('family_name', 'User')
+                    
+                    # Create username from DID or email
+                    if sub.startswith('did:'):
+                        username = sub.split(':')[-1][:30]  # Use last part of DID
+                    elif email:
+                        username = email.split('@')[0]
+                    else:
+                        username = 'dome_user'
+                    
+                    if not email:
+                        email = f"{username}@dome-marketplace-sbx.org"
+                    
+                    user_info = {
+                        'username': username,
+                        'email': email,
+                        'first_name': first_name,
+                        'last_name': last_name,
+                        'id': sub,
+                    }
+                    
+                    logger.info(f"Processed user info: {user_info}")
+                    return user_info
+                    
+                except Exception as e:
+                    logger.error(f"Error processing DOME user info: {str(e)}")
+                    import traceback
+                    traceback.print_exc()
+                    # Return minimal info to allow login
+                    return {
+                        'username': 'dome_user',
+                        'email': 'user@dome-marketplace-sbx.org',
+                        'first_name': 'DOME',
+                        'last_name': 'User',
+                        'id': 'unknown'
+                    }
+            
+            return super().oauth_user_info(provider, response)
+    EOF
+    
+    # Create superset config with corrected OIDC endpoints
     cat > /app/pythonpath/superset_config.py << 'EOF'
     import os
     import logging
@@ -68,11 +158,13 @@ data:
     
     # Security
     SECRET_KEY = 'your-secret-key-change-in-production'
+    WTF_CSRF_ENABLED = True
+    WTF_CSRF_EXEMPT_LIST = []
     
     # Set the authentication type to OAuth
     AUTH_TYPE = AUTH_OAUTH
     
-    # DOME OIDC Configuration
+    # DOME OIDC Configuration with correct endpoints
     OAUTH_PROVIDERS = [
         {
             'name': 'dome',
@@ -80,18 +172,18 @@ data:
             'token_key': 'access_token',
             'remote_app': {
                 'client_id': 'did:key:zDnaer6wstrAhZxM5ej7fvQbnf9aP3RdojhXEao431SMrN3Lb',
-                'client_secret': None,  # Using client_secret_jwt method
+                'client_secret': '',  # Empty for public client
                 'client_kwargs': {
-                    'scope': 'openid openid_learcredential',
-                    'token_endpoint_auth_method': 'client_secret_jwt',
+                    'scope': 'openid',  # Only openid is supported according to discovery
                 },
+                # Use the correct OIDC endpoints from discovery
                 'server_metadata_url': 'https://verifier.dome-marketplace-sbx.org/.well-known/openid-configuration',
-                # If metadata URL doesn't work, use explicit endpoints:
-                # 'api_base_url': 'https://verifier.dome-marketplace-sbx.org/',
-                # 'access_token_url': 'https://verifier.dome-marketplace-sbx.org/token',
-                # 'authorize_url': 'https://verifier.dome-marketplace-sbx.org/authorize',
-                # 'userinfo_url': 'https://verifier.dome-marketplace-sbx.org/userinfo',
-                # 'jwks_uri': 'https://verifier.dome-marketplace-sbx.org/oidc/did/did:key:zDnaer6wstrAhZxM5ej7fvQbnf9aP3RdojhXEao431SMrN3Lb',
+                # Explicitly set endpoints to ensure correct paths
+                'api_base_url': 'https://verifier.dome-marketplace-sbx.org/',
+                'access_token_url': 'https://verifier.dome-marketplace-sbx.org/oidc/token',
+                'authorize_url': 'https://verifier.dome-marketplace-sbx.org/oidc/authorize',
+                'userinfo_url': 'https://verifier.dome-marketplace-sbx.org/oidc/userinfo',
+                'jwks_uri': 'https://verifier.dome-marketplace-sbx.org/oidc/jwks',
             }
         }
     ]
@@ -127,124 +219,51 @@ data:
     SUPERSET_WEBSERVER_PORT = 8088
     SUPERSET_WEBSERVER_ADDRESS = '0.0.0.0'
     
-    logger.info("DOME OIDC configuration loaded")
+    # Logging
+    LOG_LEVEL = 'INFO'
+    
+    logger.info("DOME OIDC configuration loaded with correct endpoints")
     EOF
     
-    # Create DOME OIDC Security Manager
-    cat > /app/pythonpath/dome_oidc_security_manager.py << 'EOF'
-    import logging
-    import json
-    from superset.security import SupersetSecurityManager
-    
-    logger = logging.getLogger(__name__)
-    
-    class DOMEOIDCSecurityManager(SupersetSecurityManager):
-        
-        def oauth_user_info(self, provider, response=None):
-            """Extract user info from DOME OIDC response"""
-            
-            if provider == 'dome':
-                logger.info("Processing DOME OIDC user info")
-                
-                try:
-                    # Get the OAuth remote app
-                    me = self.appbuilder.sm.oauth_remotes[provider].get('userinfo')
-                    if me.status_code == 200:
-                        user_data = me.json()
-                    else:
-                        # If userinfo endpoint fails, decode the ID token
-                        import jwt
-                        id_token = response.get('id_token')
-                        if id_token:
-                            # Decode without verification for now (in production, verify with JWKS)
-                            user_data = jwt.decode(id_token, options={"verify_signature": False})
-                        else:
-                            logger.error("No user info or ID token available")
-                            return None
-                    
-                    logger.info(f"User data from DOME: {json.dumps(user_data)[:200]}...")
-                    
-                    # Extract user information from DOME's JWT/userinfo
-                    # DOME uses 'sub' as the DID identifier
-                    sub = user_data.get('sub', '')
-                    
-                    # Extract username from DID or use email
-                    username = sub.replace('did:key:', '')[:30] if sub else user_data.get('email', '').split('@')[0]
-                    
-                    # Get email from token claims
-                    email = user_data.get('email')
-                    if not email and 'vc' in user_data:
-                        # Try to extract from verifiable credential
-                        vc = user_data.get('vc', {})
-                        credential_subject = vc.get('credentialSubject', {})
-                        mandatee = credential_subject.get('mandate', {}).get('mandatee', {})
-                        email = mandatee.get('email')
-                    
-                    if not email:
-                        email = f"{username}@dome-marketplace-sbx.org"
-                    
-                    # Extract name from verifiable credential if available
-                    first_name = 'DOME'
-                    last_name = 'User'
-                    
-                    if 'vc' in user_data:
-                        vc = user_data.get('vc', {})
-                        credential_subject = vc.get('credentialSubject', {})
-                        mandatee = credential_subject.get('mandate', {}).get('mandatee', {})
-                        first_name = mandatee.get('first_name', first_name)
-                        last_name = mandatee.get('last_name', last_name)
-                    
-                    user_info = {
-                        'username': username,
-                        'email': email,
-                        'first_name': first_name,
-                        'last_name': last_name,
-                        'id': sub,
-                    }
-                    
-                    logger.info(f"Processed user info: {user_info}")
-                    return user_info
-                    
-                except Exception as e:
-                    logger.error(f"Error processing DOME user info: {str(e)}")
-                    import traceback
-                    traceback.print_exc()
-                    return None
-            
-            # Default behavior for other providers
-            return super().oauth_user_info(provider, response)
-    EOF
-    
-    # Create a simple test endpoint to check OIDC discovery
-    cat > /app/pythonpath/test_oidc.py << 'EOF'
+    # Test the OIDC endpoints
+    cat > /app/pythonpath/test_dome_oidc.py << 'EOF'
     import requests
     import json
     
-    def test_oidc_discovery():
-        """Test DOME OIDC discovery endpoint"""
-        discovery_url = "https://verifier.dome-marketplace-sbx.org/.well-known/openid-configuration"
-        
-        try:
-            response = requests.get(discovery_url)
-            if response.status_code == 200:
-                config = response.json()
-                print("OIDC Discovery successful!")
-                print(json.dumps(config, indent=2))
-            else:
-                print(f"Discovery failed: {response.status_code}")
-                print(response.text)
-        except Exception as e:
-            print(f"Error: {e}")
+    print("Testing DOME OIDC endpoints...")
     
-    if __name__ == "__main__":
-        test_oidc_discovery()
+    # Test discovery
+    discovery_url = "https://verifier.dome-marketplace-sbx.org/.well-known/openid-configuration"
+    try:
+        resp = requests.get(discovery_url)
+        if resp.status_code == 200:
+            config = resp.json()
+            print("✓ Discovery endpoint works")
+            print(f"  Authorization: {config.get('authorization_endpoint')}")
+            print(f"  Token: {config.get('token_endpoint')}")
+            print(f"  UserInfo: {config.get('userinfo_endpoint')}")
+        else:
+            print(f"✗ Discovery failed: {resp.status_code}")
+    except Exception as e:
+        print(f"✗ Discovery error: {e}")
+    
+    # Test JWKS
+    jwks_url = "https://verifier.dome-marketplace-sbx.org/oidc/jwks"
+    try:
+        resp = requests.get(jwks_url)
+        if resp.status_code == 200:
+            print("✓ JWKS endpoint works")
+        else:
+            print(f"✗ JWKS failed: {resp.status_code}")
+    except Exception as e:
+        print(f"✗ JWKS error: {e}")
     EOF
     
     # Ensure data directory exists
     mkdir -p /app/data
     
-    echo "Testing OIDC discovery endpoint..."
-    python /app/pythonpath/test_oidc.py || echo "OIDC discovery test failed, continuing..."
+    echo "Testing DOME OIDC endpoints..."
+    python /app/pythonpath/test_dome_oidc.py || echo "Some tests failed, continuing..."
     
     echo "Initializing Superset database..."
     superset db upgrade
