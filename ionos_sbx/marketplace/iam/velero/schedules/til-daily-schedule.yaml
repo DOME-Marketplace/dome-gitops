@@ -4,8 +4,10 @@ metadata:
   name: til-daily
   namespace: velero
 spec:
-  schedule: "0 3 * * *"  # Every day at 3:00 AM
+  schedule: "0 * * * *" 
   template:
+    includedNamespaces:
+      - in2
     selector:
       matchLabels:
         app.kubernetes.io/name: mysql-til
