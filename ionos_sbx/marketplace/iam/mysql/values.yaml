@@ -1,4 +1,5 @@
 mysql:
+  namespace: til
   fullnameOverride: mysql-til
   auth:
     existingSecret: mysql-secret
