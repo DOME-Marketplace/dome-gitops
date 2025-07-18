@@ -17,9 +17,6 @@ data:
     echo "Installing Redis..."
     DEBIAN_FRONTEND=noninteractive apt-get install -y redis-server
     
-    echo "Installing OIDC dependencies..."
-    pip install Authlib>=1.2.0 requests
-    
     echo "Starting Redis server..."
     redis-server --daemonize yes --bind 127.0.0.1 --port 6379 --maxmemory 256mb --maxmemory-policy allkeys-lru
     
@@ -32,110 +29,15 @@ data:
     echo "Setting up Superset environment..."
     export SUPERSET_CONFIG_PATH=/app/pythonpath/superset_config.py
     export PYTHONPATH=/app/pythonpath:$PYTHONPATH
-    export AUTHLIB_INSECURE_TRANSPORT=1  # For sandbox testing
     
     # Create config directory
     mkdir -p /app/pythonpath
     
-    # Create DOME OIDC Security Manager
-    cat > /app/pythonpath/dome_oidc_security_manager.py << 'EOF'
-    import logging
-    import json
-    from superset.security import SupersetSecurityManager
-    
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.INFO)
-    
-    class DOMEOIDCSecurityManager(SupersetSecurityManager):
-        
-        def oauth_user_info(self, provider, response=None):
-            """Extract user info from DOME OIDC response"""
-            
-            if provider == 'dome':
-                logger.info("Processing DOME OIDC user info")
-                logger.info(f"OAuth response: {response}")
-                
-                try:
-                    # Get user info from the userinfo endpoint
-                    me = self.appbuilder.sm.oauth_remotes[provider].get('oidc/userinfo')
-                    logger.info(f"Userinfo response status: {me.status}")
-                    
-                    if hasattr(me, 'json'):
-                        user_data = me.json()
-                    else:
-                        user_data = me.data
-                    
-                    logger.info(f"User data from DOME: {user_data}")
-                    
-                    # Handle both standard OIDC claims and DOME's VC structure
-                    sub = user_data.get('sub', '')
-                    email = user_data.get('email')
-                    
-                    # Extract from VC if present
-                    if 'vc' in user_data:
-                        vc = user_data.get('vc', {})
-                        credential_subject = vc.get('credentialSubject', {})
-                        mandate = credential_subject.get('mandate', {})
-                        mandatee = mandate.get('mandatee', {})
-                        
-                        if not email:
-                            email = mandatee.get('email')
-                        
-                        first_name = mandatee.get('first_name', 'DOME')
-                        last_name = mandatee.get('last_name', 'User')
-                    else:
-                        # Standard OIDC claims
-                        first_name = user_data.get('given_name', 'DOME')
-                        last_name = user_data.get('family_name', 'User')
-                    
-                    # Create username from DID or email
-                    if sub.startswith('did:'):
-                        username = sub.split(':')[-1][:30]  # Use last part of DID
-                    elif email:
-                        username = email.split('@')[0]
-                    else:
-                        username = 'dome_user'
-                    
-                    if not email:
-                        email = f"{username}@dome-marketplace-sbx.org"
-                    
-                    user_info = {
-                        'username': username,
-                        'email': email,
-                        'first_name': first_name,
-                        'last_name': last_name,
-                        'id': sub,
-                    }
-                    
-                    logger.info(f"Processed user info: {user_info}")
-                    return user_info
-                    
-                except Exception as e:
-                    logger.error(f"Error processing DOME user info: {str(e)}")
-                    import traceback
-                    traceback.print_exc()
-                    # Return minimal info to allow login
-                    return {
-                        'username': 'dome_user',
-                        'email': 'user@dome-marketplace-sbx.org',
-                        'first_name': 'DOME',
-                        'last_name': 'User',
-                        'id': 'unknown'
-                    }
-            
-            return super().oauth_user_info(provider, response)
-    EOF
-    
-    # Create superset config with corrected OIDC endpoints
+    # Create superset config
     cat > /app/pythonpath/superset_config.py << 'EOF'
     import os
-    import logging
-    from flask_appbuilder.security.manager import AUTH_OAUTH
     
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger(__name__)
-    
-    # Database
+    # Database - using SQLite with persistent storage
     SQLALCHEMY_DATABASE_URI = 'sqlite:////app/data/superset.db'
     
     # Redis configuration
@@ -146,6 +48,9 @@ data:
     CELERY_CONFIG = {
         'broker_url': f'redis://{REDIS_HOST}:{REDIS_PORT}/0',
         'result_backend': f'redis://{REDIS_HOST}:{REDIS_PORT}/0',
+        'worker_log_level': 'INFO',
+        'worker_prefetch_multiplier': 1,
+        'task_acks_late': True,
     }
     
     # Cache configuration
@@ -154,58 +59,12 @@ data:
         'CACHE_REDIS_HOST': REDIS_HOST,
         'CACHE_REDIS_PORT': REDIS_PORT,
         'CACHE_REDIS_DB': 1,
+        'CACHE_DEFAULT_TIMEOUT': 300,
     }
     
     # Security
     SECRET_KEY = 'your-secret-key-change-in-production'
-    WTF_CSRF_ENABLED = True
-    WTF_CSRF_EXEMPT_LIST = []
-    
-    # Set the authentication type to OAuth
-    AUTH_TYPE = AUTH_OAUTH
-    
-    # DOME OIDC Configuration with correct endpoints
-    OAUTH_PROVIDERS = [
-        {
-            'name': 'dome',
-            'icon': 'fa-key',
-            'token_key': 'access_token',
-            'remote_app': {
-                'client_id': 'did:key:zDnaer6wstrAhZxM5ej7fvQbnf9aP3RdojhXEao431SMrN3Lb',
-                'client_secret': '',  # Empty for public client
-                'client_kwargs': {
-                    'scope': 'openid',  # Only openid is supported according to discovery
-                },
-                # Use the correct OIDC endpoints from discovery
-                'server_metadata_url': 'https://verifier.dome-marketplace-sbx.org/.well-known/openid-configuration',
-                # Explicitly set endpoints to ensure correct paths
-                'api_base_url': 'https://verifier.dome-marketplace-sbx.org/',
-                'access_token_url': 'https://verifier.dome-marketplace-sbx.org/oidc/token',
-                'authorize_url': 'https://verifier.dome-marketplace-sbx.org/oidc/authorize',
-                'userinfo_url': 'https://verifier.dome-marketplace-sbx.org/oidc/userinfo',
-                'jwks_uri': 'https://verifier.dome-marketplace-sbx.org/oidc/jwks',
-            }
-        }
-    ]
-    
-    # Custom Security Manager
-    from dome_oidc_security_manager import DOMEOIDCSecurityManager
-    CUSTOM_SECURITY_MANAGER = DOMEOIDCSecurityManager
-    
-    # User registration
-    AUTH_USER_REGISTRATION = True
-    AUTH_USER_REGISTRATION_ROLE = "Admin"
-    
-    # Session configuration
-    SESSION_COOKIE_SECURE = True
-    SESSION_COOKIE_HTTPONLY = True
-    SESSION_COOKIE_SAMESITE = 'Lax'
-    
-    # Allow iframe embedding
-    TALISMAN_ENABLED = False
-    
-    # Enable proxy headers
-    ENABLE_PROXY_FIX = True
+    WTF_CSRF_ENABLED = False
     
     # Feature flags
     FEATURE_FLAGS = {
@@ -218,52 +77,10 @@ data:
     # Webserver config
     SUPERSET_WEBSERVER_PORT = 8088
     SUPERSET_WEBSERVER_ADDRESS = '0.0.0.0'
-    
-    # Logging
-    LOG_LEVEL = 'INFO'
-    
-    logger.info("DOME OIDC configuration loaded with correct endpoints")
-    EOF
-    
-    # Test the OIDC endpoints
-    cat > /app/pythonpath/test_dome_oidc.py << 'EOF'
-    import requests
-    import json
-    
-    print("Testing DOME OIDC endpoints...")
-    
-    # Test discovery
-    discovery_url = "https://verifier.dome-marketplace-sbx.org/.well-known/openid-configuration"
-    try:
-        resp = requests.get(discovery_url)
-        if resp.status_code == 200:
-            config = resp.json()
-            print("✓ Discovery endpoint works")
-            print(f"  Authorization: {config.get('authorization_endpoint')}")
-            print(f"  Token: {config.get('token_endpoint')}")
-            print(f"  UserInfo: {config.get('userinfo_endpoint')}")
-        else:
-            print(f"✗ Discovery failed: {resp.status_code}")
-    except Exception as e:
-        print(f"✗ Discovery error: {e}")
-    
-    # Test JWKS
-    jwks_url = "https://verifier.dome-marketplace-sbx.org/oidc/jwks"
-    try:
-        resp = requests.get(jwks_url)
-        if resp.status_code == 200:
-            print("✓ JWKS endpoint works")
-        else:
-            print(f"✗ JWKS failed: {resp.status_code}")
-    except Exception as e:
-        print(f"✗ JWKS error: {e}")
     EOF
     
     # Ensure data directory exists
     mkdir -p /app/data
-    
-    echo "Testing DOME OIDC endpoints..."
-    python /app/pythonpath/test_dome_oidc.py || echo "Some tests failed, continuing..."
     
     echo "Initializing Superset database..."
     superset db upgrade
