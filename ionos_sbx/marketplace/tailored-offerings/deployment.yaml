@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: quote-management-container
-          image: production.eng.it:8433/dome/quote_management_backend:v1.9
+          image: production.eng.it:8433/dome/quote_management_backend:v1.10
           env:
             - name: TMFORUM_API_BASE_URL
               # value: https://an-dhub-sbx.dome-project.eu/tmf-api
@@ -28,8 +28,8 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /health
-              port: 8088
+              path: /actuator/health
+              port: 9000
             initialDelaySeconds: 30
             failureThreshold: 5
             periodSeconds: 10
