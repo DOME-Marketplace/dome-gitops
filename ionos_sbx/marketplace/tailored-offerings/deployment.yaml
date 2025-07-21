@@ -22,7 +22,7 @@ spec:
             - name: TMFORUM_API_BASE_URL
               # value: https://an-dhub-sbx.dome-project.eu/tmf-api
               value: http://tm-forum-api-quote.marketplace.svc.cluster.local:8080/tmf-api
-              ports:
+          ports:
             - containerPort: 8080
               hostPort: 8080
               protocol: TCP
