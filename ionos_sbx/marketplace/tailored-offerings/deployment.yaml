@@ -23,8 +23,8 @@ spec:
               # value: https://an-dhub-sbx.dome-project.eu/tmf-api
               value: http://tm-forum-api-quote.marketplace.svc.cluster.local:8080/tmf-api
           ports:
-            - containerPort: 8080
-              hostPort: 8088
+            - containerPort: 8088
+              hostPort: 8080
               protocol: TCP
           livenessProbe:
             httpGet:
