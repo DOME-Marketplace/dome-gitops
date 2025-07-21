@@ -17,19 +17,19 @@ spec:
     spec:
       containers:
         - name: quote-management-container
-          image: production.eng.it:8433/dome/quote_management_backend:v1.8
+          image: production.eng.it:8433/dome/quote_management_backend:v1.9
           env:
             - name: TMFORUM_API_BASE_URL
               # value: https://an-dhub-sbx.dome-project.eu/tmf-api
               value: http://tm-forum-api-quote.marketplace.svc.cluster.local:8080/tmf-api
           ports:
-            - containerPort: 8080
-              hostPort: 8080
+            - containerPort: 8088
+              hostPort: 8088
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /actuator/health
-              port: 8080
+              path: /health
+              port: 8088
             initialDelaySeconds: 30
             failureThreshold: 5
             periodSeconds: 10
