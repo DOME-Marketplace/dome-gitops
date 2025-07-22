@@ -2,7 +2,7 @@ zammad:
 
   image:
     repository: kingmanfri/dome_ticketing_zammad
-    tag: "1.2"
+    tag: "1.3"
     pullPolicy: Always
 
   ingress:
@@ -19,6 +19,10 @@ zammad:
       - secretName: ticketing-tls-secret
         hosts:
           - ticketing.dome-marketplace-sbx.org
+
+    env:
+      - name: TICKET_EMAIL_SUBJECT_PREFIX
+        value: "[TICKETING SBX DOME]: "
 
     zammadConfig:
 
