@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: loki-distributed
+  name: loki
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -9,17 +9,17 @@ spec:
   project: default
   sources:
   - repoURL: https://grafana.github.io/helm-charts
-    targetRevision: 0.80.2
-    chart: loki-distributed
+    targetRevision: 06.32.0
+    chart: loki
     helm:
-      releaseName: loki-distributed
+      releaseName: loki
       valueFiles:
-      - $values/ionos_sbx/loki-distributed/values.yaml
+      - $values/ionos_sbx/loki/values.yaml
   - repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: feature/monitoring
     ref: values
   destination:
-    namespace: loki-distributed
+    namespace: loki
     server: https://kubernetes.default.svc
   syncPolicy:
     automated:

@@ -47,7 +47,7 @@ grafana:
       mountPath: /etc/secrets/kube-prometheus-stack-sso
       readOnly: true
   additionalDataSources:
-  - name: loki-distributed
+  - name: loki
     access: proxy
     isDefault: false
     basicAuth: false
@@ -56,7 +56,7 @@ grafana:
         tlsSkipVerify: true
     orgId: 1
     type: loki
-    url: http://loki-distributed-gateway.loki-distributed.svc.cluster.local
+    url: http://loki-gateway.loki.svc.cluster.local
     version: 1
   - name: zammad-postgres
     type: postgres

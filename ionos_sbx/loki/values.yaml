@@ -1,9 +1,6 @@
 global:
   dnsService: "coredns"
 
-compactor:
-  enabled: false
-
 ingester:
   persistence:
     enabled: true
