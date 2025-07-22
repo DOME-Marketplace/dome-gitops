@@ -124,7 +124,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: "10.1.1"
+        tag: "10.1.2"
         pullPolicy: Always
     
     plugins:
