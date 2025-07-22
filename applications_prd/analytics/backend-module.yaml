@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: bacula
+  name: backend-module
   namespace: argocd
   labels:
-    purpose: backup
+    purpose: analytics
 spec:
   destination:
-    namespace: bacula
+    namespace: analytics
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos_sbx/bacula
+    path: ionos_prd/analytics/backend-module
     repoURL: https://github.com/DOME-Marketplace/dome-gitops.git
     targetRevision: HEAD
   syncPolicy:

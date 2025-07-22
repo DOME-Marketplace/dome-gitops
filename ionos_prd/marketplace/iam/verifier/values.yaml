@@ -25,7 +25,7 @@ dome-verifier:
         # Placeholder for onboarding URL (REQUIRED)
         onboarding: "https://onboarding.dome-marketplace.eu/"
         # Placeholder for support URL (REQUIRED)
-        support: "https://ticketing.dome-marketplace.org"
+        support: "https://ticketing.dome-marketplace.eu"
         # Placeholder for wallet URL (REQUIRED)
         wallet: "https://wallet.dome-marketplace.eu"
       colors:

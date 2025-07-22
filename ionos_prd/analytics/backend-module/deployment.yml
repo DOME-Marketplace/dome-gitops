@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-module
+  namespace: analytics
+  labels:
+    app.kubernetes.io/instance: backend-module
+    app.kubernetes.io/name: backend-module
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: backend-module
+      app.kubernetes.io/name: backend-module
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: backend-module
+        app.kubernetes.io/name: backend-module
+    spec:
+      containers:
+        - name: backend-module
+          image: docker.ramp.eu/dome/dome-matomo-backend-app@sha256:f74269c6909be8136a435555aba030883422ae90abc476b934810a01dbe77590
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

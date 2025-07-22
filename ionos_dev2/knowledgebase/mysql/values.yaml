@@ -5,3 +5,8 @@ mysql:
   initdbScripts:
     create.sql: |
       CREATE DATABASE bookstack;
+      
+  #annotations for Velero backup
+  primary:
+    podAnnotations:
+      backup.velero.io/backup-volumes: "data"
