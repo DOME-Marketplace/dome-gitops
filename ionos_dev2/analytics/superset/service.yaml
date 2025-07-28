@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: superset-service
+  namespace: analytics
+  labels:
+    app.kubernetes.io/name: superset-analytics
+    app.kubernetes.io/instance: superset
+    app.kubernetes.io/component: web
+spec:
+  selector:
+    app.kubernetes.io/name: superset-analytics
+    app.kubernetes.io/instance: superset
+  ports:
+  - name: web
+    port: 8088
+    targetPort: 8088
+  type: ClusterIP

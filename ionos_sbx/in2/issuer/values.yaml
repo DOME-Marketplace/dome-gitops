@@ -17,7 +17,7 @@ dome-issuer:
     image:
       repository: in2workspace/in2-issuer-backend
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.7.0
+      tag: v2.2.0-snapshot
       pullPolicy: Always
     ingressIssuerApi:
       enabled: true
@@ -36,7 +36,7 @@ dome-issuer:
           secretName: issuer-tls-secret
     app:
       logLevel:
-        app: INFO
+        app: DEBUG
         security: INFO
       url: https://issuer.dome-marketplace-sbx.org
       issuerFrontendUrl: https://issuer.dome-marketplace-sbx.org
@@ -71,7 +71,7 @@ dome-issuer:
           credentialPassword: credential-password
         # types allowed: server, cloud
         type: cloud
-        url: https://dts-component-rdss-csc.api.digitelts.com
+        url: https://dts-component-rdss-csc.ace-api.digitelts.com
       authServer:
         provider: keycloak
         externalUrl: https://keycloak.dome-marketplace-sbx.org
@@ -130,7 +130,7 @@ dome-issuer:
     image:
       repository: in2workspace/in2-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v1.13.1
+      tag: v2.1.0-snapshot
       pullPolicy: Always
     app:
       colors:

@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: superset-ingress
+  namespace: analytics
+  labels:
+    app.kubernetes.io/name: superset-analytics
+    app.kubernetes.io/instance: superset
+    app.kubernetes.io/component: ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: analytics.dome-marketplace-sbx.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: superset-service
+            port:
+              number: 8088
+  tls:
+  - hosts:
+    - analytics.dome-marketplace-sbx.org
+    secretName: analytics-tls-secret

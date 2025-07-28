@@ -1,18 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: apisix-marketplace
+  name: superset
   namespace: argocd
   labels:
-    purpose: marketplace
+    purpose: analytics
 spec:
   destination:
-    namespace: marketplace
+    namespace: analytics
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos_sbx/marketplace/iam/apisix
-    repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    path: ionos_prd/analytics/superset
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops.git
     targetRevision: HEAD
   syncPolicy:
     automated:

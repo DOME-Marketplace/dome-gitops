@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quote-management
+  namespace: marketplace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: quote-management
+      app.kubernetes.io/name: quote-management
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: quote-management
+        app.kubernetes.io/name: quote-management
+    spec:
+      containers:
+        - name: quote-management-container
+          image: production.eng.it:8433/dome/quote_management_backend:1.0.0
+          env:
+            - name: TMFORUM_API_BASE_URL
+              # value: https://an-dhub-sbx.dome-project.eu/tmf-api
+              value: http://tm-forum-api-quote.marketplace.svc.cluster.local:8080/tmf-api
+          ports:
+            - containerPort: 8080
+              hostPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 9000
+            initialDelaySeconds: 30
+            failureThreshold: 5
+            periodSeconds: 10
+            timeoutSeconds: 10
