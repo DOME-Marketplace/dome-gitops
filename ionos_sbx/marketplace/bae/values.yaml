@@ -143,6 +143,8 @@ business-api-ecosystem:
       method: dpas
 
     existingSecret: bae-secret
+    secretName: bae-secret
+
     db: 
       host: mongodb
       database: charging_db
