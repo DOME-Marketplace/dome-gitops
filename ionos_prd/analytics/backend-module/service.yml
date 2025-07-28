@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-module
+  namespace: analytics
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/instance: backend-module
+    app.kubernetes.io/name: backend-module
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: 8080

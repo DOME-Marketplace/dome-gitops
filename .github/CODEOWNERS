@@ -28,7 +28,7 @@
 /ionos_prd/billing/ @pasquy73 @cdizenzo
 /ionos_prd/cert-manager/ @bialask-daiteap
 /ionos_prd/chatbot/ @kingmanfri
-/ionos_prd/cs-identity/ 
+/ionos_prd/cs-identity/ @Sh3rd3n
 /ionos_prd/domains/ @bialask-daiteap
 /ionos_prd/dome-certification/ @intentodepirata
 /ionos_prd/dome-trust/
@@ -43,8 +43,8 @@
 /ionos_prd/marketplace/
 /ionos_prd/marketplace/bae/ @fdelavega
 /ionos_prd/marketplace/iam/verifier/ @oriolcanades @albertrodriguezin2 @rogermiretin2 @rubenmodamioin2
-/ionos_sbx/marketplace/iam/trusted-issuers-list/ @alejandro-nieto-git @alejandroalffer @urielrp
-/ionos_sbx/marketplace/iam/mysql/ @alejandro-nieto-git @alejandroalffer @urielrp
+/ionos_prd/marketplace/iam/trusted-issuers-list/ @alejandro-nieto-git @alejandroalffer @urielrp
+/ionos_prd/marketplace/iam/mysql/ @alejandro-nieto-git @alejandroalffer @urielrp
 /ionos_prd/namespaces/ @bialask-daiteap
 /ionos_prd/promtail/ @groundnuty
 /ionos_prd/sealed-secrets/ @bialask-daiteap
@@ -54,11 +54,11 @@
 # DEV service list
 /ionos_dev/argocd/ @bialask-daiteap
 /ionos_dev/cert-manager/ @bialask-daiteap
-/ionos_dev/cs-identity/ 
+/ionos_dev/cs-identity/ @Sh3rd3n
 /ionos_dev/marketplace/
 /ionos_dev/marketplace/iam/verifier/ @oriolcanades @albertrodriguezin2 @rogermiretin2 @rubenmodamioin2 
-/ionos_sbx/marketplace/iam/trusted-issuers-list/ @alejandro-nieto-git @alejandroalffer @urielrp
-/ionos_sbx/marketplace/iam/mysql/ @alejandro-nieto-git @alejandroalffer @urielrp
+/ionos_dev/marketplace/iam/trusted-issuers-list/ @alejandro-nieto-git @alejandroalffer @urielrp
+/ionos_dev/marketplace/iam/mysql/ @alejandro-nieto-git @alejandroalffer @urielrp
 /ionos_dev/zammad/ @kingmanfri
 
 # DEV2 service list
@@ -67,7 +67,7 @@
 /ionos_dev2/billing/ @pasquy73 @cdizenzo
 /ionos_dev2/cert-manager/ @bialask-daiteap
 /ionos_dev2/chatbot/ @kingmanfri
-/ionos_dev2/cs-identity/ 
+/ionos_dev2/cs-identity/ @Sh3rd3n
 /ionos_dev2/domains/ @bialask-daiteap
 /ionos_dev2/dome-certification/ @intentodepirata
 /ionos_dev2/in2/ @oriolcanades @albertrodriguezin2 @rogermiretin2 @rubenmodamioin2
@@ -75,8 +75,8 @@
 /ionos_dev2/marketplace/
 /ionos_dev2/marketplace/bae/ @fdelavega
 /ionos_dev2/marketplace/iam/verifier/ @oriolcanades @albertrodriguezin2 @rogermiretin2 @rubenmodamioin2
-/ionos_sbx/marketplace/iam/trusted-issuers-list/ @alejandro-nieto-git @alejandroalffer @urielrp
-/ionos_sbx/marketplace/iam/mysql/ @alejandro-nieto-git @alejandroalffer @urielrp
+/ionos_dev2/marketplace/iam/trusted-issuers-list/ @alejandro-nieto-git @alejandroalffer @urielrp
+/ionos_dev2/marketplace/iam/mysql/ @alejandro-nieto-git @alejandroalffer @urielrp
 /ionos_dev2/search-engine/ @pasquy73 @cdizenzo
 /ionos_dev2/zammad/ @kingmanfri
 
@@ -86,7 +86,7 @@
 /ionos_sbx/billing/ @pasquy73 @cdizenzo
 /ionos_sbx/cert-manager/ @bialask-daiteap
 /ionos_sbx/chatbot/ @kingmanfri
-/ionos_sbx/cs-identity/ 
+/ionos_sbx/cs-identity/ @Sh3rd3n
 /ionos_sbx/domains/ @bialask-daiteap
 /ionos_sbx/dome-certification/ @intentodepirata
 /ionos_sbx/dome-trust/
@@ -102,6 +102,7 @@
 /ionos_sbx/marketplace/iam/verifier/ @oriolcanades @albertrodriguezin2 @rogermiretin2 @rubenmodamioin2
 /ionos_sbx/marketplace/iam/trusted-issuers-list/ @alejandro-nieto-git @alejandroalffer @urielrp
 /ionos_sbx/marketplace/iam/mysql/ @alejandro-nieto-git @alejandroalffer @urielrp
+/ionos_sbx/marketplace/tailored-offerings/ @kingmanfri @BazRoe
 /ionos_sbx/namespaces/ @bialask-daiteap
 /ionos_sbx/promtail/ @groundnuty
 /ionos_sbx/search-engine/ @pasquy73 @cdizenzo

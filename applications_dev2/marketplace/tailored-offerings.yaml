@@ -1,18 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: bacula
+  name: tailored-offerings
   namespace: argocd
   labels:
-    purpose: backup
+    purpose: tailored-offerings
 spec:
   destination:
-    namespace: bacula
+    namespace: marketplace
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos_sbx/bacula
-    repoURL: https://github.com/DOME-Marketplace/dome-gitops.git
+    path: ionos_dev2/marketplace/tailored-offerings
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
   syncPolicy:
     automated:
