@@ -50,6 +50,9 @@ grafana:
     version: 1
 prometheus:
   prometheusSpec:
+    additionalScrapeConfigs:
+      name: alastria-scrape-config
+      key: alastria-scrape.yaml
     podMonitorSelectorNilUsesHelmValues: false
     probeSelectorNilUsesHelmValues: false
     ruleSelectorNilUsesHelmValues: false
