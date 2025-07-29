@@ -159,6 +159,7 @@ business-api-ecosystem:
         user: customer-service@dome-marketplace.eu
         ## -- SMTP server hostname
         server: smtp.ionos.de
+        password: true
 
     backup:
       enabled: false
