@@ -19,6 +19,8 @@ spec:
       labels:
         app.kubernetes.io/instance: bookstack
         app.kubernetes.io/name: bookstack
+      annotations:
+        backup.velero.io/backup-volumes: "bookstack-uploads,bookstack-storage-uploads"
     spec:
       containers:
         - name: bookstack
