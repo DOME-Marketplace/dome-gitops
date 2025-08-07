@@ -2,10 +2,10 @@ apiVersion: v2
 name: issuer
 description: Chart holder for ArgoCD  
 type: application
-version: 1.6.37
+version: 1.6.38
 appVersion: "v1.0.12"
 dependencies:
   - name: dome-issuer
     condition: dome-issuer.enabled
     repository: https://in2workspace.github.io/helm-charts
-    version: 1.5.10
+    version: 1.5.7
