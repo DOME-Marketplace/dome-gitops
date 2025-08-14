@@ -17,7 +17,7 @@ dome-issuer:
     image:
       repository: in2workspace/in2-issuer-backend
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.3.1-snapshot
+      tag: v2.4.1-snapshot
       pullPolicy: Always
     ingressIssuerApi:
       enabled: true
@@ -130,7 +130,7 @@ dome-issuer:
     image:
       repository: in2workspace/in2-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.2.0-snapshot
+      tag: v2.2.1-snapshot
       pullPolicy: Always
     app:
       colors:
@@ -143,6 +143,8 @@ dome-issuer:
       keycloakUrl: "https://keycloak.dome-marketplace-sbx.org/realms/dome-issuer"
       backendUrl: "https://issuer.dome-marketplace-sbx.org"
       walletUrl: "https://wallet.dome-marketplace.eu"
+      walletUrlTest: "https://keycloak.dome-marketplace-sbx.org/"
+      showWalletUrlTest: "true"
       knowledgeBaseUrl: "https://knowledgebase.dome-marketplace-sbx.org"
 
   dome-issuer-keycloak:
