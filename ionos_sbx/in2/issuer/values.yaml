@@ -17,7 +17,7 @@ dome-issuer:
     image:
       repository: in2workspace/in2-issuer-backend
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.4.2-snapshot
+      tag: v2.4.3-snapshot
       pullPolicy: Always
     ingressIssuerApi:
       enabled: true
