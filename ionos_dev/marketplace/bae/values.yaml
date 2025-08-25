@@ -8,43 +8,43 @@ business-api-ecosystem:
       catalog:
         host: tm-forum-api-product-catalog
         port: 8080
-        path: 
+        path: /tmf-api/productCatalogManagement/v4
       inventory:
         host: tm-forum-api-product-inventory
         port: 8080
-        path: 
+        path: /tmf-api/productInventory/v4
       ordering:
         host: tm-forum-api-product-ordering-management
         port: 8080
-        path: 
+        path: /tmf-api/productOrderingManagement/v4
       billing:
         host: tm-forum-api-account
         port: 8080
-        path: 
+        path: /tmf-api/accountManagement/v4
       usage:
         host: tm-forum-api-usage-management
         port: 8080
-        path: 
+        path: /tmf-api/usageManagement/v4
       party:
         host: tm-forum-api-party-catalog
         port: 8080
-        path: 
+        path: /tmf-api/party/v4
       customer:
         host: tm-forum-api-customer-management
         port: 8080
-        path: 
+        path: /tmf-api/customerManagement/v4
       resources:
         host: tm-forum-api-resource-catalog
         port: 8080
-        path: 
+        path: /tmf-api/resourceCatalog/v4
       services:
         host: tm-forum-api-service-catalog
         port: 8080
-        path: 
+        path: /tmf-api/serviceCatalogManagement/v4
       resourceInventory:
         host: tm-forum-api-resource-inventory
         port: 8080
-        path:
+        path: /tmf-api/serviceInventory/v4
 
   bizEcosystemRss:
     enabled: false
