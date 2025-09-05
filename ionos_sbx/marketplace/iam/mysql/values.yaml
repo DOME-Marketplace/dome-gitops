@@ -1,5 +1,5 @@
 mysql:
-  namespace: til
+  namespace: marketplace 
   fullnameOverride: mysql-til
   image:
     repository: bitnamilegacy/mysql
