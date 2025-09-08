@@ -1,4 +1,7 @@
 mongodb:
+  image:
+    repository: bitnamilegacy/mongodb    
+    tag: 4.4.12
   commonAnnotations:
     wistefan/rollout-injecting-webhook: ignore
   auth:
