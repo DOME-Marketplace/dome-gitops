@@ -7,7 +7,7 @@ metadata:
     purpose: marketplace-iam
 spec:
   destination:
-    namespace: marketplace
+    namespace: marketplace 
     server: https://kubernetes.default.svc
   project: default
   source:

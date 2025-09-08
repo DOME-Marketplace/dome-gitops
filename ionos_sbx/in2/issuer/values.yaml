@@ -45,6 +45,7 @@ dome-issuer:
         uploadCertificationGuideUrl: "https://knowledgebase.dome-marketplace-sbx.org"
       trustFrameworkUrl: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080"
       verifierUrl: "https://verifier.dome-marketplace-sbx.org"
+      walletUrl: "https://wallet.dome-marketplace-sbx.org"
       mail:
         host: smtp.ionos.de
         port: 587
