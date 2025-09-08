@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: billing-scheduler-container
-          image: production.eng.it:8433/dome/billing-scheduler:0.0.13c
+          image: production.eng.it:8433/dome/billing-scheduler:1.3.0
           ports:
             - containerPort: 8080
               hostPort: 8180
@@ -42,6 +42,10 @@ spec:
               value: http://billing-proxy-svc.billing.svc.cluster.local:8080
             - name: INVOICING_SERVICE
               value: http://invoicing-service-svc.billing.svc.cluster.local:8080
+            - name: SCHEDULING_CRON_JOB_TASK
+              value: "0 0 */3 * * ?"
+            - name: PAY_PER_USE_DELATED_DAYS
+              value: "2"
             - name: LOG_LEVEL
               value: DEBUG
           livenessProbe:
