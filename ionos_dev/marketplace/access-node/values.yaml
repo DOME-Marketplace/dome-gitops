@@ -199,21 +199,6 @@ access-node:
       - name: API_EXTENSION_ENABLED
         value: "true"
 
-    ingress:
-      enabled: true
-      className: nginx
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
-      hosts:
-        - host: tmf.dome-marketplace-dev.org
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - hosts:
-            - tmf.dome-marketplace-dev.org
-          secretName: tm-forum-api-tls-secret
-
     apis:
     - name: party-catalog
       image: tmforum-party-catalog
