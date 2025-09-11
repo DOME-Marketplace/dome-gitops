@@ -257,7 +257,7 @@ business-api-ecosystem:
       - name: BAE_LP_DOME_GUIDELINES
         value: https://knowledgebase.dome-marketplace-prd.org/books/managing-orders-products-and-subscriptions
       - name: BAE_LP_BILLING_ENGINE_URL
-        value: http://bae-marketplace-biz-ecosystem-charging-backend.marketplace.svc.cluster.local:8006
+        value: http://billing-proxy-svc.billing.svc.cluster.local:8080
       - name: BAE_LP_ENDPOINT_CUSTOMER_BILL_HOST
         value: tm-forum-api-customer-bill-management
       - name: BAE_LP_ENDPOINT_CUSTOMER_BILL_PORT
