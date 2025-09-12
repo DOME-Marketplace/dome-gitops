@@ -20,7 +20,7 @@ spec:
           image: production.eng.it:8433/dome/revenue-engine:1.2.1
           ports:
             - containerPort: 8080
-              hostPort: 8080
+              hostPort: 8580
               protocol: TCP
           resources:
             limits:
