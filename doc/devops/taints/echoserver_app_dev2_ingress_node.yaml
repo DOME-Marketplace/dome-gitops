@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echoserver-test-ingress
+  namespace: echoserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echoserver-ingress
+  template:
+    metadata:
+      labels:
+        app: echoserver-ingress
+    spec:
+      containers:
+        - image: ealen/echo-server:latest
+          imagePullPolicy: IfNotPresent
+          name: echoserver
+          ports:
+            - containerPort: 80
+          env:
+            - name: PORT
+              value: "80"
+      tolerations:
+        - key: "ingress-node"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: echoserver-test-ingress
+  namespace: echoserver
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  type: ClusterIP
+  selector:
+    app: echoserver-ingress
+---
