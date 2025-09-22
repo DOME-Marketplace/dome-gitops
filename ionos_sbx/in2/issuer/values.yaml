@@ -15,9 +15,9 @@ dome-issuer:
   dome-issuer-backend:
     fullNameOverride: "dome-issuer-backend"
     image:
-      repository: in2workspace/in2-issuer-backend
+      repository: in2workspace/eudistack-issuer-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.3.0-snapshot
+      tag: v2.0.0
       pullPolicy: Always
     ingressIssuerApi:
       enabled: true
@@ -45,6 +45,7 @@ dome-issuer:
         uploadCertificationGuideUrl: "https://knowledgebase.dome-marketplace-sbx.org"
       trustFrameworkUrl: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080"
       verifierUrl: "https://verifier.dome-marketplace-sbx.org"
+      walletUrl: "https://wallet.dome-marketplace-sbx.org"
       mail:
         host: smtp.ionos.de
         port: 587
@@ -128,9 +129,9 @@ dome-issuer:
   dome-issuer-frontend:
     fullNameOverride: "dome-issuer-frontend"
     image:
-      repository: in2workspace/in2-issuer-ui
+      repository: in2workspace/eudistack-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.1.0-snapshot
+      tag: v2.0.0
       pullPolicy: Always
     app:
       colors:
@@ -143,6 +144,8 @@ dome-issuer:
       keycloakUrl: "https://keycloak.dome-marketplace-sbx.org/realms/dome-issuer"
       backendUrl: "https://issuer.dome-marketplace-sbx.org"
       walletUrl: "https://wallet.dome-marketplace.eu"
+      walletUrlTest: "https://wallet.dome-marketplace-sbx.org"
+      showWalletUrlTest: "true"
       knowledgeBaseUrl: "https://knowledgebase.dome-marketplace-sbx.org"
 
   dome-issuer-keycloak:

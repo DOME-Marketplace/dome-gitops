@@ -44,6 +44,10 @@ business-api-ecosystem:
       resourceInventory:
         host: tm-forum-api-resource-inventory
         port: 8080
+        path: /tmf-api/resourceInventoryManagement/v4
+      serviceInventory:
+        host: tm-forum-api-service-inventory
+        port: 8080
         path: /tmf-api/serviceInventory/v4
 
   bizEcosystemRss:
@@ -124,7 +128,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: "10.2.0"
+        tag: "10.4.0"
         pullPolicy: Always
     
     plugins:
@@ -191,7 +195,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "10.3.0-PRE-2"
+        tag: "10.3.3"
         pullPolicy: Always
 
     ingress: 
@@ -253,7 +257,7 @@ business-api-ecosystem:
       - name: BAE_LP_DOME_GUIDELINES
         value: https://knowledgebase.dome-marketplace-prd.org/books/managing-orders-products-and-subscriptions
       - name: BAE_LP_BILLING_ENGINE_URL
-        value: http://bae-marketplace-biz-ecosystem-charging-backend.marketplace.svc.cluster.local:8006
+        value: http://billing-proxy-svc.billing.svc.cluster.local:8080
       - name: BAE_LP_ENDPOINT_CUSTOMER_BILL_HOST
         value: tm-forum-api-customer-bill-management
       - name: BAE_LP_ENDPOINT_CUSTOMER_BILL_PORT

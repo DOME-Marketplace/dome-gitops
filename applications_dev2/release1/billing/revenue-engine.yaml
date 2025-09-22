@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: trusted-issuers-list
+  name: revenue-engine
   namespace: argocd
   labels:
-    purpose: marketplace-iam
+    purpose: billing
 spec:
   destination:
-    namespace: til 
+    namespace: billing
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos_dev2/marketplace/iam/trusted-issuers-list
+    path: ionos_dev2/billing/revenue-engine
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
   syncPolicy:

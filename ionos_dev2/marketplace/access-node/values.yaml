@@ -195,12 +195,27 @@ access-node:
 
     defaultConfig:
       image:
-        tag: 0.31.2
-      additionalEnvVars: 
+        tag: 1.3.6
+      additionalEnvVars:
       - name: MAPPING_STRICT_RELATIONSHIPS
         value: "false"
       - name: API_EXTENSION_ENABLED
         value: "true"
+
+    ingress:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-dev2-issuer
+      hosts:
+        - host: tmf.dome-marketplace-dev2.org
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - hosts:
+            - tmf.dome-marketplace-dev2.org
+          secretName: tm-forum-api-tls-secret
 
     apis:
     - name: party-catalog
@@ -262,3 +277,7 @@ access-node:
     - name: usage-management
       image: tmforum-usage-management
       basePath: /tmf-api/usageManagement/v4
+
+    - name: quote
+      image: tmforum-quote
+      basePath: /tmf-api/quote/v4

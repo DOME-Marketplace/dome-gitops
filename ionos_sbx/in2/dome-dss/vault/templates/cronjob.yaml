@@ -14,7 +14,7 @@ spec:
           serviceAccountName: vault-check-sa
           containers:
             - name: vault-check
-              image: bitnami/kubectl:latest
+              image: bitnamilegacy/kubectl:latest
               command: ["/bin/sh", "-c"]
               args:
                 - |
