@@ -1,0 +1,16 @@
+{
+  "spec": {
+    "template": {
+      "spec": {
+        "tolerations": [
+          {
+            "key": "ingress-node",
+            "operator": "Equal",
+            "value": "true",
+            "effect": "NoSchedule"
+          }
+        ]
+      }
+    }
+  }
+}
