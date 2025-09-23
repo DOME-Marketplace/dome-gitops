@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: certification-backend
-          image: noeliaguedek/dome-compliance-backend:sbx-1.2.1
+          image: noeliaguedek/dome-compliance-backend:sbx-1.3.0
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
