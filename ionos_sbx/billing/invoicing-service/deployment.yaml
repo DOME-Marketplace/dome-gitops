@@ -23,6 +23,9 @@ spec:
               hostPort: 8380
               protocol: TCP
           resources:
+            requests:
+              cpu: "200m"
+              memory: "128Mi"
             limits:
               memory: 256Mi
               cpu: "1"
