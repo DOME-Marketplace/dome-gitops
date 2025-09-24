@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: invoicing-service-container
-          image: production.eng.it:8433/dome/invoicing-service:1.2.2
+          image: production.eng.it:8433/dome/invoicing-service:1.2.3
           ports:
             - containerPort: 8080
               hostPort: 8380
@@ -28,7 +28,7 @@ spec:
               cpu: "1"
           env:
             - name: TMF_ENDPOINT
-              value: http://tm-forum-api #http://tm-forum-api-envoy.marketplace.svc.cluster.local:8080
+              value: http://tm-forum-api
             - name: TMF_ENVOY
               value: "false"
             - name: TMF_NAMESPACE
