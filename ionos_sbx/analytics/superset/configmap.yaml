@@ -156,35 +156,32 @@ data:
     }
     
     # Security
-    SECRET_KEY = 'your-secret-key-change-in-production'
-    WTF_CSRF_ENABLED = True
-    WTF_CSRF_EXEMPT_LIST = []
+    #SECRET_KEY = 'your-secret-key-change-in-production'
+    #WTF_CSRF_ENABLED = True
+    #WTF_CSRF_EXEMPT_LIST = []
     
     # Set the authentication type to OAuth
     AUTH_TYPE = AUTH_OAUTH
     
     # DOME OIDC Configuration
     OAUTH_PROVIDERS = [
-        {
-            'name': 'dome',
-            'icon': 'fa-key',
-            'token_key': 'access_token',
-            'remote_app': {
-                'client_id': 'did:key:zDnaer6wstrAhZxM5ej7fvQbnf9aP3RdojhXEao431SMrN3Lb',
-                'client_secret': '',  # Empty for public client
-                'client_kwargs': {
-                    'scope': 'openid_learcredential',  # DOME-specific scope
-                },
-                # DOME OIDC endpoints
-                'server_metadata_url': 'https://verifier.dome-marketplace-sbx.org/.well-known/openid-configuration',
-                'api_base_url': 'https://verifier.dome-marketplace-sbx.org/',
-                'access_token_url': 'https://verifier.dome-marketplace-sbx.org/oidc/token',
-                'authorize_url': 'https://verifier.dome-marketplace-sbx.org/oidc/authorize',
-                'userinfo_url': 'https://verifier.dome-marketplace-sbx.org/oidc/userinfo',
-                'jwks_uri': 'https://verifier.dome-marketplace-sbx.org/oidc/jwks',
-            }
+    {   
+        'name': 'dome',
+        'token_key': 'access_token',
+        'icon': 'fa-address-card',
+        'remote_app': {
+            'client_id': 'did:key:zDnaer6wstrAhZxM5ej7fvQbnf9aP3RdojhXEao431SMrN3Lb',
+            'client_secret': None,
+            'client_kwargs': {
+                'scope': 'openid_learcredential',
+            },
+            'access_token_method': 'POST',
+            'api_base_url': 'https://verifier.dome-marketplace-sbx.org/',
+            'access_token_url': 'https://verifier.dome-marketplace-sbx.org/oidc/token',
+            'authorize_url': 'https://verifier.dome-marketplace-sbx.org/oidc/authorize',
         }
-    ]
+    }
+]
     
     # Custom Security Manager for DOME
     from dome_oidc_security_manager import DOMEOIDCSecurityManager
@@ -192,7 +189,7 @@ data:
     
     # User registration
     AUTH_USER_REGISTRATION = True
-    AUTH_USER_REGISTRATION_ROLE = "Admin"
+    AUTH_USER_REGISTRATION_ROLE = "Public"
     
     # Session configuration
     SESSION_COOKIE_SECURE = True

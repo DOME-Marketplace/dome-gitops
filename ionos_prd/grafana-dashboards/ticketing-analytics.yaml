@@ -26,7 +26,6 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 36,
       "links": [],
       "panels": [
         {
@@ -549,7 +548,7 @@ data:
               "editorMode": "code",
               "format": "table",
               "rawQuery": true,
-              "rawSql": "WITH ticket_state_count AS (\r\n  SELECT \r\n    group_id,\r\n    COUNT(*) AS tickets_state_not_4_7\r\n  FROM tickets\r\n  WHERE state_id NOT IN (4,7)\r\n  GROUP BY group_id\r\n)\r\nSELECT\r\n  g.name AS \"COMPETENCE CENTER\",\r\n  COUNT(t.id) FILTER (WHERE (t.last_close_at - t.created_at) <= INTERVAL '1 day') AS \"LESS THAN 1 DAY\",\r\n  COUNT(t.id) FILTER (WHERE (t.last_close_at - t.created_at) > INTERVAL '1 day'\r\n                   AND (t.last_close_at - t.created_at) <= INTERVAL '7 days') AS \"2 TO 7 DAYS\",\r\n  COUNT(t.id) FILTER (WHERE (t.last_close_at - t.created_at) > INTERVAL '7 days'\r\n                   AND (t.last_close_at - t.created_at) <= INTERVAL '14 days') AS \"8 TO 14 DAYS\",\r\n  COUNT(t.id) FILTER (WHERE (t.last_close_at - t.created_at) > INTERVAL '14 days'\r\n                   AND (t.last_close_at - t.created_at) <= INTERVAL '30 days') AS \"15 TO 30 DAYS\",\r\n  COUNT(t.id) FILTER (WHERE (t.last_close_at - t.created_at) > INTERVAL '30 days') AS \"MORE THAN 30 DAYS\",\r\n  COALESCE(tsc.tickets_state_not_4_7, 0) AS \"STILL OPEN\"\r\nFROM groups g\r\nLEFT JOIN tickets t ON t.group_id = g.id\r\n  AND t.state_id = 4\r\n  AND t.last_close_at IS NOT NULL\r\n  AND t.created_at IS NOT NULL\r\n  AND t.last_close_at >= NOW() - INTERVAL '30 days'\r\nLEFT JOIN ticket_state_count tsc ON tsc.group_id = g.id\r\nWHERE g.id IN (3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 17, 18, 27, 29)\r\nGROUP BY g.name, tsc.tickets_state_not_4_7\r\nORDER BY g.name ASC;",
+              "rawSql": "WITH ticket_state_count AS ( \r\n  SELECT \r\n    group_id,\r\n    severity,\r\n    COUNT(*) AS tickets_state_not_4_7\r\n  FROM tickets\r\n  WHERE state_id NOT IN (4,7)\r\n    AND severity <> '5'\r\n  GROUP BY group_id, severity\r\n)\r\nSELECT\r\n  g.name || ' - ' || s.severity_name AS \"COMPETENCE CENTER\",\r\n  COUNT(t.id) FILTER (WHERE (t.last_close_at - t.created_at) <= INTERVAL '1 day') AS \"LESS THAN 1 DAY\",\r\n  COUNT(t.id) FILTER (WHERE (t.last_close_at - t.created_at) > INTERVAL '1 day'\r\n                   AND (t.last_close_at - t.created_at) <= INTERVAL '7 days') AS \"2 TO 7 DAYS\",\r\n  COUNT(t.id) FILTER (WHERE (t.last_close_at - t.created_at) > INTERVAL '7 days'\r\n                   AND (t.last_close_at - t.created_at) <= INTERVAL '14 days') AS \"8 TO 14 DAYS\",\r\n  COUNT(t.id) FILTER (WHERE (t.last_close_at - t.created_at) > INTERVAL '14 days'\r\n                   AND (t.last_close_at - t.created_at) <= INTERVAL '30 days') AS \"15 TO 30 DAYS\",\r\n  COUNT(t.id) FILTER (WHERE (t.last_close_at - t.created_at) > INTERVAL '30 days') AS \"MORE THAN 30 DAYS\",\r\n  COALESCE(tsc.tickets_state_not_4_7, 0) AS \"STILL OPEN\"\r\nFROM groups g\r\nCROSS JOIN LATERAL (VALUES \r\n    ('1', 'Critical'),\r\n    ('2', 'Major'),\r\n    ('3', 'Moderate'),\r\n    ('4', 'Minor')\r\n) AS s(severity, severity_name)\r\nLEFT JOIN tickets t ON t.group_id = g.id\r\n  AND t.state_id = 4\r\n  AND t.severity = s.severity\r\n  AND t.severity <> '5'\r\n  AND t.last_close_at IS NOT NULL\r\n  AND t.created_at IS NOT NULL\r\n  AND t.last_close_at >= NOW() - INTERVAL '30 days'\r\nLEFT JOIN ticket_state_count tsc \r\n  ON tsc.group_id = g.id \r\n  AND tsc.severity = s.severity\r\nWHERE g.id IN (3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 17, 18, 27, 29)\r\nGROUP BY g.name, s.severity, s.severity_name, tsc.tickets_state_not_4_7\r\nHAVING \r\n    COALESCE(SUM(CASE WHEN (t.last_close_at - t.created_at) <= INTERVAL '1 day' THEN 1 ELSE 0 END), 0)\r\n  + COALESCE(SUM(CASE WHEN (t.last_close_at - t.created_at) > INTERVAL '1 day' AND (t.last_close_at - t.created_at) <= INTERVAL '7 days' THEN 1 ELSE 0 END), 0)\r\n  + COALESCE(SUM(CASE WHEN (t.last_close_at - t.created_at) > INTERVAL '7 days' AND (t.last_close_at - t.created_at) <= INTERVAL '14 days' THEN 1 ELSE 0 END), 0)\r\n  + COALESCE(SUM(CASE WHEN (t.last_close_at - t.created_at) > INTERVAL '14 days' AND (t.last_close_at - t.created_at) <= INTERVAL '30 days' THEN 1 ELSE 0 END), 0)\r\n  + COALESCE(SUM(CASE WHEN (t.last_close_at - t.created_at) > INTERVAL '30 days' THEN 1 ELSE 0 END), 0)\r\n  + COALESCE(tsc.tickets_state_not_4_7, 0) > 0\r\nORDER BY g.name ASC, s.severity::int ASC;",
               "refId": "A",
               "sql": {
                 "columns": [
@@ -732,8 +731,7 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -812,6 +810,6 @@ data:
       "timezone": "browser",
       "title": "Ticketing Analytics",
       "uid": "few68w89nur5sb",
-      "version": 5,
+      "version": 1,
       "weekStart": ""
     }
