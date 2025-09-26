@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: alastria-t-ext
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: alastria-t
+    monitor: alastria
+    release: {{ .Values.promSelectorRelease | default "kube-prometheus-stack" }}
+spec:
+  ports:
+    - name: metrics
+      port: 6060
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alastria-b-ext
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: alastria-b
+    monitor: alastria
+    release: {{ .Values.promSelectorRelease | default "kube-prometheus-stack" }}
+spec:
+  ports:
+    - name: metrics
+      port: 9545
+
