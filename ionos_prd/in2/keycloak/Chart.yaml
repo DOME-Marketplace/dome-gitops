@@ -2,7 +2,7 @@ apiVersion: v2
 name: keycloak
 description: Helm Chart Umbrella for Keycloak and PostgreSQL
 type: application
-version: 1.0.26
+version: 1.0.27
 appVersion: "v1.0.0"
 
 dependencies:
