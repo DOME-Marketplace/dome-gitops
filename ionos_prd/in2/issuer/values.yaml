@@ -178,7 +178,14 @@ dome-issuer:
           # -- create the database
           create.sh: |
             psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE issuer;"
-
+    global:
+      security:
+        allowInsecureImages: true
+    image:
+      registry: docker.io
+      repository: bitnamilegacy/postgresql
+      tag: 16.0.0-debian-11-r13
+      pullPolicy: IfNotPresent
 
   dome-issuer-keycloak-postgresql:
     # -- should the postgresql deployment be enabled
