@@ -2,16 +2,16 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: alastria-t-sm
-  namespace: {{ .Release.Namespace }}
+  namespace: kube-prometheus-stack 
   labels:
-    release: {{ .Values.promSelectorRelease | default "kube-prometheus-stack" }}
+    release: kube-prometheus-stack 
 spec:
   selector:
     matchLabels:
       app: alastria-t
       monitor: alastria
   namespaceSelector:
-    matchNames: [ "{{ .Release.Namespace }}" ]
+    matchNames: [ "kube-prometheus-stack" ]
   jobLabel: app
   endpoints:
     - port: metrics
@@ -24,20 +24,20 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: alastria-b-sm
-  namespace: {{ .Release.Namespace }}
+  namespace: kube-prometheus-stack
   labels:
-    release: {{ .Values.promSelectorRelease | default "kube-prometheus-stack" }}
+    release: kube-prometheus-stack 
 spec:
   selector:
     matchLabels:
       app: alastria-b
       monitor: alastria
   namespaceSelector:
-    matchNames: [ "{{ .Release.Namespace }}" ]
+    matchNames: [ "kube-prometheus-stack" ]
   jobLabel: app
   endpoints:
     - port: metrics
       path: /metrics
-      interval: {{ .Values.alastria.scrapeInterval | default "30s" }}
-      scrapeTimeout: {{ .Values.alastria.scrapeTimeout | default "10s" }}
+      interval: "30s"
+      scrapeTimeout: "10s"
       scheme: http

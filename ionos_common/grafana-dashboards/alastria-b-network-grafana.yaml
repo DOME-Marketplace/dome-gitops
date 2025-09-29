@@ -5,9 +5,9 @@ metadata:
     grafana_dashboard: "1"
   name: alastria-dashboard-b-network
 data:
-  alastria-dashboard.json: |-
-    {
-          "__inputs": [
+  alastria-dashboard-b.json: |-
+  {
+    "__inputs": [
       {
         "name": "DS_PROMETHEUS",
         "label": "Prometheus",
@@ -79,7 +79,7 @@ data:
         }
       ]
     },
-    "description": "Provides detailed metrics of Besu nodes",
+    "description": "Provides an overview of GoQuorum nodes of the Alastria T Network",
     "editable": false,
     "fiscalYearStartMonth": 0,
     "gnetId": 16455,
@@ -105,7 +105,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -537,7 +537,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": false,
                 "expr": "sum by (instance) ((besu_blockchain_height{instance=~\"$system\"} or ethereum_blockchain_height{instance=~\"$system\"}) and besu_synchronizer_snap_world_state_pending_account_requests_current{instance=~\"$system\"}  ) >0",
@@ -552,7 +552,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": false,
                 "expr": "besu_synchronizer_fast_sync_pivot_block_current{instance=~\"$system\"} and besu_synchronizer_snap_world_state_pending_account_requests_current{instance=~\"$system\"}  >0 ",
@@ -566,7 +566,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": false,
                 "expr": "sum by (instance) (besu_synchronizer_fast_sync_pivot_block_current{instance=~\"$system\"} - (besu_blockchain_height{instance=~\"$system\"} or ethereum_blockchain_height{instance=~\"$system\"}) and besu_synchronizer_snap_world_state_pending_account_requests_current{instance=~\"$system\"}  ) >0 ",
@@ -580,7 +580,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": false,
                 "expr": "sum by (instance) (besu_synchronizer_snap_world_state_generated_nodes_total{instance=~\"$system\"} and besu_synchronizer_snap_world_state_healed_nodes_total{instance=~\"$system\"} ) >0 ",
@@ -606,7 +606,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "Total number of data nodes generated and healed as part of snap sync world state download",
             "fieldConfig": {
@@ -687,7 +687,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "besu_synchronizer_snap_world_state_generated_nodes_total{instance=~\"$system\"}",
@@ -699,7 +699,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "besu_synchronizer_snap_world_state_healed_nodes_total{instance=~\"$system\"}",
@@ -717,7 +717,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -798,7 +798,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "besu_synchronizer_snap_world_state_accounts_total{instance=~\"$system\"}",
@@ -809,7 +809,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "besu_synchronizer_snap_world_state_slots_total{instance=~\"$system\"}",
@@ -821,7 +821,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "besu_synchronizer_snap_world_state_codes_total{instance=~\"$system\"}",
@@ -837,7 +837,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "Number of storage pending requests for snap sync world state download",
             "fieldConfig": {
@@ -918,7 +918,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "besu_synchronizer_snap_world_state_pending_storage_requests_current{instance=~\"$system\"}",
@@ -933,7 +933,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "Number of account pending requests for snap sync world state download",
             "fieldConfig": {
@@ -1014,7 +1014,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "besu_synchronizer_snap_world_state_pending_account_requests_current{instance=~\"$system\"}",
@@ -1029,7 +1029,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "Number of trie node pending requests for snap sync world state download",
             "fieldConfig": {
@@ -1110,7 +1110,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "besu_synchronizer_snap_world_state_pending_trie_node_requests_current{instance=~\"$system\"}",
@@ -1125,7 +1125,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "Number of code pending requests for snap sync world state download",
             "fieldConfig": {
@@ -1206,7 +1206,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "besu_synchronizer_snap_world_state_pending_code_requests_current{instance=~\"$system\"}",
@@ -1221,7 +1221,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "Number of entries processed by each world state download pipeline stage",
             "fieldConfig": {
@@ -1302,7 +1302,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "besu_synchronizer_chain_download_pipeline_processed_total{instance=~\"$system\"} != 0",
@@ -1317,7 +1317,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "Number of entries processed by each world state download pipeline stage",
             "fieldConfig": {
@@ -1398,7 +1398,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "besu_synchronizer_snap_world_state_pipeline_processed_total{instance=~\"$system\"} != 0",
@@ -1413,7 +1413,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "Total number of data nodes healed as part of snap sync world state heal process",
             "fieldConfig": {
@@ -1496,7 +1496,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rate(besu_synchronizer_snap_world_state_generated_nodes_total{instance=~\"$system\"}[10m]) > 0",
@@ -1507,7 +1507,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rate(besu_synchronizer_snap_world_state_healed_nodes_total{instance=~\"$system\"}[10m]) > 0",
@@ -1550,7 +1550,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -1982,7 +1982,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": false,
                 "expr": "sum by (instance) ((besu_blockchain_height{instance=~\"$system\"} or ethereum_blockchain_height{instance=~\"$system\"}) and besu_synchronizer_world_state_pending_requests_current{instance=~\"$system\"} > 0)",
@@ -1996,7 +1996,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": false,
                 "expr": "sum by (instance) (besu_synchronizer_fast_sync_pivot_block_current{instance=~\"$system\"} and besu_synchronizer_world_state_pending_requests_current{instance=~\"$system\"} > 0)",
@@ -2010,7 +2010,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": false,
                 "expr": "sum by (instance) (besu_synchronizer_fast_sync_pivot_block_current{instance=~\"$system\"} - besu_blockchain_height{instance=~\"$system\"} and besu_synchronizer_world_state_pending_requests_current{instance=~\"$system\"} > 0)",
@@ -2024,7 +2024,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": false,
                 "expr": "sum by (instance) (besu_synchronizer_world_state_pending_requests_current{instance=~\"$system\"} > 0)",
@@ -2038,7 +2038,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": false,
                 "expr": "sum by (instance) (besu_synchronizer_world_state_completed_requests_total{instance=~\"$system\"} and besu_synchronizer_world_state_pending_requests_current{instance=~\"$system\"} > 0)",
@@ -2068,7 +2068,7 @@ data:
             "dashes": false,
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -2114,7 +2114,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "expr": "ethereum_best_known_block_number{instance=~'$system'}",
                 "interval": "",
@@ -2124,7 +2124,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "expr": "ethereum_blockchain_height{instance=~'$system'}",
                 "interval": "",
@@ -2171,7 +2171,7 @@ data:
             "dashes": false,
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -2217,7 +2217,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "expr": "sum by (instance) (besu_synchronizer_world_state_completed_requests_total{instance=~\"$system\"} and besu_synchronizer_world_state_pending_requests_current{instance=~\"$system\"} > 0)",
                 "interval": "",
@@ -2262,7 +2262,7 @@ data:
             "dashes": false,
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -2308,7 +2308,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "expr": "besu_synchronizer_world_state_pending_requests_current{instance=~'$system'}",
                 "interval": "",
@@ -2318,7 +2318,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "expr": "besu_synchronizer_world_state_existing_nodes_total{instance='$system'}",
                 "interval": "",
@@ -2366,7 +2366,7 @@ data:
             "dashes": false,
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -2412,7 +2412,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "expr": "rate(besu_synchronizer_world_state_completed_requests_total{instance=~\"$system\"}[10m])",
                 "interval": "",
@@ -2492,7 +2492,7 @@ data:
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "prometheus"
         },
         "fieldConfig": {
           "defaults": {
@@ -2914,7 +2914,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "exemplar": false,
             "expr": "sum by (instance) (besu_blockchain_height{instance=~\"$system\"} or ethereum_blockchain_height{instance=~\"$system\"})",
@@ -2928,7 +2928,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "exemplar": false,
             "expr": "sum by (instance) (besu_synchronizer_best_known_block{instance=~\"$system\"} or ethereum_best_known_block_number{instance=~\"$system\"})",
@@ -2942,7 +2942,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "exemplar": false,
             "expr": "sum by (instance) ((besu_synchronizer_best_known_block{instance=~\"$system\"} - besu_blockchain_height{instance=~\"$system\"}) or (ethereum_best_known_block_number{instance=~\"$system\"} - ethereum_blockchain_height{instance=~\"$system\"}))",
@@ -2956,7 +2956,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "exemplar": false,
             "expr": "sum by (instance) ((1/rate(besu_blockchain_height{instance=~\"$system\"}[5m])) or (1/rate(ethereum_blockchain_height{instance=~\"$system\"}[5m])))",
@@ -2970,7 +2970,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "exemplar": false,
             "expr": "sum by (instance) (time() - besu_blockchain_chain_head_timestamp{instance=~\"$system\"})",
@@ -2984,7 +2984,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "exemplar": false,
             "expr": "sum by (instance) (besu_peers_peer_count_current{instance=~\"$system\"} or ethereum_peer_count{instance=~\"$system\"})",
@@ -2998,7 +2998,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "exemplar": false,
             "expr": "sum by (instance) ((besu_peers_peer_count_current{instance=~\"$system\"} / besu_network_peers_limit{instance=~\"$system\"}) or ethereum_peer_count{instance=~\"$system\"} / ethereum_peer_limit{instance=~\"$system\"})",
@@ -3024,7 +3024,7 @@ data:
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "prometheus"
         },
         "fieldConfig": {
           "defaults": {
@@ -3112,7 +3112,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "expr": "1/rate(besu_blockchain_height{instance=~\"$system\"}[5m]) or 1/rate(ethereum_blockchain_height{instance=~\"$system\"}[5m])",
             "format": "time_series",
@@ -3128,7 +3128,7 @@ data:
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "prometheus"
         },
         "fieldConfig": {
           "defaults": {
@@ -3216,7 +3216,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "expr": "besu_synchronizer_best_known_block{instance=~\"$system\"} - besu_blockchain_height{instance=~\"$system\"} or ethereum_best_known_block_number{instance=~\"$system\"} - ethereum_blockchain_height{instance=~\"$system\"}",
             "format": "time_series",
@@ -3232,7 +3232,7 @@ data:
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "prometheus"
         },
         "description": "Describes the number of connected peers as a percentage of the maximum number of peers that can connect to the node.",
         "fieldConfig": {
@@ -3315,7 +3315,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "expr": "(ethereum_peer_count{instance=~\"$system\"} or besu_peer_count{instance=~\"$system\"})/(ethereum_peer_limit{instance=~\"$system\"} or ethereum_peer_limit{instance=~\"$system\"})",
             "interval": "",
@@ -3342,7 +3342,7 @@ data:
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "prometheus"
         },
         "description": "",
         "fieldConfig": {
@@ -3431,7 +3431,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "editorMode": "code",
             "exemplar": true,
@@ -3448,7 +3448,7 @@ data:
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "prometheus"
         },
         "description": "",
         "fieldConfig": {
@@ -3537,7 +3537,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "editorMode": "code",
             "exemplar": true,
@@ -3564,7 +3564,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -3645,7 +3645,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "expr": "rate(jvm_gc_collection_seconds_sum{instance=~\"$system\", job=~\".*besu-node\"}[1m])",
@@ -3665,7 +3665,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -3751,7 +3751,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "expr": "jvm_memory_bytes_used{instance=~\"$system\", area=\"heap\", job=~\".*besu-node\"} + ignoring(area) jvm_memory_bytes_used{instance=~\"$system\", area=\"nonheap\", job=~\".*besu-node\"}",
@@ -3768,7 +3768,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -3854,7 +3854,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -3887,7 +3887,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -3970,7 +3970,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -3987,7 +3987,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -4070,7 +4070,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -4087,7 +4087,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -4173,7 +4173,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -4186,7 +4186,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -4200,7 +4200,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -4218,7 +4218,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -4306,7 +4306,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -4319,7 +4319,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -4333,7 +4333,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -4351,7 +4351,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -4439,7 +4439,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -4452,7 +4452,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -4466,7 +4466,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -4484,7 +4484,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -4570,7 +4570,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -4583,7 +4583,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -4597,7 +4597,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -4633,7 +4633,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -4718,7 +4718,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "expr": "node_filesystem_size_bytes{mountpoint=\"/data\", instance=~\"$system\"} ",
                 "interval": "",
@@ -4732,7 +4732,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -4817,7 +4817,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "expr": "1 - node_filesystem_avail_bytes{mountpoint=\"/data\", instance=~\"$system\"} / node_filesystem_size_bytes{mountpoint=\"/data\", instance=~\"$system\"}",
                 "interval": "",
@@ -4831,7 +4831,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -4917,7 +4917,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "expr": "node_filesystem_size_bytes{mountpoint=\"/data\", instance=~\"$system\"} - node_filesystem_avail_bytes{mountpoint=\"/data\", instance=~\"$system\"}",
                 "interval": "",
@@ -4931,7 +4931,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -5016,7 +5016,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "expr": "node_filesystem_avail_bytes{mountpoint=\"/data\", instance=~\"$system\"}",
                 "interval": "",
@@ -5030,7 +5030,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -5116,7 +5116,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "expr": "irate(process_cpu_seconds_total{instance=~\"$system\", job=~\".*besu-node\"}[1m])",
@@ -5134,7 +5134,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -5220,7 +5220,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -5237,7 +5237,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -5439,7 +5439,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rate(node_disk_read_bytes_total{instance=~\"$system\",device=~\"$diskdevices\"}[$__rate_interval])",
@@ -5454,7 +5454,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rate(node_disk_written_bytes_total{instance=~\"$system\",device=~\"$diskdevices\"}[$__rate_interval])",
@@ -5473,7 +5473,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -5633,7 +5633,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rate(node_network_receive_bytes_total{instance=~\"$system\"}[$__rate_interval])",
@@ -5647,7 +5647,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rate(node_network_transmit_bytes_total{instance=~\"$system\", device=\"eth0\"}[$__rate_interval])*8",
@@ -5665,7 +5665,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -5750,7 +5750,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -5790,7 +5790,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -5867,7 +5867,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -5884,7 +5884,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -5962,7 +5962,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -5979,7 +5979,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -6057,7 +6057,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "builder",
                 "exemplar": true,
@@ -6074,7 +6074,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -6151,7 +6151,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -6168,7 +6168,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -6245,7 +6245,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -6262,7 +6262,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -6339,7 +6339,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -6356,7 +6356,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -6433,7 +6433,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -6464,7 +6464,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -6540,7 +6540,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -6557,7 +6557,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -6634,7 +6634,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -6651,7 +6651,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -6727,7 +6727,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -6744,7 +6744,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -6821,7 +6821,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -6838,7 +6838,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -6915,7 +6915,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -6932,7 +6932,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -7009,7 +7009,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -7046,7 +7046,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -7128,7 +7128,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "besu_transaction_pool_transactions{instance=~\"$system\"}",
@@ -7143,7 +7143,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -7227,7 +7227,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rate(besu_transaction_pool_transactions_added_total{instance=~\"$system\"}[$__rate_interval])",
@@ -7242,7 +7242,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -7324,7 +7324,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rate(besu_transaction_pool_transactions_duplicates_total{instance=~\"$system\"}[$__rate_interval])",
@@ -7339,7 +7339,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -7421,7 +7421,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rate(besu_transaction_pool_transactions_removed_total{instance=~\"$system\"}[$__rate_interval])",
@@ -7436,7 +7436,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -7513,7 +7513,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rate(besu_transaction_pool_transactions_messages_skipped_total{instance=~\"$system\"}[$__rate_interval])",
@@ -7528,7 +7528,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -7605,7 +7605,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rate(besu_transaction_pool_pending_transactions_messages_skipped_total{instance=~\"$system\"}[$__rate_interval])",
@@ -7647,7 +7647,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -7729,7 +7729,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rate(besu_synchronizer_chain_download_pipeline_processed_total{instance=~\"$system\"}[$__rate_interval])",
@@ -7744,7 +7744,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -7826,7 +7826,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -7843,7 +7843,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -7926,7 +7926,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -7943,7 +7943,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -8025,7 +8025,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -8042,7 +8042,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -8127,7 +8127,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "besu_synchronizer_task{instance=~\"$system\", quantile=~\"$sync_task_quantile\"}",
@@ -8169,7 +8169,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -8254,7 +8254,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -8271,7 +8271,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -8353,7 +8353,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -8370,7 +8370,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -8456,7 +8456,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -8500,7 +8500,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -8594,7 +8594,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "(ethereum_peer_count{instance=~\"$system\"} or besu_peer_count{instance=~\"$system\"})",
@@ -8605,7 +8605,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "(ethereum_peer_limit{instance=~\"$system\"} or besu_peer_limit{instance=~\"$system\"})",
@@ -8621,7 +8621,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -8698,7 +8698,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rate(besu_peers_connected_total{job=\"prod-besu-node\",instance=~\"$system\"}[$__rate_interval])",
@@ -8740,7 +8740,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -8824,7 +8824,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rate(besu_peers_disconnected_total{initiator=\"local\", instance=~\"$system\"}[$__rate_interval])",
@@ -8839,7 +8839,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -8923,7 +8923,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rate(besu_peers_disconnected_total{initiator=\"remote\", instance=~\"$system\"}[$__rate_interval])",
@@ -8965,7 +8965,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -9049,7 +9049,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -9066,7 +9066,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -9150,7 +9150,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -9167,7 +9167,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -9251,7 +9251,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -9268,7 +9268,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -9352,7 +9352,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -9369,7 +9369,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -9446,7 +9446,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "besu_network_discovery_inflight_interactions_current{instance=~\"$system\"}",
@@ -9488,7 +9488,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -9577,7 +9577,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -9594,7 +9594,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -9683,7 +9683,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -9727,7 +9727,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -9804,7 +9804,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "jvm_threads_current{instance=~\"$system\"}",
@@ -9815,7 +9815,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "jvm_threads_peak{instance=~\"$system\"}",
@@ -9827,7 +9827,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "jvm_threads_daemon{instance=~\"$system\"}",
@@ -9839,7 +9839,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "jvm_threads_deadlocked{instance=~\"$system\"}",
@@ -9851,7 +9851,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "jvm_threads_deadlocked_monitor{instance=~\"$system\"}",
@@ -9867,7 +9867,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "Java threads",
             "fieldConfig": {
@@ -9945,7 +9945,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "jvm_threads_state{instance=~\"$system\"}",
@@ -9960,7 +9960,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -10037,7 +10037,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "jvm_threads_started_total{instance=~\"$system\"}",
@@ -10079,7 +10079,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -10160,7 +10160,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "besu_executors_ethscheduler_${executor}_active_threads_current{instance=~\"$system\"}",
@@ -10171,7 +10171,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rate(besu_executors_ethscheduler_${executor}_completed_tasks_total{instance=~\"$system\"}[$__rate_interval])",
@@ -10183,7 +10183,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "besu_executors_ethscheduler_${executor}_pool_size_current{instance=~\"$system\"}",
@@ -10195,7 +10195,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "besu_executors_ethscheduler_${executor}_queue_length_current{instance=~\"$system\"}",
@@ -10207,7 +10207,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rate(besu_executors_ethscheduler_${executor}_rejected_tasks_total{instance=~\"$system\"}[$__rate_interval])",
@@ -10219,7 +10219,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rate(besu_executors_ethscheduler_${executor}_submitted_tasks_total{instance=~\"$system\"}[$__rate_interval])",
@@ -10262,7 +10262,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -10339,7 +10339,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "besu_network_vertx_eventloop_pending_tasks{instance=~\"$system\"}",
@@ -10354,7 +10354,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -10435,7 +10435,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rate(besu_network_vertx_worker_pool_completed_total{instance=~\"$system\", poolName=~\"$vertx_pool_name\"}[$__rate_interval])",
@@ -10447,7 +10447,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rate(besu_network_vertx_worker_pool_rejected_total{instance=~\"$system\", poolName=~\"$vertx_pool_name\"}[$__rate_interval])",
@@ -10459,7 +10459,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rate(besu_network_vertx_worker_pool_submitted_total{instance=~\"$system\", poolName=~\"$vertx_pool_name\"}[$__rate_interval])",
@@ -10502,7 +10502,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -10579,7 +10579,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "besu_network_netty_boss_pending_tasks{instance=~\"$system\"}",
@@ -10590,7 +10590,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "besu_network_netty_worker_pending_tasks{instance=~\"$system\"}",
@@ -10629,7 +10629,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "gridPos": {
               "h": 4,
@@ -10653,7 +10653,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -10738,7 +10738,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rocksdb_memtable_hit{instance=~\"$system\"}/(rocksdb_memtable_miss{instance=~\"$system\"}+rocksdb_memtable_hit{instance=~\"$system\"})",
@@ -10753,7 +10753,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -10838,7 +10838,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -10855,7 +10855,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -10938,7 +10938,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rocksdb_block_cache_index_hit{instance=~\"$system\"} / (rocksdb_block_cache_index_hit{instance=~\"$system\"} + rocksdb_block_cache_index_miss{instance=~\"$system\"} )",
@@ -10953,7 +10953,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -11036,7 +11036,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -11053,7 +11053,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -11138,7 +11138,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -11155,7 +11155,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -11238,7 +11238,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -11256,7 +11256,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -11341,7 +11341,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -11359,7 +11359,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -11444,7 +11444,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rocksdb_db_get{instance=~\"$system\", quantile=\"0.5\"}",
@@ -11459,7 +11459,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -11544,7 +11544,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -11561,7 +11561,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -11644,7 +11644,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -11661,7 +11661,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -11746,7 +11746,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": false,
@@ -11764,7 +11764,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -11849,7 +11849,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": false,
@@ -11867,7 +11867,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -11952,7 +11952,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": false,
@@ -11971,7 +11971,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -12056,7 +12056,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -12073,7 +12073,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -12156,7 +12156,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -12173,7 +12173,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -12256,7 +12256,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -12273,7 +12273,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -12358,7 +12358,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rocksdb_sst_read_micros{instance=~\"$system\", quantile=\"0.5\"}",
@@ -12373,7 +12373,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -12456,7 +12456,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rocksdb_sst_read_micros{instance=~\"$system\", quantile=\"0.95\"}",
@@ -12472,7 +12472,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -12557,7 +12557,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "rocksdb_sst_read_micros{instance=~\"$system\", quantile=\"0.99\"}",
@@ -12573,7 +12573,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -12658,7 +12658,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": false,
@@ -12676,7 +12676,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -12761,7 +12761,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -12778,7 +12778,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -12861,7 +12861,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -12879,7 +12879,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -12962,7 +12962,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -12980,7 +12980,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -13066,7 +13066,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -13084,7 +13084,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -13170,7 +13170,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -13188,7 +13188,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -13274,7 +13274,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -13292,7 +13292,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -13375,7 +13375,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "irate (rocksdb_block_cache_add{instance=~\"$system\"}[1m])",
@@ -13390,7 +13390,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -13473,7 +13473,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -13490,7 +13490,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -13573,7 +13573,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -13590,7 +13590,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -13673,7 +13673,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "irate (rocksdb_block_cache_bytes_write{instance=~\"$system\"}[1m])",
@@ -13688,7 +13688,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -13771,7 +13771,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "exemplar": true,
                 "expr": "irate (rocksdb_block_cache_bytes_read{instance=~\"$system\"} [1m])",
@@ -13786,7 +13786,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -13869,7 +13869,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -13886,7 +13886,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -13969,7 +13969,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -13986,7 +13986,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -14069,7 +14069,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -14086,7 +14086,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -14171,7 +14171,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -14188,7 +14188,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "fieldConfig": {
               "defaults": {
@@ -14273,7 +14273,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -14290,7 +14290,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -14374,7 +14374,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -14391,7 +14391,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -14475,7 +14475,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -14492,7 +14492,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -14576,7 +14576,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -14593,7 +14593,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -14677,7 +14677,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -14694,7 +14694,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -14778,7 +14778,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -14795,7 +14795,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -14879,7 +14879,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -14896,7 +14896,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -14982,7 +14982,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -14999,7 +14999,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -15083,7 +15083,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -15100,7 +15100,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -15186,7 +15186,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -15203,7 +15203,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -15289,7 +15289,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -15306,7 +15306,7 @@ data:
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "prometheus"
             },
             "description": "",
             "fieldConfig": {
@@ -15390,7 +15390,7 @@ data:
               {
                 "datasource": {
                   "type": "prometheus",
-                  "uid": "${DS_PROMETHEUS}"
+                  "uid": "prometheus"
                 },
                 "editorMode": "code",
                 "exemplar": true,
@@ -15422,7 +15422,7 @@ data:
           "current": {},
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "prometheus"
           },
           "definition": "query_result(ethereum_blockchain_height or besu_blockchain_height)",
           "hide": 0,
@@ -15448,7 +15448,7 @@ data:
           "current": {},
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "prometheus"
           },
           "definition": "label_values(besu_synchronizer_task,quantile)",
           "hide": 2,
@@ -15471,7 +15471,7 @@ data:
           "current": {},
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "prometheus"
           },
           "definition": "metrics(besu_executors_ethscheduler)",
           "hide": 2,
@@ -15494,7 +15494,7 @@ data:
           "current": {},
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "prometheus"
           },
           "definition": "label_values(besu_network_vertx_worker_pool_completed_total, poolName)",
           "hide": 2,
@@ -15517,7 +15517,7 @@ data:
           "current": {},
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "prometheus"
           },
           "definition": "label_values(besu_network_p2p_messages_inbound,protocol)",
           "hide": 2,
@@ -15540,7 +15540,7 @@ data:
           "current": {},
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "prometheus"
           },
           "definition": "label_values(besu_network_p2p_messages_outbound,protocol)",
           "hide": 2,
@@ -15620,7 +15620,7 @@ data:
           "current": {},
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "prometheus"
           },
           "definition": "label_values(besu_transaction_pool_number_of_transactions, layer)",
           "hide": 2,
@@ -15671,8 +15671,9 @@ data:
       ]
     },
     "timezone": "utc",
-    "title": "Besu Full",
-    "uid": "_Mqt4ksnz",
+    "title": "Alastria B Network",
+    "uid": null,
     "version": 38,
     "weekStart": ""
-    }
+  }
+

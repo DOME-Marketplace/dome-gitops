@@ -2,11 +2,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: alastria-t-ext
-  namespace: {{ .Release.Namespace }}
+  namespace: kube-prometheus-stack 
   labels:
     app: alastria-t
     monitor: alastria
-    release: {{ .Values.promSelectorRelease | default "kube-prometheus-stack" }}
+    release: kube-prometheus-stack
 spec:
   ports:
     - name: metrics
@@ -16,11 +16,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: alastria-b-ext
-  namespace: {{ .Release.Namespace }}
+  namespace: kube-prometheus-stack 
   labels:
     app: alastria-b
     monitor: alastria
-    release: {{ .Values.promSelectorRelease | default "kube-prometheus-stack" }}
+    release: kube-prometheus-stack
 spec:
   ports:
     - name: metrics
