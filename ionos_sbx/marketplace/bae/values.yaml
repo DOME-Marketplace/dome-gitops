@@ -67,6 +67,7 @@ business-api-ecosystem:
       - admin
     # Configuration for the Credential Config Service initiation
     ccs:
+      enabled: false
       endpoint: "http://credentials-config-service:8080"
       defaultOidcScope: "defaultScope"
       # -- Credential configurations for particular scopes
