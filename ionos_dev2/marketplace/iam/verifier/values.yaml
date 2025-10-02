@@ -1,7 +1,7 @@
 dome-verifier:
   image:
-    repository: in2workspace/in2-verifier-api
-    tag: v1.3.10
+    repository: in2workspace/eudistack-verifier-api
+    tag: 2.0.0
     pullPolicy: Always
 
   ingress:
