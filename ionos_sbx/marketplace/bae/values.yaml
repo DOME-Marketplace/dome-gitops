@@ -128,7 +128,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: "10.4.0"
+        tag: "10.5.0-PRE-1"
         pullPolicy: Always
     
     plugins:
@@ -195,7 +195,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "10.3.3"
+        tag: "10.4.0-PRE-1"
         pullPolicy: Always
 
     ingress: 
@@ -262,6 +262,8 @@ business-api-ecosystem:
         value: tm-forum-api-customer-bill-management
       - name: BAE_LP_ENDPOINT_CUSTOMER_BILL_PORT
         value: "8080"
+      - name: BAE_LP_PAYMENT_GATEWAY
+        value: https://dpas-sbx.egroup.hu
       - name: BAE_LP_SIOP_PRIVATE_KEY
         valueFrom:
           secretKeyRef:
