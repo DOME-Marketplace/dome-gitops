@@ -6,11 +6,11 @@ metadata:
 rules:
   - apiGroups: [""]
     resources: ["pods"]
-    resourceNames: ["wallet-vault-server-0", "dome-dss-vault-server-0"]
+    resourceNames: ["wallet-vault-server-0"]
     verbs: ["get", "list"]
   - apiGroups: [""]
     resources: ["pods/exec"]
-    resourceNames: ["wallet-vault-server-0", "dome-dss-vault-server-0"]
+    resourceNames: ["wallet-vault-server-0"]
     verbs: ["create"]
   - apiGroups: [""]
     resources: ["secrets"]
