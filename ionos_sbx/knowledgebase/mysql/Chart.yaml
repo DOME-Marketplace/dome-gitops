@@ -9,6 +9,7 @@ appVersion: "8.2"
 dependencies:
 - name: mysql
   version: 9.4.4
-  repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+  #repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+  repository: https://charts.bitnami.com/bitnami
   #repository: oci://registry-1.docker.io/bitnamicharts
   #this should be the one when we want to migrate to the OCI registry
