@@ -9,4 +9,4 @@ appVersion: "8.2"
 dependencies:
 - name: mysql
   version: 9.4.4
-  repository: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
+  repository: https://charts.bitnami.com/bitnami

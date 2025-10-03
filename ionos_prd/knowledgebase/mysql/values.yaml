@@ -1,5 +1,9 @@
 mysql:
   fullnameOverride: mysql-knowledgebase
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/mysql
+    tag: 8.0.31-debian-11-r10
   auth:
     existingSecret: mysql-secret
   initdbScripts:
