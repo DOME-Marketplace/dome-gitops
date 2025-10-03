@@ -20,10 +20,6 @@ zammad:
         hosts:
           - ticketing.dome-marketplace-sbx.org
 
-    env:
-      - name: TICKET_EMAIL_SUBJECT_PREFIX
-        value: "[TICKETING SBX DOME]: "
-
     zammadConfig:
 
       railsserver:
@@ -36,7 +32,15 @@ zammad:
           readOnlyRootFilesystem: false
           privileged: false
 
+  postgresql:
+    image:
+      repository: docker.io/bitnamilegacy/postgresql
+      tag: 15.4.0-debian-11-r45
+
   elasticsearch:
+    image:
+      repository: docker.io/bitnamilegacy/elasticsearch
+      tag: 8.12.0-debian-11-r1
     clusterName: zammad
     coordinating:
       replicaCount: 0
@@ -64,3 +68,8 @@ zammad:
         limits:
           cpu: 1000m
           memory: 3Gi
+
+  redis:
+    image:
+      repository: docker.io/bitnamilegacy/redis
+      tag: 7.0.12-debian-11-r34
