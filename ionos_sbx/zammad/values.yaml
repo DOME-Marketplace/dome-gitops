@@ -34,12 +34,12 @@ zammad:
 
   postgresql:
     image:
-      repository: docker.io/bitnamilegacy/postgresql
+      repository: bitnamilegacy/postgresql
       tag: 15.4.0-debian-11-r45
 
   elasticsearch:
     image:
-      repository: docker.io/bitnamilegacy/elasticsearch
+      repository: bitnamilegacy/elasticsearch
       tag: 8.12.0-debian-11-r1
     clusterName: zammad
     coordinating:
@@ -71,5 +71,5 @@ zammad:
 
   redis:
     image:
-      repository: docker.io/bitnamilegacy/redis
+      repository: bitnamilegacy/redis
       tag: 7.0.12-debian-11-r34
