@@ -43,6 +43,9 @@ dome-verifier:
       # This routes must point to internal folder: src/main/resources/static/img/<file_name.png>
       faviconSrc: "dome_logo_favicon.png"
     backend:
+      logging:
+        level:
+          es.in2.vcverifier: DEBUG
       # Placeholder for backend URL (REQUIRED)
       url: "https://verifier.dome-marketplace-dev2.org"
       security:
