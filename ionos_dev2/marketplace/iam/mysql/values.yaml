@@ -1,6 +1,9 @@
 mysql:
   namespace: til
   fullnameOverride: mysql-til
+  image:
+    repository: bitnamilegacy/mysql
+    tag: 8.0.31-debian-11-r10
   auth:
     existingSecret: mysql-secret
   initdbScripts:
