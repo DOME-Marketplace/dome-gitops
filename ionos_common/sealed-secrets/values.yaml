@@ -1,4 +1,9 @@
 sealed-secrets:
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/sealed-secrets-controller
+    tag: v0.23.1
+    pullPolicy: IfNotPresent
   podSecurityContext:
     enabled: false
   containerSecurityContext:

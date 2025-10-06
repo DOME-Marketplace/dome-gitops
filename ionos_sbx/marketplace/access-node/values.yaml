@@ -8,7 +8,7 @@ access-node:
     image:
       repository: in2workspace/in2-desmos-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.0.0-snapshot
+      tag: v2.0.0
       pullPolicy: Always
     readinessProbe:
       failureThreshold: 10
