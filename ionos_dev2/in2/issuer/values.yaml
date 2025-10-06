@@ -36,7 +36,7 @@ dome-issuer:
           secretName: issuer-tls-secret
     app:
       logLevel:
-        app: INFO
+        app: DEBUG
         security: INFO
       url: https://issuer.dome-marketplace-dev2.org
       issuerFrontendUrl: https://issuer.dome-marketplace-dev2.org
@@ -144,6 +144,8 @@ dome-issuer:
       keycloakUrl: "https://keycloak.dome-marketplace-dev2.org/realms/dome-issuer"
       backendUrl: "https://issuer.dome-marketplace-dev2.org"
       walletUrl: "https://wallet.dome-marketplace.eu"
+      walletUrlTest: "https://wallet.dome-marketplace-dev2.org"
+      showWalletUrlTest: "true"
       knowledgeBaseUrl: "https://knowledgebase.dome-marketplace-dev2.org"
 
   dome-issuer-keycloak:
