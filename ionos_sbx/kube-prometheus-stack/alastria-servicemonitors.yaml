@@ -1,0 +1,43 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: alastria-t-sm
+  namespace: kube-prometheus-stack 
+  labels:
+    release: kube-prometheus-stack 
+spec:
+  selector:
+    matchLabels:
+      app: alastria-t
+      monitor: alastria
+  namespaceSelector:
+    matchNames: [ "kube-prometheus-stack" ]
+  jobLabel: app
+  endpoints:
+    - port: metrics
+      path: /debug/metrics/prometheus
+      interval: 30s 
+      scrapeTimeout: 10s  
+      scheme: http
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: alastria-b-sm
+  namespace: kube-prometheus-stack
+  labels:
+    release: kube-prometheus-stack 
+spec:
+  selector:
+    matchLabels:
+      app: alastria-b
+      monitor: alastria
+  namespaceSelector:
+    matchNames: [ "kube-prometheus-stack" ]
+  jobLabel: app
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: "30s"
+      scrapeTimeout: "10s"
+      scheme: http

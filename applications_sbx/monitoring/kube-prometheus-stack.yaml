@@ -22,7 +22,7 @@ spec:
     targetRevision: feature/monitoring
     path: ionos_sbx/kube-prometheus-stack
     directory:
-      include: '{kube-prometheus-stack-sso-secret.yaml,kube-prometheus-stack-discord-webhook-infrastructure-secret.yaml,standard-cluster-monitoring-recording-rules.yaml,onzack-namespace-monitoring-recording-rules.yaml}'
+      include: '*.yaml'
   - repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: feature/monitoring
     path: ionos_common/grafana-dashboards
