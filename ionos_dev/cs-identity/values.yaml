@@ -1,4 +1,8 @@
 keycloak:
+  image:
+    repository: bitnamilegacy/keycloak
+    tag: 24.0.4-debian-12-r1
+
   service:
     type: ClusterIP
   logging:
