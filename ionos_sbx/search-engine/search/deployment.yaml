@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: search
-          image: production.eng.it:8433/dome/search:0.2.2
+          image: production.eng.it:8433/dome/search:1.0.0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -34,14 +34,16 @@ spec:
               value: elastic
             - name: ELASTIC_PASSWORD
               value: dome_2024!
-            - name: TMFORUM_SERVICE_CATALOG_URL
-              value: http://tm-forum-api-service-catalog.marketplace.svc.cluster.local:8080
-            - name: TMFORUM_PRODUCT_CATALOG_URL
-              value: http://tm-forum-api-product-catalog.marketplace.svc.cluster.local:8080
-            - name: TMFORUM_RESOURCE_CATALOG_URL
-              value: http://tm-forum-api-resource-catalog.marketplace.svc.cluster.local:8080
-            - name: BAE_URL
-              value: http://bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004
+            - name: TMF_ENDPOINT
+              value: http://tm-forum-api
+            - name: TMF_ENVOY
+              value: "false"
+            - name: TMF_NAMESPACE
+              value: marketplace
+            - name: TMF_POSTFIX
+              value: svc.cluster.local
+            - name: TMF_PORT
+              value: "8080"
             - name: ANALYZE_URL
               value: https://deployenv6.expertcustomers.ai:8086/services/dome/analyze
             - name: CLASSIFY_URL
