@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bae-marketplace-biz-ecosystem-logic-proxy-ccs
+  namespace: marketplace
+data:
+  init.sh: |-
+    #!/bin/sh
+    # empty init script placeholder
