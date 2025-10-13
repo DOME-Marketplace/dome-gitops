@@ -18,7 +18,7 @@ keycloak:
   ingress:
     enabled: true
     ingressClassName: nginx
-    hostname: cs-identity.dome-marketplace-prd.org
+    hostname: cs-identity.dome-marketplace.eu
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
     tls: true
