@@ -1,4 +1,4 @@
-pospostgresql:
+postgresql:
   # This override fixes the image pull error
   image:
     repository: bitnamilegacy/postgresql
