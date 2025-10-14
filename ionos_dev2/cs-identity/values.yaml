@@ -31,7 +31,7 @@ keycloak:
     - name: KC_HOSTNAME_URL
       value: https://cs-identity.dome-marketplace-dev2.org
     - name: KEYCLOAK_LOG_LEVEL
-      value: INFO
+      value: DEBUG
   
   postgresql:
     image:
