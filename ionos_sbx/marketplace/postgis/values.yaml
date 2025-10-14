@@ -1,4 +1,9 @@
 postgresql:
+  # Override to use the correct legacy image
+  image:
+    repository: docker.io/bitnamilegacy/postgresql
+    tag: "16.0.0"
+
   commonAnnotations:
     wistefan/rollout-injecting-webhook: ignore
   
