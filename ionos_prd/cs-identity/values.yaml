@@ -27,9 +27,9 @@ keycloak:
     - name: KEYCLOAK_PROXY_ADDRESS_FORWARDING
       value: "true"
     - name: KC_HOSTNAME_ADMIN_URL
-      value: https://cs-identity.dome-marketplace-prd.org
+      value: https://cs-identity.dome-marketplace.eu
     - name: KC_HOSTNAME_URL
-      value: https://cs-identity.dome-marketplace-prd.org
+      value: https://cs-identity.dome-marketplace.eu
     - name: KEYCLOAK_LOG_LEVEL
       value: INFO
   
