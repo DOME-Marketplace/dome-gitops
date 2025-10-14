@@ -1,4 +1,10 @@
 postgresql:
+# This override fixes the image pull error
+  image:
+    repository: bitnamilegacy/postgresql
+    tag: 15.1.0-debian-11-r30
+
+  # --- Existing configuration below ---
   fullnameOverride: dekra-postgres
   auth:
     username: root  
@@ -11,4 +17,4 @@ postgresql:
     initdb:
       scripts:
         create.sh: |
-          psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -tc "SELECT 1 FROM pg_database WHERE datname = 'dome'" | grep -q 1 || psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE dome;"  
+          psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -tc "SELECT 1 FROM pg_database WHERE datname = 'dome'" | grep -q 1 || psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE dome;"
