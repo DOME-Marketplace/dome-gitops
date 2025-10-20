@@ -3,7 +3,7 @@ keycloak:
     repository: in2workspace/in2-dome-keycloak
     pullPolicy: Always
     # Overrides the image tag whose default is the chart appVersion.
-    tag: v1.1.0
+    tag: v1.1.1
 
   fullnameOverride: keycloak
   nameOverride: keycloak
