@@ -1,7 +1,7 @@
 dome-verifier:
   image:
     repository: in2workspace/eudistack-verifier-api
-    tag: v2.0.0
+    tag: v2.0.2
     pullPolicy: Always
 
   ingress:
@@ -42,6 +42,7 @@ dome-verifier:
       # Placeholder for favicon source path (OPTIONAL)
       # This routes must point to internal folder: src/main/resources/static/img/<file_name.png>
       faviconSrc: "dome_logo_favicon.png"
+      defaultLang: "es"
     backend:
       logging:
         level:
