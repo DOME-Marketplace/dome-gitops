@@ -129,7 +129,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: "10.5.0-PRE-4"
+        tag: "10.5.0-PRE-6"
         pullPolicy: Always
     
     plugins:
@@ -196,7 +196,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "10.4.0-PRE-6"
+        tag: "10.4.0-PRE-7"
         pullPolicy: Always
 
     ingress: 
