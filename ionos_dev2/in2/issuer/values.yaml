@@ -17,7 +17,7 @@ dome-issuer:
     image:
       repository: in2workspace/eudistack-issuer-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.1.0
+      tag: v2.1.1
       pullPolicy: Always
     ingressIssuerApi:
       enabled: true
@@ -46,6 +46,7 @@ dome-issuer:
       trustFrameworkUrl: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080"
       verifierUrl: "https://verifier.dome-marketplace-dev2.org"
       walletUrl: "https://wallet.dome-marketplace-dev2.org"
+      defaultLang: "en"
       mail:
         host: smtp.ionos.de
         port: 587
@@ -72,7 +73,7 @@ dome-issuer:
           credentialPassword: credential-password
         # types allowed: server, cloud
         type: cloud
-        url: https://dts-component-rdss-csc.ace-api.digitelts.com
+        url: https://dts-component-rdss.ace-api.digitelts.com
       authServer:
         provider: keycloak
         externalUrl: https://keycloak.dome-marketplace-dev2.org
@@ -131,7 +132,7 @@ dome-issuer:
     image:
       repository: in2workspace/eudistack-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.1.0
+      tag: v2.1.1
       pullPolicy: Always
     app:
       colors:
@@ -147,6 +148,7 @@ dome-issuer:
       walletUrlTest: "https://wallet.dome-marketplace-dev2.org"
       showWalletUrlTest: "true"
       knowledgeBaseUrl: "https://knowledgebase.dome-marketplace-dev2.org"
+      defaultLang: "en"
 
   dome-issuer-keycloak:
     enabled: false
