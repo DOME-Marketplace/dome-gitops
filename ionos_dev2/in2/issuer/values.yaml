@@ -73,7 +73,7 @@ dome-issuer:
           credentialPassword: credential-password
         # types allowed: server, cloud
         type: cloud
-        url: https://dts-component-rdss.ace-api.digitelts.com
+        url: https://dts-component-rdss-csc.ace-api.digitelts.com
       authServer:
         provider: keycloak
         externalUrl: https://keycloak.dome-marketplace-dev2.org
