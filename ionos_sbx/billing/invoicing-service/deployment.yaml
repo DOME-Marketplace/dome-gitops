@@ -17,10 +17,10 @@ spec:
     spec:
       containers:
         - name: invoicing-service-container
-          image: production.eng.it:8433/dome/invoicing-service:1.2.3
+          image: production.eng.it:8433/dome/invoicing-service:1.2.5
           ports:
             - containerPort: 8080
-              hostPort: 8380
+            #  hostPort: 8380
               protocol: TCP
           resources:
             limits:
