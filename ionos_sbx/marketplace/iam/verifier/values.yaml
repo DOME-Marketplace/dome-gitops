@@ -42,7 +42,7 @@ dome-verifier:
       # Placeholder for favicon source path (OPTIONAL)
       # This routes must point to internal folder: src/main/resources/static/img/<file_name.png>
       faviconSrc: "dome_logo_favicon.png"
-      defaultLang: "es"
+      defaultLang: "en"
     backend:
       logging:
         level:
