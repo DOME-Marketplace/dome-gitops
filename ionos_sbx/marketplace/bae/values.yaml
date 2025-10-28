@@ -196,7 +196,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "10.4.0-PRE-8"
+        tag: "10.4.0-PRE-9"
         pullPolicy: Always
 
     ingress: 
@@ -265,6 +265,10 @@ business-api-ecosystem:
         value: "8080"
       - name: BAE_LP_PAYMENT_GATEWAY
         value: https://dpas-sbx.egroup.hu
+      - name: BAE_LP_ENDPOINT_REVENUE_HOST
+        value: revenue-engine-svc.billing.svc.cluster.local
+      - name: BAE_LP_ANALYTICS_URL
+        value: https://analytics.dome-marketplace-sbx.org/
       - name: BAE_LP_SIOP_PRIVATE_KEY
         valueFrom:
           secretKeyRef:
