@@ -21,58 +21,30 @@ zammad:
 
   zammadConfig:
     railsserver:
-      webConcurrency: 6
+      webConcurrency: 4
       resources:
         requests:
-          cpu: 1000m
-          memory: 2Gi
+          cpu: "1000m"
+          memory: "2Gi"
         limits:
-          cpu: 2000m
-          memory: 4Gi
+          cpu: "2000m"
+          memory: "4Gi"
+
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        readOnlyRootFilesystem: false
+        privileged: false
 
       readinessProbe:
-        initialDelaySeconds: 30
-        periodSeconds: 10
-        timeoutSeconds: 10
-        failureThreshold: 3
-
-      livenessProbe:
-        initialDelaySeconds: 60
-        periodSeconds: 30
-        timeoutSeconds: 10
-        failureThreshold: 5
-
-      securityContext:
-        allowPrivilegeEscalation: false
-        capabilities:
-          drop:
-            - ALL
-        readOnlyRootFilesystem: false
-        privileged: false
-
-    websocket:
-      resources:
-        requests:
-          cpu: 500m
-          memory: 1Gi
-        limits:
-          cpu: 1000m
-          memory: 2Gi
-
-      securityContext:
-        allowPrivilegeEscalation: false
-        capabilities:
-          drop:
-            - ALL
-        readOnlyRootFilesystem: false
-        privileged: false
-
-  autoscaling:
-    enabled: true
-    minReplicas: 2
-    maxReplicas: 6
-    targetCPUUtilizationPercentage: 70
-    targetMemoryUtilizationPercentage: 80
+        httpGet:
+          path: /
+          port: 3000
+        initialDelaySeconds: 45
+        periodSeconds: 15
+        timeoutSeconds: 5
 
   elasticsearch:
     image:
@@ -82,33 +54,33 @@ zammad:
       registry: docker.io
       repository: bitnamilegacy/os-shell
       tag: 11-debian-11-r96
+    clusterName: zammad
     coordinating:
       replicaCount: 0
-    ingest:
-      replicaCount: 0
-
-    master:
+    data:
       replicaCount: 1
-      heapSize: 2g
-      masterOnly: false
       resources:
         requests:
           cpu: 1000m
-          memory: 3Gi
+          memory: 4Gi
         limits:
           cpu: 2000m
-          memory: 4Gi
-
-    data:
+          memory: 6Gi
+      heapSize: 3g
+    ingest:
+      replicaCount: 0
+    master:
+      heapSize: 1g
+      masterOnly: false
       replicaCount: 1
-      heapSize: 2g
+      resourcesPreset: null
       resources:
         requests:
           cpu: 500m
           memory: 2Gi
         limits:
           cpu: 1000m
-          memory: 4Gi
+          memory: 3Gi
 
   # Specific configuration for PostgreSQL subchart
   postgresql:
@@ -119,12 +91,35 @@ zammad:
       podAnnotations:
         backup.velero.io/backup-volumes: data
 
+      resources:
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+        limits:
+          cpu: "1000m"
+          memory: "2Gi"
+
   redis:
     image:
       repository: bitnamilegacy/redis
       tag: 7.0.12-debian-11-r34
+    master:
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "128Mi"
+        limits:
+          cpu: "250m"
+          memory: "256Mi"
 
   memcached:
     image:
       repository: bitnamilegacy/memcached
       tag: 1.6.23-debian-11-r0
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "128Mi"
+      limits:
+        cpu: "250m"
+        memory: "256Mi"
