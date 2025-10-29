@@ -30,7 +30,6 @@ zammadConfig:
         limits:
           cpu: "2000m"
           memory: "4Gi"
-
       securityContext:
         allowPrivilegeEscalation: false
         capabilities:
@@ -38,7 +37,6 @@ zammadConfig:
             - ALL
         readOnlyRootFilesystem: false
         privileged: false
-
       readinessProbe:
         httpGet:
           path: /
