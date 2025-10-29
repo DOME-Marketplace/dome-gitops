@@ -129,7 +129,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: "10.5.0-PRE-6"
+        tag: "10.5.0"
         pullPolicy: Always
     
     plugins:
@@ -177,7 +177,7 @@ business-api-ecosystem:
 
     extraEnvVars:
       - name: BAE_CB_CUSTOMER_BILL
-        value: "http://tm-forum-api-customer-bill-management:8080/tmf-api/customerBill/v4"
+        value: "http://tm-forum-api-customer-bill-management:8080/tmf-api/customerBillManagement/v4"
       - name: BAE_CB_DPAS_CLIENT_API_URL
         value: "https://dpas-sbx.egroup.hu/api/payment-start"
       - name: BAE_CB_PARTY
@@ -196,7 +196,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "10.4.0-PRE-10"
+        tag: "10.4.0"
         pullPolicy: Always
 
     ingress: 
@@ -264,7 +264,7 @@ business-api-ecosystem:
       - name: BAE_LP_ENDPOINT_CUSTOMER_BILL_PORT
         value: "8080"
       - name: BAE_LP_ENDPOINT_CUSTOMER_BILL_PATH
-        value: /tmf-api/customerBill/v4
+        value: /tmf-api/customerBillManagement/v4
       - name: BAE_LP_PAYMENT_GATEWAY
         value: https://dpas-sbx.egroup.hu
       - name: BAE_LP_ENDPOINT_REVENUE_HOST
