@@ -25,6 +25,14 @@ zammad:
     railsserver:
       webConcurrency: 4
 
+      resources:
+        requests:
+          cpu: "1000m"
+          memory: "2Gi"
+        limits:
+          cpu: "2000m"
+          memory: "4Gi"
+
       securityContext:
         allowPrivilegeEscalation: false
         capabilities:
@@ -32,6 +40,14 @@ zammad:
             - ALL
         readOnlyRootFilesystem: false
         privileged: false
+
+      readinessProbe:
+        httpGet:
+          path: /
+          port: 3000
+        initialDelaySeconds: 45
+        periodSeconds: 15
+        timeoutSeconds: 5
 
   elasticsearch:
     image:
@@ -78,12 +94,35 @@ zammad:
       podAnnotations:
         backup.velero.io/backup-volumes: data
 
+      resources:
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+        limits:
+          cpu: "1000m"
+          memory: "2Gi"
+
   redis:
     image:
       repository: bitnamilegacy/redis
       tag: 7.0.12-debian-11-r34
+    master:
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "128Mi"
+        limits:
+          cpu: "250m"
+          memory: "256Mi"
 
   memcached:
     image:
       repository: bitnamilegacy/memcached
       tag: 1.6.23-debian-11-r0
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "128Mi"
+      limits:
+        cpu: "250m"
+        memory: "256Mi"
