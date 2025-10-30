@@ -20,30 +20,29 @@ zammad:
         hosts:
           - ticketing.dome-marketplace-sbx.org
 
-zammadConfig:
-    railsserver:
-      webConcurrency: 4
-      resources:
-        requests:
-          cpu: "1000m"
-          memory: "2Gi"
-        limits:
-          cpu: "2000m"
-          memory: "4Gi"
-      securityContext:
-        allowPrivilegeEscalation: false
-        capabilities:
-          drop:
-            - ALL
-        readOnlyRootFilesystem: false
-        privileged: false
-      readinessProbe:
-        httpGet:
-          path: /
-          port: 3000
-        initialDelaySeconds: 45
-        periodSeconds: 15
-        timeoutSeconds: 5
+  railsserver:
+    webConcurrency: 4
+    resources:
+      requests:
+        cpu: "1000m"
+        memory: "2Gi"
+      limits:
+        cpu: "2000m"
+        memory: "4Gi"
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      readOnlyRootFilesystem: false
+      privileged: false
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 3000
+      initialDelaySeconds: 45
+      periodSeconds: 15
+      timeoutSeconds: 5
 
   elasticsearch:
     image:
