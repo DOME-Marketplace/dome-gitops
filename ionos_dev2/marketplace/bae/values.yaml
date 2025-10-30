@@ -128,7 +128,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: "10.5.0-PRE-4"
+        tag: "10.5.0"
         pullPolicy: Always
     
     plugins:
@@ -151,7 +151,18 @@ business-api-ecosystem:
       host: mongodb
       database: charging_db
       user: charging
-    
+
+    email:
+      ## -- Mail address
+      mail: noreply-customer-service@dome-marketplace.eu
+      ## -- SMTP configuration
+      smtp:
+        ## -- User name
+        user: customer-service@dome-marketplace.eu
+        ## -- SMTP server hostname
+        server: smtp.ionos.de
+        password: true
+
     backup:
       enabled: false
 
@@ -163,7 +174,7 @@ business-api-ecosystem:
 
     extraEnvVars:
       - name: BAE_CB_CUSTOMER_BILL
-        value: "http://tm-forum-api-customer-bill-management:8080/tmf-api/customerBill/v4"
+        value: "http://tm-forum-api-customer-bill-management:80800/tmf-api/customerBillManagement/v4"
       - name: BAE_CB_DPAS_CLIENT_API_URL
         value: "https://dpas-dev2.egroup.hu/api/payment-start"
       - name: BAE_CB_PARTY
@@ -182,7 +193,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "10.4.0-PRE-6"
+        tag: "10.4.0"
         pullPolicy: Always
 
     ingress: 
@@ -244,13 +255,19 @@ business-api-ecosystem:
       - name: BAE_LP_DOME_GUIDELINES
         value: https://knowledgebase.dome-marketplace-prd.org/books/managing-orders-products-and-subscriptions
       - name: BAE_LP_BILLING_ENGINE_URL
-        value: http://bae-marketplace-biz-ecosystem-charging-backend.marketplace.svc.cluster.local:8006
+        value: http://bae-marketplace-biz-ecosystem-charging-backend.marketplace.svc.cluster.local:8006/charging/api/orderManagement/orders/preview/
       - name: BAE_LP_ENDPOINT_CUSTOMER_BILL_HOST
         value: tm-forum-api-customer-bill-management
       - name: BAE_LP_ENDPOINT_CUSTOMER_BILL_PORT
         value: "8080"
+      - name: BAE_LP_ENDPOINT_CUSTOMER_BILL_PATH
+        value: /tmf-api/customerBillManagement/v4
       - name: BAE_LP_PAYMENT_GATEWAY
         value: https://dpas-dev2.egroup.hu
+      - name: BAE_LP_ENDPOINT_REVENUE_HOST
+        value: revenue-engine-svc.billing.svc.cluster.local
+      - name: BAE_LP_ANALYTICS_URL
+        value: https://analytics.dome-marketplace-dev2.org/
       - name: BAE_LP_SIOP_PRIVATE_KEY
         valueFrom:
           secretKeyRef:
