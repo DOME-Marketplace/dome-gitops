@@ -23,3 +23,11 @@ mysql:
       annotations:
         backup.velero.io/backup-volumes: data
         velero.io/backup: "true"
+
+    resources:
+      requests:
+        memory: "512Mi"
+        cpu: "100m"
+      limits:
+        memory: "1Gi"
+        cpu: "500m"
