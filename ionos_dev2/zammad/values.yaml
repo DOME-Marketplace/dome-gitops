@@ -19,36 +19,35 @@ zammad:
         hosts:
           - ticketing.dome-marketplace-dev2.org
 
-  zammadConfig:
-    railsserver:
-      webConcurrency: 6
-      resources:
-        requests:
-          cpu: 1000m
-          memory: 2Gi
-        limits:
-          cpu: 2000m
-          memory: 4Gi
+  railsserver:
+    webConcurrency: 6
+    resources:
+      requests:
+        cpu: 1000m
+        memory: 2Gi
+      limits:
+        cpu: 2000m
+        memory: 4Gi
 
-      readinessProbe:
-        initialDelaySeconds: 30
-        periodSeconds: 10
-        timeoutSeconds: 10
-        failureThreshold: 3
+    readinessProbe:
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 10
+      failureThreshold: 3
 
-      livenessProbe:
-        initialDelaySeconds: 60
-        periodSeconds: 30
-        timeoutSeconds: 10
-        failureThreshold: 5
+    livenessProbe:
+      initialDelaySeconds: 60
+      periodSeconds: 30
+      timeoutSeconds: 10
+      failureThreshold: 5
 
-      securityContext:
-        allowPrivilegeEscalation: false
-        capabilities:
-          drop:
-            - ALL
-        readOnlyRootFilesystem: false
-        privileged: false
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      readOnlyRootFilesystem: false
+      privileged: false
 
     websocket:
       resources:
