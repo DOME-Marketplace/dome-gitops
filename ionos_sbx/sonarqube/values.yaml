@@ -1,0 +1,66 @@
+# values.yaml para SonarQube con PostgreSQL externo
+
+community:
+  enabled: true
+  buildNumber: "25.9.0.112764-community"
+
+image:
+  repository: sonarqube
+  tag: "25.9.0.112764-community"
+  pullPolicy: IfNotPresent
+  # If using a private repository, the imagePullSecrets to use
+  # pullSecrets:
+  #   - name: my-repo-secret
+
+service:
+  type: ClusterIP
+  port: 9000
+
+monitoringPasscode: "6Se;6al@h6sO"
+
+ingress:
+  enabled: false
+  className: "nginx"
+  hosts:
+    - host: sonarqube.midominio.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 20Gi
+  mountPath: "/opt/sonarqube/data"
+
+postgresql:
+  enabled: false   # usamos base externa
+
+jdbcOverwrite:
+  enable: false
+  jdbcUrl: "jdbc:postgresql://pg-75qkrjg6i4d7tlg2.postgresql.de-txl.ionos.com:5432/sonarqubedb"
+  jdbcUsername: "sonarqubeuser"
+  jdbcPassword: "sonarqube)(*&"
+
+env:
+  - name: SONAR_JDBC_URL
+    value: "jdbc:postgresql://pg-75qkrjg6i4d7tlg2.postgresql.de-txl.ionos.com:5432/sonarqubedb"
+  - name: SONAR_JDBC_USERNAME
+    value: "sonarqubeuser"
+  - name: SONAR_JDBC_PASSWORD
+    value: "sonarqube)(*&"
+
+
+resources:
+  requests:
+    cpu: 500m
+    memory: 2Gi
+  limits:
+    cpu: 1
+    memory: 4Gi
+
+securityContext:
+  fsGroup: 1000
+  runAsUser: 1000
+  runAsGroup: 1000
