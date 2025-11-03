@@ -8,5 +8,5 @@ appVersion: "0.4.1"
 
 dependencies:
 - name: tm-forum-api
-  version: 0.2.2
+  version: 0.14.4
   repository: https://fiware.github.io/helm-charts
