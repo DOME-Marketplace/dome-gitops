@@ -131,7 +131,7 @@ access-node:
     ## configuration of the database to be used by broker
     db:
       # -- host of the db
-      dbhost: scorpio-postgis
+      dbhost: postgis-migration
       # -- username to be used
       user: postgres
       # -- existing secret to retrieve the db password
@@ -208,7 +208,7 @@ access-node:
       # -- configuration to be used for the image of the containers
       image:
         # -- current latest tag
-        tag: "0.20.1"
+        tag: "1.3.6"
       # -- ngsi-ld broker connection information
       ngsiLd:
         # -- address of the broker
