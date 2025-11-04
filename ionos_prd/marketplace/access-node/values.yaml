@@ -131,7 +131,7 @@ access-node:
     ## configuration of the database to be used by broker
     db:
       # -- host of the db
-      dbhost: scorpio-postgis
+      dbhost: postgis-migration
       # -- username to be used
       user: postgres
       # -- existing secret to retrieve the db password
@@ -223,54 +223,54 @@ access-node:
       enabled: true
 
     apis:
-    - name: party-catalog
-      image: tmforum-party-catalog
-      basePath: /
+      - name: party-catalog
+        image: tmforum-party-catalog
+        basePath: /
 
-    - name: customer-bill-management
-      image: tmforum-customer-bill-management
-      basePath: /
+      - name: customer-bill-management
+        image: tmforum-customer-bill-management
+        basePath: /
 
-    - name: customer-management
-      image: tmforum-customer-management
-      basePath: /
+      - name: customer-management
+        image: tmforum-customer-management
+        basePath: /
 
-    - name: product-catalog
-      image: tmforum-product-catalog
-      basePath: /
+      - name: product-catalog
+        image: tmforum-product-catalog
+        basePath: /
 
-    - name: product-inventory
-      image: tmforum-product-inventory
-      basePath: /
+      - name: product-inventory
+        image: tmforum-product-inventory
+        basePath: /
 
-    - name: product-ordering-management
-      image: tmforum-product-ordering-management
-      basePath: /
+      - name: product-ordering-management
+        image: tmforum-product-ordering-management
+        basePath: /
 
-    - name: resource-catalog
-      image: tmforum-resource-catalog
-      basePath: /
+      - name: resource-catalog
+        image: tmforum-resource-catalog
+        basePath: /
 
-    - name: resource-function-activation
-      image: tmforum-resource-function-activation
-      basePath: /
+      - name: resource-function-activation
+        image: tmforum-resource-function-activation
+        basePath: /
 
-    - name: resource-inventory
-      image: tmforum-resource-inventory
-      basePath: /
+      - name: resource-inventory
+        image: tmforum-resource-inventory
+        basePath: /
 
-    - name: service-catalog
-      image: tmforum-service-catalog
-      basePath: /
+      - name: service-catalog
+        image: tmforum-service-catalog
+        basePath: /
 
-    - name: account
-      image: tmforum-account
-      basePath: /
+      - name: account
+        image: tmforum-account
+        basePath: /
 
-    - name: agreement
-      image: tmforum-agreement
-      basePath: /
+      - name: agreement
+        image: tmforum-agreement
+        basePath: /
 
-    - name: usage-management
-      image: tmforum-usage-management
-      basePath: /
+      - name: usage-management
+        image: tmforum-usage-management
+        basePath: /
