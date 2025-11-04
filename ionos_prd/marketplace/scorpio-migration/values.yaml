@@ -2,7 +2,7 @@
 access-node:
   desmos:
     # -- should the desmos-blockchain-connector be enabled
-    enabled: false
+    enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     fullnameOverride: desmos
     image:
@@ -15,7 +15,7 @@ access-node:
     livenessProbe:
       failureThreshold: 10
     ingress:
-      enabled: false
+      enabled: true
       className: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
@@ -100,7 +100,7 @@ access-node:
   ## configuration for the dlt-adapter - see https://DOME-Marketplace.github.io/access-node/dlt-adapter for configuration documentation
   dlt-adapter:
     # -- should the dlt-adapter be enabled
-    enabled: false
+    enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     fullnameOverride: dlt-adapter
 
@@ -151,7 +151,7 @@ access-node:
       # -- path to be used for the readiness probe, older versions used /actuator/health
       path: /q/health
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-    fullnameOverride: scorpio-migration
+    fullnameOverride: scorpio
     ## configuration to be used for the service offered by scorpio
     service:
       # -- ClusterIP is the recommended type for most clusters
@@ -202,7 +202,7 @@ access-node:
     fullnameOverride: tm-forum-api
     nameOverride: tm-forum-api
     # -- should tm-forum-api be enabled
-    enabled: false
+    enabled: true
     ## configuration to be used by every api-deployment if nothing specific is provided.
     defaultConfig:
       # -- configuration to be used for the image of the containers
