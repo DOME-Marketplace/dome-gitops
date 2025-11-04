@@ -14,3 +14,11 @@ mysql:
   primary:
     podAnnotations:
       backup.velero.io/backup-volumes: "data"
+
+    resources:
+      requests:
+        memory: "512Mi"
+        cpu: "100m"
+      limits:
+        memory: "1Gi"
+        cpu: "500m"
