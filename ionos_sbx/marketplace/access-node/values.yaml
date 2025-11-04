@@ -198,7 +198,7 @@ access-node:
 
     defaultConfig:
       image:
-        tag: 1.3.16
+        tag: 1.3.20
       additionalEnvVars: 
       - name: MAPPING_STRICT_RELATIONSHIPS
         value: "false"
