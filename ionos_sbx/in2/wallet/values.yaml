@@ -77,7 +77,7 @@ dome-wallet:
       pullPolicy: Always
       repository: in2workspace/eudistack-wallet-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.0.2
+      tag: v2.0.3
     ## deployment specific configuration
     app:
       logsEnabled: true
