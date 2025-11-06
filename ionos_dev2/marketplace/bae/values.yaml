@@ -128,7 +128,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: "10.5.0"
+        tag: "10.6.0"
         pullPolicy: Always
     
     plugins:
@@ -167,14 +167,14 @@ business-api-ecosystem:
       enabled: false
 
     initContainers: false
-    propagateToken: true
+    propagateToken: "True"
     basePath: /opt/business-ecosystem-charging-backend
     token: 
       enabled: false
 
     extraEnvVars:
       - name: BAE_CB_CUSTOMER_BILL
-        value: "http://tm-forum-api-customer-bill-management:80800/tmf-api/customerBillManagement/v4"
+        value: "http://tm-forum-api-customer-bill-management:8080/tmf-api/customerBillManagement/v4"
       - name: BAE_CB_DPAS_CLIENT_API_URL
         value: "https://dpas-dev2.egroup.hu/api/payment-start"
       - name: BAE_CB_PARTY
@@ -193,7 +193,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "10.5.0"
+        tag: "10.6.0"
         pullPolicy: Always
 
     ingress: 
@@ -268,6 +268,8 @@ business-api-ecosystem:
         value: revenue-engine-svc.billing.svc.cluster.local
       - name: BAE_LP_ANALYTICS_URL
         value: https://analytics.dome-marketplace-dev2.org/
+      - name: BAE_LP_THEME
+        value: DOME
       - name: BAE_LP_SIOP_PRIVATE_KEY
         valueFrom:
           secretKeyRef:
