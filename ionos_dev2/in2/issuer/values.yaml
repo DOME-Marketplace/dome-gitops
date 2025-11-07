@@ -17,7 +17,7 @@ dome-issuer:
     image:
       repository: in2workspace/eudistack-issuer-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.1.1
+      tag: v2.2.1
       pullPolicy: Always
     ingressIssuerApi:
       enabled: true
@@ -47,6 +47,8 @@ dome-issuer:
       verifierUrl: "https://verifier.dome-marketplace-dev2.org"
       walletUrl: "https://wallet.dome-marketplace-dev2.org"
       defaultLang: "en"
+      adminOrganizationId: "VATES-B60645900"
+      sysTenant: "DOME"
       mail:
         host: smtp.ionos.de
         port: 587
@@ -132,7 +134,7 @@ dome-issuer:
     image:
       repository: in2workspace/eudistack-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.1.1
+      tag: v2.1.3
       pullPolicy: Always
     app:
       colors:
@@ -149,6 +151,8 @@ dome-issuer:
       showWalletUrlTest: "true"
       knowledgeBaseUrl: "https://knowledgebase.dome-marketplace-dev2.org"
       defaultLang: "en"
+      adminOrganizationId: "VATES-B60645900"
+      sysTenant: "DOME"
 
   dome-issuer-keycloak:
     enabled: false
