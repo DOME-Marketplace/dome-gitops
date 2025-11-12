@@ -129,7 +129,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: "10.6.0-PRE-4"
+        tag: "11.0.0-PRE-1"
         pullPolicy: Always
 
     plugins:
@@ -182,6 +182,9 @@ business-api-ecosystem:
         value: "https://dpas-sbx.egroup.hu/api/payment-start"
       - name: BAE_CB_PARTY
         value: "http://tm-forum-api-party-catalog:8080/tmf-api/party/v4"
+      - name: BAE_CB_OPERATOR_ID
+        value: "did:elsi:VATSB-12345678J"
+
 
   oauth:
     provider: "vc"
@@ -196,7 +199,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "10.6.0-PRE-2"
+        tag: "11.0.0-PRE-1"
         pullPolicy: Always
 
     ingress: 
@@ -273,6 +276,8 @@ business-api-ecosystem:
         value: https://analytics.dome-marketplace-sbx.org/
       - name: BAE_LP_THEME
         value: DOME
+      - name: BAE_LP_OPERATOR_ID
+        value: "did:elsi:VATSB-12345678J"
       - name: BAE_LP_SIOP_PRIVATE_KEY
         valueFrom:
           secretKeyRef:
