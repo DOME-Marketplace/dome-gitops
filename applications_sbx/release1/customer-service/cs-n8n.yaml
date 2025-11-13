@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cs-n8n
+  namespace: argocd
+  labels:
+    purpose: cs-n8n
+spec:
+  destination:
+    namespace: cs-n8n
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: ionos_sbx/cs-n8n
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
