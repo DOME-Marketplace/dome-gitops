@@ -872,12 +872,48 @@ data:
                     "value": 237
                   }
                 ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "INTERVENTIONS 28-21 DAYS AGO"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 227
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "INTERVENTIONS 21-14 DAYS AGO"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 261
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "INTERVENTIONS 14-7 DAYS AGO"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 256
+                  }
+                ]
               }
             ]
           },
           "gridPos": {
             "h": 25,
-            "w": 17,
+            "w": 18,
             "x": 0,
             "y": 99
           },
@@ -905,7 +941,7 @@ data:
               "editorMode": "code",
               "format": "table",
               "rawQuery": true,
-              "rawSql": "SELECT\r\n    o.name,\r\n    COUNT(DISTINCT CASE \r\n        WHEN ta.created_at >= NOW() - INTERVAL '7 days' THEN t.number\r\n    END) AS \"INTERVENTIONS LAST 7 DAYS\",\r\n    COUNT(DISTINCT CASE \r\n        WHEN ta.created_at < NOW() - INTERVAL '7 days'\r\n         AND ta.created_at >= NOW() - INTERVAL '14 days' THEN t.number\r\n    END) AS \"interventions 7-14 days ago\",\r\n    COUNT(DISTINCT CASE \r\n        WHEN ta.created_at < NOW() - INTERVAL '14 days'\r\n         AND ta.created_at >= NOW() - INTERVAL '21 days' THEN t.number\r\n    END) AS \"interventions 14-21 days ago\",\r\n    COUNT(DISTINCT CASE \r\n        WHEN ta.created_at < NOW() - INTERVAL '21 days'\r\n         AND ta.created_at >= NOW() - INTERVAL '28 days' THEN t.number\r\n    END) AS \"interventions 21-28 days ago\"\r\nFROM ticket_articles ta\r\nJOIN tickets t ON ta.ticket_id = t.id\r\nJOIN users u ON ta.created_by_id = u.id\r\nJOIN organizations o ON u.organization_id = o.id\r\nWHERE ta.created_by_id NOT IN (1)\r\n  AND ta.created_by_id <> t.customer_id\r\nGROUP BY o.name\r\nORDER BY o.name ASC;",
+              "rawSql": "SELECT\r\n    o.name,\r\n    COUNT(DISTINCT CASE \r\n        WHEN ta.created_at < NOW() - INTERVAL '21 days'\r\n         AND ta.created_at >= NOW() - INTERVAL '28 days' THEN t.number\r\n    END) AS \"INTERVENTIONS 28-21 DAYS AGO\",\r\n    COUNT(DISTINCT CASE \r\n        WHEN ta.created_at < NOW() - INTERVAL '14 days'\r\n         AND ta.created_at >= NOW() - INTERVAL '21 days' THEN t.number\r\n    END) AS \"INTERVENTIONS 21-14 DAYS AGO\",\r\n    COUNT(DISTINCT CASE \r\n        WHEN ta.created_at < NOW() - INTERVAL '7 days'\r\n         AND ta.created_at >= NOW() - INTERVAL '14 days' THEN t.number\r\n    END) AS \"INTERVENTIONS 14-7 DAYS AGO\",\r\n    COUNT(DISTINCT CASE \r\n        WHEN ta.created_at >= NOW() - INTERVAL '7 days' THEN t.number\r\n    END) AS \"INTERVENTIONS LAST 7 DAYS\"  \r\n    \r\nFROM ticket_articles ta\r\nJOIN tickets t ON ta.ticket_id = t.id\r\nJOIN users u ON ta.created_by_id = u.id\r\nJOIN organizations o ON u.organization_id = o.id\r\nWHERE ta.created_by_id NOT IN (1)\r\n  AND ta.created_by_id <> t.customer_id\r\nGROUP BY o.name\r\nORDER BY o.name ASC;",
               "refId": "A",
               "sql": {
                 "columns": [
