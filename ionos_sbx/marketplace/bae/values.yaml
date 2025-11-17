@@ -184,10 +184,14 @@ business-api-ecosystem:
         value: "http://tm-forum-api-party-catalog:8080/tmf-api/party/v4"
       - name: BAE_CB_OPERATOR_ID
         value: "did:elsi:VATSB-12345678J"
+      - name: BAE_CB_PAYMENT_METHOD
+        value: dpas
 
 
   oauth:
     provider: "vc"
+    sellerrole: "Seller"
+    customerrole: "Buyer"
 
   bizEcosystemLogicProxy:
 
@@ -199,7 +203,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "11.0.0-PRE-2"
+        tag: "11.0.0-PRE-3"
         pullPolicy: Always
 
     ingress: 
