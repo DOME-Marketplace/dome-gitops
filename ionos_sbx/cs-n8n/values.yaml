@@ -11,13 +11,14 @@ ingress:
   hosts:
     - host: cs-n8n.dome-marketplace-sbx.org
       paths:
-        - /
+        - path: /
+          pathType: Prefix
   tls:
     - secretName: n8n-tls-secret
       hosts:
         - cs-n8n.dome-marketplace-sbx.org
 
-main:
+n8n:
   persistence:
     enabled: true
     type: dynamic
