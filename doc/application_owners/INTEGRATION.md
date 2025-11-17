@@ -87,7 +87,7 @@ Each application is deployed to a separate namespace. To create the namespace fo
 1. Move to the namespace directory:
 
 ```sh
-cd ionos_sbx/namespaces
+cd ionos_common/namespaces
 ```
 
 2. Create a manifest file for your app namespace:
