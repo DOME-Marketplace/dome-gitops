@@ -1,0 +1,11 @@
+apiVersion: v2
+name: cs-n8n
+description: Helm chart per deploy n8n su Kubernetes
+type: application
+version: 0.1.0
+appVersion: "0.0.1"
+
+dependencies:
+  - name: n8n
+    version: "0.264.0"
+    repository: "https://helm.n8n.io"
