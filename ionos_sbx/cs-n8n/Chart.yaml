@@ -7,5 +7,5 @@ appVersion: "0.0.1"
 
 dependencies:
   - name: n8n
-    version: "0.264.0"
-    repository: "https://helm.n8n.io"
+    version: "1.0.0"
+    repository: "oci://8gears.container-registry.com/library"
