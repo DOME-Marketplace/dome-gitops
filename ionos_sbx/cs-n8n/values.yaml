@@ -3,22 +3,22 @@ image:
   tag: latest
   pullPolicy: Always
 
-ingress:
-  enabled: true
-  className: nginx
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
-  hosts:
-    - host: cs-n8n.dome-marketplace-sbx.org
-      paths:
-        - path: /
-          pathType: Prefix
-  tls:
-    - secretName: n8n-tls-secret
-      hosts:
-        - cs-n8n.dome-marketplace-sbx.org
-
 n8n:
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+    hosts:
+      - host: cs-n8n.dome-marketplace-sbx.org
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: n8n-tls-secret
+        hosts:
+          - cs-n8n.dome-marketplace-sbx.org
+
   persistence:
     enabled: true
     type: dynamic
