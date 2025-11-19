@@ -3,7 +3,7 @@ image:
   tag: latest
   pullPolicy: Always
 
-n8n:
+main:
   ingress:
     enabled: true
     className: nginx
