@@ -283,4 +283,4 @@ access-node:
 
     - name: quote
       image: tmforum-quote
-      basePath: /tmf-api/quote/v4
+      basePath: /tmf-api/quoteManagement/v4
