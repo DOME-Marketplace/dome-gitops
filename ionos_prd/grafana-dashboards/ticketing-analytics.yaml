@@ -96,7 +96,7 @@ data:
               "editorMode": "code",
               "format": "table",
               "rawQuery": true,
-              "rawSql": "SELECT\r\n    g.name AS group_name,\r\n    COUNT(CASE WHEN t.state_id NOT IN (4, 7) THEN 1 END) AS \"OPEN TICKETS\"\r\nFROM\r\n    tickets t\r\nRIGHT JOIN\r\n    groups g ON t.group_id = g.id\r\nWHERE\r\n    g.id IN (27, 26, 18, 12, 11, 10, 7, 6, 5, 4, 3)\r\nGROUP BY\r\n    g.name\r\nORDER BY\r\n    g.name ASC;",
+              "rawSql": "SELECT\r\n    g.name AS group_name,\r\n    COUNT(CASE WHEN t.state_id NOT IN (4, 7) THEN 1 END) AS \"OPEN TICKETS\"\r\nFROM\r\n    tickets t\r\nRIGHT JOIN\r\n    groups g ON t.group_id = g.id\r\nWHERE\r\n    g.id IN (3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 17, 18, 27, 29)\r\nGROUP BY\r\n    g.name\r\nORDER BY\r\n    g.name ASC;",
               "refId": "A",
               "sql": {
                 "columns": [
@@ -169,8 +169,8 @@ data:
             "overrides": []
           },
           "gridPos": {
-            "h": 13,
-            "w": 14,
+            "h": 15,
+            "w": 22,
             "x": 0,
             "y": 13
           },
@@ -206,7 +206,7 @@ data:
               "editorMode": "code",
               "format": "table",
               "rawQuery": true,
-              "rawSql": "SELECT\r\n    g.name AS group_name,\r\n    COUNT(CASE WHEN t.state_id NOT IN (4, 7) AND t.escalation_at IS NOT NULL AND t.escalation_at <= NOW() THEN 1 END) AS \"ESCALATED TICKETS\",\r\n    MAX(CASE WHEN t.state_id NOT IN (4, 7) AND t.escalation_at IS NOT NULL AND t.escalation_at <= NOW() THEN EXTRACT(EPOCH FROM (NOW() - t.escalation_at)) / 86400 END) AS \"MAX ESCALATION TIME (DAYS)\"\r\nFROM\r\n    tickets t\r\nRIGHT JOIN\r\n    groups g ON t.group_id = g.id\r\nWHERE\r\n    g.id IN (27, 26, 18, 12, 11, 10, 7, 6, 5, 4, 3)\r\nGROUP BY\r\n    g.name\r\nHAVING\r\n    COUNT(CASE WHEN t.state_id NOT IN (4, 7) AND t.escalation_at IS NOT NULL AND t.escalation_at <= NOW() THEN 1 END) > 0\r\nORDER BY\r\n    g.name ASC;",
+              "rawSql": "SELECT\r\n    g.name AS group_name,\r\n    COUNT(CASE WHEN t.state_id NOT IN (4, 7) AND t.escalation_at IS NOT NULL AND t.escalation_at <= NOW() THEN 1 END) AS \"ESCALATED TICKETS\",\r\n    ROUND(MAX(CASE WHEN t.state_id NOT IN (4, 7) AND t.escalation_at IS NOT NULL AND t.escalation_at <= NOW() THEN EXTRACT(EPOCH FROM (NOW() - t.escalation_at)) / 86400 END)) AS \"MAX ESCALATION TIME (DAYS)\"\r\nFROM\r\n    tickets t\r\nRIGHT JOIN\r\n    groups g ON t.group_id = g.id\r\nWHERE\r\n    g.id IN (3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 17, 18, 27, 29)\r\nGROUP BY\r\n    g.name\r\nHAVING\r\n    COUNT(CASE WHEN t.state_id NOT IN (4, 7) AND t.escalation_at IS NOT NULL AND t.escalation_at <= NOW() THEN 1 END) > 0\r\nORDER BY\r\n    g.name ASC;",
               "refId": "A",
               "sql": {
                 "columns": [
@@ -264,10 +264,10 @@ data:
             "overrides": []
           },
           "gridPos": {
-            "h": 9,
-            "w": 12,
+            "h": 10,
+            "w": 10,
             "x": 0,
-            "y": 26
+            "y": 28
           },
           "id": 7,
           "options": {
@@ -298,7 +298,7 @@ data:
               "editorMode": "code",
               "format": "table",
               "rawQuery": true,
-              "rawSql": "SELECT\r\n    g.name AS group_name,\r\n    AVG(EXTRACT(EPOCH FROM NOW() - t.created_at) / 86400) AS \"AVERAGE TICKET AGE (DAYS)\"\r\nFROM\r\n    groups g\r\nLEFT JOIN\r\n    tickets t ON t.group_id = g.id\r\n    AND t.state_id NOT IN (3, 4, 7)  -- Considera solo i ticket aperti\r\nWHERE\r\n    g.id IN (27, 26, 18, 12, 11, 10, 7, 6, 5, 4, 3)\r\n    AND t.id IS NOT NULL  -- Assicura che solo gruppi con ticket aperti siano inclusi\r\nGROUP BY\r\n    g.name\r\nORDER BY\r\n    g.name ASC;",
+              "rawSql": "SELECT\r\n    g.name AS group_name,\r\n    ROUND(AVG(EXTRACT(EPOCH FROM NOW() - t.created_at) / 86400)) AS \"AVERAGE TICKET AGE (DAYS)\"\r\nFROM\r\n    groups g\r\nLEFT JOIN\r\n    tickets t ON t.group_id = g.id\r\n    AND t.state_id NOT IN (3, 4, 7)  \r\nWHERE\r\n    g.id IN (3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 17, 18, 27, 29)\r\n    AND t.id IS NOT NULL  \r\nGROUP BY\r\n    g.name\r\nHAVING\r\n    ROUND(AVG(EXTRACT(EPOCH FROM NOW() - t.created_at) / 86400)) > 0 \r\nORDER BY\r\n    g.name ASC;",
               "refId": "A",
               "sql": {
                 "columns": [
@@ -385,7 +385,7 @@ data:
             "h": 16,
             "w": 19,
             "x": 0,
-            "y": 35
+            "y": 38
           },
           "id": 11,
           "options": {
@@ -522,7 +522,7 @@ data:
             "h": 16,
             "w": 19,
             "x": 0,
-            "y": 51
+            "y": 54
           },
           "id": 12,
           "options": {
@@ -588,27 +588,16 @@ data:
                 "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
+                "fillOpacity": 80,
                 "gradientMode": "none",
                 "hideFrom": {
                   "legend": false,
                   "tooltip": false,
                   "viz": false
                 },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 3,
-                "pointSize": 6,
+                "lineWidth": 1,
                 "scaleDistribution": {
                   "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
                 },
                 "thresholdsStyle": {
                   "mode": "off"
@@ -632,24 +621,33 @@ data:
             "overrides": []
           },
           "gridPos": {
-            "h": 19,
-            "w": 19,
+            "h": 17,
+            "w": 16,
             "x": 0,
-            "y": 67
+            "y": 70
           },
           "id": 8,
           "options": {
+            "barRadius": 0,
+            "barWidth": 0.97,
+            "fullHighlight": false,
+            "groupWidth": 0.7,
             "legend": {
               "calcs": [],
               "displayMode": "list",
               "placement": "bottom",
               "showLegend": true
             },
+            "orientation": "auto",
+            "showValue": "auto",
+            "stacking": "none",
             "tooltip": {
               "maxHeight": 600,
               "mode": "single",
               "sort": "none"
-            }
+            },
+            "xTickLabelRotation": 0,
+            "xTickLabelSpacing": 0
           },
           "targets": [
             {
@@ -660,7 +658,7 @@ data:
               "editorMode": "code",
               "format": "table",
               "rawQuery": true,
-              "rawSql": "WITH intervals AS (\r\n    SELECT \r\n        generate_series(\r\n            DATE_TRUNC('week', NOW()), \r\n            DATE_TRUNC('week', NOW()) - INTERVAL '180 days', \r\n            '-7 days'\r\n        ) AS week_start\r\n)\r\nSELECT \r\n    intervals.week_start,\r\n    COUNT(*) FILTER (WHERE group_id = 18) AS \"01 - Marketing Activities\",\r\n    COUNT(*) FILTER (WHERE group_id = 27) AS \"02 - Project Website\",\r\n    COUNT(*) FILTER (WHERE group_id = 11) AS \"03 - Privacy & Legal\",\r\n    COUNT(*) FILTER (WHERE group_id = 4) AS \"04 - Credential Management\",\r\n    COUNT(*) FILTER (WHERE group_id = 5) AS \"05 - Dome Marketplace\",\r\n    COUNT(*) FILTER (WHERE group_id = 29) AS \"06 - Chatbot\",\r\n    COUNT(*) FILTER (WHERE group_id = 17) AS \"07 - Dome Search\",\r\n    COUNT(*) FILTER (WHERE group_id = 8) AS \"08 - Billing & Invoicing\",\r\n    COUNT(*) FILTER (WHERE group_id = 9) AS \"09 - Payment System\",\r\n    COUNT(*) FILTER (WHERE group_id = 3) AS \"10 - Offering Qualification Process\",\r\n    COUNT(*) FILTER (WHERE group_id = 7) AS \"11 - Integration and Replica\",\r\n    COUNT(*) FILTER (WHERE group_id = 12) AS \"12 - Infrastructure\",\r\n    COUNT(*) FILTER (WHERE group_id = 6) AS \"13 - DevOps Deployments\",       \r\n    COUNT(*) FILTER (WHERE group_id = 10) AS \"14 - Customer Care\"\r\nFROM \r\n    intervals\r\nLEFT JOIN \r\n    tickets \r\nON \r\n    tickets.created_at >= intervals.week_start\r\n    AND tickets.created_at < intervals.week_start + INTERVAL '7 days'\r\nGROUP BY \r\n    intervals.week_start\r\nORDER BY \r\n    intervals.week_start ASC;",
+              "rawSql": "WITH intervals AS (\r\n    SELECT \r\n        generate_series(\r\n            DATE_TRUNC('week', NOW()), \r\n            DATE_TRUNC('week', NOW()) - INTERVAL '25 days', \r\n            '-7 days'\r\n        ) AS week_start\r\n)\r\nSELECT \r\n    intervals.week_start,\r\n    COUNT(*) FILTER (WHERE group_id = 18) AS \"01 - Marketing Activities\",\r\n    COUNT(*) FILTER (WHERE group_id = 27) AS \"02 - Project Website\",\r\n    COUNT(*) FILTER (WHERE group_id = 11) AS \"03 - Privacy & Legal\",\r\n    COUNT(*) FILTER (WHERE group_id = 4) AS \"04 - Credential Management\",\r\n    COUNT(*) FILTER (WHERE group_id = 5) AS \"05 - Dome Marketplace\",\r\n    COUNT(*) FILTER (WHERE group_id = 29) AS \"06 - Chatbot\",\r\n    COUNT(*) FILTER (WHERE group_id = 17) AS \"07 - Dome Search\",\r\n    COUNT(*) FILTER (WHERE group_id = 8) AS \"08 - Billing & Invoicing\",\r\n    COUNT(*) FILTER (WHERE group_id = 9) AS \"09 - Payment System\",\r\n    COUNT(*) FILTER (WHERE group_id = 3) AS \"10 - Offering Qualification Process\",\r\n    COUNT(*) FILTER (WHERE group_id = 7) AS \"11 - Integration and Replica\",\r\n    COUNT(*) FILTER (WHERE group_id = 12) AS \"12 - Infrastructure\",\r\n    COUNT(*) FILTER (WHERE group_id = 6) AS \"13 - DevOps Deployments\",       \r\n    COUNT(*) FILTER (WHERE group_id = 10) AS \"14 - Customer Care\"\r\nFROM \r\n    intervals\r\nLEFT JOIN \r\n    tickets \r\nON \r\n    tickets.created_at >= intervals.week_start\r\n    AND tickets.created_at < intervals.week_start + INTERVAL '7 days'\r\nGROUP BY \r\n    intervals.week_start\r\nORDER BY \r\n    intervals.week_start ASC;",
               "refId": "A",
               "sql": {
                 "columns": [
@@ -682,7 +680,7 @@ data:
             }
           ],
           "title": "OPENED TICKETS TREND",
-          "type": "timeseries"
+          "type": "barchart"
         },
         {
           "datasource": {
@@ -700,27 +698,16 @@ data:
                 "axisColorMode": "text",
                 "axisLabel": "",
                 "axisPlacement": "auto",
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 0,
+                "fillOpacity": 80,
                 "gradientMode": "none",
                 "hideFrom": {
                   "legend": false,
                   "tooltip": false,
                   "viz": false
                 },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 3,
-                "pointSize": 6,
+                "lineWidth": 1,
                 "scaleDistribution": {
                   "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
                 },
                 "thresholdsStyle": {
                   "mode": "off"
@@ -731,7 +718,8 @@ data:
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -743,24 +731,33 @@ data:
             "overrides": []
           },
           "gridPos": {
-            "h": 17,
-            "w": 19,
+            "h": 12,
+            "w": 16,
             "x": 0,
-            "y": 86
+            "y": 87
           },
           "id": 9,
           "options": {
+            "barRadius": 0,
+            "barWidth": 0.97,
+            "fullHighlight": false,
+            "groupWidth": 0.7,
             "legend": {
               "calcs": [],
               "displayMode": "list",
               "placement": "bottom",
               "showLegend": true
             },
+            "orientation": "auto",
+            "showValue": "auto",
+            "stacking": "none",
             "tooltip": {
               "maxHeight": 600,
               "mode": "single",
               "sort": "none"
-            }
+            },
+            "xTickLabelRotation": 0,
+            "xTickLabelSpacing": 0
           },
           "targets": [
             {
@@ -771,7 +768,7 @@ data:
               "editorMode": "code",
               "format": "table",
               "rawQuery": true,
-              "rawSql": "WITH intervals AS (\r\n    SELECT \r\n        generate_series(\r\n            DATE_TRUNC('week', NOW()), \r\n            DATE_TRUNC('week', NOW()) - INTERVAL '180 days', \r\n            '-7 days'\r\n        ) AS week_start\r\n)\r\nSELECT \r\n    intervals.week_start,\r\n    COUNT(*) FILTER (WHERE group_id = 18) AS \"01 - Marketing Activities\",\r\n    COUNT(*) FILTER (WHERE group_id = 27) AS \"02 - Project Website\",\r\n    COUNT(*) FILTER (WHERE group_id = 11) AS \"03 - Privacy & Legal\",\r\n    COUNT(*) FILTER (WHERE group_id = 4) AS \"04 - Credential Management\",\r\n    COUNT(*) FILTER (WHERE group_id = 5) AS \"05 - Dome Marketplace\",\r\n    COUNT(*) FILTER (WHERE group_id = 29) AS \"06 - Chatbot\",\r\n    COUNT(*) FILTER (WHERE group_id = 17) AS \"07 - Dome Search\",\r\n    COUNT(*) FILTER (WHERE group_id = 8) AS \"08 - Billing & Invoicing\",\r\n    COUNT(*) FILTER (WHERE group_id = 9) AS \"09 - Payment System\",\r\n    COUNT(*) FILTER (WHERE group_id = 3) AS \"10 - Offering Qualification Process\",\r\n    COUNT(*) FILTER (WHERE group_id = 7) AS \"11 - Integration and Replica\",\r\n    COUNT(*) FILTER (WHERE group_id = 12) AS \"12 - Infrastructure\",\r\n    COUNT(*) FILTER (WHERE group_id = 6) AS \"13 - DevOps Deployments\",       \r\n    COUNT(*) FILTER (WHERE group_id = 10) AS \"14 - Customer Care\"\r\nFROM \r\n    intervals\r\nLEFT JOIN \r\n    tickets \r\nON \r\n    tickets.last_close_at >= intervals.week_start\r\n    AND tickets.last_close_at < intervals.week_start + INTERVAL '7 days'\r\nGROUP BY \r\n    intervals.week_start\r\nORDER BY \r\n    intervals.week_start ASC;",
+              "rawSql": "WITH intervals AS (\r\n    SELECT \r\n        generate_series(\r\n            DATE_TRUNC('week', NOW()), \r\n            DATE_TRUNC('week', NOW()) - INTERVAL '25 days', \r\n            '-7 days'\r\n        ) AS week_start\r\n)\r\nSELECT \r\n    intervals.week_start,\r\n    COUNT(*) FILTER (WHERE group_id = 18) AS \"01 - Marketing Activities\",\r\n    COUNT(*) FILTER (WHERE group_id = 27) AS \"02 - Project Website\",\r\n    COUNT(*) FILTER (WHERE group_id = 11) AS \"03 - Privacy & Legal\",\r\n    COUNT(*) FILTER (WHERE group_id = 4) AS \"04 - Credential Management\",\r\n    COUNT(*) FILTER (WHERE group_id = 5) AS \"05 - Dome Marketplace\",\r\n    COUNT(*) FILTER (WHERE group_id = 29) AS \"06 - Chatbot\",\r\n    COUNT(*) FILTER (WHERE group_id = 17) AS \"07 - Dome Search\",\r\n    COUNT(*) FILTER (WHERE group_id = 8) AS \"08 - Billing & Invoicing\",\r\n    COUNT(*) FILTER (WHERE group_id = 9) AS \"09 - Payment System\",\r\n    COUNT(*) FILTER (WHERE group_id = 3) AS \"10 - Offering Qualification Process\",\r\n    COUNT(*) FILTER (WHERE group_id = 7) AS \"11 - Integration and Replica\",\r\n    COUNT(*) FILTER (WHERE group_id = 12) AS \"12 - Infrastructure\",\r\n    COUNT(*) FILTER (WHERE group_id = 6) AS \"13 - DevOps Deployments\",       \r\n    COUNT(*) FILTER (WHERE group_id = 10) AS \"14 - Customer Care\"\r\nFROM \r\n    intervals\r\nLEFT JOIN \r\n    tickets \r\nON \r\n    tickets.last_close_at >= intervals.week_start\r\n    AND tickets.last_close_at < intervals.week_start + INTERVAL '7 days'\r\nGROUP BY \r\n    intervals.week_start\r\nORDER BY \r\n    intervals.week_start ASC;",
               "refId": "A",
               "sql": {
                 "columns": [
@@ -793,7 +790,180 @@ data:
             }
           ],
           "title": "CLOSED TICKETS TREND",
-          "type": "timeseries"
+          "type": "barchart"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "P68D0D9E587DEE267"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "interventions 14-21 days ago"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 218
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "interventions 7-14 days ago"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 224
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "interventions last 7 days"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 209
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "INTERVENTIONS LAST 7 DAYS"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 237
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "INTERVENTIONS 28-21 DAYS AGO"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 227
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "INTERVENTIONS 21-14 DAYS AGO"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 261
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "INTERVENTIONS 14-7 DAYS AGO"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 256
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 25,
+            "w": 18,
+            "x": 0,
+            "y": 99
+          },
+          "id": 13,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
+            },
+            "showHeader": true,
+            "sortBy": []
+          },
+          "pluginVersion": "11.0.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "P68D0D9E587DEE267"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n    o.name,\r\n    COUNT(DISTINCT CASE \r\n        WHEN ta.created_at < NOW() - INTERVAL '21 days'\r\n         AND ta.created_at >= NOW() - INTERVAL '28 days' THEN t.number\r\n    END) AS \"INTERVENTIONS 28-21 DAYS AGO\",\r\n    COUNT(DISTINCT CASE \r\n        WHEN ta.created_at < NOW() - INTERVAL '14 days'\r\n         AND ta.created_at >= NOW() - INTERVAL '21 days' THEN t.number\r\n    END) AS \"INTERVENTIONS 21-14 DAYS AGO\",\r\n    COUNT(DISTINCT CASE \r\n        WHEN ta.created_at < NOW() - INTERVAL '7 days'\r\n         AND ta.created_at >= NOW() - INTERVAL '14 days' THEN t.number\r\n    END) AS \"INTERVENTIONS 14-7 DAYS AGO\",\r\n    COUNT(DISTINCT CASE \r\n        WHEN ta.created_at >= NOW() - INTERVAL '7 days' THEN t.number\r\n    END) AS \"INTERVENTIONS LAST 7 DAYS\"  \r\n    \r\nFROM ticket_articles ta\r\nJOIN tickets t ON ta.ticket_id = t.id\r\nJOIN users u ON ta.created_by_id = u.id\r\nJOIN organizations o ON u.organization_id = o.id\r\nWHERE ta.created_by_id NOT IN (1)\r\n  AND ta.created_by_id <> t.customer_id\r\nGROUP BY o.name\r\nORDER BY o.name ASC;",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Panel Title",
+          "type": "table"
         }
       ],
       "schemaVersion": 39,
@@ -802,8 +972,8 @@ data:
         "list": []
       },
       "time": {
-        "from": "now-90d",
-        "to": "now"
+        "from": "now-1w/w",
+        "to": "now-1w/w"
       },
       "timeRangeUpdatedDuringEditOrView": false,
       "timepicker": {},

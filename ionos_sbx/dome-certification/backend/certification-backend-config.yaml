@@ -7,7 +7,7 @@ data:
   POSTGRES_DB: dome
   SPRING_DATASOURCE_USERNAME: postgres
   SPRING_DATASOURCE_URL: jdbc:postgresql://dekra-postgres:5432/dome
-  SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+  SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "false"
   SPRING_JPA_SHOW_SQL: "false"
   SPRING_JPA_HIBERNATE_DDL_AUTO: update
   SPRING_MVC_CONVERTERS_PREFERRED_JSON_MAPPER: jackson
@@ -27,9 +27,9 @@ data:
   SPRING_MAIL_SMPT_START_TLS_REQUIRED: "true"
   SPRING_MAIL_SMPT_SSL_TRUST: smtp.ionos.de
   SPRING_MAIL_SMPT_DEBUG: "false"
-  JWT_PUBLIC_KEY_X: AafPhf-qT_gPc7yvtCd6jSAGUedUalQAFRQBv3fuaUM
-  JWT_PUBLIC_KEY_Y: modVruGC6Le8PiD2Bi5vTsPJFoytARsMYTac56XJwz0
-  JWT_OAUTH_CLIENT_ID: did:key:zDnaehmkEhoybLgRkVbKpAv47Vu81Rw5TmLUA5PrRKuWSbhxn
+  JWT_PUBLIC_KEY_X: NyvliOVIVAYYETbYWGj2H8F3sBHN1gld4FQFrXtDnzs
+  JWT_PUBLIC_KEY_Y: d9lfqQ14q_9ycrtUJOQ-0ySD-JAOv5t4DnK-AW5Phk8
+  JWT_OAUTH_CLIENT_ID: did:key:zDnaemNefPAoE1tJmgkHMWMebngNyzFzuY1ktUaV6MUrDDbBp
   JWT_OAUTH_REDIRECT_URI: https://dome-certification.dome-marketplace-sbx.org/auth/login
   JWT_OAUTH_AUD: https://verifier.dome-marketplace-sbx.org
   JWT_ISSUER_URL: https://issuer.dome-marketplace-sbx.org
