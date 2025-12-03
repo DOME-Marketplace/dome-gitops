@@ -17,9 +17,6 @@ data:
     echo "Installing Redis..."
     DEBIAN_FRONTEND=noninteractive apt-get install -y redis-server
     
-    echo "Installing OIDC dependencies..."
-    pip install Authlib>=1.2.0 requests
-    
     echo "Starting Redis server..."
     redis-server --daemonize yes --bind 127.0.0.1 --port 6379 --maxmemory 256mb --maxmemory-policy allkeys-lru
     
@@ -32,103 +29,87 @@ data:
     echo "Setting up Superset environment..."
     export SUPERSET_CONFIG_PATH=/app/pythonpath/superset_config.py
     export PYTHONPATH=/app/pythonpath:$PYTHONPATH
-    export AUTHLIB_INSECURE_TRANSPORT=1  # For sandbox environment
     
     # Create config directory
     mkdir -p /app/pythonpath
     
-    # Create DOME OIDC Security Manager
-    cat > /app/pythonpath/dome_oidc_security_manager.py << 'EOF'
-    import logging
-    import json
-    from superset.security import SupersetSecurityManager
-    
-    logger = logging.getLogger(__name__)
-    
-    class DOMEOIDCSecurityManager(SupersetSecurityManager):
-        
-        def oauth_user_info(self, provider, response=None):
-            """Extract user info from DOME OIDC response"""
-            
-            if provider == 'dome':
-                logger.info("Processing DOME OIDC user info")
-                
-                try:
-                    # Get user info from the userinfo endpoint
-                    me = self.appbuilder.sm.oauth_remotes[provider].get('oidc/userinfo')
-                    
-                    if hasattr(me, 'json'):
-                        user_data = me.json()
-                    else:
-                        user_data = me.data if hasattr(me, 'data') else {}
-                    
-                    logger.info(f"User data received from DOME")
-                    
-                    # Handle DOME's VC structure with LEAR credentials
-                    sub = user_data.get('sub', '')
-                    email = user_data.get('email')
-                    
-                    # Extract from Verifiable Credential if present
-                    if 'vc' in user_data:
-                        vc = user_data.get('vc', {})
-                        credential_subject = vc.get('credentialSubject', {})
-                        mandate = credential_subject.get('mandate', {})
-                        mandatee = mandate.get('mandatee', {})
-                        
-                        if not email:
-                            email = mandatee.get('email')
-                        
-                        first_name = mandatee.get('first_name', 'DOME')
-                        last_name = mandatee.get('last_name', 'User')
-                    else:
-                        # Standard OIDC claims
-                        first_name = user_data.get('given_name', 'DOME')
-                        last_name = user_data.get('family_name', 'User')
-                    
-                    # Create username from DID or email
-                    if sub.startswith('did:'):
-                        username = sub.split(':')[-1][:30]  # Use last part of DID
-                    elif email:
-                        username = email.split('@')[0]
-                    else:
-                        username = 'dome_user'
-                    
-                    if not email:
-                        email = f"{username}@dome-marketplace-sbx.org"
-                    
-                    user_info = {
-                        'username': username,
-                        'email': email,
-                        'first_name': first_name,
-                        'last_name': last_name,
-                        'id': sub,
-                    }
-                    
-                    logger.info(f"User {username} authenticated successfully")
-                    return user_info
-                    
-                except Exception as e:
-                    logger.error(f"Error processing DOME user info: {str(e)}")
-                    # Return minimal info to allow login
-                    return {
-                        'username': 'dome_user',
-                        'email': 'user@dome-marketplace-sbx.org',
-                        'first_name': 'DOME',
-                        'last_name': 'User',
-                        'id': 'unknown'
-                    }
-            
-            return super().oauth_user_info(provider, response)
+    # Create client_secret.json for OIDC
+    cat > /app/pythonpath/client_secret.json << 'EOF'
+    {
+        "web": {
+            "issuer": "https://cs-identity.dome-marketplace-sbx.org/realms/dome",
+            "auth_uri": "https://cs-identity.dome-marketplace-sbx.org/realms/dome/protocol/openid-connect/auth",
+            "client_id": "analytics-platform",
+            "client_secret": "ci8q7ZczfuWjshBKv8ybRC3ADn9a6FUX",
+            "userinfo_uri": "https://cs-identity.dome-marketplace-sbx.org/realms/dome/protocol/openid-connect/userinfo",
+            "token_uri": "https://cs-identity.dome-marketplace-sbx.org/realms/dome/protocol/openid-connect/token",
+            "token_introspection_uri": "https://cs-identity.dome-marketplace-sbx.org/realms/dome/protocol/openid-connect/token/introspect"
+        }
+    }
     EOF
     
-    # Create superset config with DOME OIDC
+    # Create OIDC security manager
+    cat > /app/pythonpath/oidc_security_manager.py << 'EOF'
+    import logging
+    from flask_appbuilder.views import ModelView, SimpleFormView, expose
+    from flask import redirect, request
+    from urllib.parse import quote
+    from flask_login import login_user
+    from flask_appbuilder.security.views import AuthOIDView
+    from flask_oidc import OpenIDConnect
+    from superset.security import SupersetSecurityManager
+    from flask_appbuilder.security.manager import AUTH_OID
+
+
+    class OIDCSecurityManager(SupersetSecurityManager):
+
+        def __init__(self, appbuilder):
+            super(OIDCSecurityManager, self).__init__(appbuilder)
+            if self.auth_type == AUTH_OID:
+                self.oid = OpenIDConnect(self.appbuilder.get_app)
+            self.authoidview = AuthOIDCView
+
+
+    class AuthOIDCView(AuthOIDView):
+
+        @expose('/login/', methods=['GET', 'POST'])
+        def login(self, flag=True):
+            sm = self.appbuilder.sm
+            oidc = sm.oid
+
+            @self.appbuilder.sm.oid.require_login
+            def handle_login():
+                user = sm.auth_user_oid(oidc.user_getfield('email'))
+                if user is None:
+                    if sm.find_role('example_viewer') is None:
+                        sm.add_role('example_viewer')
+                    info = oidc.user_getinfo(
+                        ['preferred_username', 'given_name', 'family_name', 'email'])
+                    user = sm.add_user(info.get('preferred_username'), info.get(
+                        'given_name'), info.get('family_name'), info.get('email'), [sm.find_role('Gamma'),sm.find_role('example_viewer')])
+                login_user(user, remember=True, force=True)
+                return redirect(self.appbuilder.get_url_for_index)
+
+            return handle_login()
+
+        @expose('/logout/', methods=['GET', 'POST'])
+        def logout(self):
+            oidc = self.appbuilder.sm.oid
+
+            oidc.logout()
+            super(AuthOIDCView, self).logout()
+            redirect_url = request.url_root.strip(
+                '/') + self.appbuilder.get_url_for_login
+
+            return redirect(
+                oidc.client_secrets.get('issuer') + '/protocol/openid-connect/logout?redirect_uri=' + quote(redirect_url))
+    EOF
+    
+    # Create superset config with OIDC integration
     cat > /app/pythonpath/superset_config.py << 'EOF'
     import os
-    import logging
-    from flask_appbuilder.security.manager import AUTH_OAUTH
-    
-    logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger(__name__)
+    from oidc_security_manager import OIDCSecurityManager
+    from flask_appbuilder.security.manager import AUTH_OID
     
     # Database - using SQLite with persistent storage
     SQLALCHEMY_DATABASE_URI = 'sqlite:////app/data/superset.db'
@@ -155,53 +136,40 @@ data:
         'CACHE_DEFAULT_TIMEOUT': 300,
     }
     
-    # Security
-    #SECRET_KEY = 'your-secret-key-change-in-production'
-    #WTF_CSRF_ENABLED = True
-    #WTF_CSRF_EXEMPT_LIST = []
+    # Security - Keycloak/OIDC Configuration
+    SECRET_KEY = 'ci8q7ZczfuWjshBKv8ybRC3ADn9a6FUX'
+    WTF_CSRF_ENABLED = False
     
-    # Set the authentication type to OAuth
-    AUTH_TYPE = AUTH_OAUTH
-    
-    # DOME OIDC Configuration
-    OAUTH_PROVIDERS = [
-    {   
-        'name': 'dome',
-        'token_key': 'access_token',
-        'icon': 'fa-address-card',
-        'remote_app': {
-            'client_id': 'did:key:zDnaer6wstrAhZxM5ej7fvQbnf9aP3RdojhXEao431SMrN3Lb',
-            'client_secret': None,
-            'client_kwargs': {
-                'scope': 'openid_learcredential',
-            },
-            'access_token_method': 'POST',
-            'api_base_url': 'https://verifier.dome-marketplace-sbx.org/',
-            'access_token_url': 'https://verifier.dome-marketplace-sbx.org/oidc/token',
-            'authorize_url': 'https://verifier.dome-marketplace-sbx.org/oidc/authorize',
-        }
-    }
-]
-    
-    # Custom Security Manager for DOME
-    from dome_oidc_security_manager import DOMEOIDCSecurityManager
-    CUSTOM_SECURITY_MANAGER = DOMEOIDCSecurityManager
-    
-    # User registration
-    AUTH_USER_REGISTRATION = True
-    AUTH_USER_REGISTRATION_ROLE = "Public"
-    
-    # Session configuration
-    SESSION_COOKIE_SECURE = True
-    SESSION_COOKIE_HTTPONLY = True
-    SESSION_COOKIE_SAMESITE = 'Lax'
-    SESSION_COOKIE_DOMAIN = None  # Let Flask handle it
-    
-    # Allow iframe embedding if needed
-    TALISMAN_ENABLED = False
-    
-    # Enable proxy headers
+    # Enable proxy fix for running behind ingress/load balancer
     ENABLE_PROXY_FIX = True
+    PROXY_FIX_CONFIG = {"x_for": 1, "x_proto": 1, "x_host": 1, "x_port": 0, "x_prefix": 1}
+    
+    # Authentication type
+    AUTH_TYPE = AUTH_OID
+    
+    # OIDC Configuration
+    OIDC_CLIENT_SECRETS = '/app/pythonpath/client_secret.json'
+    OIDC_ID_TOKEN_COOKIE_SECURE = True  # Set to True for HTTPS
+    OIDC_REQUIRE_VERIFIED_EMAIL = False
+    OIDC_OPENID_REALM = 'dome'
+    OIDC_INTROSPECTION_AUTH_METHOD = 'client_secret_post'
+    OIDC_COOKIE_SECURE = True  # Ensure cookies are only sent over HTTPS
+    
+    # Custom security manager
+    CUSTOM_SECURITY_MANAGER = OIDCSecurityManager
+    
+    # User registration settings
+    AUTH_USER_REGISTRATION = True
+    AUTH_USER_REGISTRATION_ROLE = 'Gamma'
+    
+    # Anonymous user role
+    AUTH_ROLE_PUBLIC = "Public"
+    
+    # Role assignment logic
+    AUTH_USER_REGISTRATION_ROLE_JMESPATH = "'Testme' && 'Gamma' || 'Gamma'"
+    
+    # Sync roles at each login
+    AUTH_ROLES_SYNC_AT_LOGIN = True
     
     # Feature flags
     FEATURE_FLAGS = {
@@ -215,11 +183,15 @@ data:
     SUPERSET_WEBSERVER_PORT = 8088
     SUPERSET_WEBSERVER_ADDRESS = '0.0.0.0'
     
-    logger.info("DOME OIDC SSO configuration loaded")
+    # SIP 15 support
+    SIP_15_ENABLED = True
     EOF
     
     # Ensure data directory exists
     mkdir -p /app/data
+    
+    echo "Installing flask-oidc if not present..."
+    pip install flask-oidc --quiet || echo "flask-oidc already installed or failed to install"
     
     echo "Initializing Superset database..."
     superset db upgrade
