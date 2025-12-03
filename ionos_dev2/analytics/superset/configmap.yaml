@@ -69,6 +69,9 @@ data:
     # Feature flags
     FEATURE_FLAGS = {
         'ENABLE_TEMPLATE_PROCESSING': True,
+        'PRESTO_EXPAND_DATA': True,
+        'ALERT_REPORTS': True,
+        'DASHBOARD_RBAC': True,
     }
     
     # Load examples
