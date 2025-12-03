@@ -190,8 +190,17 @@ data:
     # Ensure data directory exists
     mkdir -p /app/data
     
-    echo "Installing flask-oidc if not present..."
-    pip install flask-oidc --quiet || echo "flask-oidc already installed or failed to install"
+    echo "Installing required OIDC and database packages..."
+    pip install --no-cache-dir \
+        crate[sqlalchemy]==0.26.0 \
+        Authlib==0.15.5 \
+        flask-oidc==1.4.0 \
+        flask-openid \
+        sqlalchemy_trino==0.4.1 \
+        sqlalchemy-drill==1.1.2 \
+        mysqlclient==2.1.0 \
+        pymssql==2.2.5 \
+        || echo "Package installation completed with warnings"
     
     echo "Initializing Superset database..."
     superset db upgrade
