@@ -190,12 +190,12 @@ data:
     # Ensure data directory exists
     mkdir -p /app/data
     
-    echo "Installing required OIDC and database packages...36"
-    # Install OIDC packages first
+    echo "Installing required OIDC and database packages..."
+    # Install OIDC packages - using fedora-infra fork which is actively maintained
     pip install --no-cache-dir \
-        Authlib==0.15.5 \
+        Authlib \
         flask-openid \
-        git+https://github.com/puiterwijk/flask-oidc.git@v2.2.0 \
+        git+https://github.com/fedora-infra/flask-oidc.git@2.2.0 \
         || echo "OIDC package installation completed with warnings"
     
     # Install database drivers - using compatible versions
