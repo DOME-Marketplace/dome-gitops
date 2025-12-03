@@ -13,9 +13,9 @@ data:
     
     echo "Updating package lists..."
     apt-get update -qq
-    
-    echo "Installing Redis..."
-    DEBIAN_FRONTEND=noninteractive apt-get install -y redis-server
+
+    echo "Installing Redis and git..."
+    DEBIAN_FRONTEND=noninteractive apt-get install -y redis-server git
     
     echo "Starting Redis server..."
     redis-server --daemonize yes --bind 127.0.0.1 --port 6379 --maxmemory 256mb --maxmemory-policy allkeys-lru
