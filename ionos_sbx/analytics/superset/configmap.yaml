@@ -150,7 +150,6 @@ data:
     # OIDC Configuration
     OIDC_CLIENT_SECRETS = '/app/pythonpath/client_secret.json'
     OIDC_ID_TOKEN_COOKIE_SECURE = True  # Set to True for HTTPS
-    OIDC_REQUIRE_VERIFIED_EMAIL = False
     OIDC_OPENID_REALM = 'dome'
     OIDC_INTROSPECTION_AUTH_METHOD = 'client_secret_post'
     OIDC_COOKIE_SECURE = True  # Ensure cookies are only sent over HTTPS
