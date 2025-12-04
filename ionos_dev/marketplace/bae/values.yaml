@@ -44,6 +44,10 @@ business-api-ecosystem:
       resourceInventory:
         host: tm-forum-api-resource-inventory
         port: 8080
+        path: /tmf-api/resourceInventoryManagement/v4
+      serviceInventory:
+        host: tm-forum-api-service-inventory
+        port: 8080
         path: /tmf-api/serviceInventory/v4
 
   bizEcosystemRss:
@@ -124,7 +128,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: "10.1.1"
+        tag: "10.6.2"
         pullPolicy: Always
     
     plugins:
@@ -159,11 +163,13 @@ business-api-ecosystem:
     
     extraEnvVars:
       - name: BAE_CB_CUSTOMER_BILL
-        value: "http://tm-forum-api-customer-bill-management:8080/tmf-api/customerBill/v4"
+        value: "http://tm-forum-api-customer-bill-management:8080/tmf-api/customerBillManagement/v4"
       - name: BAE_CB_DPAS_CLIENT_API_URL
         value: "https://dpas-dev2.egroup.hu/api/payment-start"
       - name: BAE_CB_PARTY
         value: "http://tm-forum-api-party-catalog:8080/tmf-api/party/v4"
+      - name: BAE_CB_PAYMENT_METHOD
+        value: dpas
 
   oauth:
     provider: "vc"
@@ -178,7 +184,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "10.2.0"
+        tag: "10.7.5"
         pullPolicy: Always
 
     ingress: 
@@ -245,6 +251,12 @@ business-api-ecosystem:
         value: tm-forum-api-customer-bill-management
       - name: BAE_LP_ENDPOINT_CUSTOMER_BILL_PORT
         value: "8080"
+      - name: BAE_LP_ENDPOINT_CUSTOMER_BILL_PATH
+        value: /tmf-api/customerBillManagement/v4
+      - name: BAE_LP_PAYMENT_GATEWAY
+        value: https://dpas-dev2.egroup.hu
+      - name: BAE_LP_THEME
+        value: DOME
       - name: BAE_LP_SIOP_PRIVATE_KEY
         valueFrom:
           secretKeyRef:
