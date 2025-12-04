@@ -128,9 +128,9 @@ access-node:
     ## configuration of the database to be used by broker
     db:
       # -- host of the db
-      dbhost: scorpio-postgis
+      dbhost: pg-75qkrjg6i4d7tlg2.postgresql.de-txl.ionos.com
       # -- username to be used
-      user: postgres
+      user: scorpiouser
       # -- existing secret to retrieve the db password
       existingSecret:
         # -- should an existing secret be used
@@ -138,7 +138,7 @@ access-node:
         # -- name of the secret
         name: access-node-secret
         # -- key to retrieve the password from
-        key: scorpio-db-password
+        key: scorpio-db-ionos-password
     ## configuration of the readiness probe
     readinessProbe:
       # -- path to be used for the readiness probe, older versions used /actuator/health
@@ -199,11 +199,11 @@ access-node:
     defaultConfig:
       image:
         tag: 1.4.1
-      additionalEnvVars: 
-      - name: MAPPING_STRICT_RELATIONSHIPS
-        value: "false"
-      - name: API_EXTENSION_ENABLED
-        value: "true"
+      additionalEnvVars:
+        - name: MAPPING_STRICT_RELATIONSHIPS
+          value: "false"
+        - name: API_EXTENSION_ENABLED
+          value: "true"
 
     ingress:
       enabled: true
@@ -221,66 +221,66 @@ access-node:
           secretName: tm-forum-api-tls-secret
 
     apis:
-    - name: party-catalog
-      image: tmforum-party-catalog
-      basePath: /tmf-api/party/v4
+      - name: party-catalog
+        image: tmforum-party-catalog
+        basePath: /tmf-api/party/v4
 
-    - name: customer-bill-management
-      image: tmforum-customer-bill-management
-      basePath: /tmf-api/customerBillManagement/v4
+      - name: customer-bill-management
+        image: tmforum-customer-bill-management
+        basePath: /tmf-api/customerBillManagement/v4
 
-    - name: customer-management
-      image: tmforum-customer-management
-      basePath: /tmf-api/customerManagement/v4
+      - name: customer-management
+        image: tmforum-customer-management
+        basePath: /tmf-api/customerManagement/v4
 
-    - name: product-catalog
-      image: tmforum-product-catalog
-      basePath: /tmf-api/productCatalogManagement/v4
+      - name: product-catalog
+        image: tmforum-product-catalog
+        basePath: /tmf-api/productCatalogManagement/v4
 
-    - name: product-inventory
-      image: tmforum-product-inventory
-      basePath: /tmf-api/productInventory/v4
+      - name: product-inventory
+        image: tmforum-product-inventory
+        basePath: /tmf-api/productInventory/v4
 
-    - name: product-ordering-management
-      image: tmforum-product-ordering-management
-      basePath: /tmf-api/productOrderingManagement/v4
+      - name: product-ordering-management
+        image: tmforum-product-ordering-management
+        basePath: /tmf-api/productOrderingManagement/v4
 
-    - name: resource-catalog
-      image: tmforum-resource-catalog
-      basePath: /tmf-api/resourceCatalog/v4
+      - name: resource-catalog
+        image: tmforum-resource-catalog
+        basePath: /tmf-api/resourceCatalog/v4
 
-    - name: resource-function-activation
-      image: tmforum-resource-function-activation
-      basePath: /tmf-api/resourceFunctionActivation/v4
+      - name: resource-function-activation
+        image: tmforum-resource-function-activation
+        basePath: /tmf-api/resourceFunctionActivation/v4
 
-    - name: resource-inventory
-      image: tmforum-resource-inventory
-      basePath: /tmf-api/resourceInventoryManagement/v4
+      - name: resource-inventory
+        image: tmforum-resource-inventory
+        basePath: /tmf-api/resourceInventoryManagement/v4
 
-    - name: service-catalog
-      image: tmforum-service-catalog
-      basePath: /tmf-api/serviceCatalogManagement/v4
+      - name: service-catalog
+        image: tmforum-service-catalog
+        basePath: /tmf-api/serviceCatalogManagement/v4
 
-    - name: service-inventory
-      image: tmforum-service-inventory
-      basePath: /tmf-api/serviceInventory/v4
+      - name: service-inventory
+        image: tmforum-service-inventory
+        basePath: /tmf-api/serviceInventory/v4
 
-    - name: account
-      image: tmforum-account
-      basePath: /tmf-api/accountManagement/v4
+      - name: account
+        image: tmforum-account
+        basePath: /tmf-api/accountManagement/v4
 
-    - name: agreement
-      image: tmforum-agreement
-      basePath: /tmf-api/agreementManagement/v4
+      - name: agreement
+        image: tmforum-agreement
+        basePath: /tmf-api/agreementManagement/v4
 
-    - name: party-role
-      image: tmforum-party-role
-      basePath: /tmf-api/partyRoleManagement/v4
+      - name: party-role
+        image: tmforum-party-role
+        basePath: /tmf-api/partyRoleManagement/v4
 
-    - name: usage-management
-      image: tmforum-usage-management
-      basePath: /tmf-api/usageManagement/v4
+      - name: usage-management
+        image: tmforum-usage-management
+        basePath: /tmf-api/usageManagement/v4
 
-    - name: quote
-      image: tmforum-quote
-      basePath: /tmf-api/quoteManagement/v4
+      - name: quote
+        image: tmforum-quote
+        basePath: /tmf-api/quoteManagement/v4
