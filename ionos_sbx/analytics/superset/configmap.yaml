@@ -215,6 +215,7 @@ data:
     pip install --no-cache-dir \
         Authlib \
         flask-openid \
+        Flask-Session \
         git+https://github.com/fedora-infra/flask-oidc.git@2.2.0 \
         || echo "OIDC package installation completed with warnings"
     
