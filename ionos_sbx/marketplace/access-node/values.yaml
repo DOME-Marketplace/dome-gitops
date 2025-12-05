@@ -139,12 +139,6 @@ access-node:
         name: access-node-secret
         # -- key to retrieve the password from
         key: scorpio-db-ionos-password
-      ## force to use tls for the database connection
-      env:
-        - name: QUARKUS_DATASOURCE_DB_KIND
-          value: postgresql
-        - name: QUARKUS_DATASOURCE_REACTIVE_URL
-          value: "postgresql://pg-75qkrjg6i4d7tlg2.postgresql.de-txl.ionos.com:5432/ngb?sslmode=require"
     ## configuration of the readiness probe
     readinessProbe:
       # -- path to be used for the readiness probe, older versions used /actuator/health
@@ -159,6 +153,12 @@ access-node:
     service:
       # -- ClusterIP is the recommended type for most clusters
       type: ClusterIP
+    ## additional environment variables for scorpio
+    additionalEnvVars:
+      - name: QUARKUS_DATASOURCE_DB_KIND
+        value: postgresql
+      - name: QUARKUS_DATASOURCE_REACTIVE_URL
+        value: "postgresql://pg-75qkrjg6i4d7tlg2.postgresql.de-txl.ionos.com:5432/ngb?sslmode=require"
 
   ## configuration for kafka in case its used by scorpio - see https://github.com/bitnami/charts/tree/main/bitnami/kafka
   kafka:
