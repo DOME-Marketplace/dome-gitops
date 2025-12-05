@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: namespaces
+  name: harbor
   namespace: argocd
   labels:
     purpose: infra
