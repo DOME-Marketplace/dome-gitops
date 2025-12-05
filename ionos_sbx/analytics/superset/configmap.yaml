@@ -182,6 +182,8 @@ data:
     SUPERSET_WEBSERVER_PORT = 8088
     SUPERSET_WEBSERVER_ADDRESS = '0.0.0.0'
     
+    WEBDRIVER_BASEURL = 'https://analytics.dome-marketplace-sbx.org/'
+    
     # SIP 15 support
     SIP_15_ENABLED = True
     EOF
