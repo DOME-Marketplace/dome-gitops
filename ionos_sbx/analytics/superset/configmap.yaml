@@ -153,6 +153,7 @@ data:
     OIDC_OPENID_REALM = 'dome'
     OIDC_INTROSPECTION_AUTH_METHOD = 'client_secret_post'
     OIDC_COOKIE_SECURE = True  # Ensure cookies are only sent over HTTPS
+    OIDC_REDIRECT_HOST = 'analytics.dome-marketplace-sbx.org'
     
     # Custom security manager
     CUSTOM_SECURITY_MANAGER = OIDCSecurityManager
@@ -181,6 +182,26 @@ data:
     # Webserver config
     SUPERSET_WEBSERVER_PORT = 8088
     SUPERSET_WEBSERVER_ADDRESS = '0.0.0.0'
+    
+    WEBDRIVER_BASEURL = 'https://analytics.dome-marketplace-sbx.org/'
+    
+    # Session configuration for OIDC state persistence
+    SESSION_COOKIE_SECURE = True
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = 'Lax'
+
+    from flask_caching import Cache
+    RESULTS_BACKEND = Cache(config={
+        'CACHE_TYPE': 'RedisCache',
+        'CACHE_REDIS_HOST': REDIS_HOST,
+        'CACHE_REDIS_PORT': REDIS_PORT,
+        'CACHE_REDIS_DB': 2,
+    })
+
+    # Flask session type - use Redis
+    SESSION_TYPE = 'redis'
+    import redis
+    SESSION_REDIS = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=3)
     
     # SIP 15 support
     SIP_15_ENABLED = True

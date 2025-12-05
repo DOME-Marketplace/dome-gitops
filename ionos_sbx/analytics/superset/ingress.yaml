@@ -11,6 +11,7 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
     nginx.ingress.kubernetes.io/ssl-passthrough: "false"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
   ingressClassName: nginx
   rules:
