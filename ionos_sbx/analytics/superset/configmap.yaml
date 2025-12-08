@@ -164,7 +164,6 @@ data:
     OIDC_OPENID_REALM = 'dome'
     OIDC_INTROSPECTION_AUTH_METHOD = 'client_secret_post'
     OIDC_COOKIE_SECURE = False  # Set to False when behind SSL-terminating proxy
-    OIDC_REQUIRE_VERIFIED_EMAIL = False
     
     # Custom security manager
     CUSTOM_SECURITY_MANAGER = OIDCSecurityManager
