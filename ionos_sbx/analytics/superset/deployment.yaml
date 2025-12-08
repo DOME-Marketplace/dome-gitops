@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
       - name: superset
-        image: apache/superset:4.0.2
+        image: apache/superset:1.5.0rc4
         command: ["/bin/bash", "/startup.sh"]
         ports:
         - containerPort: 8088
