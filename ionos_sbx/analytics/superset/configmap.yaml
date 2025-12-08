@@ -41,6 +41,9 @@ data:
             "auth_uri": "https://cs-identity.dome-marketplace-sbx.org/realms/dome/protocol/openid-connect/auth",
             "client_id": "analytics-platform",
             "client_secret": "ci8q7ZczfuWjshBKv8ybRC3ADn9a6FUX",
+            "redirect_uris": [
+                "https://analytics.dome-marketplace-sbx.org/oidc_callback"
+            ],
             "userinfo_uri": "https://cs-identity.dome-marketplace-sbx.org/realms/dome/protocol/openid-connect/userinfo",
             "token_uri": "https://cs-identity.dome-marketplace-sbx.org/realms/dome/protocol/openid-connect/token",
             "token_introspection_uri": "https://cs-identity.dome-marketplace-sbx.org/realms/dome/protocol/openid-connect/token/introspect"
@@ -139,21 +142,29 @@ data:
     # Security - Keycloak/OIDC Configuration
     SECRET_KEY = 'ci8q7ZczfuWjshBKv8ybRC3ADn9a6FUX'
     WTF_CSRF_ENABLED = False
-    
+
     # Enable proxy fix for running behind ingress/load balancer
     ENABLE_PROXY_FIX = True
-    PROXY_FIX_CONFIG = {"x_for": 1, "x_proto": 1, "x_host": 1, "x_port": 0, "x_prefix": 1}
-    
+    PROXY_FIX_CONFIG = {"x_for": 1, "x_proto": 1, "x_host": 1, "x_port": 1, "x_prefix": 1}
+
+    # Tell Flask we're behind HTTPS proxy
+    PREFERRED_URL_SCHEME = 'https'
+
+    # Session cookie configuration for proxy setup
+    SESSION_COOKIE_SECURE = False
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = 'Lax'
+
     # Authentication type
     AUTH_TYPE = AUTH_OID
-    
+
     # OIDC Configuration
     OIDC_CLIENT_SECRETS = '/app/pythonpath/client_secret.json'
-    OIDC_ID_TOKEN_COOKIE_SECURE = True  # Set to True for HTTPS
+    OIDC_ID_TOKEN_COOKIE_SECURE = False  # Set to False when behind SSL-terminating proxy
     OIDC_OPENID_REALM = 'dome'
     OIDC_INTROSPECTION_AUTH_METHOD = 'client_secret_post'
-    OIDC_COOKIE_SECURE = True  # Ensure cookies are only sent over HTTPS
-    OIDC_REDIRECT_HOST = 'analytics.dome-marketplace-sbx.org'
+    OIDC_COOKIE_SECURE = False  # Set to False when behind SSL-terminating proxy
+    OIDC_REQUIRE_VERIFIED_EMAIL = False
     
     # Custom security manager
     CUSTOM_SECURITY_MANAGER = OIDCSecurityManager
@@ -185,24 +196,6 @@ data:
     
     WEBDRIVER_BASEURL = 'https://analytics.dome-marketplace-sbx.org/'
     
-    # Session configuration for OIDC state persistence
-    SESSION_COOKIE_SECURE = True
-    SESSION_COOKIE_HTTPONLY = True
-    SESSION_COOKIE_SAMESITE = 'Lax'
-
-    from flask_caching import Cache
-    RESULTS_BACKEND = Cache(config={
-        'CACHE_TYPE': 'RedisCache',
-        'CACHE_REDIS_HOST': REDIS_HOST,
-        'CACHE_REDIS_PORT': REDIS_PORT,
-        'CACHE_REDIS_DB': 2,
-    })
-
-    # Flask session type - use Redis
-    SESSION_TYPE = 'redis'
-    import redis
-    SESSION_REDIS = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=3)
-    
     # SIP 15 support
     SIP_15_ENABLED = True
     EOF
@@ -215,7 +208,6 @@ data:
     pip install --no-cache-dir \
         Authlib \
         flask-openid \
-        Flask-Session \
         git+https://github.com/fedora-infra/flask-oidc.git@2.2.0 \
         || echo "OIDC package installation completed with warnings"
     
