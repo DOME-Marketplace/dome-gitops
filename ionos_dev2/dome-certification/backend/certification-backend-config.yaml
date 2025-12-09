@@ -29,7 +29,7 @@ data:
   SPRING_MAIL_SMPT_DEBUG: "false"
   JWT_PUBLIC_KEY_X: Gfr2QwtWfVL93QqD7ezkPHL0zdybzKMBkOi3HOuxnBw
   JWT_PUBLIC_KEY_Y: wDEIkEGuTfO8wGz-6awiiUguOSDoG0hkKj5vHe4SvRA
-  JWT_OAUTH_CLIENT_ID: did:key:zDnaeSBPC1cxoaeyRKrReLmV8peq6gSUpEcyMnYgcXPScWiGT
+  JWT_OAUTH_CLIENT_ID: did:key:zDnaeyHsmMc4FUtvGcJCK6HyFEbFw1fBxRNdwjX5DvfBxy5hh
   JWT_OAUTH_REDIRECT_URI: https://dome-certification.dome-marketplace-dev2.org/auth/login
   JWT_OAUTH_AUD: https://verifier.dome-marketplace-dev2.org
   JWT_ISSUER_URL: https://issuer.dome-marketplace-dev2.org
