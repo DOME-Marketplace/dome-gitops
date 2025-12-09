@@ -34,7 +34,7 @@ access-node:
       profile: test
       ## debug level
       logLevel:
-        app: INFO
+        app: DEBUG
       ## information about the access-node operator
       operator:
         # -- did of the organization running the node
