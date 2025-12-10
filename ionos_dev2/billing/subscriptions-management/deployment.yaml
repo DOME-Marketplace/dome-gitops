@@ -40,7 +40,7 @@ spec:
             - name: TMF_PORT
               value: "8080" 
             - name: BAE_ENDPOINT
-              value: http://bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004
+              value: https://dome-marketplace-dev2.org
             - name: TOOL_OPERATOR_IDM_ID
               value: "did:elsi:VATBE-0123456789"       
             - name: LOG_LEVEL
