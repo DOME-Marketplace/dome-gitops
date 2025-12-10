@@ -17,7 +17,7 @@ dome-issuer:
     image:
       repository: in2workspace/eudistack-issuer-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.2.5
+      tag: v2.2.6
       pullPolicy: Always
     ingressIssuerApi:
       enabled: true
@@ -113,6 +113,7 @@ dome-issuer:
           allowedOrigins: "https://issuer.dome-marketplace-dev2.org, https://dome-certification.dome-marketplace-dev2.org"
       vault:
         url: http://wallet-vault-server:8200
+        secretsMount: kv
         existingSecret:
           enabled: true
           name: wallet-vault-unseal-secret
@@ -134,7 +135,7 @@ dome-issuer:
     image:
       repository: in2workspace/eudistack-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.1.7
+      tag: v2.1.8
       pullPolicy: Always
     app:
       colors:
@@ -142,8 +143,8 @@ dome-issuer:
         primaryContrast: "#ffffff"
         secondary: "#2cb6b2"
         secondaryContrast: "#dde6f6"
-      logoSrc: "dome-issuer.png"
-      faviconSrc: "DOME_Icon.png"
+      logoSrc: "dome-issuer-logo"
+      faviconSrc: "dome-favicon.png"
       keycloakUrl: "https://keycloak.dome-marketplace-dev2.org/realms/dome-issuer"
       backendUrl: "https://issuer.dome-marketplace-dev2.org"
       walletUrl: "https://wallet.dome-marketplace.eu"
@@ -189,14 +190,6 @@ dome-issuer:
           # -- create the database
           create.sh: |
             psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE issuer;"
-    global:
-      security:
-        allowInsecureImages: true
-    image:
-      registry: docker.io
-      repository: bitnamilegacy/postgresql
-      tag: 16.0.0-debian-11-r13
-      pullPolicy: IfNotPresent
 
   dome-issuer-keycloak-postgresql:
     # -- should the postgresql deployment be enabled
