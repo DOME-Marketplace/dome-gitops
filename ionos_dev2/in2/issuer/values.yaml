@@ -143,7 +143,7 @@ dome-issuer:
         primaryContrast: "#ffffff"
         secondary: "#2cb6b2"
         secondaryContrast: "#dde6f6"
-      logoSrc: "dome-issuer-logo"
+      logoSrc: "dome-issuer-logo.png"
       faviconSrc: "dome-favicon.png"
       keycloakUrl: "https://keycloak.dome-marketplace-dev2.org/realms/dome-issuer"
       backendUrl: "https://issuer.dome-marketplace-dev2.org"
