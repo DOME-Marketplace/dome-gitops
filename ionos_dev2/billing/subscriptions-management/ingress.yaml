@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: subscriptions-management-ingress
+  namespace: billing
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-dev2-issuer
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: "/$2"
+    # Redirect from /subscriptions to /subscriptions/
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      if ($uri = "/subscriptions") {
+        return 301 /subscriptions/;
+      }
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: payment.dome-marketplace-dev2.org
+    http:
+      paths:
+      - path: /subscriptions(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: subscriptions-management-svc
+            port:
+              number: 8080
+  tls:
+  - hosts:
+    - payment.dome-marketplace-dev2.org
+    secretName: subscriptions-management-tls-secret
