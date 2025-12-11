@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: subscriptions-management-container
-          image: production.eng.it:8433/dome/subscriptions-management:0.1.0
+          image: production.eng.it:8433/dome/subscriptions-management:0.1.1
           ports:
             - containerPort: 8080
               protocol: TCP
@@ -42,7 +42,7 @@ spec:
             - name: BAE_ENDPOINT
               value: https://dome-marketplace-dev2.org
             - name: TOOL_OPERATOR_IDM_ID
-              value: "did:elsi:VATBE-0123456789"       
+              value: "VATIT-01995120019"       
             - name: LOG_LEVEL
               value: DEBUG
           livenessProbe:
