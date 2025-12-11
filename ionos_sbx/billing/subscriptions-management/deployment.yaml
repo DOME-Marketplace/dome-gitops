@@ -42,7 +42,7 @@ spec:
             - name: BAE_ENDPOINT
               value: https://dome-marketplace-sbx.org
             - name: TOOL_OPERATOR_IDM_ID
-              value: "did:elsi:VATIT-01995120019"       
+              value: "VATIT-01995120019"       
             - name: LOG_LEVEL
               value: DEBUG
           livenessProbe:
