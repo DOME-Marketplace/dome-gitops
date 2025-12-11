@@ -60,12 +60,12 @@ dome-wallet:
             # -- key to retrieve the password from
             key: user-password
       db:
-        schema: wallet
-        host: wallet-postgres
+        schema: identity_wallet
+        host: pg-75qkrjg6i4d7tlg2.postgresql.de-txl.ionos.com
         port: 5432
-        name: wallet
-        username: postgres
-        password: postgres
+        externalService: true
+        name: identity?ssl=true&sslmode=require
+        username: identity_wallet
         existingSecret:
           enabled: true
           name: wallet-secret
