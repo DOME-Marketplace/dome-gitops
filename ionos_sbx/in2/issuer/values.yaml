@@ -128,7 +128,7 @@ dome-issuer:
         existingSecret:
           enabled: true
           name: issuer-secret
-          key: db-password
+          key: ionos-db-password
 
   dome-issuer-frontend:
     fullNameOverride: "dome-issuer-frontend"
