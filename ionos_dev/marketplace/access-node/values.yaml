@@ -125,9 +125,9 @@ access-node:
     ## configuration of the database to be used by broker
     db:
       # -- host of the db
-      dbhost: pg-mlg52jm9egadod1s.postgresql.de-txl.ionos.com
+      dbhost: scorpio-postgis
       # -- username to be used
-      user: scorpiouser
+      user: postgres
       # -- existing secret to retrieve the db password
       existingSecret:
         # -- should an existing secret be used
@@ -135,7 +135,7 @@ access-node:
         # -- name of the secret
         name: access-node-secret
         # -- key to retrieve the password from
-        key: scorpio-db-ionos-password
+        key: scorpio-db-password
     ## configuration of the readiness probe
     readinessProbe:
       # -- path to be used for the readiness probe, older versions used /actuator/health
@@ -150,21 +150,6 @@ access-node:
     service:
       # -- ClusterIP is the recommended type for most clusters
       type: ClusterIP
-    ## additional environment variables for scorpio
-    additionalEnvVars:
-      - name: QUARKUS_DATASOURCE_DB_KIND
-        value: postgresql
-      - name: QUARKUS_DATASOURCE_JDBC_URL
-        value: jdbc:postgresql://pg-mlg52jm9egadod1s.postgresql.de-txl.ionos.com:5432/ngb?sslmode=require
-      - name: QUARKUS_DATASOURCE_REACTIVE_URL
-        value: "postgresql://pg-mlg52jm9egadod1s.postgresql.de-txl.ionos.com:5432/ngb?sslmode=require"
-      - name: QUARKUS_DATASOURCE_USERNAME
-        value: scorpiouser
-      - name: QUARKUS_DATASOURCE_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: access-node-secret
-            key: scorpio-db-ionos-password
 
   ## configuration for kafka in case its used by scorpio - see https://github.com/bitnami/charts/tree/main/bitnami/kafka
   kafka:
