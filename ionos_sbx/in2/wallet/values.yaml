@@ -69,7 +69,7 @@ dome-wallet:
         existingSecret:
           enabled: true
           name: wallet-secret
-          key: db-password
+          key: ionos-db-password
 
   ## configuration for the dome-wallet-ui
   dome-wallet-frontend:
