@@ -59,7 +59,7 @@ keycloak:
     existingSecret:
       enabled: true
       name: keycloak-secret
-      passwordKey: db-password
+      passwordKey: ionos-db-password
 
   postgresKeycloak:
     # enable: false
