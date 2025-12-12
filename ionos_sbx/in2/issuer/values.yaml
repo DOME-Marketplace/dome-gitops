@@ -123,7 +123,6 @@ dome-issuer:
         port: 5432
         externalService: true
         name: identity?ssl=true&sslmode=require
-        schema: identity_issuer
         username: identity_issuer
         existingSecret:
           enabled: true
