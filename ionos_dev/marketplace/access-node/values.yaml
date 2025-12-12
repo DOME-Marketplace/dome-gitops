@@ -154,8 +154,17 @@ access-node:
     additionalEnvVars:
       - name: QUARKUS_DATASOURCE_DB_KIND
         value: postgresql
+      - name: QUARKUS_DATASOURCE_JDBC_URL
+        value: jdbc:postgresql://pg-mlg52jm9egadod1s.postgresql.de-txl.ionos.com:5432/ngb?sslmode=require
       - name: QUARKUS_DATASOURCE_REACTIVE_URL
         value: "postgresql://pg-mlg52jm9egadod1s.postgresql.de-txl.ionos.com:5432/ngb?sslmode=require"
+      - name: QUARKUS_DATASOURCE_USERNAME
+        value: scorpiouser
+      - name: QUARKUS_DATASOURCE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: access-node-secret
+            key: scorpio-db-ionos-password
 
   ## configuration for kafka in case its used by scorpio - see https://github.com/bitnami/charts/tree/main/bitnami/kafka
   kafka:
