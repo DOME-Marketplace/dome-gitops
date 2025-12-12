@@ -122,7 +122,10 @@ dome-issuer:
         host: pg-75qkrjg6i4d7tlg2.postgresql.de-txl.ionos.com
         port: 5432
         externalService: true
-        name: identity?ssl=true&sslmode=require
+        ssl: true
+        sslmode: require
+        name: identity
+        schema: identity_issuer
         username: identity_issuer
         existingSecret:
           enabled: true
