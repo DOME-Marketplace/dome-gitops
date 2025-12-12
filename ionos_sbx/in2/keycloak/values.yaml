@@ -62,8 +62,9 @@ keycloak:
       passwordKey: db-password
 
   postgresKeycloak:
+    # enable: false
     auth:
       existingSecret: keycloak-secret
       secretKeys:
-        adminPasswordKey: admin-password
+        adminPasswordKey: db-password
         userPasswordKey: db-password
