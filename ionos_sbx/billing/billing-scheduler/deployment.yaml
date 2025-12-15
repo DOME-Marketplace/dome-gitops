@@ -47,6 +47,8 @@ spec:
               value: "0 0 */3 * * ?"
             - name: PAY_PER_USE_DELATED_DAYS
               value: "2"
+            - name: MONTHS_BACK
+              value: "1"
             - name: LOG_LEVEL
               value: DEBUG
           livenessProbe:
