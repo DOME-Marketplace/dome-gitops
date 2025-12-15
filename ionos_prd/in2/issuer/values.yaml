@@ -15,9 +15,9 @@ dome-issuer:
   dome-issuer-backend:
     fullNameOverride: "dome-issuer-backend"
     image:
-      repository: in2workspace/eudistack-issuer-api
+      repository: in2workspace/in2-issuer-backend
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.2.6
+      tag: v1.7.1
     ingressIssuerApi:
       enabled: true
       className: nginx
@@ -44,10 +44,6 @@ dome-issuer:
         uploadCertificationGuideUrl: "https://knowledgebase.dome-marketplace.eu"
       trustFrameworkUrl: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080"
       verifierUrl: "https://verifier.dome-marketplace.eu"
-      walletUrl: "https://wallet.dome-marketplace.eu"
-      defaultLang: "en"
-      adminOrganizationId: "VATES-B60645900"
-      sysTenant: "DOME"
       mail:
         host: smtp.ionos.de
         port: 587
@@ -112,7 +108,6 @@ dome-issuer:
           allowedOrigins: "https://issuer.dome-marketplace.eu, https://dome-certification.dome-marketplace.eu"
       vault:
         url: http://wallet-vault-server:8200
-        secretsMount: kv
         existingSecret:
           enabled: true
           name: wallet-vault-unseal-secret
@@ -132,26 +127,21 @@ dome-issuer:
   dome-issuer-frontend:
     fullNameOverride: "dome-issuer-frontend"
     image:
-      repository: in2workspace/eudistack-issuer-ui
+      repository: in2workspace/in2-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.1.8
+      tag: v1.13.1
     app:
       colors:
         primary: "#2d58a7"
         primaryContrast: "#ffffff"
         secondary: "#2cb6b2"
         secondaryContrast: "#dde6f6"
-      logoSrc: "dome-issuer-logo.png"
-      faviconSrc: "dome-favicon.png"
+      logoSrc: "dome-issuer.png"
+      faviconSrc: "DOME_Icon.png"
       keycloakUrl: "https://keycloak.dome-marketplace.eu/realms/dome-issuer"
       backendUrl: "https://issuer.dome-marketplace.eu"
       walletUrl: "https://wallet.dome-marketplace.eu"
-      walletUrlTest: "https://wallet.dome-marketplace.eu"
-      showWalletUrlTest: "false"
       knowledgeBaseUrl: "https://knowledgebase.dome-marketplace.eu"
-      defaultLang: "en"
-      adminOrganizationId: "VATES-B60645900"
-      sysTenant: "DOME"
 
   dome-issuer-keycloak:
     enabled: false
@@ -188,6 +178,14 @@ dome-issuer:
           # -- create the database
           create.sh: |
             psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE issuer;"
+    global:
+      security:
+        allowInsecureImages: true
+    image:
+      registry: docker.io
+      repository: bitnamilegacy/postgresql
+      tag: 16.0.0-debian-11-r13
+      pullPolicy: IfNotPresent
 
   dome-issuer-keycloak-postgresql:
     # -- should the postgresql deployment be enabled
