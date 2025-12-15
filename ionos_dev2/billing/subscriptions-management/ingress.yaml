@@ -17,7 +17,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: payment.dome-marketplace-dev2.org
+  - host: management.dome-marketplace-dev2.org
     http:
       paths:
       - path: /subscriptions(/|$)(.*)
@@ -29,5 +29,5 @@ spec:
               number: 8080
   tls:
   - hosts:
-    - payment.dome-marketplace-dev2.org
+    - management.dome-marketplace-dev2.org
     secretName: subscriptions-management-tls-secret
