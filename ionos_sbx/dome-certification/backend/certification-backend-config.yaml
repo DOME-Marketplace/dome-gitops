@@ -27,9 +27,9 @@ data:
   SPRING_MAIL_SMPT_START_TLS_REQUIRED: "true"
   SPRING_MAIL_SMPT_SSL_TRUST: smtp.ionos.de
   SPRING_MAIL_SMPT_DEBUG: "false"
-  JWT_PUBLIC_KEY_X: NyvliOVIVAYYETbYWGj2H8F3sBHN1gld4FQFrXtDnzs
-  JWT_PUBLIC_KEY_Y: d9lfqQ14q_9ycrtUJOQ-0ySD-JAOv5t4DnK-AW5Phk8
-  JWT_OAUTH_CLIENT_ID: did:key:zDnaemNefPAoE1tJmgkHMWMebngNyzFzuY1ktUaV6MUrDDbBp
+  JWT_PUBLIC_KEY_X: X-tT8nBVVvEwTnD0dOsFEMe0xTogvSFF21crzcezGyw
+  JWT_PUBLIC_KEY_Y: 2ewVHc6-KbG3xNkogzA5okub-A87ecgi3o2k2Tg7kaM
+  JWT_OAUTH_CLIENT_ID: did:key:zDnaep7iGodkmSEUD8uAsp4dhqcaxxrFQ3zgyANHD2brt7CgB
   JWT_OAUTH_REDIRECT_URI: https://dome-certification.dome-marketplace-sbx.org/auth/login
   JWT_OAUTH_AUD: https://verifier.dome-marketplace-sbx.org
   JWT_ISSUER_URL: https://issuer.dome-marketplace-sbx.org
