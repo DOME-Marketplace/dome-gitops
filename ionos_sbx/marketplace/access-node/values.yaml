@@ -100,12 +100,12 @@ access-node:
         # -- key to retrieve the password from
         key: desmos-db-password
 
-  ## configuration for the dlt-adapter - see https://DOME-Marketplace.github.io/access-node/dlt-adapter for configuration documentation
-  dlt-adapter:
+  ## configuration for the alastria dlt-adapter - see https://DOME-Marketplace.github.io/access-node/dlt-adapter for configuration documentation
+  dlt-adapter-alastria:
     # -- should the dlt-adapter be enabled
     enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-    fullnameOverride: dlt-adapter
+    fullnameOverride: dlt-adapter-alastria
 
     existingSecret:
       enabled: true
@@ -115,6 +115,37 @@ access-node:
       DEBUG: "*"
       RPC_ADDRESS: "https://red-t.alastria.io/v0/9461d9f4292b41230527d57ee90652a6"
       ISS: "0x6a2f383855cba0fff292455ccd908c4a08d6c07f5ef139b5afcef4cf62d4798b"
+
+   ## dlt adapter hashnet
+  dlt-adapter-hashnet:
+    # -- should the dlt-adapter be enabled
+    enabled: true
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    fullnameOverride: dlt-adapter-hashnet
+
+    existingSecret:
+      enabled: true
+      name: access-node-secret
+      key: dlt-private-key
+    env:
+      DEBUG: "*"
+      RPC_ADDRESS: "https://jsongw.stagenet.tolar.io/jsonrpc"
+      ISS: "0x43b27fef24cfe8a0b797ed8a36de2884f9963c0c2a0da640e3ec7ad6cd0c493d"
+
+    ## dlt adapter hashnet
+  dome-ied:
+    # -- should the dlt-adapter be enabled
+    enabled: true
+    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
+    fullnameOverride: dome-ied
+
+    existingSecret:
+      enabled: false
+      name: access-node-secret
+      key: dlt-private-key
+    env:
+      DEBUG: "*"
+      RPC_ADDRESS: ""
 
   ## configuration of postgres to be used for the blockchain-connector - see https://github.com/bitnami/charts/tree/main/bitnami/postgresql for details
   postgresql:
