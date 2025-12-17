@@ -22,8 +22,11 @@ spec:
             - containerPort: 8080
               protocol: TCP
           resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"      
             limits:
-              memory: 256Mi
+              memory: 512Mi
               cpu: "1"
           env:
             - name: TMF_ENDPOINT
