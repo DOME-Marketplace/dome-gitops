@@ -150,6 +150,12 @@ access-node:
     service:
       # -- ClusterIP is the recommended type for most clusters
       type: ClusterIP
+    ## additional environment variables for scorpio
+    #additionalEnvVars:
+     # - name: QUARKUS_DATASOURCE_DB_KIND
+     #   value: postgresql
+     # - name: QUARKUS_DATASOURCE_REACTIVE_URL
+     #   value: "postgresql://pg-mlg52jm9egadod1s.postgresql.de-txl.ionos.com:5432/ngb?sslmode=require"
 
   ## configuration for kafka in case its used by scorpio - see https://github.com/bitnami/charts/tree/main/bitnami/kafka
   kafka:
