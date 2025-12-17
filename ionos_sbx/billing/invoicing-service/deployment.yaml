@@ -23,8 +23,8 @@ spec:
               protocol: TCP
           resources:
             requests:
-              cpu: "200m"
-              memory: "128Mi"      
+              cpu: "500m"
+              memory: "256Mi"      
             limits:
               memory: 256Mi
               cpu: "1"
