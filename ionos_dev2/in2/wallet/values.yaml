@@ -62,15 +62,18 @@ dome-wallet:
             key: user-password
       db:
         schema: wallet
-        host: wallet-postgres
+        host: pg-7ibhgq9r54fl3acm.postgresql.de-txl.ionos.com
         port: 5432
-        name: wallet
-        username: postgres
-        password: postgres
+        externalService: true
+        name: identity
+        username: identity_wallet
+        ssl:
+          enabled: true
+          mode: require
         existingSecret:
           enabled: true
           name: wallet-secret
-          key: db-password
+          key: ionos-db-password
 
   ## configuration for the dome-wallet-ui
   dome-wallet-frontend:
