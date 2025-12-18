@@ -8,4 +8,4 @@ dependencies:
   - name: dome-issuer
     condition: dome-issuer.enabled
     repository: https://in2workspace.github.io/helm-charts
-    version: 1.5.7
+    version: 1.5.18
