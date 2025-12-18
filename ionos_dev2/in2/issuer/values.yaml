@@ -119,12 +119,15 @@ dome-issuer:
           name: wallet-vault-unseal-secret
           key: root
       db:
-        host: issuer-postgres
+        host: pg-7ibhgq9r54fl3acm.postgresql.de-txl.ionos.com
         port: 5432
-        externalService: false
-        name: issuer
+        externalService: true
+        name: identity
         schema: issuer
-        username: postgres
+        username: identity_issuer
+        ssl:
+          enabled: true
+          mode: require
         existingSecret:
           enabled: true
           name: issuer-secret
