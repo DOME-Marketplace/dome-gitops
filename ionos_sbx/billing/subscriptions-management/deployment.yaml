@@ -51,7 +51,7 @@ spec:
                   name: subscriptions-secret   
                   key: DOME_CLIENT_SECRET  
             - name: REDIRECT_URI
-              value: https://manage.dome-marketplace-sbx.org/subscriptions 
+              value: https://manage.dome-marketplace-sbx.org/subscriptions/login/oauth2/code/dome 
             - name: DOME_ISSUER_URI
               value: https://cs-identity.dome-marketplace-sbx.org/realms/dome
             - name: KEYCLOAK_JWKS_URI
@@ -60,8 +60,6 @@ spec:
               value: https://manage.dome-marketplace-sbx.org/subscriptions/login.html
             - name: KEYCLOAK_CLIENT_RESOURCE
               value: subscription-manager
-            - name: BILLING_PREFIX
-              value: /subscriptions/
             - name: LOG_LEVEL
               value: DEBUG
           livenessProbe:
