@@ -50,10 +50,18 @@ keycloak:
         path: /
 
   db:
+    host: pg-3oc0026pnl3p1gi0.postgresql.de-fra.ionos.com
+    port: 5432
+    externalService: true
+    name: iam
+    username: iam_keycloak
+    ssl:
+      enabled: true
+      mode: require
     existingSecret:
       enabled: true
       name: keycloak-secret
-      passwordKey: db-password
+      passwordKey: ionos-db-password
 
   postgresKeycloak:
     auth:
