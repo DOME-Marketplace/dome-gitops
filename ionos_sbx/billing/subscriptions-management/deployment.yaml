@@ -42,7 +42,24 @@ spec:
             - name: BAE_ENDPOINT
               value: https://dome-marketplace-sbx.org
             - name: TOOL_OPERATOR_IDM_ID
-              value: "VATIT-01995120019"       
+              value: "VATIT-01995120019" 
+            - name: DOME_CLIENT_ID
+              value: "subscription-manager"       
+            - name: DOME_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: subscriptions-secret   
+                  key: DOME_CLIENT_SECRET  
+            - name: REDIRECT_URI
+              value: https://manage.dome-marketplace-sbx.org/subscriptions 
+            - name: DOME_ISSUER_URI
+              value: https://cs-identity.dome-marketplace-sbx.org/realms/dome
+            - name: KEYCLOAK_JWKS_URI
+              value: https://cs-identity.dome-marketplace-sbx.org/realms/dome/protocol/openid-connect/certs
+            - name: REDIRECT_LOGOUT_URI
+              value: https://manage.dome-marketplace-sbx.org/subscriptions/login.html
+            - name: KEYCLOAK_CLIENT_RESOURCE
+              value: subscription-manager
             - name: LOG_LEVEL
               value: DEBUG
           livenessProbe:
