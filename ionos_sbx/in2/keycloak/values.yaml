@@ -65,8 +65,4 @@ keycloak:
       passwordKey: ionos-db-password
 
   postgresKeycloak:
-    auth:
-      existingSecret: keycloak-secret
-      secretKeys:
-        adminPasswordKey: db-password
-        userPasswordKey: db-password
+    enable: false
