@@ -60,6 +60,8 @@ spec:
               value: https://manage.dome-marketplace-sbx.org/subscriptions/login.html
             - name: KEYCLOAK_CLIENT_RESOURCE
               value: subscription-manager
+            - name: BILLING_PREFIX
+              value: /subscriptions/
             - name: LOG_LEVEL
               value: DEBUG
           livenessProbe:
