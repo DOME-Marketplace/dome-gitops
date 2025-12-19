@@ -163,36 +163,7 @@ dome-issuer:
 
   dome-issuer-postgresql:
     # -- should the postgresql deployment be enabled
-    enabled: true
-    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-    fullnameOverride: issuer-postgres
-    # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-    nameOverride: issuer-postgres
-    ## auth configuration for the database
-    auth:
-      # -- username to be used
-      username: postgres
-      # -- should the default postgres user be enabled
-      enablePostgresUser: true
-      # -- password to be used
-      existingSecret: issuer-secret
-      secretKeys:
-        adminPasswordKey: db-password
-        userPasswordKey: db-password
-    ## configuration of the postgres primary replica
-    primary:
-      # Configuration for Velero backup
-      annotations:
-        backup.velero.io/backup-volumes: data
-      podAnnotations:
-        backup.velero.io/backup-volumes: data
-      ## provide db initialization
-      initdb:
-        ## provide scripts for initialization
-        scripts:
-          # -- create the database
-          create.sh: |
-            psql postgresql://postgres:${POSTGRES_PASSWORD}@localhost:5432 -c "CREATE DATABASE issuer;"
+    enabled: false
 
   dome-issuer-keycloak-postgresql:
     # -- should the postgresql deployment be enabled
