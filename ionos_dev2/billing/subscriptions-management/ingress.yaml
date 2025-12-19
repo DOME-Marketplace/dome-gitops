@@ -7,20 +7,13 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-dev2-issuer
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: "/$2"
-    # Redirect from /subscriptions to /subscriptions/
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      if ($uri = "/subscriptions") {
-        return 301 /subscriptions/;
-      }
 spec:
   ingressClassName: nginx
   rules:
   - host: manage.dome-marketplace-dev2.org
     http:
       paths:
-      - path: /subscriptions(/|$)(.*)
+      - path: /subscriptions
         pathType: Prefix
         backend:
           service:
