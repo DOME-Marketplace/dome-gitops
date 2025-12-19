@@ -50,19 +50,10 @@ keycloak:
         path: /
 
   db:
-    schema: keycloak
-    host: pg-75qkrjg6i4d7tlg2.postgresql.de-txl.ionos.com
-    port: 5432
-    externalService: true
-    name: identity
-    username: identity_keycloak
-    ssl:
-      enabled: true
-      mode: require
     existingSecret:
       enabled: true
       name: keycloak-secret
-      passwordKey: ionos-db-password
+      passwordKey: db-password
 
   postgresKeycloak:
     auth:
