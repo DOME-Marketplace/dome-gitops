@@ -47,7 +47,7 @@ dome-issuer:
       verifierUrl: "https://verifier.dome-marketplace-sbx.org"
       walletUrl: "https://wallet.dome-marketplace-sbx.org"
       defaultLang: "en"
-      adminOrganizationId: "VATES-B60645900"
+      adminOrganizationId: "VATES-A15456585"
       sysTenant: "DOME"
       mail:
         host: smtp.ionos.de
