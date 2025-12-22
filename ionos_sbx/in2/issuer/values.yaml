@@ -155,7 +155,7 @@ dome-issuer:
       showWalletUrlTest: "true"
       knowledgeBaseUrl: "https://knowledgebase.dome-marketplace-sbx.org"
       defaultLang: "en"
-      adminOrganizationId: "VATES-B60645900"
+      adminOrganizationId: "VATES-A15456585"
       sysTenant: "DOME"
 
   dome-issuer-keycloak:
