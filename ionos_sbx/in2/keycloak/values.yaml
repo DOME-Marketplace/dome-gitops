@@ -50,7 +50,6 @@ keycloak:
         path: /
 
   db:
-    schema: keycloak
     host: pg-75qkrjg6i4d7tlg2.postgresql.de-txl.ionos.com
     port: 5432
     externalService: true
