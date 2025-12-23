@@ -181,6 +181,8 @@ business-api-ecosystem:
         value: "http://tm-forum-api-party-catalog:8080/tmf-api/party/v4"
       - name: BAE_CB_OPERATOR_ID
         value: "did:elsi:VATSB-12345678J"
+      - name: BAE_CB_RELATED_PARTY_SCHEMA_LOCATION
+        value: "https://raw.githubusercontent.com/DOME-Marketplace/tmf-api/refs/heads/main/schemas/EngagedParty/RelatedParty.schema.json"
 
   oauth:
     provider: "vc"
@@ -276,6 +278,8 @@ business-api-ecosystem:
         value: DOME
       - name: BAE_LP_OPERATOR_ID
         value: "did:elsi:VATSB-12345678J"
+      - name: BAE_LP_PARTY_LOCATION
+        value: "https://raw.githubusercontent.com/DOME-Marketplace/tmf-api/refs/heads/main/schemas/EngagedParty/RelatedParty.schema.json"
       - name: BAE_LP_SIOP_PRIVATE_KEY
         valueFrom:
           secretKeyRef:
