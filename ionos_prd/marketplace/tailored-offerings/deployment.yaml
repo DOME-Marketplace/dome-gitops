@@ -22,7 +22,7 @@ spec:
             - name: TMFORUM_API_BASE_URL
               value: http://tm-forum-api-quote.marketplace.svc.cluster.local:8080/tmf-api
             - name: DID_IDENTIFIER
-              value: "did:elsi:VATES-11111111P"
+              value: "did:elsi:VATSB-12345678J"
           ports:
             - containerPort: 8080
               hostPort: 8080
