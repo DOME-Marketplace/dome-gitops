@@ -46,7 +46,7 @@ dome-issuer:
       verifierUrl: "https://verifier.dome-marketplace.eu"
       walletUrl: "https://wallet.dome-marketplace.eu"
       defaultLang: "en"
-      adminOrganizationId: "VATES-B60645900"
+      adminOrganizationId: "VATES-A15456585"
       sysTenant: "DOME"
       mail:
         host: smtp.ionos.de
@@ -153,7 +153,7 @@ dome-issuer:
       showWalletUrlTest: "false"
       knowledgeBaseUrl: "https://knowledgebase.dome-marketplace.eu"
       defaultLang: "en"
-      adminOrganizationId: "VATES-B60645900"
+      adminOrganizationId: "VATES-A15456585"
       sysTenant: "DOME"
 
   dome-issuer-keycloak:
