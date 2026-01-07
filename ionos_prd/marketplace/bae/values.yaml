@@ -128,7 +128,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: "10.6.2"
+        tag: "11.0.0"
         pullPolicy: Always
     
     plugins:
@@ -144,7 +144,7 @@ business-api-ecosystem:
     loglevel: debug
 
     payment:
-      method: None
+      method: dpas
 
     existingSecret: bae-secret
     db:
@@ -168,8 +168,10 @@ business-api-ecosystem:
         value: "https://dpas.egroup.hu/api/payment-start"
       - name: BAE_CB_PARTY
         value: "http://tm-forum-api-party-catalog:8080"
-      - name: BAE_CB_PAYMENT_METHOD
-        value: dpas
+      - name: BAE_CB_OPERATOR_ID
+        value: "did:elsi:VATSB-12345678J"
+      - name: BAE_CB_RELATED_PARTY_SCHEMA_LOCATION
+        value: "https://raw.githubusercontent.com/DOME-Marketplace/tmf-api/refs/heads/main/schemas/EngagedParty/RelatedParty.schema.json"
 
   oauth:
     provider: "vc"
@@ -184,7 +186,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "10.8.1"
+        tag: "11.1.0"
         pullPolicy: Always
 
     ingress:
@@ -261,8 +263,12 @@ business-api-ecosystem:
         value: https://analytics.dome-marketplace-prd.org/
       - name: BAE_LP_THEME
         value: DOME
-      - name: BAE_LP_QUOTE_ENABLED
+      - name: BAE_LP_TENDERING_ENABLED
         value: "false"
+      - name: BAE_LP_OPERATOR_ID
+        value: "did:elsi:VATSB-12345678J"
+      - name: BAE_LP_PARTY_LOCATION
+        value: "https://raw.githubusercontent.com/DOME-Marketplace/tmf-api/refs/heads/main/schemas/EngagedParty/RelatedParty.schema.json"
       - name: BAE_LP_SIOP_PRIVATE_KEY
         valueFrom:
           secretKeyRef:
