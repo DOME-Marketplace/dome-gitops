@@ -23,10 +23,10 @@ spec:
               protocol: TCP
           resources:
             requests:
-              cpu: "500m"
-              memory: "512Mi"      
+              cpu: "200m"
+              memory: "128Mi"      
             limits:
-              memory: 512Mi
+              memory: 256Mi
               cpu: "1"
           env:
             - name: TMF_ENDPOINT
