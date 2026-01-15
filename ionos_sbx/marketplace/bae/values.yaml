@@ -205,7 +205,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "11.3.1"
+        tag: "11.4.0"
         pullPolicy: Always
 
     ingress: 
