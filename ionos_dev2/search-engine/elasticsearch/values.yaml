@@ -27,7 +27,7 @@ elasticsearch:
         storage: "5Gi"
 
   readinessProbe:
-    failureThreshold: 3
+    failureThreshold: 4
     initialDelaySeconds: 60
     periodSeconds: 10
     successThreshold: 3
