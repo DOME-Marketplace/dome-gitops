@@ -24,6 +24,8 @@ spec:
               value: http://tm-forum-api-quote.marketplace.svc.cluster.local:8080/tmf-api
             - name: TMFORUM_PARTY_API_BASE_URL
               value: http://tm-forum-api-party-catalog.marketplace.svc.cluster.local:8080/tmf-api
+            - name: TMFORUM_PRODUCT_CATALOG_API_BASE_URL
+              value: http://tm-forum-api-product-catalog.marketplace.svc.cluster.local:8080/tmf-api
             - name: DID_IDENTIFIER
               value: "did:elsi:VATSB-12345678J"
           ports:
