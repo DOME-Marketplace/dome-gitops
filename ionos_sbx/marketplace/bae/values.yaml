@@ -205,7 +205,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "11.5.1"
+        tag: "11.5.3"
         pullPolicy: Always
 
     ingress: 
@@ -286,6 +286,8 @@ business-api-ecosystem:
         value: "did:elsi:VATSB-12345678J"
       - name: BAE_LP_PARTY_LOCATION
         value: "https://raw.githubusercontent.com/DOME-Marketplace/tmf-api/refs/heads/main/schemas/EngagedParty/RelatedParty.schema.json"
+      - name: BAE_LP_ENDPOINT_SEARCH_HOST
+        value: dome-search-svc.search-engine.svc.cluster.local
       - name: BAE_LP_SIOP_PRIVATE_KEY
         valueFrom:
           secretKeyRef:
