@@ -156,6 +156,10 @@ access-node:
   scorpio:
     # -- should scorpio be enabled
     enabled: true
+    ## configuration of the image to be used
+    image:
+    # -- tag of the image to be used
+      tag: java-6.0.1
     ## configuration of the database to be used by broker
     db:
       # -- host of the db
