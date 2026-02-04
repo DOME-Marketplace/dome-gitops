@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: revenue-engine-container
-          image: production.eng.it:8433/dome/revenue-engine:1.4.0
+          image: production.eng.it:8433/dome/revenue-engine:1.5.0
           ports:
             - containerPort: 8080
               #hostPort: 8580
@@ -50,6 +50,10 @@ spec:
               value: "false"
             - name: DEV_ENABLE_WEB_DASHBOARD
               value: "false"
+            - name: SCHEDULER_ENABLED
+              value: "true"
+            - name: SCHEDULER_CRON
+              value: "0 0 16 * * *"  
           livenessProbe:
             httpGet:
               path: /health
