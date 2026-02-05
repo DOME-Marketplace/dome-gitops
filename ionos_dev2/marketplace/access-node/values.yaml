@@ -209,7 +209,7 @@ access-node:
 
     defaultConfig:
       image:
-        tag: 1.4.1
+        tag: sbx_1.4.7
       additionalEnvVars:
       - name: MAPPING_STRICT_RELATIONSHIPS
         value: "false"
