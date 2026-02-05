@@ -17,17 +17,17 @@ spec:
     spec:
       containers:
         - name: revenue-engine-container
-          image: production.eng.it:8433/dome/revenue-engine:1.5.0
+          image: production.eng.it:8433/dome/revenue-engine:1.5.1
           ports:
             - containerPort: 8080
               #hostPort: 8580
               protocol: TCP
           resources:
             requests:
-              cpu: "200m"
-              memory: "128Mi"  
+              cpu: "500m"
+              memory: "512Mi"      
             limits:
-              memory: 256Mi
+              memory: 512Mi
               cpu: "1"
           env:
             - name: TMF_ENDPOINT
@@ -53,7 +53,7 @@ spec:
             - name: SCHEDULER_ENABLED
               value: "true"
             - name: SCHEDULER_CRON
-              value: "0 0 16 * * *"  
+              value: "0 0 */1 * * *"   
           livenessProbe:
             httpGet:
               path: /health
