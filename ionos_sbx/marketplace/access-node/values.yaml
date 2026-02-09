@@ -158,8 +158,10 @@ access-node:
     enabled: true
     ## configuration of the image to be used
     image:
-    # -- tag of the image to be used
-      tag: java-6.0.1
+      # -- repository to be used - resource friendly all-in-one-runner without kafka
+      repository: scorpiobroker/all-in-one-runner
+      # -- tag of the image to be used 
+      tag: java-4.1.10
     ## configuration of the database to be used by broker
     db:
       # -- host of the db
