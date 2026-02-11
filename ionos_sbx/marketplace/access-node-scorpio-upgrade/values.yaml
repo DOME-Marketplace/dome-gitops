@@ -2,7 +2,7 @@
 access-node:
   desmos:
     # -- should the desmos-blockchain-connector be enabled
-    enabled: true
+    enabled: false
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     fullnameOverride: desmos
     image:
@@ -103,7 +103,7 @@ access-node:
   ## configuration for the alastria dlt-adapter - see https://DOME-Marketplace.github.io/access-node/dlt-adapter for configuration documentation
   dlt-adapter-alastria:
     # -- should the dlt-adapter be enabled
-    enabled: true
+    enabled: false
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     fullnameOverride: dlt-adapter-alastria
 
@@ -119,7 +119,7 @@ access-node:
    ## dlt adapter hashnet
   dlt-adapter-hashnet:
     # -- should the dlt-adapter be enabled
-    enabled: true
+    enabled: false
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     fullnameOverride: dlt-adapter-hashnet
 
@@ -135,7 +135,7 @@ access-node:
     ## dlt adapter hashnet
   dome-ied:
     # -- should the dlt-adapter be enabled
-    enabled: true
+    enabled: false
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     fullnameOverride: dome-ied
 
@@ -161,13 +161,13 @@ access-node:
       # -- repository to be used - resource friendly all-in-one-runner without kafka
       repository: scorpiobroker/all-in-one-runner
       # -- tag of the image to be used 
-      tag: java-4.1.10
+      tag: java-5.0.3
     ## configuration of the database to be used by broker
     db:
       # -- host of the db
-      dbhost: pg-75qkrjg6i4d7tlg2.postgresql.de-txl.ionos.com
+      dbhost: scorpio-migration-db
       # -- username to be used
-      user: scorpiouser
+      user: postgres
       # -- existing secret to retrieve the db password
       existingSecret:
         # -- should an existing secret be used
@@ -175,7 +175,7 @@ access-node:
         # -- name of the secret
         name: access-node-secret
         # -- key to retrieve the password from
-        key: scorpio-db-ionos-password
+        key: scorpio-db-password
     ## configuration of the readiness probe
     readinessProbe:
       # -- path to be used for the readiness probe, older versions used /actuator/health
@@ -185,17 +185,11 @@ access-node:
       # -- path to be used for the readiness probe, older versions used /actuator/health
       path: /q/health
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-    fullnameOverride: scorpio
+    fullnameOverride: scorpio-migration
     ## configuration to be used for the service offered by scorpio
     service:
       # -- ClusterIP is the recommended type for most clusters
       type: ClusterIP
-    ## additional environment variables for scorpio
-    additionalEnvVars:
-      - name: QUARKUS_DATASOURCE_DB_KIND
-        value: postgresql
-      - name: QUARKUS_DATASOURCE_REACTIVE_URL
-        value: "postgresql://pg-75qkrjg6i4d7tlg2.postgresql.de-txl.ionos.com:5432/ngb?sslmode=require"
 
   ## configuration for kafka in case its used by scorpio - see https://github.com/bitnami/charts/tree/main/bitnami/kafka
   kafka:
@@ -205,11 +199,11 @@ access-node:
   ## configuration of postgis to be used for scorpio - see https://github.com/bitnami/charts/tree/main/bitnami/postgresql for details
   postgis:
     # -- should postgis be enabled
-    enabled: false
+    enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-    fullnameOverride: scorpio-postgis
+    fullnameOverride: scorpio-migration-db
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-    nameOverride: scorpio-postgis
+    nameOverride: scorpio-migration-db
     ## auth configuration for the database
     auth:
       # -- username to be used
@@ -237,7 +231,7 @@ access-node:
     fullnameOverride: tm-forum-api
     nameOverride: tm-forum-api
     # -- should tm-forum-api be enabled
-    enabled: true
+    enabled: false
 
     defaultConfig:
       image:
