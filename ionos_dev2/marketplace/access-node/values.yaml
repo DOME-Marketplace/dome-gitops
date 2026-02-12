@@ -101,7 +101,7 @@ access-node:
         key: desmos-db-password
 
   ## configuration for the dlt-adapter - see https://DOME-Marketplace.github.io/access-node/dlt-adapter for configuration documentation
-  dlt-adapter:
+  dlt-adapter-alastria:
     # -- should the dlt-adapter be enabled
     enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
