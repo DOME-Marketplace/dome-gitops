@@ -218,7 +218,7 @@ access-node:
       # -- ngsi-ld broker connection information
       ngsiLd:
         # -- address of the broker
-        url: http://scorpio:9090
+        url: http://scorpio-migration:9090
       # -- default context to be used when contacting the context broker
       contextUrl: https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld
       # -- host that the tm-forum api can be reached at, when the proxy is enabled it should be set to that address. If not, set the host for each api individually
