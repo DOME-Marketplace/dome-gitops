@@ -1,0 +1,18 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: %NAMESPACE%
+  name: %NAMESPACE%-admin-role-%ENV%
+rules:
+- apiGroups: [""]
+  resources: ["*"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "list", "create", "update", "delete", "watch", "patch"]
+- apiGroups: [ "" ]
+  resources: [ "pods/portforward" ]
+  verbs: [ "get", "list", "create" ]
+- apiGroups: ["bitnami.com"]
+  resources: ["sealedsecrets"]
+  verbs: ["get", "list", "create", "update", "delete", "watch", "patch"]
