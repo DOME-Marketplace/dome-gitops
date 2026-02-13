@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: %NAMESPACE%-admin-binding-%ENV%
+  namespace: %NAMESPACE%
+subjects:
+- kind: ServiceAccount
+  name: %NAMESPACE%-sa-%ENV%
+  namespace: %NAMESPACE%
+roleRef:
+  kind: Role
+  name: %NAMESPACE%-admin-role-%ENV%
+  apiGroup: rbac.authorization.k8s.io
