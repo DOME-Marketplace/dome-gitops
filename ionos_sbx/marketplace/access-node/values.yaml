@@ -248,6 +248,10 @@ access-node:
       - name: API_EXTENSION_ENABLED
         value: "true"
 
+      ngsiLd:
+        # -- address of the broker
+        url: http://scorpio-migration:9090
+
     ingress:
       enabled: true
       className: nginx
