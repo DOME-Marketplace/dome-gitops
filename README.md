@@ -1,8 +1,9 @@
 # DOME-Marketplace GitOps
 
-This repository contains the deployments and descriptions for the DOME-Marketplace. The development instance of the DOME-Marketplace runs on a managed kuberentes, provided by [Ionos](https://dcd.ionos.com).
+## Scope of the document
+This repository contains the deployments and descriptions for the DOME-Marketplace. The development instance of the DOME-Marketplace runs on a managed kubernetes, provided by [Ionos](https://dcd.ionos.com).
 
-A description of the deployed architecture and a description of the main flows inside the system can be found [here](./doc/ARCHITECTURE.md). The demo-scenario, show-casing some of the current features can be found under [demo](./doc/DEMO.md)
+A description of the deployed architecture and a description of the main flows inside the system can be found [here](./doc/ARCHITECTURE.md).
 
 ## Setup
 
@@ -14,7 +15,7 @@ For more information about GitOps, see:
 
 ### Preparation
 
-> :warning: All documentation and tooling uses Linux and is only tested there(more specifically Ubuntu). If another system is used, please find proper replacements that fit your needs.
+> :warning: All documentation and tools use Linux and are tested exclusively on that platform (specifically Ubuntu). If you are using a different system, please ensure you find suitable replacements that meet your requirements.
 
 In order to setup the DOME-Marketplace, its recommended to install the following tools before starting
 
@@ -23,67 +24,132 @@ In order to setup the DOME-Marketplace, its recommended to install the following
 - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl) for debugging and inspecting the resources in the cluster
 - [kubeseal](https://github.com/bitnami-labs/sealed-secrets#kubeseal) for sealing secrets using asymmetric cryptography
 
-### Cluster creation
-
-> :warning: The cluster is created on the Ionos-Cloud, therefor you should have your account data available.
-
-1. In order to create the cluster, login to Ionos:
-```shell
-    ionosctl login 
-```
-
-2. A Datacenter as the logical bracket around the nodes in your cluster has to be created:
-```shell
-    export DOME_DATACENTER_ID=$(ionosctl datacenter create --name DOME-Marketplace -o json | jq -r '.items[0].id')
-    # wait for the datacenter to be "AVAILABLE"
-    watch ionosctl datacenter get -i $DOME_DATACENTER_ID
-```
-
-3. Create the Kubernetes Cluster and wait for it to be "ACTIVE":
-```shell
-    export DOME_K8S_CLUSTER_ID=$(ionosctl k8s cluster create --name DOME-Marketplace-K8S -o json | jq -r '.items[0].id')
-    watch ionosctl k8s cluster get -i $DOME_K8S_CLUSTER_ID
-```
-
-4. Create the initial nodepool inside your cluster and datacenter:
-```shell
-    export DOME_K8S_DEFAULT_NODEPOOL_ID=$(ionosctl k8s nodepool create --cluster-id $DOME_K8S_CLUSTER_ID --name default-pool --node-count 2 --ram 8192 --storage-size 10 --datacenter-id $DOME_DATACENTER_ID --cpu-family "INTEL_SKYLAKE"  -o json | jq -r '.items[0].id')
-    # wait for the pool to be available
-    watch ionosctl k8s nodepool get --nodepool-id $DOME_K8S_DEFAULT_NODEPOOL_ID --cluster-id $DOME_K8S_CLUSTER_ID
-```
-
-5. Following the recommendations from the [Ionos-FAQ](https://docs.ionos.com/cloud/managed-services/managed-kubernetes/ingress-preserve-source-ip), we also dedicate a specific nodepool for the ingress-controller
-
-```shell 
-    export DOME_K8S_INGRESS_NODEPOOL_ID=$(ionosctl k8s nodepool create --cluster-id $DOME_K8S_CLUSTER_ID --name default-pool --node-count 1 --datacenter-id $DOME_DATACENTER_ID --cpu-family "INTEL_SKYLAKE" --labels nodepool=ingress -o json | jq -r '.items[0].id')
-    # wait for the pool to be available
-    watch ionosctl k8s nodepool get --nodepool-id $DOME_K8S_INGRESS_NODEPOOL_ID --cluster-id $DOME_K8S_CLUSTER_ID
-```
-
-6. Retrieve the kubeconfig to access the cluster:
-```shell
-    ionosctl k8s kubeconfig get --cluster-id $DOME_K8S_CLUSTER_ID > dome-k8s-config.json
-    # Exporting the file path to $KUBECONFIG will make it the default config for kubectl. 
-    # If you work with multiple clusters, either extend your existing config or use the file inline with the --kubeconfig flag.
-    export KUBECONFIG=$(pwd)/dome-k8s-config.json
-```
-
 
 ### Gitops Setup
 
-> :bulb: Even thought the [cluster creation](#cluster-creation) was done on Ionos, the following steps apply to all [Kubernetes](https://kubernetes.io/) installations(tested version is 1.26.7). Its not required to use Ionos for that.
+> :bulb: Even thought the [cluster creation](#cluster-creation) was done on Ionos, the following steps apply to all [Kubernetes](https://kubernetes.io/) installations (tested version is 1.26.7). Its not required to use Ionos for that.
 
+In order to provide GitOps capabilities, we use [ArgoCD](https://argo-cd.readthedocs.io/en/stable/). To setup the tool, we use ArgoCD helm [chart](https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd).
 
-In order to provide GitOps capabilities, we use [ArgoCD](https://argo-cd.readthedocs.io/en/stable/). To setup the tool, we use helm argocd [chart](https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd).
-> :warning: The following steps expect kubectl to be already connected to the cluster, as described in [cluster-creationg step 6](#cluster-creation)  
-
-1. Deploy argocd for sbx environment:
-```shell
-    # Extract the argocd helm chart <versiom> from applications_sbx/infrastructure/argocd.yaml
-    helm upgrade -i --namespace argocd --create-namespace --values ionos_sbx/argocd/values.yaml --version <version> argocd argo/argo-cd
+### Configuration of `kubectl` to access the remote cluster
+Before starting the integration process, the team has to configure **kubectl** in order to access the remote cluster locally following the steps described below.
+1. **Request** the cluster administrator to create a service account, providing the name of your organization and the namespace within which your application will be deployed. You will be provided with a configuration file to access the cluster;
+2. **modify** the **KUBECONFIG** environment variable by adding the path to the configuration file;
+3. **verify** that the new context has been added by executing the following command
+```bash
+	kubectl config get-contexts
+```
+4. switch the context by executing the following command:
+```
+kubectl config use-context <name of the context>
 ```
 
-From now on, every deployment should be managed by ArgoCD through [Applications](https://argo-cd.readthedocs.io/en/stable/core_concepts/).
+After these steps, the team is able to run `kubectl` commands on the remote cluster.
+The team must ensure that the username of the new context is **unique** across all contexts. If the username is already in use, the developer must update it in the configuration file.
+The associated service account operates with limited permissions, allowing view access to all namespace resources but write access exclusively to secrets.  
+
+### Repository structure
+Team members begin by forking the main GitOps repository and creating a new branch for their specific integration work. This facilitates isolated development and changes.
+
+The GitOps repository has the following structure:
+```
+.github/
+   └── CODEOWNERS
+   └── workflows/
+applications_sbx/
+   └── app_1/
+	   └── app_1.yaml
+   └── app_2/
+		└── app_2.yaml
+   . . .
+applications_dev/
+   └── app_1/
+	   └── app_1.yaml
+   └── app_2/
+		└── app_2.yaml
+   . . .
+applications_dev2/
+   └── app_1/
+	   └── app_1.yaml
+   └── app_2/
+		└── app_2.yaml
+   . . .
+applications_prd/
+   └── app_1/
+	   └── app_1.yaml
+   └── app_2/
+		└── app_2.yaml
+   . . .
+doc/
+   └── application_owners/
+   └── devops/
+   └── external-dns-ionos-webhook/
+   └── img/   
+   └── ARCHITECTURE.md 
+   . . .
+ionos_sbx/
+   └── app_1/
+         └── Chart.yaml
+         └── values.yaml
+         . . .
+ionos_dev/
+   └── app_1/
+         └── Chart.yaml
+         └── values.yaml
+         . . .
+ionos_dev2/
+   └── app_1/
+         └── Chart.yaml
+         └── values.yaml
+         . . .
+ionos_prd/
+   └── app_1/
+         └── Chart.yaml
+         └── values.yaml
+```
+
+For each environment, two main directories are defined:
+- `applications_<env>`: it will host the environment-specific ArgoCD applications;
+- `ionos_<env>`: it will host application's manifest files;
+
+### DevOps Methodologies
+
+This section explains the application owners how to deploy an application into the DOME repository.
+The development workflow relies on two distinct but integrated enviroments: the version control system on **GitHub** for code management and the **ticketing platform** for task tracking.
+Although the ticketing system operates _outside_ the direct scope of the automated DevOps pipeline, it plays a critical role in **monitoring development activities**. Therefore, developers **are required to** adhere to a dual-step process: opening a tracking ticket to define the scope of work, followed by the creation of a Pull Request on GitHub. This practice ensures that all modifications are properly cataloged and auditable.
+The operations every application owner **must** follow are described below.
+
+1. **Ownership & Traceability through the CODEOWNERS file**
+To ensure clear accountability from the start, make sure that your GitHub username is added to the `CODEOWNERS` file, linked [here](https://github.com/DOME-Marketplace/dome-gitops/blob/main/.github/CODEOWNERS).
+
+2. **Integration Pipeline**
+The team intending to integrate its component on DOME needs to adhere to a structured set of steps, which vary depending on wheter it is an initial release or a subsequent update.
+
+If the application if being deployed **for the first time**, the steps are:
+1. **fork** the repository and **create** a new branch;
+2. **add** component manifest file;
+3. **add** ArgoCD application;
+4. **create** a Pull Request and a related ticket on the ticketing system.
+
+If the application **has alreeady been deployed**, the steps are:
+1. **fork** the repository and **create** a new branch;
+2. **update** component manifest file;
+3. **create** a Pull Request and a related ticket on the ticketing system
+
+Further informations about the deploy procedure are explained in the INTEGRATION file, linked [here](https://github.com/DOME-Marketplace/dome-gitops/blob/main/doc/application_owners/INTEGRATION.md).
+
+3. **Create a ticket on the Ticketing System**
+In order to approve and merge your PR you have to create a new ticket on the **DOME Ticketing System**, which can be found [here](https://ticketing-int.dome-marketplace.eu/).
+
+The steps to create a new ticket related to your PR are the followings.
+1. The category "13 – DevOps Deployment" must be selected;
+2. It is mandatory to classify the request using the specific "Problem Typology" corresponding to the affected environment:
+	**01 – PR SBX:** This code refers to issues occurring in the Prototyping environment;
+	**02 – PR DEV:** This code refers to issues occurring in the Pre-Production environment;
+	**03 – PR PROD:** This code refers to issues occurring in the Production environment;
+	**04 – New deployment environment request:** This category is used to request the setup of a new environment.
+3. Insert the name of both the environment and the component you are requesting the update;
+4. Put the link of your PR on the ticket.
 
 ### Namespaces
 
@@ -123,7 +189,7 @@ Once its deployed, secrets can be "sealed" via:
 
 In order to access applications inside the cluster, an [Ingress-Controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) is required. We use the [NGINX-Ingress-Controller](https://github.com/kubernetes/ingress-nginx) here. 
 
-> The configuration expects a nodepool labeld with ```ingress``` in order to safe IP addresses. If you followed [cluster-creation](#cluster-creation) such pool already exists. 
+> The configuration expects a nodepool labeld with `ingress` in order to safe IP addresses. If you followed [cluster-creation](#cluster-creation) such pool already exists. 
 
 Apply the application via: 
 ```shell
@@ -132,11 +198,11 @@ Apply the application via:
     watch kubectl get applications -n argocd
 ```
 
-### External-DNS
+## External-DNS
 
 In order to automatically create DNS entries for [Ingress-Resources](https://kubernetes.io/docs/concepts/services-networking/ingress/), [External-DNS](https://github.com/kubernetes-sigs/external-dns) is used.
 
-> :bulb: The ```dome-marketplace.org|io|eu|com``` domains are currently using nameservers provided by AWS Route53. If you manage the domains somewhere else, follow the recommendations in the [External-DNS documentation](https://github.com/kubernetes-sigs/external-dns/tree/master/docs/tutorials).
+> :bulb: The `dome-marketplace.org|io|eu|com` domains are currently using nameservers provided by AWS Route53. If you manage the domains somewhere else, follow the recommendations in the [External-DNS documentation](https://github.com/kubernetes-sigs/external-dns/tree/master/docs/tutorials).
 
 1. External-DNS watches the ingress objects and creates A-Records for them. To do so, it needs the ability to access the AWS APIs. 
     1. Create the IAM Policy accoring to the [documentation](https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/aws.md#iam-policy)
@@ -227,48 +293,3 @@ To seamlessly use ArgoCD, we use [Githubs Oauth](https://docs.github.com/en/apps
 ```
 
 Login to our [ArgoCD](https://argocd.dome-marketplace.org).
-
-## Deploy a new application
-
-In order to deploy a new application, follow the steps:
-1. Fork the repository and create a new branch.
-2. (OPTIONAL) Add a new namespace to the [namespaces](./ionos/namespaces/)
-3. Add either the helm-chart(see [External-DNS](./ionos/external-dns/) as an example) or the plain manifests(see [ArgoCD](./ionos/argocd/) as an example) to a properly namend folder under [/ionos](/ionos/)
-4. Add your application to the [/applications](./applications/) folder.
-5. Create a PR and wait for it to be merged. The application will be automatically deployed afterwards.
-
-For a detailed guide on how to deploy a new application, you can refer to the [Integration Guide](./doc/INTEGRATION.md)
-
-### [CLUSTER ADMIN] Generate service account for teams
-
-To enable teams wishing to integrate their applications into DOME to create the necessary secrets and monitor application resources, they must be granted access to the cluster. To do this, a service account must be created for each team. The provided service account will have write permissions on secrets and sealed secrets, and read-only access to all other Kubernetes resources, limited to the application namespace. 
-
-To generate the service account and necessary roles, execute the following script:
-
-**Windows PowerShell**
-
-```shell
-.\scripts\GenerateAccount.ps1 -templatePath .\scripts\templates -outputPath .\accounts -namespace <namespace> -server <cluster server url>
-```
-
-**Shell**
-
-```shell
-# chmod +x ./scripts/GenerateAccount.sh
-./scripts/GenerateAccount.sh ./scripts/templates ./accounts <namespace> <server url>
-```
-
-Once executed, the script will create the resources defined in [scripts/templates](./scripts/templates) on the cluster. Additionally, the manifest files of the created resources will be available in the directory ```accounts/<namespace>```. Specifically, the file at ```accounts/<namespace>/config/kube-config.yaml``` will contain the Kubernetes configuration which must be provided to the team to allow them to connect to the cluster.
-
-## Blue-Green Deployments
-
-In order to reduce the resource-usage and the number of deployments to maintain, the cluster supports [Blue-Green Deployments](https://www.redhat.com/en/topics/devops/what-is-blue-green-deployment).
-To integrate seamless with ArgoCD, the extension [Argo Rollouts](https://argo-rollouts.readthedocs.io/en/stable/) is used. The standard ArgoCD installation is extended via the [argo-rollouts.yaml](./ionos/argocd/argo-rollouts.yaml), the [configmap-cmd.yaml](./ionos/argocd/configmap-cmd.yaml) and the [dashboard-extension.yaml](./ionos/argocd/dashboard-extension.yaml)(to integrate with the ArgoCD dashboard). 
-
-Blue-Green Deployments on the cluster will be done through two mechanisms:
-
-- the [rollout-injecting-webhook](https://github.com/wistefan/rollout-injecting-webhook) automatically creates a [Rollout](https://argo-rollouts.readthedocs.io/en/stable/features/specification/) for each deployment in enabled workspaces(currently "marketplace", see [rollout-webhook deployment](./ionos/marketplace/rollout-webhook/)) - read the [doc](https://github.com/wistefan/rollout-injecting-webhook/blob/main/README.md) for more information
-- explicitly creating Rollout-Specs(see the [official documentation](https://argo-rollouts.readthedocs.io/en/stable/features/specification/))
-
-> :warning: Be aware how Blue-Green Rollouts work and there limitations. Since they create a second instance of the application, this is only suitable for stateless-applications(as a Deployment-Resource should be). Stateful-Applications can lead to bad results like deadlocks. If the applications takes care of Datamigrations, configure it to not migrate before Promotion and connect the new revision to another database. To disable the [Rollout-Injection](https://github.com/wistefan/rollout-injecting-webhook), annotate the deployment with ```wistefan/rollout-injecting-webhook: ignore```
-

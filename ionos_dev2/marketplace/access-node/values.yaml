@@ -106,6 +106,8 @@ access-node:
     enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     fullnameOverride: dlt-adapter
+    service:
+      port: 8080
 
     existingSecret:
       enabled: true
