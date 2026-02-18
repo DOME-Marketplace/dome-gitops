@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subscriptions-management-deployment
+  namespace: billing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: subscriptions-management
+      app.kubernetes.io/name: subscriptions-management
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: subscriptions-management
+        app.kubernetes.io/name: subscriptions-management
+    spec:
+      containers:
+        - name: subscriptions-management-container
+          image: production.eng.it:8433/dome/subscriptions-management:1.0.1
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "128Mi"      
+            limits:
+              memory: 256Mi
+              cpu: "1"
+          env:
+            - name: TMF_ENDPOINT
+              value: http://tm-forum-api
+            - name: TMF_ENVOY
+              value: "false"
+            - name: TMF_NAMESPACE
+              value: marketplace
+            - name: TMF_POSTFIX
+              value: svc.cluster.local  
+            - name: TMF_PORT
+              value: "8080" 
+            - name: BAE_ENDPOINT
+              value: https://dome-marketplace-dev.org
+            - name: TOOL_OPERATOR_IDM_ID
+              value: "VATBE-0123456749"
+            - name: DOME_CLIENT_ID
+              value: "subscription-manager"       
+            - name: DOME_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: subscriptions-secret   
+                  key: DOME_CLIENT_SECRET  
+            - name: REDIRECT_URI
+              value: https://manage.dome-marketplace-dev.org/subscriptions/login/oauth2/code/dome
+            - name: DOME_ISSUER_URI
+              value: https://cs-identity.dome-marketplace-dev.org/realms/dome
+            - name: KEYCLOAK_JWKS_URI
+              value: https://cs-identity.dome-marketplace-dev.org/realms/dome/protocol/openid-connect/certs
+            - name: REDIRECT_LOGOUT_URI
+              value: https://manage.dome-marketplace-dev.org/subscriptions/login.html
+            - name: KEYCLOAK_CLIENT_RESOURCE
+              value: subscription-manager       
+            - name: LOG_LEVEL
+              value: DEBUG
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 9000
+            initialDelaySeconds: 30
+            failureThreshold: 5
+            periodSeconds: 10
+            timeoutSeconds: 10
