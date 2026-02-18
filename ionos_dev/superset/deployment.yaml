@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: superset-all-in-one
+  namespace: analytics
+  labels:
+    app.kubernetes.io/name: superset-analytics
+    app.kubernetes.io/instance: superset
+    app.kubernetes.io/component: web
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate  # Important for SQLite to avoid concurrent access
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: superset-analytics
+      app.kubernetes.io/instance: superset
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: superset-analytics
+        app.kubernetes.io/instance: superset
+        app.kubernetes.io/component: web
+      annotations:
+        # This annotation tells Velero to use Restic to back up these volumes
+        backup.velero.io/backup-volumes: "superset-data,superset-config"
+        # Pre-backup hook to ensure SQLite database consistency
+        pre.hook.backup.velero.io/container: superset
+        pre.hook.backup.velero.io/command: '["/bin/sh", "-c", "sqlite3 /app/data/superset.db \".backup /app/data/backup/superset-backup.db\""]'
+        pre.hook.backup.velero.io/timeout: 5m
+    spec:
+      containers:
+      - name: superset
+        image: apache/superset:4.0.2
+        command: ["/bin/bash", "/startup.sh"]
+        ports:
+        - containerPort: 8088
+          name: web
+        env:
+        - name: SUPERSET_CONFIG_PATH
+          value: "/app/pythonpath/superset_config.py"
+        - name: PYTHONPATH
+          value: "/app/pythonpath"
+        volumeMounts:
+        - name: startup-script
+          mountPath: /startup.sh
+          subPath: startup.sh
+        - name: superset-data
+          mountPath: /app/data
+        - name: superset-config
+          mountPath: /app/config
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1.5Gi
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+        livenessProbe:
+          httpGet:
+            path: /login/
+            port: 8088
+          initialDelaySeconds: 300
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /login/
+            port: 8088
+          initialDelaySeconds: 240
+          periodSeconds: 15
+          timeoutSeconds: 10
+          failureThreshold: 5
+      volumes:
+      - name: startup-script
+        configMap:
+          name: superset-startup
+          defaultMode: 0755
+      - name: superset-data
+        persistentVolumeClaim:
+          claimName: superset-data-pvc
+      - name: superset-config
+        persistentVolumeClaim:
+          claimName: superset-config-pvc
+      restartPolicy: Always
