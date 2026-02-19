@@ -1,0 +1,170 @@
+dome-issuer:
+
+  global:
+    domain: "issuer.dome-marketplace-dev.org"
+    ingress:
+      enabled: true
+      className: "nginx"
+      labels: { }
+      annotations:
+        nginx.ingress.kubernetes.io/ssl-redirect: "false"
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+      enableTLS: true
+      clusterIssuer: "letsencrypt-dev-issuer"
+
+  dome-issuer-backend:
+    fullNameOverride: "dome-issuer-backend"
+    image:
+      repository: in2workspace/eudistack-issuer-api
+      # Overrides the image tag whose default is the chart appVersion.
+      tag: v2.2.6
+      pullPolicy: Always
+    ingressIssuerApi:
+      enabled: true
+      className: nginx
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-dev-issuer
+        nginx.ingress.kubernetes.io/rewrite-target: /vci/v1/issuances
+      hosts:
+        - host: issuer.dome-marketplace-dev.org
+          paths:
+            - path: /issuer-api/vci/v1/issuances
+              pathType: ImplementationSpecific
+      tls:
+        - hosts:
+            - issuer.dome-marketplace-dev.org
+          secretName: issuer-tls-secret
+    app:
+      logLevel:
+        app: DEBUG
+        security: INFO
+      url: https://issuer.dome-marketplace-dev.org
+      issuerFrontendUrl: https://issuer.dome-marketplace-dev.org
+      knowledgeBase:
+        walletGuideUrl: "https://knowledgebase.dome-marketplace-dev.org/books/dome-digital-wallet-user-guide"
+        uploadCertificationGuideUrl: "https://knowledgebase.dome-marketplace-dev.org"
+      trustFrameworkUrl: "http://trusted-issuers-list.marketplace.svc.cluster.local:8080"
+      verifierUrl: "https://verifier.dome-marketplace-dev.org"
+      walletUrl: "https://wallet.dome-marketplace-dev.org"
+      defaultLang: "en"
+      adminOrganizationId: "VATES-A15456585"
+      sysTenant: "DOME"
+      mail:
+        host: smtp.ionos.de
+        port: 587
+        existingSecret:
+          enabled: true
+          name: issuer-secret
+          userKey: username
+          passwordKey: password
+        properties:
+          mail:
+            smtp:
+              auth: true
+              starttls:
+                enable: true
+              ssl:
+                trust: smtp.ionos.de
+      remoteSignature:
+        existingSecret:
+          enabled: true
+          name: issuer-secret
+          clientId: client-id
+          clientSecret: client-secret
+          credentialId: credential-id
+          credentialPassword: credential-password
+        # types allowed: server, cloud
+        type: cloud
+        url: https://dts-component-rdss-csc.ace-api.digitelts.com
+      authServer:
+        provider: keycloak
+        externalUrl: https://keycloak.dome-marketplace-dev.org
+        internalUrl: http://keycloak:80
+        realm: dome-issuer
+        client:
+          clientId: issuer-api-client
+          username: issuer-api-user
+          existingSecret:
+            enabled: true
+            name: issuer-secret
+            clientSecretKey: authServerClientSecret
+            clientPasswordKey: issuer-api-user-password
+      defaultSigner:
+        existingSecret:
+          enabled: true
+          name: issuer-secret
+          commonName: common-name
+          country: country
+          email: email
+          organizationIdentifier: organization-identifier
+          organization: organization
+          serialNumber: serial-number
+      issuerIdentity:
+        existingSecret:
+          enabled: true
+          name: issuer-secret
+          vc: vc
+          privateKey: private-key
+          credentialDidKey: did-key
+      cors:
+        default:
+          allowedOrigins: "https://issuer.dome-marketplace-dev.org"
+        external:
+          allowedOrigins: "https://issuer.dome-marketplace-dev.org, https://dome-certification.dome-marketplace-dev.org"
+      vault:
+        url: http://wallet-vault-server:8200
+        secretsMount: kv
+        existingSecret:
+          enabled: true
+          name: wallet-vault-unseal-secret
+          key: root
+      db:
+        host: pg-mlg52jm9egadod1s.postgresql.de-txl.ionos.com
+        port: 5432
+        externalService: true
+        name: identity
+        schema: issu  er
+        username: identity_issuer
+        ssl:
+          enabled: true
+          mode: require
+        existingSecret:
+          enabled: true
+          name: issuer-secret
+          key: ionos-db-password
+
+  dome-issuer-frontend:
+    fullNameOverride: "dome-issuer-frontend"
+    image:
+      repository: in2workspace/eudistack-issuer-ui
+      # Overrides the image tag whose default is the chart appVersion.
+      tag: v2.1.8
+      pullPolicy: Always
+    app:
+      colors:
+        primary: "#2d58a7"
+        primaryContrast: "#ffffff"
+        secondary: "#2cb6b2"
+        secondaryContrast: "#dde6f6"
+      logoSrc: "dome-issuer-logo.png"
+      faviconSrc: "dome-favicon.png"
+      keycloakUrl: "https://keycloak.dome-marketplace-dev.org/realms/dome-issuer"
+      backendUrl: "https://issuer.dome-marketplace-dev.org"
+      walletUrl: "https://wallet.dome-marketplace.eu"
+      walletUrlTest: "https://wallet.dome-marketplace-dev.org"
+      showWalletUrlTest: "true"
+      knowledgeBaseUrl: "https://knowledgebase.dome-marketplace-dev.org"
+      defaultLang: "en"
+      adminOrganizationId: "VATES-A15456585"
+      sysTenant: "DOME"
+
+  dome-issuer-keycloak:
+    enabled: false
+
+  dome-issuer-postgresql:
+    # -- should the postgresql deployment be enabled
+    enabled: false
+
+  dome-issuer-keycloak-postgresql:
+    # -- should the postgresql deployment be enabled
+    enabled: false
