@@ -65,70 +65,75 @@ tm-forum-api:
   apis:
     - name: party-catalog
       image: tmforum-party-catalog
-      basePath: /
+      basePath: /tmf-api/party/v4
       specUrl: https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/TMF632_Party/4.0.0/swagger/TMF632_Party_Management_API_v4.0.0_swagger.json
 
     - name: customer-bill-management
       image: tmforum-customer-bill-management
-      basePath: /
+      basePath: /tmf-api/customerBillManagement/v4
       specUrl: https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/TMF678_Customer_Bill/4.0.0/swagger/TMF678_Customer_Bill_Management_API_v4.0.0_swagger.json
 
     - name: customer-management
       image: tmforum-customer-management
-      basePath: /
+      basePath: /tmf-api/customerManagement/v4
       specUrl: https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/TMF629_Customer/4.0.0/swagger/TMF629_Customer_Management_API_v4.0.0_swagger.json
 
     - name: product-catalog
       image: tmforum-product-catalog
-      basePath: /
+      basePath: /tmf-api/productCatalogManagement/v4
       specUrl: https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/TMF620_Product_Catalog/4.1.0/swagger/TMF620_Product_Catalog_Management_API_v4.1.0_swagger.json
 
     - name: product-inventory
       image: tmforum-product-inventory
-      basePath: /
+      basePath: /tmf-api/productInventory/v4
       specUrl: https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/TMF637_Product_Inventory/4.0.0/swagger/TMF637_Product_Inventory_Management_API_v4.0.0_swagger.json
 
     - name: product-ordering-management
       image: tmforum-product-ordering-management
-      basePath: /
+      basePath: /tmf-api/productOrderingManagement/v4
       specUrl: https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/TMF622_Product_Ordering/4.0.0/swagger/TMF622_Product_Ordering_Management_API_v4.0.0_swagger.json
 
     - name: resource-catalog
       image: tmforum-resource-catalog
-      basePath: /
+      basePath: /tmf-api/resourceCatalog/v4
       specUrl: https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/TMF634_Resource_Catalog/4.1.0/swagger/TMF634_Resource_Catalog_Management_API_v4.1.0_swagger.json
 
     - name: resource-function-activation
       image: tmforum-resource-function-activation
-      basePath: /
+      basePath: /tmf-api/resourceFunctionActivation/v4
       specUrl: https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/TMF664_Resource_Function_Activation/4.0.0/swagger/TMF664_Resource_Function_Activation_Management_API_v4.0.0_swagger.json
 
     - name: resource-inventory
       image: tmforum-resource-inventory
-      basePath: /
+      basePath: /tmf-api/resourceInventoryManagement/v4
       specUrl: https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/TMF639_Resource_Inventory/4.0.0/swagger/TMF639_Resource_Inventory_Management_API_v4.0.0_swagger.json
 
     - name: service-catalog
       image: tmforum-service-catalog
-      basePath: /
+      basePath: /tmf-api/serviceCatalogManagement/v4
       specUrl: https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/TMF633_Service_Catalog/4.0.0/swagger/TMF633_Service_Catalog_Management_API_v4.0.0_swagger.json
 
     - name: service-inventory
       image: tmforum-service-inventory
-      basePath: /
+      basePath: /tmf-api/serviceInventory/v4
       specUrl: https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/TMF638_Service_Inventory/4.0.0/swagger/TMF638_Service_Inventory_Management_API_v4.0.0_swagger.json
 
     - name: account
       image: tmforum-account
-      basePath: /
+      basePath: /tmf-api/accountManagement/v4
       specUrl: https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/TMF666_Account/4.0.0/swagger/TMF666_Account_Management_API_v4.0.0_swagger.json
 
     - name: agreement
       image: tmforum-agreement
-      basePath: /
+      basePath: /tmf-api/agreementManagement/v4
       specUrl: https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/TMF651_Agreement/4.0.0/swagger/TMF651_Agreement_Management_API_v4.0.0_swagger.json
 
     - name: usage-management
       image: tmforum-usage-management
-      basePath: /
+      basePath: /tmf-api/usageManagement/v4
       specUrl: https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/TMF635_Usage/4.0.0/swagger/TMF635_Usage_Management_API_v4.0.0_swagger.json
+
+    - name: quote
+      image: tmforum-quote
+      basePath: /tmf-api/quoteManagement/v4
+      specUrl: https://tmf-open-api-table-documents.s3.eu-west-1.amazonaws.com/OpenApiTable/TMF648_Quote/4.0.0/swagger/TMF648_Quote_Management_API_v4.0.0_swagger.json
