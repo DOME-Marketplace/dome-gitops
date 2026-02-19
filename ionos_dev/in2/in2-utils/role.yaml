@@ -1,0 +1,17 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: in2
+  name: vault-check-role
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    resourceNames: ["wallet-vault-server-0"]
+    verbs: ["get", "list"]
+  - apiGroups: [""]
+    resources: ["pods/exec"]
+    resourceNames: ["wallet-vault-server-0"]
+    verbs: ["create"]
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["create", "get", "list"]

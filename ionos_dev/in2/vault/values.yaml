@@ -1,0 +1,24 @@
+vaultPodName: wallet-vault-server-0
+namespace: in2
+unsealSecretName: wallet-vault-unseal-secret
+vault:
+  fullnameOverride: wallet-vault
+  injector:
+    enabled: false
+  server:
+    podAnnotations:
+      backup.velero.io/backup-volumes: data
+    persistence:
+      enabled: true
+      persistentVolumeClaimRetentionPolicy:
+        enabled: true
+        whenDeleted: Retain
+        whenScaled: Retain
+    image:
+      registry: docker.io
+      repository: bitnamilegacy/vault
+      tag: 1.16.3-debian-12-r1
+      pullPolicy: IfNotPresent
+  global:
+    security:
+      allowInsecureImages: true
