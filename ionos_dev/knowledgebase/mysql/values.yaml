@@ -1,0 +1,24 @@
+mysql:
+  fullnameOverride: mysql-knowledgebase
+  image:
+    registry: docker.io
+    repository: bitnamilegacy/mysql
+    tag: 8.0.31-debian-11-r10
+  auth:
+    existingSecret: mysql-secret
+  initdbScripts:
+    create.sql: |
+      CREATE DATABASE bookstack;
+
+  #annotations for Velero backup
+  primary:
+    podAnnotations:
+      backup.velero.io/backup-volumes: "data"
+
+    resources:
+      requests:
+        memory: "512Mi"
+        cpu: "100m"
+      limits:
+        memory: "1Gi"
+        cpu: "500m"
