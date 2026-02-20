@@ -17,7 +17,7 @@ dome-wallet:
     image:
       repository: in2workspace/eudistack-wallet-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.0.1
+      tag: v2.0.7
       pullPolicy: Always
     ## deployment specific configuration
     app:
@@ -81,7 +81,7 @@ dome-wallet:
       pullPolicy: Always
       repository: in2workspace/eudistack-wallet-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.0.7
+      tag: v2.0.14
     ## deployment specific configuration
     app:
       logsEnabled: true
@@ -90,8 +90,10 @@ dome-wallet:
         primaryContrast: "#ffffff"
         secondary: "#50c8ff"
         secondaryContrast: "#000000"
-      logoSrc: "assets/logos/dome-logo.png"
-      faviconSrc: "assets/icons/dome-favicon.png"
+      assets:
+        baseUrl: "https://cdn.jsdelivr.net/gh/in2workspace/eudistack-assets@main/DOME"
+        logoPath: "dome-logo.png"
+        faviconPath: "dome-favicon.png"
       defaultLang: "en"
       walletApi:
         externalUrl: https://wallet.dome-marketplace-sbx.org
