@@ -1,7 +1,7 @@
 dome-verifier:
   image:
     repository: in2workspace/eudistack-verifier-api
-    tag: v2.0.6
+    tag: v2.0.12
     pullPolicy: Always
 
   ingress:
@@ -36,12 +36,10 @@ dome-verifier:
         secondary: "#14274A"
         # Defines contrasting text color for secondary color (OPTIONAL with default value)
         secondaryContrast: "#00ADD3"
-      # Placeholder for logo source path (REQUIRED)
-      # This routes must point to internal folder: src/main/resources/static/img/<file_name.png>
-      logoSrc: "dome_logo_white.svg"
-      # Placeholder for favicon source path (OPTIONAL)
-      # This routes must point to internal folder: src/main/resources/static/img/<file_name.png>
-      faviconSrc: "dome_favicon.png"
+      assets:
+        baseUrl: "https://cdn.jsdelivr.net/gh/in2workspace/eudistack-assets@main/DOME"
+        logoPath: "dome-logo.png"
+        faviconPath: "dome-favicon.png"
       defaultLang: "en"
     backend:
       logging:
