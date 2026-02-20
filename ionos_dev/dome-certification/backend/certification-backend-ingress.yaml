@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dome-certification-backend-ingress
+  namespace: dome-certification
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: dome-certification-api.dome-marketplace.eu
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: certification-backend-svc
+                port:
+                  number: 8080
+  tls:
+    - hosts:
+        - dome-certification-api.dome-marketplace.eu
+      secretName: dome-certification-api-tls-secret
