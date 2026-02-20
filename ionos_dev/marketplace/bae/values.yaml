@@ -188,7 +188,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "11.3.1"
+        tag: "11.6.0"
         pullPolicy: Always
 
     ingress: 
@@ -237,10 +237,10 @@ business-api-ecosystem:
         value: "3"
       - name: BAE_LP_MATOMO_URL
         value: https://dome-webstats.eurodyn.com/
-      - name: BAE_LP_PURCHASE_ENABLED
-        value: "true"
       - name: BAE_LP_DOME_TRUST
         value: https://dome-certification.dome-marketplace-dev2.org
+      - name: BAE_LP_PURCHASE_ENABLED
+        value: "true"
       - name: BAE_LP_DOME_ABOUT
         value: https://dome-project.eu/about/
       - name: BAE_LP_DOME_REGISTRATION_FORM
