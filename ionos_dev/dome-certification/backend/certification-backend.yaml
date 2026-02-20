@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: certification-backend
+  labels:
+    app: certification-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: certification-backend
+  template:
+    metadata:
+      labels:
+        app: certification-backend
+    spec:
+      containers:
+        - name: certification-backend
+          image: noeliaguedek/dome-compliance-backend:prd-1.1.8
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dekra-postgres-secret
+                  key: postgres-password
+            - name: SPRING_MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: certification-backend-secret
+                  key: spring-mail-password
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: certification-backend-secret
+                  key: jwt-secret-key
+            - name: JWT_PRIVATE_KEY_D
+              valueFrom:
+                secretKeyRef:
+                  name: certification-backend-secret
+                  key: jwt-private-key-d
+            - name: JWT_LEAR_CREDENTIAL
+              valueFrom:
+                secretKeyRef:
+                  name: certification-backend-secret
+                  key: jwt-lear-credential
+          envFrom:
+            - configMapRef:
+                name: certification-backend-config
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - name: uploads
+              mountPath: /dome-upload
+      volumes:
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: dome-certification-upload-pvc
