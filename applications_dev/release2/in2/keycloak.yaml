@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
-    path: ionos_dev2/in2/keycloak
+    path: ionos_dev/in2/keycloak
   destination:
     server: https://kubernetes.default.svc
     namespace: in2
