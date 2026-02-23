@@ -156,7 +156,7 @@ business-api-ecosystem:
       enabled: false
 
     initContainers: false
-    propagateToken: true
+    propagateToken: "True"
     basePath: /opt/business-ecosystem-charging-backend
     token: 
       enabled: false
