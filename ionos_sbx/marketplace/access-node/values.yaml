@@ -148,13 +148,14 @@ access-node:
         tag: "latest"
         pullPolicy: Always
 
-    existingSecret:
-      enabled: false
-      name: access-node-secret
-      key: dlt-private-key
-    env:
-      DEBUG: "*"
-      RPC_ADDRESS: ""
+    # DLT Adapter URLs (external, already deployed in this namespace)
+    adapters:
+      hashnet:
+        url: "http://dlt-adapter-hashnet:8080"
+        chainId: "1"
+      alastria:
+        url: "http://dlt-adapter:8080"
+        chainId: "2"
 
   ## configuration of postgres to be used for the blockchain-connector - see https://github.com/bitnami/charts/tree/main/bitnami/postgresql for details
   postgresql:
