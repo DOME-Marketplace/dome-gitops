@@ -137,10 +137,16 @@ access-node:
 
     ## dlt adapter hashnet
   dome-ied:
-    # -- should the dlt-adapter be enabled
+    # -- should the dome-ied be enabled
     enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     fullnameOverride: dome-ied
+
+    ied:
+      image:
+        repository: ghcr.io/mrslapar/dome-ied
+        tag: "latest"
+        pullPolicy: Always
 
     existingSecret:
       enabled: false
