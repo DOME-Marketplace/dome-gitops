@@ -74,8 +74,52 @@ data:
         'DASHBOARD_RBAC': True,
     }
     
+    # =========================================================
+    # CSP - Allow Google Fonts
+    # =========================================================
+    TALISMAN_ENABLED = True
+    TALISMAN_CONFIG = {
+        "content_security_policy": {
+            "font-src": ["'self'", "https://fonts.googleapis.com", "https://fonts.gstatic.com"],
+            "style-src": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+        }
+    }
+
+    # =========================================================
+    # Theme - Load Blinker font via fontUrls
+    # =========================================================
+    THEME_DEFAULT = {
+        "token": {
+            "fontUrls": [
+                "https://fonts.googleapis.com/css2?family=Blinker:wght@300;400;600;700&display=swap",
+            ],
+            "fontFamily": "'Blinker', system-ui, sans-serif",
+        }
+    }
+
+    # =========================================================
+    # Custom CSS - DOME branding variables and font override
+    # =========================================================
+    CUSTOM_CSS = """
+    :root {
+        --dome-primary: #3F83F8;
+        --dome-primary-dark: #1C64F2;
+        --dome-secondary: #0C1C38;
+        --dome-bg-light: #F9FAFB;
+        --dome-bg-white: #FFFFFF;
+        --dome-text-dark: #111827;
+        --dome-text-gray: #6B7280;
+        --dome-border: #E5E7EB;
+        --dome-hover: #F3F4F6;
+    }
+
+    body, html, * {
+        font-family: 'Blinker', system-ui, sans-serif !important;
+    }
+    """
+
     # Load examples
-    SUPERSET_LOAD_EXAMPLES = True
+    SUPERSET_LOAD_EXAMPLES = False
     
     # Webserver config
     SUPERSET_WEBSERVER_PORT = 8088
