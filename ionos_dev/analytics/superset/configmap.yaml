@@ -33,7 +33,270 @@ data:
     # Create config directory
     mkdir -p /app/pythonpath
     
-    # Create superset config
+    # =========================================================
+    # DOME Custom CSS - Global stylesheet
+    # =========================================================
+    echo "Creating DOME custom CSS..."
+    mkdir -p /app/superset/static/assets/css
+    cat > /app/superset/static/assets/css/dome-custom.css << 'CSSEOF'
+    @import url('https://fonts.googleapis.com/css2?family=Blinker:wght@300;400;600;700&display=swap');
+
+    :root {
+        --dome-primary: #3F83F8;
+        --dome-primary-dark: #1C64F2;
+        --dome-secondary: #0C1C38;
+        --dome-bg-light: #F9FAFB;
+        --dome-bg-white: #FFFFFF;
+        --dome-text-dark: #111827;
+        --dome-text-gray: #6B7280;
+        --dome-border: #E5E7EB;
+        --dome-hover: #F3F4F6;
+    }
+
+    /* Global font change */
+    body, html, * {
+        font-family: 'Blinker', system-ui, sans-serif !important;
+    }
+
+    body {
+        background-color: var(--dome-bg-light) !important;
+    }
+
+    /* Header styling */
+    header.top {
+        background-color: var(--dome-bg-white) !important;
+        border-bottom: 1px solid var(--dome-border) !important;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
+    }
+
+    /* Navigation menu items */
+    .ant-menu-horizontal {
+        background-color: transparent !important;
+        border-bottom: none !important;
+    }
+
+    .ant-menu-item,
+    .ant-menu-submenu {
+        color: var(--dome-text-dark) !important;
+        font-weight: 400 !important;
+    }
+
+    .ant-menu-item:hover,
+    .ant-menu-submenu:hover {
+        color: var(--dome-primary) !important;
+        background-color: var(--dome-hover) !important;
+    }
+
+    .ant-menu-item a,
+    .ant-menu-submenu a {
+        color: var(--dome-text-dark) !important;
+    }
+
+    .ant-menu-item a:hover,
+    .ant-menu-submenu a:hover {
+        color: var(--dome-primary) !important;
+    }
+
+    /* Active menu items */
+    .ant-menu-item-selected,
+    .ant-menu-item-active {
+        color: var(--dome-primary) !important;
+        border-bottom-color: var(--dome-primary) !important;
+    }
+
+    /* Buttons - DOME style */
+    button.ant-btn,
+    .superset-button {
+        font-family: 'Blinker', sans-serif !important;
+        font-weight: 600 !important;
+        border-radius: 0.5rem !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .superset-button-tertiary {
+        background-color: var(--dome-primary) !important;
+        color: white !important;
+        border: none !important;
+    }
+
+    .superset-button-tertiary:hover {
+        background-color: var(--dome-primary-dark) !important;
+    }
+
+    .superset-button-link {
+        color: var(--dome-primary) !important;
+    }
+
+    .superset-button-link:hover {
+        color: var(--dome-primary-dark) !important;
+        text-decoration: underline !important;
+    }
+
+    /* Cards - DOME style */
+    .ant-card {
+        background-color: var(--dome-bg-white) !important;
+        border: 1px solid var(--dome-border) !important;
+        border-radius: 0.75rem !important;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .ant-card:hover {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+        transform: translateY(-2px) !important;
+    }
+
+    /* Card titles */
+    .ant-card-meta-title {
+        color: var(--dome-text-dark) !important;
+        font-weight: 600 !important;
+    }
+
+    .ant-card-meta-description {
+        color: var(--dome-text-gray) !important;
+    }
+
+    /* Tags - DOME style */
+    .ant-tag {
+        background-color: #DBEAFE !important;
+        color: var(--dome-primary) !important;
+        border: 1px solid #BFDBFE !important;
+        border-radius: 0.375rem !important;
+        font-weight: 500 !important;
+    }
+
+    /* Collapse sections */
+    .ant-collapse {
+        background-color: transparent !important;
+        border: none !important;
+    }
+
+    .ant-collapse-header {
+        color: var(--dome-text-dark) !important;
+        font-weight: 600 !important;
+        font-size: 1.125rem !important;
+    }
+
+    /* Content areas */
+    .css-nfjnv9,
+    .css-vhf0sc {
+        background-color: var(--dome-bg-light) !important;
+    }
+
+    /* Icons - adjust colors */
+    .anticon svg {
+        color: var(--dome-text-gray) !important;
+    }
+
+    .anticon:hover svg {
+        color: var(--dome-primary) !important;
+    }
+
+    /* Links */
+    a {
+        color: var(--dome-primary) !important;
+        text-decoration: none !important;
+    }
+
+    a:hover {
+        color: var(--dome-primary-dark) !important;
+        text-decoration: underline !important;
+    }
+
+    /* Tab navigation */
+    .no-router {
+        color: var(--dome-text-gray) !important;
+        font-weight: 500 !important;
+    }
+
+    .no-router.active {
+        color: var(--dome-primary) !important;
+        border-bottom: 2px solid var(--dome-primary) !important;
+    }
+
+    /* Favorite icons */
+    .fave-unfave-icon svg path {
+        fill: var(--dome-text-gray) !important;
+    }
+
+    .fave-unfave-icon:hover svg path {
+        fill: #FCD34D !important;
+    }
+
+    /* Dropdown menus */
+    .ant-dropdown-trigger:hover {
+        color: var(--dome-primary) !important;
+    }
+
+    /* Main content wrapper */
+    #app {
+        background-color: var(--dome-bg-light) !important;
+    }
+
+    /* Navbar brand/logo area */
+    .navbar-brand {
+        padding: 0.5rem 1rem !important;
+    }
+
+    /* Menu header */
+    .menu .header {
+        color: var(--dome-text-dark) !important;
+        font-weight: 700 !important;
+        font-size: 1.25rem !important;
+    }
+
+    /* Card grid layout */
+    .css-10rqylw {
+        gap: 1.5rem !important;
+    }
+
+    /* Smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Focus states for accessibility */
+    *:focus {
+        outline: 2px solid var(--dome-primary) !important;
+        outline-offset: 2px !important;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: var(--dome-bg-light);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--dome-text-gray);
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--dome-primary);
+    }
+    CSSEOF
+
+    # =========================================================
+    # Override spa.html to inject DOME CSS globally
+    # =========================================================
+    echo "Injecting DOME CSS into Superset template..."
+    mkdir -p /app/superset/templates/superset
+    cat > /app/superset/templates/superset/spa.html << 'HTMLEOF'
+    {% extends "superset/spa_base.html" %}
+    {% block head_extra %}
+    {{ super() }}
+    <link rel="stylesheet" href="/static/assets/css/dome-custom.css">
+    {% endblock %}
+    HTMLEOF
+
+    # =========================================================
+    # Superset config
+    # =========================================================
     cat > /app/pythonpath/superset_config.py << 'EOF'
     import os
     
@@ -73,10 +336,8 @@ data:
         'ALERT_REPORTS': True,
         'DASHBOARD_RBAC': True,
     }
-    
-    # =========================================================
+
     # CSP - Allow Google Fonts
-    # =========================================================
     TALISMAN_ENABLED = True
     TALISMAN_CONFIG = {
         "force_https": False,
@@ -86,9 +347,7 @@ data:
         }
     }
 
-    # =========================================================
-    # Theme - Load Blinker font via fontUrls
-    # =========================================================
+    # Theme - Blinker font via design tokens
     THEME_DEFAULT = {
         "token": {
             "fontUrls": [
@@ -97,250 +356,7 @@ data:
             "fontFamily": "'Blinker', system-ui, sans-serif",
         }
     }
-
-    # =========================================================
-    # Custom CSS - DOME branding variables and font override
-    # =========================================================
-    CUSTOM_CSS = """
-    :root {
-        --dome-primary: #3F83F8;
-        --dome-primary-dark: #1C64F2;
-        --dome-secondary: #0C1C38;
-        --dome-bg-light: #F9FAFB;
-        --dome-bg-white: #FFFFFF;
-        --dome-text-dark: #111827;
-        --dome-text-gray: #6B7280;
-        --dome-border: #E5E7EB;
-        --dome-hover: #F3F4F6;
-    }
-
-    body, html, * {
-        font-family: 'Blinker', system-ui, sans-serif !important;
-    }
-
-    body {
-      background-color: var(--dome-bg-light) !important;
-    }
-
-    /* Header styling - make it look like DOME */
-    header.top {
-      background-color: var(--dome-bg-white) !important;
-      border-bottom: 1px solid var(--dome-border) !important;
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
-    }
-
-    /* Navigation menu items */
-    .ant-menu-horizontal {
-      background-color: transparent !important;
-      border-bottom: none !important;
-    }
-
-    .ant-menu-item,
-    .ant-menu-submenu {
-      color: var(--dome-text-dark) !important;
-      font-weight: 400 !important;
-    }
-
-    .ant-menu-item:hover,
-    .ant-menu-submenu:hover {
-      color: var(--dome-primary) !important;
-      background-color: var(--dome-hover) !important;
-    }
-
-    .ant-menu-item a,
-    .ant-menu-submenu a {
-      color: var(--dome-text-dark) !important;
-    }
-
-    .ant-menu-item a:hover,
-    .ant-menu-submenu a:hover {
-      color: var(--dome-primary) !important;
-    }
-
-    /* Active menu items */
-    .ant-menu-item-selected,
-    .ant-menu-item-active {
-      color: var(--dome-primary) !important;
-      border-bottom-color: var(--dome-primary) !important;
-    }
-
-    /* Buttons - DOME style */
-    button.ant-btn,
-    .superset-button {
-      font-family: 'Blinker', sans-serif !important;
-      font-weight: 600 !important;
-      border-radius: 0.5rem !important;
-      transition: all 0.2s ease !important;
-    }
-
-    .superset-button-tertiary {
-      background-color: var(--dome-primary) !important;
-      color: white !important;
-      border: none !important;
-    }
-
-    .superset-button-tertiary:hover {
-      background-color: var(--dome-primary-dark) !important;
-    }
-
-    .superset-button-link {
-      color: var(--dome-primary) !important;
-    }
-
-    .superset-button-link:hover {
-      color: var(--dome-primary-dark) !important;
-      text-decoration: underline !important;
-    }
-
-    /* Cards - DOME style */
-    .ant-card {
-      background-color: var(--dome-bg-white) !important;
-      border: 1px solid var(--dome-border) !important;
-      border-radius: 0.75rem !important;
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
-      transition: all 0.3s ease !important;
-    }
-
-    .ant-card:hover {
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
-      transform: translateY(-2px) !important;
-    }
-
-    /* Card titles */
-    .ant-card-meta-title {
-      color: var(--dome-text-dark) !important;
-      font-weight: 600 !important;
-    }
-
-    .ant-card-meta-description {
-      color: var(--dome-text-gray) !important;
-    }
-
-    /* Tags - DOME style */
-    .ant-tag {
-      background-color: #DBEAFE !important;
-      color: var(--dome-primary) !important;
-      border: 1px solid #BFDBFE !important;
-      border-radius: 0.375rem !important;
-      font-weight: 500 !important;
-    }
-
-    /* Collapse sections */
-    .ant-collapse {
-      background-color: transparent !important;
-      border: none !important;
-    }
-
-    .ant-collapse-header {
-      color: var(--dome-text-dark) !important;
-      font-weight: 600 !important;
-      font-size: 1.125rem !important;
-    }
-
-    /* Content areas */
-    .css-nfjnv9,
-    .css-vhf0sc {
-      background-color: var(--dome-bg-light) !important;
-    }
-
-    /* Icons - adjust colors */
-    .anticon svg {
-      color: var(--dome-text-gray) !important;
-    }
-
-    .anticon:hover svg {
-      color: var(--dome-primary) !important;
-    }
-
-    /* Links */
-    a {
-      color: var(--dome-primary) !important;
-      text-decoration: none !important;
-    }
-
-    a:hover {
-      color: var(--dome-primary-dark) !important;
-      text-decoration: underline !important;
-    }
-
-    /* Tab navigation */
-    .no-router {
-      color: var(--dome-text-gray) !important;
-      font-weight: 500 !important;
-    }
-
-    .no-router.active {
-      color: var(--dome-primary) !important;
-      border-bottom: 2px solid var(--dome-primary) !important;
-    }
-
-    /* Favorite icons */
-    .fave-unfave-icon svg path {
-      fill: var(--dome-text-gray) !important;
-    }
-
-    .fave-unfave-icon:hover svg path {
-      fill: #FCD34D !important;
-    }
-
-    /* Dropdown menus */
-    .ant-dropdown-trigger:hover {
-      color: var(--dome-primary) !important;
-    }
-
-    /* Main content wrapper */
-    #app {
-      background-color: var(--dome-bg-light) !important;
-    }
-
-    /* Navbar brand/logo area */
-    .navbar-brand {
-      padding: 0.5rem 1rem !important;
-    }
-
-    /* Menu header */
-    .menu .header {
-      color: var(--dome-text-dark) !important;
-      font-weight: 700 !important;
-      font-size: 1.25rem !important;
-    }
-
-    /* Card grid layout */
-    .css-10rqylw {
-      gap: 1.5rem !important;
-    }
-
-    /* Smooth scrolling */
-    html {
-      scroll-behavior: smooth;
-    }
-
-    /* Focus states for accessibility */
-    *:focus {
-      outline: 2px solid var(--dome-primary) !important;
-      outline-offset: 2px !important;
-    }
-
-    /* Custom scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: var(--dome-bg-light);
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: var(--dome-text-gray);
-      border-radius: 4px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--dome-primary);
-    }
-    """
-
+    
     # Load examples
     SUPERSET_LOAD_EXAMPLES = False
     
