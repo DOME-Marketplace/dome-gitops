@@ -39,10 +39,10 @@ spec:
               value: svc.cluster.local  
             - name: TMF_PORT
               value: "8080" 
-            - name: BAE_ENDPOINT
-              value: https://dome-marketplace-dev.org
             - name: TOOL_OPERATOR_IDM_ID
               value: "VATBE-0123456749"
+            - name: BAE_ENDPOINT
+              value: https://dome-marketplace-dev.org
             - name: DOME_CLIENT_ID
               value: "subscription-manager"       
             - name: DOME_CLIENT_SECRET
