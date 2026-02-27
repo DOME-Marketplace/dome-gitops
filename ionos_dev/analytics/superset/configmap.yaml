@@ -79,6 +79,7 @@ data:
     # =========================================================
     TALISMAN_ENABLED = True
     TALISMAN_CONFIG = {
+        "force_https": False,
         "content_security_policy": {
             "font-src": ["'self'", "https://fonts.googleapis.com", "https://fonts.gstatic.com"],
             "style-src": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
