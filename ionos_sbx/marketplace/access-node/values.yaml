@@ -134,8 +134,12 @@ access-node:
       DEBUG: "*"
       RPC_ADDRESS: "https://jsongw.stagenet.tolar.io/jsonrpc"
       ISS: "0x43b27fef24cfe8a0b797ed8a36de2884f9963c0c2a0da640e3ec7ad6cd0c493d"
+      DOME_EVENTS_CONTRACT_ADDRESS: "0x54b1a2a1c6b02e4f46abae61ee0ac7751a176338e11f14dca3"
+      DOME_EVENTS_CONTRACT_ABI: '[{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"index","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"},{"indexed":true,"internalType":"bytes32","name":"origin","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"entityIDHash","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"previousEntityHash","type":"bytes32"},{"indexed":false,"internalType":"string","name":"eventType","type":"string"},{"indexed":false,"internalType":"string","name":"dataLocation","type":"string"},{"indexed":false,"internalType":"string[]","name":"metadata","type":"string[]"}],"name":"EventDOMEv1","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"inputs":[{"internalType":"bytes32","name":"_origin","type":"bytes32"},{"internalType":"bytes32","name":"_entityIDHash","type":"bytes32"},{"internalType":"bytes32","name":"_previousEntityHash","type":"bytes32"},{"internalType":"string","name":"_eventType","type":"string"},{"internalType":"string","name":"_dataLocation","type":"string"},{"internalType":"string[]","name":"_metadata","type":"string[]"}],"name":"emitNewEvent","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"index","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"}]'
+      DOME_PRODUCTION_BLOCK_NUMBER: "118733266"
+      HASHNET_NETWORK_ID: "3"
 
-    ## dlt adapter hashnet
+  ## dome-ied (Interchain Event Distributor)
   dome-ied:
     # -- should the dome-ied be enabled
     enabled: true
