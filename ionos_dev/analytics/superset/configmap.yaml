@@ -285,14 +285,7 @@ data:
     # Override spa.html to inject DOME CSS globally
     # =========================================================
     echo "Injecting DOME CSS into Superset template..."
-    mkdir -p /app/superset/templates/superset
-    cat > /app/superset/templates/superset/spa.html << 'HTMLEOF'
-    {% extends "superset/spa_base.html" %}
-    {% block head_extra %}
-    {{ super() }}
-    <link rel="stylesheet" href="/static/assets/css/dome-custom.css">
-    {% endblock %}
-    HTMLEOF
+    sed -i 's|</head>|<link rel="stylesheet" href="/static/assets/css/dome-custom.css">\n</head>|' /app/superset/templates/superset/spa.html
 
     # =========================================================
     # Superset config
