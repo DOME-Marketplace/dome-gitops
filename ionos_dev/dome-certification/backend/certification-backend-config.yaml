@@ -32,4 +32,4 @@ data:
   JWT_OAUTH_CLIENT_ID: did:key:zDnaet3QSWSvr6mqtitJaVd1g5Jzkz72CJidY8nKtEn2V8GqP
   JWT_OAUTH_REDIRECT_URI: https://dome-certification.dome-marketplace-dev.org/auth/login
   JWT_OAUTH_AUD: https://verifier.dome-marketplace-dev.org
-  JWT_ISSUER_URL: https://issuer.dome-marketplace-dev.org
+  JWT_ISSUER_URL: https://issuer.dome-marketplace-dev2.org
