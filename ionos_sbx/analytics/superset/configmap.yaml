@@ -37,13 +37,13 @@ data:
     cat > /app/pythonpath/client_secret.json << 'EOF'
     {
         "web": {
-            "issuer": "https://cs-identity.dome-marketplace-sbx.org/realms/dome",
-            "auth_uri": "https://cs-identity.dome-marketplace-sbx.org/realms/dome/protocol/openid-connect/auth",
-            "client_id": "analytics-platform",
-            "client_secret": "ci8q7ZczfuWjshBKv8ybRC3ADn9a6FUX",
-            "userinfo_uri": "https://cs-identity.dome-marketplace-sbx.org/realms/dome/protocol/openid-connect/userinfo",
-            "token_uri": "https://cs-identity.dome-marketplace-sbx.org/realms/dome/protocol/openid-connect/token",
-            "token_introspection_uri": "https://cs-identity.dome-marketplace-sbx.org/realms/dome/protocol/openid-connect/token/introspect"
+            "issuer": "https://verifier.dome-marketplace-sbx.org",
+            "auth_uri": "https://verifier.dome-marketplace-sbx.org/oidc/authorize",
+            "token_uri": "https://verifier.dome-marketplace-sbx.org/oidc/token",
+            "userinfo_uri": "https://verifier.dome-marketplace-sbx.org/oidc/userinfo",
+            "token_introspection_uri": "https://verifier.dome-marketplace-sbx.org/oidc/introspect",
+            "jwks_uri": "https://verifier.dome-marketplace-sbx.org/oidc/jwks",
+            "well_known": "https://verifier.dome-marketplace-sbx.org/.well-known/openid-configuration"
         }
     }
     EOF
