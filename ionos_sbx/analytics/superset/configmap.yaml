@@ -46,23 +46,28 @@ data:
         def oauth_user_info(self, provider, response=None):
             """
             Extract user info from the DOME verifier OIDC token/userinfo.
-            Adjust field mappings based on what the verifier actually returns.
             """
             if provider == 'dome':
-                me = self.appbuilder.sm.oauth_remotes[provider].get('oidc/userinfo')
-                if me and me.ok:
-                    data = me.json()
-                    logger.info("DOME userinfo response: %s", data)
-                    return {
-                        'username': data.get('preferred_username', data.get('sub', '')),
-                        'first_name': data.get('given_name', data.get('name', 'DOME')),
-                        'last_name': data.get('family_name', 'User'),
-                        'email': data.get('email', data.get('sub', '') + '@dome.eu'),
-                        'role_keys': data.get('roles', []),
-                    }
-                else:
-                    logger.warning("Failed to get userinfo from DOME verifier")
-                    # Fallback: extract from the token itself
+                logger.info("Fetching userinfo from DOME verifier...")
+                try:
+                    me = self.appbuilder.sm.oauth_remotes[provider].get('oidc/userinfo')
+                    if me and me.ok:
+                        data = me.json()
+                        logger.info("DOME userinfo response: %s", data)
+                        return {
+                            'username': data.get('preferred_username', data.get('sub', '')),
+                            'first_name': data.get('given_name', data.get('name', 'DOME')),
+                            'last_name': data.get('family_name', 'User'),
+                            'email': data.get('email', data.get('sub', '') + '@dome.eu'),
+                            'role_keys': data.get('roles', []),
+                        }
+                    else:
+                        logger.warning("Userinfo request failed, status: %s", me.status_code if me else 'None')
+                except Exception as e:
+                    logger.error("Error fetching userinfo: %s", str(e))
+
+                # Fallback: extract from the token itself
+                try:
                     token = response or {}
                     id_token = token.get('userinfo', token.get('id_token_claims', {}))
                     logger.info("DOME token fallback data: %s", id_token)
@@ -73,10 +78,13 @@ data:
                         'email': id_token.get('email', id_token.get('sub', 'user') + '@dome.eu'),
                         'role_keys': id_token.get('roles', []),
                     }
+                except Exception as e:
+                    logger.error("Error extracting token claims: %s", str(e))
+
             return {}
     EOF
     
-    # Create superset config with DOME OAuth integration
+    # Create superset config with DOME OAuth integration (public client + PKCE)
     cat > /app/pythonpath/superset_config.py << 'EOF'
     import os
     from dome_security_manager import DomeSecurityManager
@@ -118,7 +126,8 @@ data:
     # Authentication type - OAuth (uses Authlib)
     AUTH_TYPE = AUTH_OAUTH
 
-    # DOME Verifier OAuth configuration (public client, no client_secret)
+    # DOME Verifier OAuth configuration
+    # Public client (no secret) with PKCE (S256) for secure token exchange
     OAUTH_PROVIDERS = [
         {
             'name': 'dome',
@@ -126,10 +135,11 @@ data:
             'token_key': 'access_token',
             'remote_app': {
                 'client_id': 'did:key:zDnaer6wstrAhZxM5ej7fvQbnf9aP3RdojhXEao431SMrN3Lb',
+                'token_endpoint_auth_method': 'none',
+                'code_challenge_method': 'S256',
                 'server_metadata_url': 'https://verifier.dome-marketplace-sbx.org/.well-known/openid-configuration',
                 'client_kwargs': {
                     'scope': 'openid_learcredential',
-                    'token_endpoint_auth_method': 'none',
                 },
                 'api_base_url': 'https://verifier.dome-marketplace-sbx.org/',
             },
@@ -171,7 +181,6 @@ data:
     mkdir -p /app/data
     
     echo "Installing required packages..."
-    # Install packages - Authlib instead of flask-oidc
     pip install --no-cache-dir \
         'crate[sqlalchemy]==0.26.0' \
         Authlib==1.2.1 \
