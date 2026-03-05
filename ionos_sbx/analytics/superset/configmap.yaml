@@ -33,83 +33,54 @@ data:
     # Create config directory
     mkdir -p /app/pythonpath
     
-    # Create client_secret.json for OIDC
-    cat > /app/pythonpath/client_secret.json << 'EOF'
-    {
-        "web": {
-            "issuer": "https://verifier.dome-marketplace-sbx.org",
-            "auth_uri": "https://verifier.dome-marketplace-sbx.org/oidc/authorize",
-            "token_uri": "https://verifier.dome-marketplace-sbx.org/oidc/token",
-            "userinfo_uri": "https://verifier.dome-marketplace-sbx.org/oidc/userinfo",
-            "token_introspection_uri": "https://verifier.dome-marketplace-sbx.org/oidc/introspect",
-            "jwks_uri": "https://verifier.dome-marketplace-sbx.org/oidc/jwks",
-            "well_known": "https://verifier.dome-marketplace-sbx.org/.well-known/openid-configuration"
-        }
-    }
-    EOF
-    
-    # Create OIDC security manager
-    cat > /app/pythonpath/oidc_security_manager.py << 'EOF'
+    # Create custom security manager for DOME VC claims mapping
+    cat > /app/pythonpath/dome_security_manager.py << 'EOF'
     import logging
-    from flask_appbuilder.views import ModelView, SimpleFormView, expose
-    from flask import redirect, request
-    from urllib.parse import quote
-    from flask_login import login_user
-    from flask_appbuilder.security.views import AuthOIDView
-    from flask_oidc import OpenIDConnect
     from superset.security import SupersetSecurityManager
-    from flask_appbuilder.security.manager import AUTH_OID
+
+    logger = logging.getLogger(__name__)
 
 
-    class OIDCSecurityManager(SupersetSecurityManager):
+    class DomeSecurityManager(SupersetSecurityManager):
 
-        def __init__(self, appbuilder):
-            super(OIDCSecurityManager, self).__init__(appbuilder)
-            if self.auth_type == AUTH_OID:
-                self.oid = OpenIDConnect(self.appbuilder.get_app)
-            self.authoidview = AuthOIDCView
-
-
-    class AuthOIDCView(AuthOIDView):
-
-        @expose('/login/', methods=['GET', 'POST'])
-        def login(self, flag=True):
-            sm = self.appbuilder.sm
-            oidc = sm.oid
-
-            @self.appbuilder.sm.oid.require_login
-            def handle_login():
-                user = sm.auth_user_oid(oidc.user_getfield('email'))
-                if user is None:
-                    if sm.find_role('example_viewer') is None:
-                        sm.add_role('example_viewer')
-                    info = oidc.user_getinfo(
-                        ['preferred_username', 'given_name', 'family_name', 'email'])
-                    user = sm.add_user(info.get('preferred_username'), info.get(
-                        'given_name'), info.get('family_name'), info.get('email'), [sm.find_role('Gamma'),sm.find_role('example_viewer')])
-                login_user(user, remember=True, force=True)
-                return redirect(self.appbuilder.get_url_for_index)
-
-            return handle_login()
-
-        @expose('/logout/', methods=['GET', 'POST'])
-        def logout(self):
-            oidc = self.appbuilder.sm.oid
-
-            oidc.logout()
-            super(AuthOIDCView, self).logout()
-            redirect_url = request.url_root.strip(
-                '/') + self.appbuilder.get_url_for_login
-
-            return redirect(
-                oidc.client_secrets.get('issuer') + '/protocol/openid-connect/logout?redirect_uri=' + quote(redirect_url))
+        def oauth_user_info(self, provider, response=None):
+            """
+            Extract user info from the DOME verifier OIDC token/userinfo.
+            Adjust field mappings based on what the verifier actually returns.
+            """
+            if provider == 'dome':
+                me = self.appbuilder.sm.oauth_remotes[provider].get('oidc/userinfo')
+                if me and me.ok:
+                    data = me.json()
+                    logger.info("DOME userinfo response: %s", data)
+                    return {
+                        'username': data.get('preferred_username', data.get('sub', '')),
+                        'first_name': data.get('given_name', data.get('name', 'DOME')),
+                        'last_name': data.get('family_name', 'User'),
+                        'email': data.get('email', data.get('sub', '') + '@dome.eu'),
+                        'role_keys': data.get('roles', []),
+                    }
+                else:
+                    logger.warning("Failed to get userinfo from DOME verifier")
+                    # Fallback: extract from the token itself
+                    token = response or {}
+                    id_token = token.get('userinfo', token.get('id_token_claims', {}))
+                    logger.info("DOME token fallback data: %s", id_token)
+                    return {
+                        'username': id_token.get('preferred_username', id_token.get('sub', 'dome_user')),
+                        'first_name': id_token.get('given_name', id_token.get('name', 'DOME')),
+                        'last_name': id_token.get('family_name', 'User'),
+                        'email': id_token.get('email', id_token.get('sub', 'user') + '@dome.eu'),
+                        'role_keys': id_token.get('roles', []),
+                    }
+            return {}
     EOF
     
-    # Create superset config with OIDC integration
+    # Create superset config with DOME OAuth integration
     cat > /app/pythonpath/superset_config.py << 'EOF'
     import os
-    from oidc_security_manager import OIDCSecurityManager
-    from flask_appbuilder.security.manager import AUTH_OID
+    from dome_security_manager import DomeSecurityManager
+    from flask_appbuilder.security.manager import AUTH_OAUTH
     
     # Database - using SQLite with persistent storage
     SQLALCHEMY_DATABASE_URI = 'sqlite:////app/data/superset.db'
@@ -136,7 +107,7 @@ data:
         'CACHE_DEFAULT_TIMEOUT': 300,
     }
     
-    # Security - Keycloak/OIDC Configuration
+    # Security
     SECRET_KEY = 'ci8q7ZczfuWjshBKv8ybRC3ADn9a6FUX'
     WTF_CSRF_ENABLED = False
 
@@ -144,17 +115,28 @@ data:
     ENABLE_PROXY_FIX = True
     PROXY_FIX_CONFIG = {"x_for": 1, "x_proto": 1, "x_host": 1, "x_port": 0, "x_prefix": 1}
 
-    # Authentication type
-    AUTH_TYPE = AUTH_OID
+    # Authentication type - OAuth (uses Authlib)
+    AUTH_TYPE = AUTH_OAUTH
 
-    # OIDC Configuration
-    OIDC_CLIENT_SECRETS = '/app/pythonpath/client_secret.json'
-    OIDC_ID_TOKEN_COOKIE_SECURE = False
-    OIDC_OPENID_REALM = 'dome'
-    OIDC_INTROSPECTION_AUTH_METHOD = 'client_secret_post'
+    # DOME Verifier OAuth configuration (public client, no client_secret)
+    OAUTH_PROVIDERS = [
+        {
+            'name': 'dome',
+            'icon': 'fa-address-card',
+            'token_key': 'access_token',
+            'remote_app': {
+                'client_id': 'did:key:zDnaer6wstrAhZxM5ej7fvQbnf9aP3RdojhXEao431SMrN3Lb',
+                'server_metadata_url': 'https://verifier.dome-marketplace-sbx.org/.well-known/openid-configuration',
+                'client_kwargs': {
+                    'scope': 'openid_learcredential',
+                },
+                'api_base_url': 'https://verifier.dome-marketplace-sbx.org/',
+            },
+        }
+    ]
 
-    # Custom security manager
-    CUSTOM_SECURITY_MANAGER = OIDCSecurityManager
+    # Custom security manager for DOME VC claims
+    CUSTOM_SECURITY_MANAGER = DomeSecurityManager
     
     # User registration settings
     AUTH_USER_REGISTRATION = True
@@ -162,9 +144,6 @@ data:
     
     # Anonymous user role
     AUTH_ROLE_PUBLIC = "Public"
-    
-    # Role assignment logic
-    AUTH_USER_REGISTRATION_ROLE_JMESPATH = "'Testme' && 'Gamma' || 'Gamma'"
     
     # Sync roles at each login
     AUTH_ROLES_SYNC_AT_LOGIN = True
@@ -190,12 +169,11 @@ data:
     # Ensure data directory exists
     mkdir -p /app/data
     
-    echo "Installing required OIDC and database packages..."
-    # Install packages with exact versions from working Docker setup
+    echo "Installing required packages..."
+    # Install packages - Authlib instead of flask-oidc
     pip install --no-cache-dir \
         'crate[sqlalchemy]==0.26.0' \
-        Authlib==0.15.5 \
-        flask-oidc==1.4.0 \
+        Authlib==1.2.1 \
         sqlalchemy_trino==0.4.1 \
         sqlalchemy-drill==1.1.2 \
         mysqlclient==2.1.0 \
