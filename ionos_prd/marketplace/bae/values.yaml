@@ -144,7 +144,7 @@ business-api-ecosystem:
     loglevel: debug
 
     payment:
-      method: None
+      method: dpas
 
     existingSecret: bae-secret
     db:
@@ -168,8 +168,6 @@ business-api-ecosystem:
         value: "https://dpas.egroup.hu/api/payment-start"
       - name: BAE_CB_PARTY
         value: "http://tm-forum-api-party-catalog:8080/tmf-api/party/v4"
-      - name: BAE_CB_PAYMENT_METHOD
-        value: dpas
 
   oauth:
     provider: "vc"
