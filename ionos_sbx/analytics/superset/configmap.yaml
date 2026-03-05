@@ -36,51 +36,115 @@ data:
     # Create custom security manager for DOME VC claims mapping
     cat > /app/pythonpath/dome_security_manager.py << 'EOF'
     import logging
+    import json
+    import base64
     from superset.security import SupersetSecurityManager
 
     logger = logging.getLogger(__name__)
+
+    def decode_jwt_payload(token):
+        """Decode JWT payload without verification (just to read claims)."""
+        try:
+            parts = token.split('.')
+            if len(parts) != 3:
+                return {}
+            padding = 4 - len(parts[1]) % 4
+            payload = parts[1] + '=' * padding
+            decoded = base64.urlsafe_b64decode(payload)
+            return json.loads(decoded)
+        except Exception as e:
+            logger.error("Failed to decode JWT: %s", str(e))
+            return {}
 
 
     class DomeSecurityManager(SupersetSecurityManager):
 
         def oauth_user_info(self, provider, response=None):
-            """
-            Extract user info from the DOME verifier OIDC token/userinfo.
-            """
             if provider == 'dome':
-                logger.info("Fetching userinfo from DOME verifier...")
-                try:
-                    me = self.appbuilder.sm.oauth_remotes[provider].get('oidc/userinfo')
-                    if me and me.ok:
-                        data = me.json()
-                        logger.info("DOME userinfo response: %s", data)
-                        return {
-                            'username': data.get('preferred_username', data.get('sub', '')),
-                            'first_name': data.get('given_name', data.get('name', 'DOME')),
-                            'last_name': data.get('family_name', 'User'),
-                            'email': data.get('email', data.get('sub', '') + '@dome.eu'),
-                            'role_keys': data.get('roles', []),
-                        }
-                    else:
-                        logger.warning("Userinfo request failed, status: %s", me.status_code if me else 'None')
-                except Exception as e:
-                    logger.error("Error fetching userinfo: %s", str(e))
+                logger.info("=== DOME OAuth Debug ===")
+                logger.info("Full token response keys: %s", list(response.keys()) if response else 'None')
 
-                # Fallback: extract from the token itself
-                try:
-                    token = response or {}
-                    id_token = token.get('userinfo', token.get('id_token_claims', {}))
-                    logger.info("DOME token fallback data: %s", id_token)
+                # Decode access_token JWT
+                access_token = response.get('access_token', '')
+                access_claims = {}
+                if access_token:
+                    access_claims = decode_jwt_payload(access_token)
+                    logger.info("Access token claims: %s", access_claims)
+
+                # Decode id_token JWT
+                id_token = response.get('id_token', '')
+                id_claims = {}
+                if id_token:
+                    id_claims = decode_jwt_payload(id_token)
+                    logger.info("ID token claims: %s", id_claims)
+
+                # Check Authlib parsed userinfo
+                userinfo = response.get('userinfo', {})
+                logger.info("Authlib userinfo: %s", userinfo)
+                logger.info("=== End Debug ===")
+
+                # Merge all sources (id_token and access_token may have different claims)
+                all_claims = {}
+                all_claims.update(access_claims)
+                all_claims.update(id_claims)
+                if userinfo:
+                    all_claims.update(userinfo)
+
+                logger.info("Merged claims: %s", all_claims)
+
+                if all_claims:
+                    # DOME VC uses non-standard field names:
+                    #   "user" instead of "preferred_username"
+                    #   "email" is standard
+                    #   "id" is the DID
+                    #   "organizations" contains org info and roles
+                    username = all_claims.get('user',
+                               all_claims.get('preferred_username',
+                               all_claims.get('sub', '')))
+
+                    email = all_claims.get('email', '')
+                    if not email and username:
+                        email = username + '@dome.eu'
+
+                    # Try to split username into first/last name
+                    first_name = all_claims.get('given_name', '')
+                    last_name = all_claims.get('family_name', '')
+                    if not first_name and username and '.' in username:
+                        parts = username.split('.')
+                        first_name = parts[0].capitalize()
+                        last_name = parts[-1].capitalize() if len(parts) > 1 else 'User'
+                    elif not first_name:
+                        first_name = username or 'DOME'
+                        last_name = 'User'
+
+                    # Extract roles from organizations
+                    role_keys = all_claims.get('roles', [])
+                    orgs = all_claims.get('organizations', [])
+                    for org in orgs:
+                        for role in org.get('roles', []):
+                            role_name = role.get('name', role.get('id', ''))
+                            if role_name:
+                                role_keys.append(role_name)
+
+                    logger.info("Mapped user - username: %s, email: %s, "
+                                "first: %s, last: %s, roles: %s",
+                                username, email, first_name, last_name, role_keys)
+
                     return {
-                        'username': id_token.get('preferred_username', id_token.get('sub', 'dome_user')),
-                        'first_name': id_token.get('given_name', id_token.get('name', 'DOME')),
-                        'last_name': id_token.get('family_name', 'User'),
-                        'email': id_token.get('email', id_token.get('sub', 'user') + '@dome.eu'),
-                        'role_keys': id_token.get('roles', []),
+                        'username': username,
+                        'first_name': first_name,
+                        'last_name': last_name,
+                        'email': email,
+                        'role_keys': role_keys,
                     }
-                except Exception as e:
-                    logger.error("Error extracting token claims: %s", str(e))
 
+                logger.warning("No claims found in any token source")
+                return {
+                    'username': 'dome_user',
+                    'first_name': 'DOME',
+                    'last_name': 'User',
+                    'email': 'user@dome.eu',
+                }
             return {}
     EOF
     
