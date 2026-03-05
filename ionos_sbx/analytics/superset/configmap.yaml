@@ -129,6 +129,7 @@ data:
                 'server_metadata_url': 'https://verifier.dome-marketplace-sbx.org/.well-known/openid-configuration',
                 'client_kwargs': {
                     'scope': 'openid_learcredential',
+                    'token_endpoint_auth_method': 'none',
                 },
                 'api_base_url': 'https://verifier.dome-marketplace-sbx.org/',
             },
