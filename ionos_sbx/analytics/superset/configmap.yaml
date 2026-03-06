@@ -199,7 +199,7 @@ data:
     AUTH_ROLE_PUBLIC = "Public"
     
     # Sync roles at each login
-    AUTH_ROLES_SYNC_AT_LOGIN = True
+    AUTH_ROLES_SYNC_AT_LOGIN = False
     
     # Feature flags
     FEATURE_FLAGS = {
@@ -237,10 +237,10 @@ data:
     
     echo "Creating admin user..."
     superset fab create-admin \
-        --username admin \
-        --firstname Admin \
-        --lastname User \
-        --email admin@example.com \
+        --username "did:key:zDnaersD2HBUk52PGonuqsM1SETZ1nD1Py8wzDQpLpHXaQFTt_VATGR-094402295" \
+        --firstname Georgios \
+        --lastname Peppas \
+        --email georgios.peppas@eurodyn.com \
         --password admin 2>/dev/null || echo "Admin user may already exist"
     
     echo "Loading examples..."
