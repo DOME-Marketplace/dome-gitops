@@ -56,13 +56,10 @@ spec:
             - name: OIDC_DISPLAY_NAME_CLAIMS
               value: "name"
             - name: OIDC_CLIENT_ID
-              value: "https://knowledgebase.dome-marketplace-sbx.org"
-            # OIDC_CLIENT_SECRET not needed - public client with PKCE, no client secret required
-            #- name: OIDC_CLIENT_SECRET
-            #  valueFrom:
-            #    secretKeyRef:
-            #      name: bookstack-secret
-            #      key: OIDC_CLIENT_SECRET
+              value: "knowledgebase-service"
+            # Public client - no real secret, but BookStack requires a non-null string value
+            - name: OIDC_CLIENT_SECRET
+              value: ""
             - name: OIDC_ISSUER
               value: "https://verifier.dome-marketplace-sbx.org"
             - name: OIDC_END_SESSION_ENDPOINT
