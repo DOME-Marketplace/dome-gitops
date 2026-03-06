@@ -166,6 +166,7 @@ data:
 
     # Authentication type - OAuth (uses Authlib)
     AUTH_TYPE = AUTH_OAUTH
+    AUTH_ALLOW_LOCAL_LOGIN = True
 
     # DOME Verifier OAuth configuration
     # Public client (no secret) with PKCE (S256) for secure token exchange
