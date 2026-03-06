@@ -61,81 +61,58 @@ data:
 
         def oauth_user_info(self, provider, response=None):
             if provider == 'dome':
-                logger.info("=== DOME OAuth Debug ===")
-                logger.info("Full token response keys: %s", list(response.keys()) if response else 'None')
-
                 # Decode access_token JWT
                 access_token = response.get('access_token', '')
                 access_claims = {}
                 if access_token:
                     access_claims = decode_jwt_payload(access_token)
-                    logger.info("Access token claims: %s", access_claims)
 
                 # Decode id_token JWT
                 id_token = response.get('id_token', '')
                 id_claims = {}
                 if id_token:
                     id_claims = decode_jwt_payload(id_token)
-                    logger.info("ID token claims: %s", id_claims)
 
-                # Check Authlib parsed userinfo
-                userinfo = response.get('userinfo', {})
-                logger.info("Authlib userinfo: %s", userinfo)
-                logger.info("=== End Debug ===")
-
-                # Merge all sources (id_token and access_token may have different claims)
+                # Merge all sources
                 all_claims = {}
                 all_claims.update(access_claims)
                 all_claims.update(id_claims)
-                if userinfo:
-                    all_claims.update(userinfo)
-
-                logger.info("Merged claims: %s", all_claims)
 
                 if all_claims:
-                    # DOME VC uses non-standard field names:
-                    #   "user" instead of "preferred_username"
-                    #   "email" is standard
-                    #   "id" is the DID
-                    #   "organizations" contains org info and roles
-                    username = all_claims.get('user',
-                               all_claims.get('preferred_username',
-                               all_claims.get('sub', '')))
+                    # Extract did:key from sub
+                    did_key = all_claims.get('sub', '')
+
+                    # Extract organizationIdentifier from vc.credentialSubject.mandate.mandator
+                    org_id = ''
+                    try:
+                        vc = all_claims.get('vc', {})
+                        mandator = vc.get('credentialSubject', {}).get('mandate', {}).get('mandator', {})
+                        org_id = mandator.get('organizationIdentifier', '')
+                    except Exception as e:
+                        logger.error("Failed to extract organizationIdentifier: %s", str(e))
+
+                    # Username = did:key + _ + organizationIdentifier
+                    if did_key and org_id:
+                        username = did_key + '_' + org_id
+                    elif did_key:
+                        username = did_key
+                    else:
+                        username = all_claims.get('email', 'dome_user')
 
                     email = all_claims.get('email', '')
-                    if not email and username:
-                        email = username + '@dome.eu'
+                    first_name = all_claims.get('given_name', 'DOME')
+                    last_name = all_claims.get('family_name', 'User')
 
-                    # Try to split username into first/last name
-                    first_name = all_claims.get('given_name', '')
-                    last_name = all_claims.get('family_name', '')
-                    if not first_name and username and '.' in username:
-                        parts = username.split('.')
-                        first_name = parts[0].capitalize()
-                        last_name = parts[-1].capitalize() if len(parts) > 1 else 'User'
-                    elif not first_name:
-                        first_name = username or 'DOME'
-                        last_name = 'User'
-
-                    # Extract roles from organizations
-                    role_keys = all_claims.get('roles', [])
-                    orgs = all_claims.get('organizations', [])
-                    for org in orgs:
-                        for role in org.get('roles', []):
-                            role_name = role.get('name', role.get('id', ''))
-                            if role_name:
-                                role_keys.append(role_name)
-
-                    logger.info("Mapped user - username: %s, email: %s, "
-                                "first: %s, last: %s, roles: %s",
-                                username, email, first_name, last_name, role_keys)
+                    logger.info("DOME user mapped - username: %s, email: %s, "
+                                "first: %s, last: %s",
+                                username, email, first_name, last_name)
 
                     return {
                         'username': username,
                         'first_name': first_name,
                         'last_name': last_name,
                         'email': email,
-                        'role_keys': role_keys,
+                        'role_keys': [],
                     }
 
                 logger.warning("No claims found in any token source")
