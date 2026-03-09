@@ -56,26 +56,25 @@ spec:
             - name: OIDC_DISPLAY_NAME_CLAIMS
               value: "name"
             - name: OIDC_CLIENT_ID
-              value: "bookstack"
+              value: "knowledgebase-service"
+            # Public client - no real secret, but BookStack requires a non-null string value
             - name: OIDC_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: bookstack-secret
-                  key: OIDC_CLIENT_SECRET
+              value: ""
             - name: OIDC_ISSUER
-              value: "https://cs-identity.dome-marketplace-sbx.org/realms/dome"
+              value: "https://verifier.dome-marketplace-sbx.org"
             - name: OIDC_END_SESSION_ENDPOINT
-              value: "https://cs-identity.dome-marketplace-sbx.org/realms/dome/protocol/openid-connect/logout"
+              value: "https://verifier.dome-marketplace-sbx.org/oidc/logout"
             - name: OIDC_ISSUER_DISCOVER
               value: "true"
-            - name: OIDC_USER_TO_GROUPS
-              value: "true"
-            - name: OIDC_GROUPS_CLAIM
-              value: "groups"
             - name: OIDC_ADDITIONAL_SCOPES
-              value: "groups"
-            - name: OIDC_REMOVE_FROM_GROUPS
-              value: "true"
+              value: "openid_learcredential"
+            # Group sync disabled - verifier is VC-based and does not return a groups claim
+            #- name: OIDC_USER_TO_GROUPS
+            #  value: "true"
+            #- name: OIDC_GROUPS_CLAIM
+            #  value: "groups"
+            #- name: OIDC_REMOVE_FROM_GROUPS
+            #  value: "true"
 
             - name: MAIL_DRIVER
               value: "smtp"
