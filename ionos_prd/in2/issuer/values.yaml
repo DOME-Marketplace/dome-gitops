@@ -17,7 +17,7 @@ dome-issuer:
     image:
       repository: in2workspace/eudistack-issuer-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.2.6
+      tag: v2.2.14
     ingressIssuerApi:
       enabled: true
       className: nginx
@@ -137,15 +137,13 @@ dome-issuer:
     image:
       repository: in2workspace/eudistack-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.1.8
+      tag: v2.1.13
     app:
-      colors:
-        primary: "#2d58a7"
-        primaryContrast: "#ffffff"
-        secondary: "#2cb6b2"
-        secondaryContrast: "#dde6f6"
-      logoSrc: "dome-issuer-logo.png"
-      faviconSrc: "dome-favicon.png"
+      themeName: "dome-theme"
+      assets:
+        baseUrl: "https://cdn.jsdelivr.net/gh/in2workspace/eudistack-assets@main/DOME"
+        logoPath: "dome-issuer-logo.png"
+        faviconPath: "dome-favicon.png"
       keycloakUrl: "https://keycloak.dome-marketplace.eu/realms/dome-issuer"
       backendUrl: "https://issuer.dome-marketplace.eu"
       walletUrl: "https://wallet.dome-marketplace.eu"
