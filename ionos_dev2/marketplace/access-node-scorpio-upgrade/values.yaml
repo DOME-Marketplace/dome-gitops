@@ -8,14 +8,14 @@ access-node:
     image:
       repository: in2workspace/in2-desmos-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.0.1
+      tag: v2.0.3
       pullPolicy: Always
     readinessProbe:
       failureThreshold: 10
     livenessProbe:
       failureThreshold: 10
     ingress:
-      enabled: false
+      enabled: true
       className: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-dev2-issuer
@@ -34,7 +34,7 @@ access-node:
       profile: test
       ## debug level
       logLevel:
-        app: INFO
+        app: DEBUG
       ## information about the access-node operator
       operator:
         # -- did of the organization running the node
@@ -101,11 +101,13 @@ access-node:
         key: desmos-db-password
 
   ## configuration for the dlt-adapter - see https://DOME-Marketplace.github.io/access-node/dlt-adapter for configuration documentation
-  dlt-adapter:
+  dlt-adapter-alastria:
     # -- should the dlt-adapter be enabled
     enabled: false
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     fullnameOverride: dlt-adapter
+    service:
+      port: 8080
 
     existingSecret:
       enabled: true
@@ -116,6 +118,48 @@ access-node:
       RPC_ADDRESS: "https://red-t.alastria.io/v0/9461d9f4292b41230527d57ee90652a6"
       ISS: "0x4a46c9fbd740dfceea9ede37dade8e10b52338a0f3dc2d1dbc55a2027e248320"
 
+  ## dlt adapter hashnet
+  dlt-adapter-hashnet:
+    # -- should the dlt-adapter be enabled
+    enabled: false
+    # -- overrides the generated name, provides stable service names
+    fullnameOverride: dlt-adapter-hashnet
+
+    existingSecret:
+      enabled: true
+      name: access-node-secret
+      key: dlt-private-key
+    env:
+      DEBUG: "*"
+      RPC_ADDRESS: "https://jsongw.stagenet.tolar.io/jsonrpc"
+      ISS: "0x43b27fef24cfe8a0b797ed8a36de2884f9963c0c2a0da640e3ec7ad6cd0c493d"
+      DOME_EVENTS_CONTRACT_ADDRESS: "0x54b1a2a1c6b02e4f46abae61ee0ac7751a176338e11f14dca3"
+      DOME_EVENTS_CONTRACT_ABI: '[{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"index","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"},{"indexed":true,"internalType":"bytes32","name":"origin","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"entityIDHash","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"previousEntityHash","type":"bytes32"},{"indexed":false,"internalType":"string","name":"eventType","type":"string"},{"indexed":false,"internalType":"string","name":"dataLocation","type":"string"},{"indexed":false,"internalType":"string[]","name":"metadata","type":"string[]"}],"name":"EventDOMEv1","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"inputs":[{"internalType":"bytes32","name":"_origin","type":"bytes32"},{"internalType":"bytes32","name":"_entityIDHash","type":"bytes32"},{"internalType":"bytes32","name":"_previousEntityHash","type":"bytes32"},{"internalType":"string","name":"_eventType","type":"string"},{"internalType":"string","name":"_dataLocation","type":"string"},{"internalType":"string[]","name":"_metadata","type":"string[]"}],"name":"emitNewEvent","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"index","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"}]'
+      DOME_PRODUCTION_BLOCK_NUMBER: "118733266"
+      HASHNET_NETWORK_ID: "3"
+
+  ## dome-ied (Interchain Event Distributor)
+  dome-ied:
+    # -- should the dome-ied be enabled
+    enabled: false
+    # -- overrides the generated name, provides stable service names
+    fullnameOverride: dome-ied
+
+    ied:
+      image:
+        repository: ghcr.io/mrslapar/dome-ied
+        tag: "latest"
+        pullPolicy: Always
+
+    # DLT Adapter URLs (external, already deployed in this namespace)
+    adapters:
+      hashnet:
+        url: "http://dlt-adapter-hashnet:8080"
+        chainId: "1"
+      alastria:
+        url: "http://dlt-adapter:8080"
+        chainId: "2"
+
   ## configuration of postgres to be used for the blockchain-connector - see https://github.com/bitnami/charts/tree/main/bitnami/postgresql for details
   postgresql:
     # -- should the postgresql deployment be enabled
@@ -125,10 +169,16 @@ access-node:
   scorpio:
     # -- should scorpio be enabled
     enabled: true
+    ## configuration of the image to be used
+    image:
+      # -- repository to be used - resource friendly all-in-one-runner without kafka
+      repository: scorpiobroker/all-in-one-runner
+      # -- tag of the image to be used 
+      tag: java-5.0.3
     ## configuration of the database to be used by broker
     db:
       # -- host of the db
-      dbhost: postgis-migration
+      dbhost: scorpio-migration-db
       # -- username to be used
       user: postgres
       # -- existing secret to retrieve the db password
@@ -164,9 +214,9 @@ access-node:
     # -- should postgis be enabled
     enabled: true
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-    fullnameOverride: postgis-migration
+    fullnameOverride: scorpio-migration-db
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
-    nameOverride: postgis-migration
+    nameOverride: scorpio-migration-db
     ## auth configuration for the database
     auth:
       # -- username to be used
@@ -203,12 +253,12 @@ access-node:
 
     defaultConfig:
       image:
-        tag: 1.3.16
+        tag: sbx_1.4.7
       additionalEnvVars:
-        - name: MAPPING_STRICT_RELATIONSHIPS
-          value: "false"
-        - name: API_EXTENSION_ENABLED
-          value: "true"
+      - name: MAPPING_STRICT_RELATIONSHIPS
+        value: "false"
+      - name: API_EXTENSION_ENABLED
+        value: "true"
 
     ingress:
       enabled: true
@@ -226,66 +276,66 @@ access-node:
           secretName: tm-forum-api-tls-secret
 
     apis:
-      - name: party-catalog
-        image: tmforum-party-catalog
-        basePath: /tmf-api/party/v4
+    - name: party-catalog
+      image: tmforum-party-catalog
+      basePath: /tmf-api/party/v4
 
-      - name: customer-bill-management
-        image: tmforum-customer-bill-management
-        basePath: /tmf-api/customerBillManagement/v4
+    - name: customer-bill-management
+      image: tmforum-customer-bill-management
+      basePath: /tmf-api/customerBillManagement/v4
 
-      - name: customer-management
-        image: tmforum-customer-management
-        basePath: /tmf-api/customerManagement/v4
+    - name: customer-management
+      image: tmforum-customer-management
+      basePath: /tmf-api/customerManagement/v4
 
-      - name: product-catalog
-        image: tmforum-product-catalog
-        basePath: /tmf-api/productCatalogManagement/v4
+    - name: product-catalog
+      image: tmforum-product-catalog
+      basePath: /tmf-api/productCatalogManagement/v4
 
-      - name: product-inventory
-        image: tmforum-product-inventory
-        basePath: /tmf-api/productInventory/v4
+    - name: product-inventory
+      image: tmforum-product-inventory
+      basePath: /tmf-api/productInventory/v4
 
-      - name: product-ordering-management
-        image: tmforum-product-ordering-management
-        basePath: /tmf-api/productOrderingManagement/v4
+    - name: product-ordering-management
+      image: tmforum-product-ordering-management
+      basePath: /tmf-api/productOrderingManagement/v4
 
-      - name: resource-catalog
-        image: tmforum-resource-catalog
-        basePath: /tmf-api/resourceCatalog/v4
+    - name: resource-catalog
+      image: tmforum-resource-catalog
+      basePath: /tmf-api/resourceCatalog/v4
 
-      - name: resource-function-activation
-        image: tmforum-resource-function-activation
-        basePath: /tmf-api/resourceFunctionActivation/v4
+    - name: resource-function-activation
+      image: tmforum-resource-function-activation
+      basePath: /tmf-api/resourceFunctionActivation/v4
 
-      - name: resource-inventory
-        image: tmforum-resource-inventory
-        basePath: /tmf-api/resourceInventoryManagement/v4
+    - name: resource-inventory
+      image: tmforum-resource-inventory
+      basePath: /tmf-api/resourceInventoryManagement/v4
 
-      - name: service-catalog
-        image: tmforum-service-catalog
-        basePath: /tmf-api/serviceCatalogManagement/v4
+    - name: service-catalog
+      image: tmforum-service-catalog
+      basePath: /tmf-api/serviceCatalogManagement/v4
 
-      - name: service-inventory
-        image: tmforum-service-inventory
-        basePath: /tmf-api/serviceInventory/v4
+    - name: service-inventory
+      image: tmforum-service-inventory
+      basePath: /tmf-api/serviceInventory/v4
 
-      - name: account
-        image: tmforum-account
-        basePath: /tmf-api/accountManagement/v4
+    - name: account
+      image: tmforum-account
+      basePath: /tmf-api/accountManagement/v4
 
-      - name: agreement
-        image: tmforum-agreement
-        basePath: /tmf-api/agreementManagement/v4
+    - name: agreement
+      image: tmforum-agreement
+      basePath: /tmf-api/agreementManagement/v4
 
-      - name: party-role
-        image: tmforum-party-role
-        basePath: /tmf-api/partyRoleManagement/v4
+    - name: party-role
+      image: tmforum-party-role
+      basePath: /tmf-api/partyRoleManagement/v4
 
-      - name: usage-management
-        image: tmforum-usage-management
-        basePath: /tmf-api/usageManagement/v4
+    - name: usage-management
+      image: tmforum-usage-management
+      basePath: /tmf-api/usageManagement/v4
 
-      - name: quote
-        image: tmforum-quote
-        basePath: /tmf-api/quote/v4
+    - name: quote
+      image: tmforum-quote
+      basePath: /tmf-api/quoteManagement/v4

@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
-    path: ionos_sbx/marketplace/access-node-scorpio-upgrade
+    path: ionos_dev2/marketplace/access-node-scorpio-upgrade
   destination:
     server: https://kubernetes.default.svc
     namespace: marketplace
