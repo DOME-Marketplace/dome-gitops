@@ -207,7 +207,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "11.11.0"
+        tag: "11.11.2-rc2"
         pullPolicy: Always
 
     ingress: 
@@ -291,7 +291,7 @@ business-api-ecosystem:
       - name: BAE_LP_ENDPOINT_SEARCH_HOST
         value: dome-search-svc.search-engine.svc.cluster.local
       - name: BAE_LP_AI_ENABLED
-        value: true
+        value: "true"
       - name: BAE_LP_AI_API_KEY
         value: 28791420a51be86495cab108f32221fa458469e29a04b33567b057c95878bd72
       - name: BAE_LP_AI_SEARCH_PROFILE

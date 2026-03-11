@@ -42,6 +42,11 @@ data:
 
     logger = logging.getLogger(__name__)
 
+    # Add DOME usernames (did:key_orgId) that should be Admin
+    ADMIN_USERS = [
+        'did:key:zDnaersD2HBUk52PGonuqsM1SETZ1nD1Py8wzDQpLpHXaQFTt_VATGR-094402295',
+    ]
+
     def decode_jwt_payload(token):
         """Decode JWT payload without verification (just to read claims)."""
         try:
@@ -103,16 +108,22 @@ data:
                     first_name = all_claims.get('given_name', 'DOME')
                     last_name = all_claims.get('family_name', 'User')
 
+                    # Assign roles based on admin list
+                    if username in ADMIN_USERS:
+                        role_keys = ['Admin']
+                    else:
+                        role_keys = ['Gamma']
+
                     logger.info("DOME user mapped - username: %s, email: %s, "
-                                "first: %s, last: %s",
-                                username, email, first_name, last_name)
+                                "first: %s, last: %s, roles: %s",
+                                username, email, first_name, last_name, role_keys)
 
                     return {
                         'username': username,
                         'first_name': first_name,
                         'last_name': last_name,
                         'email': email,
-                        'role_keys': [],
+                        'role_keys': role_keys,
                     }
 
                 logger.warning("No claims found in any token source")
@@ -121,11 +132,12 @@ data:
                     'first_name': 'DOME',
                     'last_name': 'User',
                     'email': 'user@dome.eu',
+                    'role_keys': ['Gamma'],
                 }
             return {}
     EOF
     
-    # Create superset config with DOME OAuth integration (public client + PKCE)
+    # Create superset config for 4.0.2 with DOME OAuth integration (public client + PKCE)
     cat > /app/pythonpath/superset_config.py << 'EOF'
     import os
     from dome_security_manager import DomeSecurityManager
@@ -139,13 +151,14 @@ data:
     REDIS_PORT = 6379
     
     # Celery configuration
-    CELERY_CONFIG = {
-        'broker_url': f'redis://{REDIS_HOST}:{REDIS_PORT}/0',
-        'result_backend': f'redis://{REDIS_HOST}:{REDIS_PORT}/0',
-        'worker_log_level': 'INFO',
-        'worker_prefetch_multiplier': 1,
-        'task_acks_late': True,
-    }
+    class CeleryConfig:
+        broker_url = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
+        result_backend = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
+        worker_log_level = 'INFO'
+        worker_prefetch_multiplier = 1
+        task_acks_late = True
+
+    CELERY_CONFIG = CeleryConfig
     
     # Cache configuration
     CACHE_CONFIG = {
@@ -153,6 +166,30 @@ data:
         'CACHE_REDIS_HOST': REDIS_HOST,
         'CACHE_REDIS_PORT': REDIS_PORT,
         'CACHE_REDIS_DB': 1,
+        'CACHE_DEFAULT_TIMEOUT': 300,
+    }
+
+    DATA_CACHE_CONFIG = {
+        'CACHE_TYPE': 'RedisCache',
+        'CACHE_REDIS_HOST': REDIS_HOST,
+        'CACHE_REDIS_PORT': REDIS_PORT,
+        'CACHE_REDIS_DB': 2,
+        'CACHE_DEFAULT_TIMEOUT': 300,
+    }
+
+    FILTER_STATE_CACHE_CONFIG = {
+        'CACHE_TYPE': 'RedisCache',
+        'CACHE_REDIS_HOST': REDIS_HOST,
+        'CACHE_REDIS_PORT': REDIS_PORT,
+        'CACHE_REDIS_DB': 3,
+        'CACHE_DEFAULT_TIMEOUT': 300,
+    }
+
+    EXPLORE_FORM_DATA_CACHE_CONFIG = {
+        'CACHE_TYPE': 'RedisCache',
+        'CACHE_REDIS_HOST': REDIS_HOST,
+        'CACHE_REDIS_PORT': REDIS_PORT,
+        'CACHE_REDIS_DB': 4,
         'CACHE_DEFAULT_TIMEOUT': 300,
     }
     
@@ -198,8 +235,14 @@ data:
     # Anonymous user role
     AUTH_ROLE_PUBLIC = "Public"
     
-    # Sync roles at each login
-    AUTH_ROLES_SYNC_AT_LOGIN = False
+    # Sync roles at each login (so admin list in security manager takes effect)
+    AUTH_ROLES_SYNC_AT_LOGIN = True
+
+    # Map role_keys from security manager to Superset roles
+    AUTH_ROLES_MAPPING = {
+        'Admin': ['Admin'],
+        'Gamma': ['Gamma'],
+    }
     
     # Feature flags
     FEATURE_FLAGS = {
@@ -214,23 +257,18 @@ data:
     SUPERSET_WEBSERVER_ADDRESS = '0.0.0.0'
     
     WEBDRIVER_BASEURL = 'https://analytics.dome-marketplace-sbx.org/'
-    
-    # SIP 15 support
-    SIP_15_ENABLED = True
     EOF
     
     # Ensure data directory exists
     mkdir -p /app/data
     
     echo "Installing required packages..."
+    pip install --no-cache-dir Authlib
     pip install --no-cache-dir \
-        'crate[sqlalchemy]==0.26.0' \
-        Authlib==1.2.1 \
-        sqlalchemy_trino==0.4.1 \
-        sqlalchemy-drill==1.1.2 \
-        mysqlclient==2.1.0 \
-        pymssql==2.2.5 \
-        || echo "Package installation completed with warnings"
+        sqlalchemy_trino==0.5.0 \
+        mysqlclient==2.2.4 \
+        pymssql==2.3.0 \
+        || echo "Optional packages completed with warnings"
     
     echo "Initializing Superset database..."
     superset db upgrade
