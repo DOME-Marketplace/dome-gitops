@@ -33,83 +33,115 @@ data:
     # Create config directory
     mkdir -p /app/pythonpath
     
-    # Create client_secret.json for OIDC
-    cat > /app/pythonpath/client_secret.json << 'EOF'
-    {
-        "web": {
-            "issuer": "https://cs-identity.dome-marketplace-sbx.org/realms/dome",
-            "auth_uri": "https://cs-identity.dome-marketplace-sbx.org/realms/dome/protocol/openid-connect/auth",
-            "client_id": "analytics-platform",
-            "client_secret": "ci8q7ZczfuWjshBKv8ybRC3ADn9a6FUX",
-            "userinfo_uri": "https://cs-identity.dome-marketplace-sbx.org/realms/dome/protocol/openid-connect/userinfo",
-            "token_uri": "https://cs-identity.dome-marketplace-sbx.org/realms/dome/protocol/openid-connect/token",
-            "token_introspection_uri": "https://cs-identity.dome-marketplace-sbx.org/realms/dome/protocol/openid-connect/token/introspect"
-        }
-    }
-    EOF
-    
-    # Create OIDC security manager
-    cat > /app/pythonpath/oidc_security_manager.py << 'EOF'
+    # Create custom security manager for DOME VC claims mapping
+    cat > /app/pythonpath/dome_security_manager.py << 'EOF'
     import logging
-    from flask_appbuilder.views import ModelView, SimpleFormView, expose
-    from flask import redirect, request
-    from urllib.parse import quote
-    from flask_login import login_user
-    from flask_appbuilder.security.views import AuthOIDView
-    from flask_oidc import OpenIDConnect
+    import json
+    import base64
     from superset.security import SupersetSecurityManager
-    from flask_appbuilder.security.manager import AUTH_OID
+
+    logger = logging.getLogger(__name__)
+
+    # Add DOME usernames (did:key_orgId) that should be Admin
+    ADMIN_USERS = [
+        'did:key:zDnaersD2HBUk52PGonuqsM1SETZ1nD1Py8wzDQpLpHXaQFTt_VATGR-094402295',
+    ]
+
+    def decode_jwt_payload(token):
+        """Decode JWT payload without verification (just to read claims)."""
+        try:
+            parts = token.split('.')
+            if len(parts) != 3:
+                return {}
+            padding = 4 - len(parts[1]) % 4
+            payload = parts[1] + '=' * padding
+            decoded = base64.urlsafe_b64decode(payload)
+            return json.loads(decoded)
+        except Exception as e:
+            logger.error("Failed to decode JWT: %s", str(e))
+            return {}
 
 
-    class OIDCSecurityManager(SupersetSecurityManager):
+    class DomeSecurityManager(SupersetSecurityManager):
 
-        def __init__(self, appbuilder):
-            super(OIDCSecurityManager, self).__init__(appbuilder)
-            if self.auth_type == AUTH_OID:
-                self.oid = OpenIDConnect(self.appbuilder.get_app)
-            self.authoidview = AuthOIDCView
+        def oauth_user_info(self, provider, response=None):
+            if provider == 'dome':
+                # Decode access_token JWT
+                access_token = response.get('access_token', '')
+                access_claims = {}
+                if access_token:
+                    access_claims = decode_jwt_payload(access_token)
 
+                # Decode id_token JWT
+                id_token = response.get('id_token', '')
+                id_claims = {}
+                if id_token:
+                    id_claims = decode_jwt_payload(id_token)
 
-    class AuthOIDCView(AuthOIDView):
+                # Merge all sources
+                all_claims = {}
+                all_claims.update(access_claims)
+                all_claims.update(id_claims)
 
-        @expose('/login/', methods=['GET', 'POST'])
-        def login(self, flag=True):
-            sm = self.appbuilder.sm
-            oidc = sm.oid
+                if all_claims:
+                    # Extract did:key from sub
+                    did_key = all_claims.get('sub', '')
 
-            @self.appbuilder.sm.oid.require_login
-            def handle_login():
-                user = sm.auth_user_oid(oidc.user_getfield('email'))
-                if user is None:
-                    if sm.find_role('example_viewer') is None:
-                        sm.add_role('example_viewer')
-                    info = oidc.user_getinfo(
-                        ['preferred_username', 'given_name', 'family_name', 'email'])
-                    user = sm.add_user(info.get('preferred_username'), info.get(
-                        'given_name'), info.get('family_name'), info.get('email'), [sm.find_role('Gamma'),sm.find_role('example_viewer')])
-                login_user(user, remember=True, force=True)
-                return redirect(self.appbuilder.get_url_for_index)
+                    # Extract organizationIdentifier from vc.credentialSubject.mandate.mandator
+                    org_id = ''
+                    try:
+                        vc = all_claims.get('vc', {})
+                        mandator = vc.get('credentialSubject', {}).get('mandate', {}).get('mandator', {})
+                        org_id = mandator.get('organizationIdentifier', '')
+                    except Exception as e:
+                        logger.error("Failed to extract organizationIdentifier: %s", str(e))
 
-            return handle_login()
+                    # Username = did:key + _ + organizationIdentifier
+                    if did_key and org_id:
+                        username = did_key + '_' + org_id
+                    elif did_key:
+                        username = did_key
+                    else:
+                        username = all_claims.get('email', 'dome_user')
 
-        @expose('/logout/', methods=['GET', 'POST'])
-        def logout(self):
-            oidc = self.appbuilder.sm.oid
+                    email = all_claims.get('email', '')
+                    first_name = all_claims.get('given_name', 'DOME')
+                    last_name = all_claims.get('family_name', 'User')
 
-            oidc.logout()
-            super(AuthOIDCView, self).logout()
-            redirect_url = request.url_root.strip(
-                '/') + self.appbuilder.get_url_for_login
+                    # Assign roles based on admin list
+                    if username in ADMIN_USERS:
+                        role_keys = ['Admin']
+                    else:
+                        role_keys = ['Gamma']
 
-            return redirect(
-                oidc.client_secrets.get('issuer') + '/protocol/openid-connect/logout?redirect_uri=' + quote(redirect_url))
+                    logger.info("DOME user mapped - username: %s, email: %s, "
+                                "first: %s, last: %s, roles: %s",
+                                username, email, first_name, last_name, role_keys)
+
+                    return {
+                        'username': username,
+                        'first_name': first_name,
+                        'last_name': last_name,
+                        'email': email,
+                        'role_keys': role_keys,
+                    }
+
+                logger.warning("No claims found in any token source")
+                return {
+                    'username': 'dome_user',
+                    'first_name': 'DOME',
+                    'last_name': 'User',
+                    'email': 'user@dome.eu',
+                    'role_keys': ['Gamma'],
+                }
+            return {}
     EOF
     
-    # Create superset config with OIDC integration
+    # Create superset config for 4.0.2 with DOME OAuth integration (public client + PKCE)
     cat > /app/pythonpath/superset_config.py << 'EOF'
     import os
-    from oidc_security_manager import OIDCSecurityManager
-    from flask_appbuilder.security.manager import AUTH_OID
+    from dome_security_manager import DomeSecurityManager
+    from flask_appbuilder.security.manager import AUTH_OAUTH
     
     # Database - using SQLite with persistent storage
     SQLALCHEMY_DATABASE_URI = 'sqlite:////app/data/superset.db'
@@ -119,13 +151,14 @@ data:
     REDIS_PORT = 6379
     
     # Celery configuration
-    CELERY_CONFIG = {
-        'broker_url': f'redis://{REDIS_HOST}:{REDIS_PORT}/0',
-        'result_backend': f'redis://{REDIS_HOST}:{REDIS_PORT}/0',
-        'worker_log_level': 'INFO',
-        'worker_prefetch_multiplier': 1,
-        'task_acks_late': True,
-    }
+    class CeleryConfig:
+        broker_url = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
+        result_backend = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
+        worker_log_level = 'INFO'
+        worker_prefetch_multiplier = 1
+        task_acks_late = True
+
+    CELERY_CONFIG = CeleryConfig
     
     # Cache configuration
     CACHE_CONFIG = {
@@ -135,8 +168,32 @@ data:
         'CACHE_REDIS_DB': 1,
         'CACHE_DEFAULT_TIMEOUT': 300,
     }
+
+    DATA_CACHE_CONFIG = {
+        'CACHE_TYPE': 'RedisCache',
+        'CACHE_REDIS_HOST': REDIS_HOST,
+        'CACHE_REDIS_PORT': REDIS_PORT,
+        'CACHE_REDIS_DB': 2,
+        'CACHE_DEFAULT_TIMEOUT': 300,
+    }
+
+    FILTER_STATE_CACHE_CONFIG = {
+        'CACHE_TYPE': 'RedisCache',
+        'CACHE_REDIS_HOST': REDIS_HOST,
+        'CACHE_REDIS_PORT': REDIS_PORT,
+        'CACHE_REDIS_DB': 3,
+        'CACHE_DEFAULT_TIMEOUT': 300,
+    }
+
+    EXPLORE_FORM_DATA_CACHE_CONFIG = {
+        'CACHE_TYPE': 'RedisCache',
+        'CACHE_REDIS_HOST': REDIS_HOST,
+        'CACHE_REDIS_PORT': REDIS_PORT,
+        'CACHE_REDIS_DB': 4,
+        'CACHE_DEFAULT_TIMEOUT': 300,
+    }
     
-    # Security - Keycloak/OIDC Configuration
+    # Security
     SECRET_KEY = 'ci8q7ZczfuWjshBKv8ybRC3ADn9a6FUX'
     WTF_CSRF_ENABLED = False
 
@@ -144,17 +201,32 @@ data:
     ENABLE_PROXY_FIX = True
     PROXY_FIX_CONFIG = {"x_for": 1, "x_proto": 1, "x_host": 1, "x_port": 0, "x_prefix": 1}
 
-    # Authentication type
-    AUTH_TYPE = AUTH_OID
+    # Authentication type - OAuth (uses Authlib)
+    AUTH_TYPE = AUTH_OAUTH
+    AUTH_ALLOW_LOCAL_LOGIN = True
 
-    # OIDC Configuration
-    OIDC_CLIENT_SECRETS = '/app/pythonpath/client_secret.json'
-    OIDC_ID_TOKEN_COOKIE_SECURE = False
-    OIDC_OPENID_REALM = 'dome'
-    OIDC_INTROSPECTION_AUTH_METHOD = 'client_secret_post'
+    # DOME Verifier OAuth configuration
+    # Public client (no secret) with PKCE (S256) for secure token exchange
+    OAUTH_PROVIDERS = [
+        {
+            'name': 'dome',
+            'icon': 'fa-address-card',
+            'token_key': 'access_token',
+            'remote_app': {
+                'client_id': 'did:key:zDnaer6wstrAhZxM5ej7fvQbnf9aP3RdojhXEao431SMrN3Lb',
+                'token_endpoint_auth_method': 'none',
+                'code_challenge_method': 'S256',
+                'server_metadata_url': 'https://verifier.dome-marketplace-sbx.org/.well-known/openid-configuration',
+                'client_kwargs': {
+                    'scope': 'openid_learcredential',
+                },
+                'api_base_url': 'https://verifier.dome-marketplace-sbx.org/',
+            },
+        }
+    ]
 
-    # Custom security manager
-    CUSTOM_SECURITY_MANAGER = OIDCSecurityManager
+    # Custom security manager for DOME VC claims
+    CUSTOM_SECURITY_MANAGER = DomeSecurityManager
     
     # User registration settings
     AUTH_USER_REGISTRATION = True
@@ -163,11 +235,14 @@ data:
     # Anonymous user role
     AUTH_ROLE_PUBLIC = "Public"
     
-    # Role assignment logic
-    AUTH_USER_REGISTRATION_ROLE_JMESPATH = "'Testme' && 'Gamma' || 'Gamma'"
-    
-    # Sync roles at each login
+    # Sync roles at each login (so admin list in security manager takes effect)
     AUTH_ROLES_SYNC_AT_LOGIN = True
+
+    # Map role_keys from security manager to Superset roles
+    AUTH_ROLES_MAPPING = {
+        'Admin': ['Admin'],
+        'Gamma': ['Gamma'],
+    }
     
     # Feature flags
     FEATURE_FLAGS = {
@@ -182,35 +257,28 @@ data:
     SUPERSET_WEBSERVER_ADDRESS = '0.0.0.0'
     
     WEBDRIVER_BASEURL = 'https://analytics.dome-marketplace-sbx.org/'
-    
-    # SIP 15 support
-    SIP_15_ENABLED = True
     EOF
     
     # Ensure data directory exists
     mkdir -p /app/data
     
-    echo "Installing required OIDC and database packages..."
-    # Install packages with exact versions from working Docker setup
+    echo "Installing required packages..."
+    pip install --no-cache-dir Authlib
     pip install --no-cache-dir \
-        'crate[sqlalchemy]==0.26.0' \
-        Authlib==0.15.5 \
-        flask-oidc==1.4.0 \
-        sqlalchemy_trino==0.4.1 \
-        sqlalchemy-drill==1.1.2 \
-        mysqlclient==2.1.0 \
-        pymssql==2.2.5 \
-        || echo "Package installation completed with warnings"
+        sqlalchemy_trino==0.5.0 \
+        mysqlclient==2.2.4 \
+        pymssql==2.3.0 \
+        || echo "Optional packages completed with warnings"
     
     echo "Initializing Superset database..."
     superset db upgrade
     
     echo "Creating admin user..."
     superset fab create-admin \
-        --username admin \
-        --firstname Admin \
-        --lastname User \
-        --email admin@example.com \
+        --username "did:key:zDnaersD2HBUk52PGonuqsM1SETZ1nD1Py8wzDQpLpHXaQFTt_VATGR-094402295" \
+        --firstname Georgios \
+        --lastname Peppas \
+        --email georgios.peppas@eurodyn.com \
         --password admin 2>/dev/null || echo "Admin user may already exist"
     
     echo "Loading examples..."

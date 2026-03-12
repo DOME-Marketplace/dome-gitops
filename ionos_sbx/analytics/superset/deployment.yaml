@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
       - name: superset
-        image: apache/superset:1.5.0rc4
+        image: apache/superset:4.0.2
         command: ["/bin/bash", "/startup.sh"]
         ports:
         - containerPort: 8088
@@ -61,7 +61,7 @@ spec:
           runAsGroup: 0
         livenessProbe:
           httpGet:
-            path: /health
+            path: /login/
             port: 8088
           initialDelaySeconds: 300
           periodSeconds: 30
@@ -69,7 +69,7 @@ spec:
           failureThreshold: 3
         readinessProbe:
           httpGet:
-            path: /health
+            path: /login/
             port: 8088
           initialDelaySeconds: 240
           periodSeconds: 15
