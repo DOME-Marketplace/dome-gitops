@@ -2,7 +2,7 @@
   name: access-node
   description: Chart holder for ArgoCD
   type: application
-  version: 0.4.19
+  version: 0.4.20
   appVersion: 0.1.0
   dependencies:
    - name: access-node
