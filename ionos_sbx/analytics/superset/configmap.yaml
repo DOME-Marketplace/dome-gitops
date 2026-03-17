@@ -247,6 +247,7 @@ data:
     # Feature flags
     FEATURE_FLAGS = {
         'ENABLE_TEMPLATE_PROCESSING': True,
+        'EMBEDDED_SUPERSET': True,
     }
     
     # Load examples
