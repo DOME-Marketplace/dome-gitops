@@ -50,7 +50,7 @@ spec:
             - name: DEV_ENABLE_WEB_DASHBOARD
               value: "false"
             - name: SCHEDULER_ENABLED
-              value: "true"
+              value: "false"
             - name: SCHEDULER_CRON
               value: "0 0 13 * * *" 
           livenessProbe:
