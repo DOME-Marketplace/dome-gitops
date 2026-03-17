@@ -31,5 +31,5 @@ data:
   JWT_PUBLIC_KEY_Y: ElY4pLUaAkqueuGcrgn3SF_ugjs0v-DxAB3Now3T-6E
   JWT_OAUTH_CLIENT_ID: did:key:zDnaewP5WFhS7tSg1Gmk96gdskQkZsNXtmiedL32ddtjeaxCs
   JWT_OAUTH_REDIRECT_URI: https://dome-certification.dome-marketplace-dev.org/auth/login
-  JWT_OAUTH_AUD: https://verifier.dome-marketplace-dev2.org
-  JWT_ISSUER_URL: https://issuer.dome-marketplace-dev2.org
+  JWT_OAUTH_AUD: https://verifier.dome-marketplace-dev.org
+  JWT_ISSUER_URL: https://issuer.dome-marketplace-dev.org
