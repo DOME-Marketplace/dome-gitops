@@ -32,4 +32,6 @@ data:
   JWT_OAUTH_CLIENT_ID: did:key:zDnaep7iGodkmSEUD8uAsp4dhqcaxxrFQ3zgyANHD2brt7CgB
   JWT_OAUTH_REDIRECT_URI: https://dome-certification.dome-marketplace-sbx.org/auth/login
   JWT_OAUTH_AUD: https://verifier.dome-marketplace-sbx.org
+  JWT_OAUTH_ISSUER: https://issuer.dome-marketplace-sbx.org
   JWT_ISSUER_URL: https://issuer.dome-marketplace-sbx.org
+  EMAIL_ADDRESS: certification@dome-marketplace.eu
