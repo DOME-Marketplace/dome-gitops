@@ -201,7 +201,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "11.13.0"
+        tag: "11.14.0-rc1"
         pullPolicy: Always
 
     ingress: 
@@ -282,6 +282,8 @@ business-api-ecosystem:
         value: "did:elsi:VATSB-12345678J"
       - name: BAE_LP_PARTY_LOCATION
         value: "https://raw.githubusercontent.com/DOME-Marketplace/tmf-api/refs/heads/main/DOME/ShareableEntity.schema.json"
+      - name: BAE_LP_COMPLIANCE_SERVER_URL
+        value: http://certification-backend-svc.dome-certification.svc.cluster.local:8080
       - name: BAE_LP_SIOP_PRIVATE_KEY
         valueFrom:
           secretKeyRef:
