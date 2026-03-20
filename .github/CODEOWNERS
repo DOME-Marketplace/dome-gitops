@@ -1,23 +1,23 @@
 # Repository Owner
-*       @Gerbinix @bialask-daiteap
+*       @Gerbinix
 
 
 
 ##DEVOPS
 
 #PRD reviewer
-/applications_prd/ @Gerbinix @bialask-daiteap
-/ionos_prd/ @Gerbinix @bialask-daiteap
+/applications_prd/ @Gerbinix 
+/ionos_prd/ @Gerbinix 
 
 #DEV reviewer
-/applications_dev/ @Gerbinix @bialask-daiteap @maxmarii @PolitiRoberto
-/ionos_dev/ @Gerbinix @bialask-daiteap @maxmarii @PolitiRoberto
-/applications_dev2/ @Gerbinix @bialask-daiteap @maxmarii @PolitiRoberto
-/ionos_dev2/ @Gerbinix @bialask-daiteap @maxmarii @PolitiRoberto
+/applications_dev/ @Gerbinix @maxmarii @PolitiRoberto
+/ionos_dev/ @Gerbinix @maxmarii @PolitiRoberto
+/applications_dev2/ @Gerbinix @maxmarii @PolitiRoberto
+/ionos_dev2/ @Gerbinix  @maxmarii @PolitiRoberto
 
 #SBX reviewer
-/applications_sbx/ @Gerbinix @bialask-daiteap @maxmarii @PolitiRoberto @fneto-ubiwhere @emmanuel-quevillon-outscale
-/ionos_sbx/ @Gerbinix @bialask-daiteap @maxmarii @PolitiRoberto @fneto-ubiwhere @emmanuel-quevillon-outscale
+/applications_sbx/ @Gerbinix @maxmarii @PolitiRoberto @fneto-ubiwhere @emmanuel-quevillon-outscale
+/ionos_sbx/ @Gerbinix @maxmarii @PolitiRoberto @fneto-ubiwhere @emmanuel-quevillon-outscale
 
 
 
