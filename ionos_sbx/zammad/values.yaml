@@ -2,7 +2,7 @@ zammad:
 
   image:
     repository: kingmanfri/dome_ticketing_zammad
-    tag: "1.4"
+    tag: "6.5.custom"
     pullPolicy: Always
 
   ingress:
