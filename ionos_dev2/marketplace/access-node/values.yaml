@@ -169,6 +169,12 @@ access-node:
   scorpio:
     # -- should scorpio be enabled
     enabled: true
+    ## configuration of the image to be used
+    image:
+      # -- repository to be used - resource friendly all-in-one-runner without kafka
+      repository: scorpiobroker/all-in-one-runner
+      # -- tag of the image to be used 
+      tag: java-5.0.3
     ## configuration of the database to be used by broker
     db:
       # -- host of the db
@@ -212,7 +218,7 @@ access-node:
   ## configuration of postgis to be used for scorpio - see https://github.com/bitnami/charts/tree/main/bitnami/postgresql for details
   postgis:
     # -- should postgis be enabled
-    enabled: true
+    enabled: false
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     fullnameOverride: scorpio-postgis
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
