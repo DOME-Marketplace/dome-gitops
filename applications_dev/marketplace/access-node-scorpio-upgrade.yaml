@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: access-node-scorpio-migration
+  name: access-node-scorpio-upgrade
   namespace: argocd
   labels:
     purpose: marketplace
@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
-    path: ionos_dev/marketplace/scorpio-migration
+    path: ionos_dev/marketplace/access-node-scorpio-upgrade
   destination:
     server: https://kubernetes.default.svc
     namespace: marketplace
