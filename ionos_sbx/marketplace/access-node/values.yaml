@@ -8,7 +8,7 @@ access-node:
     image:
       repository: in2workspace/in2-desmos-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.0.7
+      tag: v2.0.8
       pullPolicy: Always
     readinessProbe:
       failureThreshold: 10
@@ -329,6 +329,13 @@ access-node:
     - name: account
       image: tmforum-account
       basePath: /tmf-api/accountManagement/v4
+      additionalEnvVars:
+        - name: API_ACCOUNT_BASEPATH
+          value: /tmf-api/accountManagement/v4
+        - name: MAPPING_STRICT_RELATIONSHIPS
+          value: "false"
+        - name: API_EXTENSION_ENABLED
+          value: "true"
 
     - name: agreement
       image: tmforum-agreement
@@ -341,6 +348,13 @@ access-node:
     - name: usage-management
       image: tmforum-usage-management
       basePath: /tmf-api/usageManagement/v4
+      additionalEnvVars:
+        - name: API_USAGE_MANAGEMENT_BASEPATH
+          value: /tmf-api/usageManagement/v4
+        - name: MAPPING_STRICT_RELATIONSHIPS
+          value: "false"
+        - name: API_EXTENSION_ENABLED
+          value: "true"
 
     - name: quote
       image: tmforum-quote
