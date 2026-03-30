@@ -23,10 +23,10 @@ zammad:
   zammadConfig:
     railsserver:
       replicas: 2
-      webConcurrency: 3
+      webConcurrency: 2
       resources:
         requests:
-          cpu: "1000m"
+          cpu: "500m"
           memory: "2Gi"
         limits:
           cpu: "2000m"
