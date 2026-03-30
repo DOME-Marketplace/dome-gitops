@@ -47,6 +47,7 @@ dome-verifier:
       logging:
         level:
           org.springframework.web.filter: DEBUG
+          org.springframework.security: TRACE
           es.in2.vcverifier: DEBUG
       # Placeholder for backend URL (REQUIRED)
       url: "https://verifier.dome-marketplace-sbx.org"
