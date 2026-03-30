@@ -3,7 +3,7 @@ zammad:
   image:
     repository: kingmanfri/dome_ticketing_zammad
     tag: "6.5.custom"
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
 
   ingress:
     enabled: true
