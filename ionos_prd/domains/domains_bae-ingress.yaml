@@ -5,6 +5,9 @@ metadata:
   namespace: marketplace
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
+    
+    nginx.ingress.kubernetes.io/server-snippet: |
+      return 302 https://onboarding.dome-marketplace.eu/sorry.html
 spec:
   ingressClassName: nginx
   rules:
