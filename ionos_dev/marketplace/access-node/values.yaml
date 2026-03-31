@@ -8,7 +8,7 @@ access-node:
     image:
       repository: in2workspace/in2-desmos-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.0.4
+      tag: v2.0.8
       pullPolicy: Always
     readinessProbe:
       failureThreshold: 10
@@ -44,9 +44,9 @@ access-node:
         # -- provider of the broker
         provider: scorpio
         # -- internal address of the context broker to be used by the connector
-        internalDomain: http://scorpio:9090
+        internalDomain: http://scorpio-migration:9090
         # -- external address of the broker. Will be included in the hashlink and used by other access-nodes to retrieve the actual entities
-        externalDomain: http://scorpio:9090
+        externalDomain: http://scorpio-migration:9090
       ## configuration to connect to the dlt-adapter
       dltAdapter:
         # -- provider of the dlt-adapter component
@@ -167,6 +167,12 @@ access-node:
   scorpio:
     # -- should scorpio be enabled
     enabled: true
+    ## configuration of the image to be used
+    image:
+      # -- repository to be used - resource friendly all-in-one-runner without kafka
+      repository: scorpiobroker/all-in-one-runner
+      # -- tag of the image to be used 
+      tag: java-5.0.3
     ## configuration of the database to be used by broker
     db:
       # -- host of the db
@@ -210,7 +216,7 @@ access-node:
   ## configuration of postgis to be used for scorpio - see https://github.com/bitnami/charts/tree/main/bitnami/postgresql for details
   postgis:
     # -- should postgis be enabled
-    enabled: true
+    enabled: false
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     fullnameOverride: scorpio-postgis
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
@@ -251,12 +257,15 @@ access-node:
 
     defaultConfig:
       image:
-        tag: sbx_1.4.7
+        tag: sbx_1.5.4
       additionalEnvVars:
       - name: MAPPING_STRICT_RELATIONSHIPS
         value: "false"
       - name: API_EXTENSION_ENABLED
         value: "true"
+      ngsiLd:
+        # -- address of the broker
+        url: http://scorpio-migration:9090
 
     ingress:
       enabled: true
