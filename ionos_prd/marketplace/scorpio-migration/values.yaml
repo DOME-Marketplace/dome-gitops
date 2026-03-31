@@ -121,7 +121,7 @@ access-node:
   ## configuration of the context-broker - see https://github.com/FIWARE/helm-charts/tree/main/charts/scorpio-broker-aaio for details
   scorpio:
     # -- should scorpio be enabled
-    enabled: true
+    enabled: false
     ## configuration of the image to be used
     image:
       # -- repository to be used - resource friendly all-in-one-runner without kafka
