@@ -44,9 +44,9 @@ access-node:
         # -- provider of the broker
         provider: scorpio
         # -- internal address of the context broker to be used by the connector
-        internalDomain: http://scorpio:9090
+        internalDomain: http://scorpio-migration:9090
         # -- external address of the broker. Will be included in the hashlink and used by other access-nodes to retrieve the actual entities
-        externalDomain: http://scorpio:9090
+        externalDomain: http://scorpio-migration:9090
       ## configuration to connect to the dlt-adapter
       dltAdapter:
         # -- provider of the dlt-adapter component
@@ -210,7 +210,7 @@ access-node:
       # -- configuration to be used for the image of the containers
       image:
         # -- current latest tag
-        tag: "1.4.1"
+        tag: "sbx_1.5.4"
       additionalEnvVars:
         - name: API_EXTENSION_ENABLED
           value: "true"
@@ -218,7 +218,7 @@ access-node:
       # -- ngsi-ld broker connection information
       ngsiLd:
         # -- address of the broker
-        url: http://scorpio:9090
+        url: http://scorpio-migration:9090
       # -- default context to be used when contacting the context broker
       contextUrl: https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld
       # -- host that the tm-forum api can be reached at, when the proxy is enabled it should be set to that address. If not, set the host for each api individually
