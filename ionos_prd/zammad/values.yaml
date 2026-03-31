@@ -82,7 +82,7 @@ zammad:
     primary:
       resources:
         requests:
-          cpu: "200m"
+          cpu: "100m"
           memory: "1Gi"
         limits:
           cpu: "500m"
