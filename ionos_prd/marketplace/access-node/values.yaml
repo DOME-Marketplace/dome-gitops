@@ -209,8 +209,10 @@ access-node:
     defaultConfig:
       # -- configuration to be used for the image of the containers
       image:
+        repository: docker.io/drllbl18
         # -- current latest tag
         tag: "sbx_1.5.4"
+        pullPolicy: IfNotPresent
       additionalEnvVars:
         - name: API_EXTENSION_ENABLED
           value: "true"
