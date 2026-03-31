@@ -128,7 +128,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: "10.6.2"
+        tag: "11.4.0"
         pullPolicy: Always
     
     plugins:
@@ -168,9 +168,17 @@ business-api-ecosystem:
         value: "https://dpas.egroup.hu/api/payment-start"
       - name: BAE_CB_PARTY
         value: "http://tm-forum-api-party-catalog:8080/tmf-api/party/v4"
+      - name: BAE_CB_OPERATOR_ID
+        value: "did:elsi:VATSB-12345678J"
+      - name: BAE_CB_RELATED_PARTY_SCHEMA_LOCATION
+        value: "https://raw.githubusercontent.com/DOME-Marketplace/tmf-api/refs/heads/main/DOME/ShareableEntity.schema.json"
+      - name: DPAS_KEY
+        value: "-----BEGIN PUBLIC KEY-----\nMIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAzwkqDO0N4cGvGwYUBiYu\nHtBy0T6joeklhTC5wiLbjcTrB7+A3UEQ4pn8fZ6OBeZGuCpEFu/UPj1QiVgUDnAG\nAZr4X4EZRV9HeM5Nc57ltBm12qPsxAdZ6MWrXurT11UNa/sEdKh7Wde9oihz1TEU\nMhOTdLHBG/JOqfcBP5jGLdsRIuX/T2T7KRgj778l6BzsXus5djwjqGUewhVKirEJ\nVMRGGqsxb62NeGjHxR0qW5gh6yRBnLrwzvHQPZOQRbb0PTquGEL3FiesWErePk46\n3Xyc227tbz7ib3/JUQGtOHA+Gr5pjdbB6TcLmLIzoISgiuNoDHSWqql4E+onJJYT\nYvIxZRuZePCaVBCkgbkIwIgCddXaq7m2cg4Dh8H6brZm7bpRQzMU19XEVYehz0KH\n4R0MGSU5Ru0Tjg0DCSZMLqM8KtGVrlLlrtqHT9m2hCmTpNdbf0OoH/0hqqPJcmiG\nwWz8JCh+aOzLS2fWXxzkpCJeAA/lwTFoW3jgV5cqlOchAgMBAAE=\n-----END PUBLIC KEY-----"
 
   oauth:
     provider: "vc"
+    sellerrole: "Seller"
+    customerrole: "Buyer"
 
   bizEcosystemLogicProxy:
 
@@ -182,7 +190,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "10.8.1"
+        tag: "11.13.0"
         pullPolicy: Always
 
     ingress:
@@ -190,13 +198,6 @@ business-api-ecosystem:
       className: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
-
-        ######
-        nginx.ingress.kubernetes.io/server-snippet: |
-          return 302 https://onboarding.dome-marketplace.eu/sorry.html;
-        ####
-
-        
       tls:
         -  hosts:
              - dome-marketplace-prd.org
@@ -251,7 +252,7 @@ business-api-ecosystem:
       - name: BAE_LP_DOME_GUIDELINES
         value: https://knowledgebase.dome-marketplace-prd.org/books/managing-orders-products-and-subscriptions
       - name: BAE_LP_BILLING_ENGINE_URL
-        value: http://bae-marketplace-biz-ecosystem-charging-backend.marketplace.svc.cluster.local:8006
+        value: http://bae-marketplace-biz-ecosystem-charging-backend.marketplace.svc.cluster.local:8006/charging/api/orderManagement/orders/preview/
       - name: BAE_LP_ENDPOINT_CUSTOMER_BILL_HOST
         value: tm-forum-api-customer-bill-management
       - name: BAE_LP_ENDPOINT_CUSTOMER_BILL_PORT
@@ -266,8 +267,10 @@ business-api-ecosystem:
         value: https://analytics.dome-marketplace-prd.org/
       - name: BAE_LP_THEME
         value: DOME
-      - name: BAE_LP_QUOTE_ENABLED
-        value: "false"
+      - name: BAE_LP_OPERATOR_ID
+        value: "did:elsi:VATSB-12345678J"
+      - name: BAE_LP_PARTY_LOCATION
+        value: "https://raw.githubusercontent.com/DOME-Marketplace/tmf-api/refs/heads/main/DOME/ShareableEntity.schema.json"
       - name: BAE_LP_SIOP_PRIVATE_KEY
         valueFrom:
           secretKeyRef:
