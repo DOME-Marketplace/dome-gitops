@@ -44,9 +44,9 @@ access-node:
         # -- provider of the broker
         provider: scorpio
         # -- internal address of the context broker to be used by the connector
-        internalDomain: http://scorpio-migration:9090
+        internalDomain: http://scorpio:9090
         # -- external address of the broker. Will be included in the hashlink and used by other access-nodes to retrieve the actual entities
-        externalDomain: http://scorpio-migration:9090
+        externalDomain: http://scorpio:9090
       ## configuration to connect to the dlt-adapter
       dltAdapter:
         # -- provider of the dlt-adapter component
@@ -265,7 +265,7 @@ access-node:
         value: "true"
       ngsiLd:
         # -- address of the broker
-        url: http://scorpio-migration:9090
+        url: http://scorpio:9090
 
     ingress:
       enabled: true
