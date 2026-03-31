@@ -190,6 +190,13 @@ business-api-ecosystem:
       className: nginx
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
+
+        ######
+        nginx.ingress.kubernetes.io/server-snippet: |
+          return 302 https://onboarding.dome-marketplace.eu/sorry.html;
+        ####
+
+        
       tls:
         -  hosts:
              - dome-marketplace-prd.org
