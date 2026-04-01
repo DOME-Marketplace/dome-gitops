@@ -26,11 +26,11 @@ zammad:
       webConcurrency: 2
       resources:
         requests:
-          cpu: "500m"
-          memory: "2Gi"
+          cpu: 1000m
+          memory: 2Gi
         limits:
-          cpu: "2000m"
-          memory: "4Gi"
+          cpu: 2000m
+          memory: 4Gi
       securityContext:
         allowPrivilegeEscalation: false
         capabilities:
@@ -82,11 +82,11 @@ zammad:
     primary:
       resources:
         requests:
-          cpu: "100m"
-          memory: "1Gi"
+          cpu: 500m
+          memory: 1Gi
         limits:
-          cpu: "500m"
-          memory: "2Gi"
+          cpu: 1000m
+          memory: 2Gi
 
   redis:
     image:
@@ -95,11 +95,11 @@ zammad:
     master:
       resources:
         requests:
-          cpu: "100m"
-          memory: "128Mi"
+          cpu: 100m
+          memory: 128Mi
         limits:
-          cpu: "250m"
-          memory: "256Mi"
+          cpu: 250m
+          memory: 256Mi
 
   memcached:
     image:
@@ -107,8 +107,8 @@ zammad:
       tag: 1.6.23-debian-11-r0
     resources:
       requests:
-        cpu: "100m"
-        memory: "128Mi"
+        cpu: 100m
+        memory: 128Mi
       limits:
-        cpu: "250m"
-        memory: "256Mi"
+        cpu: 250m
+        memory: 256Mi
