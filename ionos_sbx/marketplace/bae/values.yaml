@@ -129,7 +129,7 @@ business-api-ecosystem:
     deployment:
       image:
         repository: fiware/biz-ecosystem-charging-backend
-        tag: "11.4.0"
+        tag: "11.5.0"
         pullPolicy: Always
 
     plugins:
@@ -190,6 +190,8 @@ business-api-ecosystem:
         value: dpas
       - name: DPAS_KEY
         value: "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuPA4lVLi2g3ZHlITEe2e\nH/bmAs137p0EJi18CNnY7xzvgOZyVlzxBO5YI6CY5Vf4z9E2WQaoPKk8NwmaKWzl\nxWPaK/0CCEzAFd7Vkk0601EQsrYScpKoFKrxdoyh2/QyA4q4RptYjly/OOBckjQp\nMlLtJhHZAJV4SOoBtkr2ON4XMt1csNFm3+ql0Sb3zqG3zZRfbLC2qHvpjqFFHNL5\np/GZhDY4VPwvbNU05bOkVxRtXS1KCKh01e/skhUS+U/fZy+4d6PlIlkKH1qi2tXO\nxAPmEegSsqMyRFdnsPvvdGdwzfuTouOHU16ivrZ7z2vATiHqmEwa1lwScBFdbK/C\nBQIDAQAB\n-----END PUBLIC KEY-----"
+      - name: BAE_CB_NOTIFICATION_RECIPIENT_EMAIL
+        value: support@dome-marketplace.eu
 
 
   oauth:
@@ -207,7 +209,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "11.15.0"
+        tag: "11.16.0"
         pullPolicy: Always
 
     ingress: 
