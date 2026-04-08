@@ -23,6 +23,13 @@ spec:
             - containerPort: 8080
               hostPort: 8080
               protocol: TCP
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "200Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
           env:
             - name: ELASTICSEARCH_ADDRESS_HOST
               value: elasticsearch-master

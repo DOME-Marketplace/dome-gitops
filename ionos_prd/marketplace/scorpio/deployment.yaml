@@ -28,6 +28,13 @@ spec:
         - name: scorpio
           imagePullPolicy: IfNotPresent
           image: "scorpiobroker/all-in-one-runner:java-kafka-4.1.10"
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "1Gi"
+            limits:
+              cpu: "500m"
+              memory: "1536Mi"
           env:
             - name: DBHOST
               value: postgis

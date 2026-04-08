@@ -46,6 +46,15 @@ tm-forum-api:
       # -- address of the broker
       url: http://scorpio:1026
 
+    # -- resource requests/limits applied to all TM Forum API pods
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "512Mi"
+      limits:
+        cpu: "500m"
+        memory: "1Gi"
+
     logLevel: INFO
     contextUrl: https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld
 
