@@ -2,8 +2,17 @@ trusted-issuers-list:
 
   # Image
   deployment:
-    image:  
+    image:
       tag: 0.2.0
+
+  # Resources
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "384Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
 
   # Configure an Ingress or OpenShift Route
   ingress:

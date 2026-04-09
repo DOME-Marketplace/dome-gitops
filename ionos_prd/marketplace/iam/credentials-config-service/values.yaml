@@ -2,9 +2,18 @@ credentials-config-service:
 
   # Image
   deployment:
-    image: 
+    image:
       repository: quay.io/fiware/credentials-config-service
       tag: 1.0.1
+
+  # Resources
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "384Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
 
   # Database config
   database:

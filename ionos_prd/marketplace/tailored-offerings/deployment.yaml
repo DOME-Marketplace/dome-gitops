@@ -18,6 +18,13 @@ spec:
       containers:
         - name: quote-management-container
           image: production.eng.it:8433/dome/quote_management_backend:1.3.22
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "400Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
           env:
             - name: TMFORUM_API_BASE_URL
               value: http://tm-forum-api-quote.marketplace.svc.cluster.local:8080/tmf-api

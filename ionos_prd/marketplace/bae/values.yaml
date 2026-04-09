@@ -141,6 +141,14 @@ business-api-ecosystem:
     
     port: 8006
 
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "128Mi"
+      limits:
+        cpu: "500m"
+        memory: "256Mi"
+
     loglevel: debug
 
     payment:
@@ -209,6 +217,14 @@ business-api-ecosystem:
 
     port: 8004
     nodeEnvironment: production
+
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "384Mi"
+      limits:
+        cpu: "500m"
+        memory: "512Mi"
 
     db:
       host: mongodb
