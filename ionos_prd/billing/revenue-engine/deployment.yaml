@@ -23,11 +23,11 @@ spec:
               protocol: TCP
           resources:
             requests:
-              cpu: "500m"
-              memory: "512Mi"      
+              cpu: "50m"
+              memory: "256Mi"
             limits:
               memory: 512Mi
-              cpu: "1"
+              cpu: "500m"
           env:
             - name: TMF_ENDPOINT
               value: http://tm-forum-api
