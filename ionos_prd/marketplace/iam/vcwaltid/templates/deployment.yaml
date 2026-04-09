@@ -23,6 +23,13 @@ spec:
         - name: {{ .Chart.Name }}
           imagePullPolicy: Always
           image: "lipanski/docker-static-website:2.1.0"
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "32Mi"
+            limits:
+              cpu: "100m"
+              memory: "64Mi"
           ports:
             - name: http
               containerPort: 3000

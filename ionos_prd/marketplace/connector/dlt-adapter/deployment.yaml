@@ -26,6 +26,13 @@ spec:
         - image: aleniet/dlt-adapter:1.1
           imagePullPolicy: IfNotPresent
           name: dlt-adapter
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "384Mi"
           env:
             - name: PRIVATE_KEY
               value: 0xe2afef2c880b138d741995ba56936e389b0b5dd2943e21e4363cc70d81c89346

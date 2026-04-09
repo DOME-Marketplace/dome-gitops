@@ -10,6 +10,13 @@ access-node:
       # Overrides the image tag whose default is the chart appVersion.
       tag: v2.0.3
       pullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "512Mi"
+      limits:
+        cpu: "500m"
+        memory: "768Mi"
     readinessProbe:
       failureThreshold: 10
     livenessProbe:
@@ -124,6 +131,14 @@ access-node:
   scorpio:
     # -- should scorpio be enabled
     enabled: true
+    ## resource requests/limits
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "1Gi"
+      limits:
+        cpu: "500m"
+        memory: "1536Mi"
     ## configuration of the image to be used
     image:
       # -- repository to be used - resource friendly all-in-one-runner without kafka
@@ -219,6 +234,14 @@ access-node:
         # -- current latest tag
         tag: "sbx_1.5.4"
         pullPolicy: IfNotPresent
+      # -- resource requests/limits applied to all TM Forum API pods
+      resources:
+        requests:
+          cpu: "50m"
+          memory: "512Mi"
+        limits:
+          cpu: "500m"
+          memory: "1Gi"
       additionalEnvVars:
         - name: API_EXTENSION_ENABLED
           value: "true"
