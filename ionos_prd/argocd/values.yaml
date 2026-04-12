@@ -25,6 +25,15 @@ redis-ha:
 
 controller:
   replicas: 1
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/component: server
+            topologyKey: kubernetes.io/hostname
   metrics:
     enabled: true
     serviceMonitor:
@@ -32,6 +41,15 @@ controller:
 
 server:
   replicas: 1
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/component: repo-server
+            topologyKey: kubernetes.io/hostname
   ingress:
     enabled: true
     hostname: argocd.dome-marketplace-prd.org
@@ -48,6 +66,15 @@ server:
 
 repoServer:
   replicas: 1
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/component: application-controller
+            topologyKey: kubernetes.io/hostname
   metrics:
     enabled: true
     serviceMonitor:
