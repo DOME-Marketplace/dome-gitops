@@ -33,6 +33,22 @@ keycloak:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
     tls: true
+    # Legacy hostnames previously served by the orphan cs-identity-keycloak-2
+    # ingress. Keeping them here so all hostnames remain routable after the
+    # orphan is removed.
+    extraHosts:
+      - name: cs-identity.dome-marketplace-prd.org
+        path: /
+      - name: cs-identity.dome-marketplace.org
+        path: /
+      - name: cs-identity.yumket.eu
+        path: /
+    extraTls:
+      - hosts:
+          - cs-identity.dome-marketplace-prd.org
+          - cs-identity.dome-marketplace.org
+          - cs-identity.yumket.eu
+        secretName: cs-identity-legacy-tls
     
   extraEnvVars:
     - name: KEYCLOAK_PROXY_ADDRESS_FORWARDING
