@@ -12,6 +12,21 @@ mysql:
       CREATE DATABASE ccs;
       
   primary:
+    affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values:
+                      - mongodb
+                      - scorpio
+              namespaces:
+                - marketplace
+              topologyKey: kubernetes.io/hostname
     podAnnotations:
       backup.velero.io/backup-volumes: data
 

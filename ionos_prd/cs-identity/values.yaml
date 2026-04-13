@@ -1,4 +1,15 @@
 keycloak:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/component: primary
+            namespaces:
+              - cs-identity
+            topologyKey: kubernetes.io/hostname
   image:
     repository: bitnamilegacy/keycloak
     tag: 24.0.4-debian-12-r1
