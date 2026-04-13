@@ -365,7 +365,7 @@ access-node:
       basePath: /tmf-api/document/v4
       additionalEnvVars:
         - name: S3_ENDPOINT
-          value: "https://s3-eu-central-3.ionoscloud.com"
+          value: "https://s3.eu-central-3.ionoscloud.com"
         - name: S3_BUCKET
           value: "desmos-testing-data-dev"
         - name: S3_REGION
