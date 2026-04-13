@@ -113,6 +113,15 @@ access-node:
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     fullnameOverride: dlt-adapter
 
+    # Resources (dlt-adapter subchart expects top-level resources key)
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "256Mi"
+      limits:
+        cpu: "500m"
+        memory: "384Mi"
+
     existingSecret:
       enabled: true
       name: access-node-secret
