@@ -12,6 +12,14 @@ mysql:
       CREATE DATABASE ccs;
       
   primary:
+    # Resources based on 30-day Prometheus max: 99m CPU, 790Mi memory
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "768Mi"
+      limits:
+        cpu: "500m"
+        memory: "1Gi"
     affinity:
       podAntiAffinity:
         preferredDuringSchedulingIgnoredDuringExecution:
