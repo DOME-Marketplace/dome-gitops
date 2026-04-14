@@ -33,6 +33,14 @@ keycloak:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-prd-issuer
     tls: true
+    # Legacy redirect from the old -prd.org domain
+    extraHosts:
+      - name: cs-identity.dome-marketplace-prd.org
+        path: /
+    extraTls:
+      - hosts:
+          - cs-identity.dome-marketplace-prd.org
+        secretName: cs-identity-prd-tls
     
   extraEnvVars:
     - name: KEYCLOAK_PROXY_ADDRESS_FORWARDING
