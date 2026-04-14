@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: certification-frontend
-          image: jviegasubi/domecertificationfrontend:1.1.6
+          image: jviegasubi/domecertificationfrontend:1.1.7
           ports:
             - containerPort: 80
               name: http
