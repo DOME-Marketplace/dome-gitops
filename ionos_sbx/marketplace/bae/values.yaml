@@ -209,7 +209,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "11.16.1"
+        tag: "11.17.0"
         pullPolicy: Always
 
     ingress: 
@@ -290,6 +290,10 @@ business-api-ecosystem:
         value: DOME
       - name: BAE_LP_OPERATOR_ID
         value: "did:elsi:VATSB-12345678J"
+      - name: BAE_LP_PRICE_COMP_SCHEMA
+        value: https://raw.githubusercontent.com/DOME-Marketplace/tmf-api/refs/heads/main/DOME/PriceComponent.schema.json
+      - name: BAE_LP_OFFERING_SCHEMA
+        value: https://raw.githubusercontent.com/DOME-Marketplace/tmf-api/refs/heads/main/DOME/ExternallyBilled.schema.json
       - name: BAE_LP_PARTY_LOCATION
         value: "https://raw.githubusercontent.com/DOME-Marketplace/tmf-api/refs/heads/main/DOME/ShareableEntity.schema.json"
       - name: BAE_LP_ENDPOINT_SEARCH_HOST
