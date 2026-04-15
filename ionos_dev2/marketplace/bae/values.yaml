@@ -185,6 +185,8 @@ business-api-ecosystem:
         value: "https://raw.githubusercontent.com/DOME-Marketplace/tmf-api/refs/heads/main/DOME/ShareableEntity.schema.json"
       - name: DPAS_KEY
         value: "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuPA4lVLi2g3ZHlITEe2e\nH/bmAs137p0EJi18CNnY7xzvgOZyVlzxBO5YI6CY5Vf4z9E2WQaoPKk8NwmaKWzl\nxWPaK/0CCEzAFd7Vkk0601EQsrYScpKoFKrxdoyh2/QyA4q4RptYjly/OOBckjQp\nMlLtJhHZAJV4SOoBtkr2ON4XMt1csNFm3+ql0Sb3zqG3zZRfbLC2qHvpjqFFHNL5\np/GZhDY4VPwvbNU05bOkVxRtXS1KCKh01e/skhUS+U/fZy+4d6PlIlkKH1qi2tXO\nxAPmEegSsqMyRFdnsPvvdGdwzfuTouOHU16ivrZ7z2vATiHqmEwa1lwScBFdbK/C\nBQIDAQAB\n-----END PUBLIC KEY-----"
+      - name: BAE_CB_NOTIFICATION_RECIPIENT_EMAIL
+        value: info@dome-marketplace.eu
 
   oauth:
     provider: "vc"
@@ -201,7 +203,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "11.15.0"
+        tag: "11.16.1"
         pullPolicy: Always
 
     ingress: 
@@ -256,8 +258,10 @@ business-api-ecosystem:
         value: "true"
       - name: BAE_LP_DOME_ABOUT
         value: https://dome-project.eu/about/
-      - name: BAE_LP_DOME_REGISTRATION_FORM
-        value: https://onboarding.dome-marketplace.eu/
+      - name: BAE_LP_DOME_REGISTER
+        value: https://onboard.sbx.evidenceledger.eu/register-provider
+      - name: BAE_LP_DOME_REGISTER_CUSTOMER
+        value: https://onboard.sbx.evidenceledger.eu/register-customer
       - name: BAE_LP_DOME_ONBOARDING_GUIDELINES
         value: https://knowledgebase.dome-marketplace-prd.org/books/company-onboarding-process-guide-for-cloud-service-providers-csp
       - name: BAE_LP_DOME_GUIDELINES
@@ -284,6 +288,8 @@ business-api-ecosystem:
         value: "https://raw.githubusercontent.com/DOME-Marketplace/tmf-api/refs/heads/main/DOME/ShareableEntity.schema.json"
       - name: BAE_LP_ENDPOINT_SEARCH_HOST
         value: dome-search-svc.search-engine.svc.cluster.local
+      - name: BAE_LP_COMPLIANCE_SERVER_URL
+        value: http://certification-backend-svc.dome-certification.svc.cluster.local:8080
       - name: BAE_LP_SIOP_PRIVATE_KEY
         valueFrom:
           secretKeyRef:
