@@ -2,7 +2,7 @@ zammad:
 
   image:
     repository: kingmanfri/dome_ticketing_zammad
-    tag: "1.4"
+    tag: "1.3"
     pullPolicy: Always
 
   ingress:
@@ -21,10 +21,16 @@ zammad:
           - ticketing.dome-marketplace-dev.org
 
   zammadConfig:
-
     railsserver:
-      webConcurrency: 4
-
+      replicas: 2
+      webConcurrency: 2
+      resources:
+        requests:
+          cpu: 500m
+          memory: 2Gi
+        limits:
+          cpu: 2000m
+          memory: 4Gi
       securityContext:
         allowPrivilegeEscalation: false
         capabilities:
@@ -32,6 +38,15 @@ zammad:
             - ALL
         readOnlyRootFilesystem: false
         privileged: false
+      readinessProbe:
+        httpGet:
+          path: /
+          port: 3000
+        initialDelaySeconds: 45
+        periodSeconds: 10
+        timeoutSeconds: 10
+        failureThreshold: 8
+        successThreshold: 1
 
   elasticsearch:
     image:
@@ -42,25 +57,10 @@ zammad:
       repository: bitnamilegacy/os-shell
       tag: 11-debian-11-r96
     clusterName: zammad
-    coordinating:
-      replicaCount: 0
-    data:
-      replicaCount: 1
-      resources:
-        requests:
-          cpu: 1000m
-          memory: 4Gi
-        limits:
-          cpu: 2000m
-          memory: 6Gi
-      heapSize: 3g
-    ingest:
-      replicaCount: 0
     master:
-      heapSize: 1g
       masterOnly: false
       replicaCount: 1
-      resourcesPreset: null
+      heapSize: 1g
       resources:
         requests:
           cpu: 500m
@@ -68,18 +68,57 @@ zammad:
         limits:
           cpu: 1000m
           memory: 3Gi
+    coordinating:
+      replicaCount: 0
+    data:
+      replicaCount: 0
+    ingest:
+      replicaCount: 0
 
   postgresql:
     image:
       repository: bitnamilegacy/postgresql
       tag: 15.4.0-debian-11-r45
+    primary:
+      resources:
+        requests:
+          cpu: 500m
+          memory: 1Gi
+        limits:
+          cpu: 1000m
+          memory: 2Gi
 
   redis:
     image:
       repository: bitnamilegacy/redis
       tag: 7.0.12-debian-11-r34
+    master:
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
+        limits:
+          cpu: 250m
+          memory: 256Mi
 
   memcached:
     image:
       repository: bitnamilegacy/memcached
       tag: 1.6.23-debian-11-r0
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
+
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/instance: zammad
+          topologyKey: kubernetes.io/hostname
