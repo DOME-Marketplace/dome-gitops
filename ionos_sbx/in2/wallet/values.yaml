@@ -19,6 +19,13 @@ dome-wallet:
       # Overrides the image tag whose default is the chart appVersion.
       tag: v2.0.7
       pullPolicy: Always
+    resources:
+      requests:
+        cpu: 150m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 640Mi
     ## deployment specific configuration
     app:
       logLevel: INFO
@@ -82,6 +89,13 @@ dome-wallet:
       repository: in2workspace/eudistack-wallet-ui
       # Overrides the image tag whose default is the chart appVersion.
       tag: v2.0.14
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
     ## deployment specific configuration
     app:
       logsEnabled: true
