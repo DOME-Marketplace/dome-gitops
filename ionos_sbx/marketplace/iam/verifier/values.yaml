@@ -4,6 +4,14 @@ dome-verifier:
     tag: v2.0.13
     pullPolicy: Always
 
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "512Mi"
+    limits:
+      cpu: "500m"
+      memory: "640Mi"
+
   ingress:
     enabled: true
     className: nginx
