@@ -10,12 +10,13 @@ access-node:
       # Overrides the image tag whose default is the chart appVersion.
       tag: v2.0.8
       pullPolicy: Always
-    requests:
-      cpu: "50m"
-      memory: "512Mi"
-    limits:
-      cpu: "500m"
-      memory: "768Mi"
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "512Mi"
+      limits:
+        cpu: "500m"
+        memory: "768Mi"
     readinessProbe:
       failureThreshold: 10
     livenessProbe:
