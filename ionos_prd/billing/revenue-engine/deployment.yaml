@@ -50,9 +50,9 @@ spec:
             - name: DEV_ENABLE_WEB_DASHBOARD
               value: "false"
             - name: SCHEDULER_ENABLED
-              value: "false"
+              value: "true"
             - name: SCHEDULER_CRON
-              value: "0 0 13 * * *" 
+              value: "0 0 2 6 * *"  
           livenessProbe:
             httpGet:
               path: /health
