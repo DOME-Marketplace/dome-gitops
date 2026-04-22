@@ -17,7 +17,7 @@ dome-issuer:
     image:
       repository: in2workspace/eudistack-issuer-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.2.22-pr-217
+      tag: v2.2.22-pr-218
       pullPolicy: Always
     ingressIssuerApi:
       enabled: true
@@ -111,6 +111,9 @@ dome-issuer:
           allowedOrigins: "https://issuer.dome-marketplace-sbx.org, https://wallet.dome-marketplace-sbx.org"
         external:
           allowedOrigins: "https://issuer.dome-marketplace-sbx.org, https://dome-certification.dome-marketplace-sbx.org, https://wallet.dome-marketplace-sbx.org"
+      labelUpload:
+        certifierEmail: roger.miret@altia.es
+        marketplaceEmail: r.mir.min@gmail.com
       vault:
         url: http://wallet-vault-server:8200
         secretsMount: kv
