@@ -4,6 +4,13 @@ keycloak:
     pullPolicy: Always
     # Overrides the image tag whose default is the chart appVersion.
     tag: v1.1.1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 3Gi
+    limits:
+      cpu: 1000m
+      memory: 6Gi
 
   fullnameOverride: keycloak
   nameOverride: keycloak
