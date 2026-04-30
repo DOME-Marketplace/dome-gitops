@@ -25,7 +25,7 @@
 
 # PRD service list
 /ionos_prd/argocd/ @bialask-daiteap
-/ionos_prd/billing/ @pasquy73 @cdizenzo
+/ionos_prd/billing/ @pasquy73 @cdizenzo @sdagostini
 /ionos_prd/cert-manager/ @bialask-daiteap
 /ionos_prd/chatbot/ @kingmanfri
 /ionos_prd/cs-identity/ @Sh3rd3n
@@ -64,7 +64,7 @@
 # DEV2 service list
 /ionos_dev2/analytics/ @peppasnet
 /ionos_dev2/argocd/ @bialask-daiteap
-/ionos_dev2/billing/ @pasquy73 @cdizenzo
+/ionos_dev2/billing/ @pasquy73 @cdizenzo @sdagostini
 /ionos_dev2/cert-manager/ @bialask-daiteap
 /ionos_dev2/chatbot/ @kingmanfri
 /ionos_dev2/cs-identity/ @Sh3rd3n
@@ -83,7 +83,7 @@
 # SBX service list
 /ionos_sbx/analytics/ @peppasnet
 /ionos_sbx/argocd/ @bialask-daiteap
-/ionos_sbx/billing/ @pasquy73 @cdizenzo
+/ionos_sbx/billing/ @pasquy73 @cdizenzo @sdagostini
 /ionos_sbx/cert-manager/ @bialask-daiteap
 /ionos_sbx/chatbot/ @kingmanfri
 /ionos_sbx/cs-identity/ @Sh3rd3n
