@@ -299,6 +299,8 @@ business-api-ecosystem:
         value: "false"
       - name: BAE_LP_COMPLIANCE_SERVER_URL
         value: http://certification-backend-svc.dome-certification.svc.cluster.local:8080
+      - name: BAE_LP_LEAR_URL
+        value: https://issuer.dome-marketplace-sbx.org/
       - name: BAE_LP_SIOP_PRIVATE_KEY
         valueFrom:
           secretKeyRef:
