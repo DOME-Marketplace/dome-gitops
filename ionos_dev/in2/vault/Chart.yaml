@@ -3,7 +3,7 @@ name: vault
 description: A Helm chart for Kubernetes to deploy Hashicorp Vault
 type: application
 version: 1.1.10
-appVersion: 1.16.3
+appVersion: 1.16.4
 dependencies:
   - name: vault
     version: 1.4.3
