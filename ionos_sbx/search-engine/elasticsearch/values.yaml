@@ -4,7 +4,6 @@ elasticsearch:
   imagePullPolicy: "IfNotPresent"
 
   replicas: 1
-  clusterHealthCheckParams: ""
 
   protocol: http
   httpPort: 9200
