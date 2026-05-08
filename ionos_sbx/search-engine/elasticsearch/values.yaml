@@ -6,6 +6,9 @@ elasticsearch:
   replicas: 1
   clusterHealthCheckParams: ""
 
+  protocol: http
+  httpPort: 9200
+
   resources:
     requests:
       cpu: "500m"
@@ -25,10 +28,6 @@ elasticsearch:
         storage: "5Gi"
 
   readinessProbe: 
-    httpGet:
-      path: /
-      port: 9200
-      scheme: HTTP
     failureThreshold: 10
     initialDelaySeconds: 90
     periodSeconds: 10
