@@ -45,3 +45,15 @@ elasticsearch:
       xpack.security.enabled: false
       xpack.security.http.ssl.enabled: false
       xpack.security.transport.ssl.enabled: false
+
+  extraEnvs:
+    - name: discovery.seed_hosts
+      value: ""
+    - name: cluster.initial_master_nodes
+      value: ""
+    - name: xpack.security.enabled
+      value: "false"
+    - name: xpack.security.http.ssl.enabled
+      value: "false"
+    - name: xpack.security.transport.ssl.enabled
+      value: "false"
