@@ -8,6 +8,10 @@ elasticsearch:
 
   protocol: http
   httpPort: 9200
+    
+  http:
+    tls:
+      enabled: false
 
   resources:
     requests:
@@ -20,8 +24,6 @@ elasticsearch:
   networkHost: "0.0.0.0"
 
   volumeClaimTemplate:
-    metadata:
-      name: elasticsearch-pvc
     accessModes: ["ReadWriteOnce"]
     resources:
       requests:
@@ -35,25 +37,11 @@ elasticsearch:
     timeoutSeconds: 5
 
   elasticPassword: dome_2024!
-  
-  http:
-    tls:
-      enabled: false
+
 
   esConfig:
     elasticsearch.yml: |
+      discovery.type: single-node
       xpack.security.enabled: false
       xpack.security.http.ssl.enabled: false
       xpack.security.transport.ssl.enabled: false
-
-  extraEnvs:
-    - name: discovery.seed_hosts
-      value: ""
-    - name: cluster.initial_master_nodes
-      value: ""
-    - name: xpack.security.enabled
-      value: "false"
-    - name: xpack.security.http.ssl.enabled
-      value: "false"
-    - name: xpack.security.transport.ssl.enabled
-      value: "false"
