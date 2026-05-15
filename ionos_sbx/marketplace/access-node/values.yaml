@@ -114,6 +114,11 @@ access-node:
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     fullnameOverride: dlt-adapter
 
+    image:
+      repository:  quay.io/digitelts/dlt-adapter
+      pullPolicy: Always 
+      tag: "1.5.3-SNAPSHOT" 
+
     service:
       port: 8080
 
