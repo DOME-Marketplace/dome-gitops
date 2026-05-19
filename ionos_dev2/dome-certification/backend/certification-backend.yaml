@@ -16,9 +16,9 @@ spec:
     spec:
       containers:
         - name: certification-backend
-          image: noeliaguedek/dome-compliance-backend:dev2-1.3.8
+          image: jviegasubi/domecertificationbackend:1.4.0
           env:
-            - name: POSTGRES_PASSWORD
+            - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: dekra-postgres-secret
