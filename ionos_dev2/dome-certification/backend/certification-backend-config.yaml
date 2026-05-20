@@ -20,6 +20,7 @@ data:
   # LOGGING_LEVEL_ROOT: INFO
   SPRING_MAIL_USERNAME: certification@dome-marketplace.eu
   SPRING_MAIL_ADDRESS: certification@dome-marketplace.eu
+  EMAIL_ADDRESS: certification@dome-marketplace.eu
   SPRING_MAIL_HOST: smtp.ionos.de
   SPRING_MAIL_PORT: "587"
   SPRING_MAIL_SMPT_AUTH: "true"
