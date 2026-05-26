@@ -21,7 +21,7 @@ elasticsearch:
     accessModes: ["ReadWriteOnce"]
     resources:
       requests:
-        storage: "5Gi"
+        storage: "30Gi"
 
   readinessProbe:
     failureThreshold: 4
@@ -42,3 +42,12 @@ elasticsearch:
     enabled: true
     password: dome_2024!
 
+  extraVolumes:
+    - name: certs
+      emptyDir:
+        medium: Memory
+        sizeLimit: 100Mi
+
+  extraVolumeMounts:
+    - name: certs
+      mountPath: /usr/share/elasticsearch/config/certs
