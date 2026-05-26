@@ -33,11 +33,10 @@ elasticsearch:
     elasticsearch.yml: |
       network.host: 0.0.0.0
       discovery.type: single-node   
-      discovery.seed_hosts: []
-      cluster.initial_master_nodes: []
-      xpack.security.http.ssl.enabled: true
-      xpack.security.transport.ssl.enabled: true
+      xpack.security.enabled: true
 
+  createCert: true
+  
   secret:
     enabled: true
     password: dome_2024!
