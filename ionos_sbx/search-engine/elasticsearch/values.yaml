@@ -4,7 +4,6 @@ elasticsearch:
 
   replicas: 1
   clusterHealthCheckParams: "wait_for_status=yellow&timeout=60s"
-  minimumMasterNodes: 1
 
   protocol: https
   httpPort: 9200
@@ -42,13 +41,3 @@ elasticsearch:
   secret:
     enabled: true
     password: dome_2024!
-
-  extraVolumes:
-    - name: certs
-      emptyDir:
-        medium: Memory
-        sizeLimit: 100Mi
-
-  extraVolumeMounts:
-    - name: certs
-      mountPath: /usr/share/elasticsearch/config/certs
