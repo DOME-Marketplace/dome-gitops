@@ -29,14 +29,13 @@ elasticsearch:
     periodSeconds: 10
     successThreshold: 3
     timeoutSeconds: 5  
-  
-  networkHost: "0.0.0.0"
 
   esConfig:
     elasticsearch.yml: |
       network.host: 0.0.0.0
       xpack.security.http.ssl.enabled: true
       xpack.security.transport.ssl.enabled: true
+      discovery.type: single-node
 
   secret:
     enabled: true
