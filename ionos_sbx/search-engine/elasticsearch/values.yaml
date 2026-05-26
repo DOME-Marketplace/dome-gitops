@@ -33,9 +33,11 @@ elasticsearch:
   esConfig:
     elasticsearch.yml: |
       network.host: 0.0.0.0
+      discovery.type: single-node   
+      discovery.seed_hosts: []
+      cluster.initial_master_nodes: []
       xpack.security.http.ssl.enabled: true
       xpack.security.transport.ssl.enabled: true
-      discovery.type: single-node
 
   secret:
     enabled: true
