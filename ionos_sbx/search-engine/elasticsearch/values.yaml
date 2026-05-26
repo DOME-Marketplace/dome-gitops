@@ -32,11 +32,15 @@ elasticsearch:
   esConfig:
     elasticsearch.yml: |
       network.host: 0.0.0.0
-      discovery.type: single-node   
+      discovery.type: single-node
       xpack.security.enabled: true
 
   createCert: true
-  
+
   secret:
     enabled: true
     password: dome_2024!
+
+  extraEnvs:
+    - name: cluster.initial_master_nodes
+      value: ""
