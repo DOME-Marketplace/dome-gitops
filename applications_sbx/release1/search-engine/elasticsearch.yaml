@@ -26,3 +26,4 @@ spec:
         - /spec/volumeClaimTemplates
         - /spec/template/spec/volumes
         - /spec/template/metadata/annotations
+        - /spec/template/spec/containers
