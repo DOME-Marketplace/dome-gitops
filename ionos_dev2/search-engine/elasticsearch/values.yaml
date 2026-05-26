@@ -21,7 +21,7 @@ elasticsearch:
     accessModes: ["ReadWriteOnce"]
     resources:
       requests:
-        storage: "5Gi"
+        storage: "30Gi"
 
   readinessProbe:
     failureThreshold: 4
@@ -29,8 +29,6 @@ elasticsearch:
     periodSeconds: 10
     successThreshold: 3
     timeoutSeconds: 5  
-  
-  networkHost: "0.0.0.0"
 
   esConfig:
     elasticsearch.yml: |

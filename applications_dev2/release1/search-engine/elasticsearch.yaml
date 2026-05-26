@@ -18,3 +18,12 @@ spec:
     automated:
       prune: true
       selfHeal: true
+  ignoreDifferences:
+    - group: apps
+      kind: StatefulSet
+      name: elasticsearch-master
+      jsonPointers:
+        - /spec/volumeClaimTemplates
+        - /spec/template/spec/volumes
+        - /spec/template/metadata/annotations
+        - /spec/template/spec/containers
