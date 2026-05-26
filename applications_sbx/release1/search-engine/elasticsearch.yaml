@@ -24,3 +24,4 @@ spec:
       name: elasticsearch-master
       jsonPointers:
         - /spec/volumeClaimTemplates
+        - /spec/template/spec/volumes
