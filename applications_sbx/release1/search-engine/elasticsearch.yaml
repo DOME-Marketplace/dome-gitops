@@ -21,5 +21,6 @@ spec:
   ignoreDifferences:
     - group: apps
       kind: StatefulSet
+      name: elasticsearch-master
       jsonPointers:
         - /spec/volumeClaimTemplates
