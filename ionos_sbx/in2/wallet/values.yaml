@@ -72,7 +72,7 @@ dome-wallet:
         port: 5432
         externalService: true
         name: identity
-        username: identity_wallet
+        username: identity_wallet_user
         ssl:
           enabled: true
           mode: require
