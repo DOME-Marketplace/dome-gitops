@@ -26,6 +26,23 @@ dome-issuer:
       limits:
         cpu: 500m
         memory: 896Mi
+    livenessProbe:
+      httpGet:
+        path: /health
+        port: 8080
+      initialDelaySeconds: 150
+      timeoutSeconds: 3
+      periodSeconds: 10
+      failureThreshold: 6
+
+    readinessProbe:
+      httpGet:
+        path: /health
+        port: 8080
+      initialDelaySeconds: 40
+      timeoutSeconds: 3
+      periodSeconds: 10
+      failureThreshold: 6
     ingressIssuerApi:
       enabled: true
       className: nginx
