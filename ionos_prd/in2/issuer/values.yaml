@@ -18,6 +18,13 @@ dome-issuer:
       repository: in2workspace/eudistack-issuer-api
       # Overrides the image tag whose default is the chart appVersion.
       tag: v2.2.17
+    resources:
+      requests:
+        cpu: 50m
+        memory: 640Mi
+      limits:
+        cpu: 500m
+        memory: 896Mi
     ingressIssuerApi:
       enabled: true
       className: nginx
@@ -138,6 +145,13 @@ dome-issuer:
       repository: in2workspace/eudistack-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
       tag: v2.1.14
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+      limits:
+        cpu: 100m
+        memory: 64Mi
     app:
       themeName: "dome-theme"
       assets:
