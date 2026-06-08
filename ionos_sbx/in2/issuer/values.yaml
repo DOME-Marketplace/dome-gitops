@@ -17,7 +17,7 @@ dome-issuer:
     image:
       repository: in2workspace/eudistack-issuer-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.2.22
+      tag: v2.2.23
       pullPolicy: Always
     resources:
       requests:
@@ -148,7 +148,7 @@ dome-issuer:
     image:
       repository: in2workspace/eudistack-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.1.16
+      tag: v2.1.17
       pullPolicy: Always
     resources:
       requests:

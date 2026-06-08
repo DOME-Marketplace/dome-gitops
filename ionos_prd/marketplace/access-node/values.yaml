@@ -241,7 +241,7 @@ access-node:
       image:
         repository: docker.io/drllbl18
         # -- current latest tag
-        tag: "sbx_1.5.4"
+        tag: "sbx_1.5.6"
         pullPolicy: IfNotPresent
       # -- resource requests/limits applied to all TM Forum API pods
       resources:

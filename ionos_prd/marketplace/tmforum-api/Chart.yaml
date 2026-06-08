@@ -8,5 +8,5 @@ appVersion: "0.4.1"
 
 dependencies:
 - name: tm-forum-api
-  version: 0.14.23
+  version: 0.14.26
   repository: https://dome-marketplace.github.io/tm-forum-charts
