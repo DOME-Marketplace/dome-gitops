@@ -35,11 +35,6 @@ elasticsearch:
       network.host: 0.0.0.0
       xpack.security.http.ssl.enabled: true
       xpack.security.transport.ssl.enabled: true
-      discovery.type: single-node
-
-  extraEnvs:
-    - name: cluster.initial_master_nodes
-      value: ""
 
   secret:
     enabled: true
