@@ -20,6 +20,13 @@ dome-wallet:
       # Overrides the image tag whose default is the chart appVersion.
       tag: v2.0.7
       pullPolicy: Always
+    resources:
+      requests:
+        cpu: 50m
+        memory: 600Mi
+      limits:
+        cpu: 500m
+        memory: 768Mi
     ## deployment specific configuration
     app:
       logLevel: INFO
@@ -83,6 +90,13 @@ dome-wallet:
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
       tag: v2.0.14
+    resources:
+      requests:
+        cpu: "10m"
+        memory: "32Mi"
+      limits:
+        cpu: "100m"
+        memory: "64Mi"
     ## deployment specific configuration
     app:
       logsEnabled: true
