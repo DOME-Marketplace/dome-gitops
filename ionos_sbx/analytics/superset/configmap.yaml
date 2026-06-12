@@ -264,7 +264,8 @@ data:
     mkdir -p /app/data
     
     echo "Installing required packages..."
-    pip install --no-cache-dir Authlib
+
+    pip install --no-cache-dir "Authlib==1.3.2" "cryptography>=42.0.4,<43"
     pip install --no-cache-dir \
         sqlalchemy_trino==0.5.0 \
         mysqlclient==2.2.4 \
