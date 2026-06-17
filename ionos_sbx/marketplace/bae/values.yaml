@@ -209,7 +209,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "11.21.0-RC4"
+        tag: "11.21.0-RC5"
         pullPolicy: Always
 
     ingress: 
@@ -302,8 +302,6 @@ business-api-ecosystem:
         value: "false"
       - name: BAE_LP_COMPLIANCE_SERVER_URL
         value: http://certification-backend-svc.dome-certification.svc.cluster.local:8080
-      - name: BAE_LP_TENDER_DEV_BUTTON_ENABLED
-        value: "true"
       - name: BAE_LP_SIOP_PRIVATE_KEY
         valueFrom:
           secretKeyRef:

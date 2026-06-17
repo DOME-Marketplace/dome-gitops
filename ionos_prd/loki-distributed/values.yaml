@@ -3,6 +3,13 @@ global:
 
 compactor:
   enabled: true
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
 
 ingester:
   persistence:
@@ -10,7 +17,49 @@ ingester:
     claims:
       - name: data
         size: 200Gi
+  resources:
+    requests:
+      cpu: 20m
+      memory: 512Mi
+    limits:
+      cpu: 200m
+      memory: 768Mi
+
+distributor:
+  resources:
+    requests:
+      cpu: 20m
+      memory: 192Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+
 querier:
   persistence:
     enabled: true
     size: 200Gi
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
+
+queryFrontend:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      cpu: 100m
+      memory: 64Mi
+
+gateway:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      cpu: 100m
+      memory: 64Mi
