@@ -1,0 +1,899 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    grafana_dashboard: "1"
+  name: namespace-compliance-overview
+data:
+  namespace-compliance-overview.json: |-
+      {
+        "title": "Namespace Compliance Overview",
+        "description": "Per-namespace resource compliance with cluster context. All values averaged over the selected time range.",
+        "tags": [
+          "dome",
+          "capacity",
+          "compliance"
+        ],
+        "timezone": "browser",
+        "schemaVersion": 39,
+        "editable": true,
+        "fiscalYearStartMonth": 0,
+        "graphTooltip": 0,
+        "refresh": "1m",
+        "time": {
+          "from": "now-7d",
+          "to": "now"
+        },
+        "timepicker": {},
+        "templating": {
+          "list": [
+            {
+              "name": "category",
+              "label": "Namespace categories",
+              "description": "Application = DOME-built workloads. Infrastructure = ops/monitoring/GitOps. System = Kubernetes core. By default Application + Infrastructure are selected; tick System to include kube-system, default, etc.",
+              "type": "custom",
+              "multi": true,
+              "includeAll": false,
+              "options": [
+                {
+                  "text": "Application",
+                  "value": "analytics|billing|chatbot|cs-identity|digitelts|dome-certification|dome-trust|echoserver|in2|knowledgebase|marketplace|search-engine|til|tst01|zammad|zammad2",
+                  "selected": true
+                },
+                {
+                  "text": "Infrastructure",
+                  "value": "argocd|cert-manager|external-dns|falco|ingress-nginx|kube-prometheus-stack|loki-distributed|promtail|sealed-secrets|velero",
+                  "selected": true
+                },
+                {
+                  "text": "System",
+                  "value": "kube-system|kube-public|kube-node-lease|default",
+                  "selected": false
+                }
+              ],
+              "current": {
+                "selected": true,
+                "text": [
+                  "Application",
+                  "Infrastructure"
+                ],
+                "value": [
+                  "analytics|billing|chatbot|cs-identity|digitelts|dome-certification|dome-trust|echoserver|in2|knowledgebase|marketplace|search-engine|til|tst01|zammad|zammad2",
+                  "argocd|cert-manager|external-dns|falco|ingress-nginx|kube-prometheus-stack|loki-distributed|promtail|sealed-secrets|velero"
+                ]
+              },
+              "query": "Application : analytics|billing|chatbot|cs-identity|digitelts|dome-certification|dome-trust|echoserver|in2|knowledgebase|marketplace|search-engine|til|tst01|zammad|zammad2, Infrastructure : argocd|cert-manager|external-dns|falco|ingress-nginx|kube-prometheus-stack|loki-distributed|promtail|sealed-secrets|velero, System : kube-system|kube-public|kube-node-lease|default",
+              "hide": 0,
+              "skipUrlSync": false
+            }
+          ]
+        },
+        "annotations": {
+          "list": []
+        },
+        "panels": [
+          {
+            "id": 1,
+            "type": "stat",
+            "title": "Cluster CPU requested (avg)",
+            "gridPos": {
+              "x": 0,
+              "y": 0,
+              "w": 4,
+              "h": 6
+            },
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "targets": [
+              {
+                "expr": "avg_over_time((sum(kube_pod_container_resource_requests{resource=\"cpu\"}) / sum(kube_node_status_allocatable{resource=\"cpu\"}))[$__range:5m])",
+                "refId": "A",
+                "instant": true,
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                }
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "percentunit",
+                "decimals": 1,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 0.7
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.85
+                    }
+                  ]
+                },
+                "color": {
+                  "mode": "thresholds"
+                }
+              },
+              "overrides": []
+            },
+            "options": {
+              "graphMode": "area",
+              "colorMode": "background",
+              "textMode": "auto",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              }
+            }
+          },
+          {
+            "id": 2,
+            "type": "stat",
+            "title": "Cluster CPU used (avg)",
+            "gridPos": {
+              "x": 4,
+              "y": 0,
+              "w": 4,
+              "h": 6
+            },
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "targets": [
+              {
+                "expr": "avg_over_time((sum(rate(container_cpu_usage_seconds_total{container!=\"POD\",container!=\"\"}[5m])) / sum(kube_node_status_allocatable{resource=\"cpu\"}))[$__range:5m])",
+                "refId": "A",
+                "instant": true,
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                }
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "percentunit",
+                "decimals": 1,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 0.6
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.85
+                    }
+                  ]
+                },
+                "color": {
+                  "mode": "thresholds"
+                }
+              },
+              "overrides": []
+            },
+            "options": {
+              "graphMode": "area",
+              "colorMode": "background",
+              "textMode": "auto",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              }
+            }
+          },
+          {
+            "id": 3,
+            "type": "stat",
+            "title": "Cluster Memory requested (avg)",
+            "gridPos": {
+              "x": 8,
+              "y": 0,
+              "w": 4,
+              "h": 6
+            },
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "targets": [
+              {
+                "expr": "avg_over_time((sum(kube_pod_container_resource_requests{resource=\"memory\"}) / sum(kube_node_status_allocatable{resource=\"memory\"}))[$__range:5m])",
+                "refId": "A",
+                "instant": true,
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                }
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "percentunit",
+                "decimals": 1,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 0.7
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.85
+                    }
+                  ]
+                },
+                "color": {
+                  "mode": "thresholds"
+                }
+              },
+              "overrides": []
+            },
+            "options": {
+              "graphMode": "area",
+              "colorMode": "background",
+              "textMode": "auto",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              }
+            }
+          },
+          {
+            "id": 4,
+            "type": "stat",
+            "title": "Cluster Memory used (avg)",
+            "gridPos": {
+              "x": 12,
+              "y": 0,
+              "w": 4,
+              "h": 6
+            },
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "targets": [
+              {
+                "expr": "avg_over_time((sum(container_memory_working_set_bytes{container!=\"POD\",container!=\"\"}) / sum(kube_node_status_allocatable{resource=\"memory\"}))[$__range:5m])",
+                "refId": "A",
+                "instant": true,
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                }
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "percentunit",
+                "decimals": 1,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 0.6
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.85
+                    }
+                  ]
+                },
+                "color": {
+                  "mode": "thresholds"
+                }
+              },
+              "overrides": []
+            },
+            "options": {
+              "graphMode": "area",
+              "colorMode": "background",
+              "textMode": "auto",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              }
+            }
+          },
+          {
+            "id": 5,
+            "type": "stat",
+            "title": "Cluster Storage used (avg)",
+            "gridPos": {
+              "x": 16,
+              "y": 0,
+              "w": 4,
+              "h": 6
+            },
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "targets": [
+              {
+                "expr": "avg_over_time((sum(kubelet_volume_stats_used_bytes) / sum(kubelet_volume_stats_capacity_bytes))[$__range:5m])",
+                "refId": "A",
+                "instant": true,
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                }
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "percentunit",
+                "decimals": 1,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 0.5
+                    },
+                    {
+                      "color": "orange",
+                      "value": 0.8
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.95
+                    }
+                  ]
+                },
+                "color": {
+                  "mode": "thresholds"
+                }
+              },
+              "overrides": []
+            },
+            "options": {
+              "graphMode": "area",
+              "colorMode": "background",
+              "textMode": "auto",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              }
+            }
+          },
+          {
+            "id": 6,
+            "type": "stat",
+            "title": "N-1 CPU pressure (avg)",
+            "gridPos": {
+              "x": 20,
+              "y": 0,
+              "w": 4,
+              "h": 6
+            },
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "targets": [
+              {
+                "expr": "avg_over_time((sum(kube_pod_container_resource_requests{resource=\"cpu\"}) / (sum(kube_node_status_allocatable{resource=\"cpu\"}) - max(kube_node_status_allocatable{resource=\"cpu\"})))[$__range:5m])",
+                "refId": "A",
+                "instant": true,
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                }
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "unit": "percentunit",
+                "decimals": 1,
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 0.85
+                    },
+                    {
+                      "color": "red",
+                      "value": 1.0
+                    }
+                  ]
+                },
+                "color": {
+                  "mode": "thresholds"
+                }
+              },
+              "overrides": []
+            },
+            "options": {
+              "graphMode": "area",
+              "colorMode": "background",
+              "textMode": "auto",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              }
+            }
+          },
+          {
+            "id": 200,
+            "type": "text",
+            "title": "Legend",
+            "gridPos": {
+              "x": 0,
+              "y": 6,
+              "w": 24,
+              "h": 16
+            },
+            "options": {
+              "mode": "markdown",
+              "content": "### How to read this dashboard\n\nAll numbers are **averaged over the time range** selected in the Grafana time picker (top right). Per-namespace numbers also respect the **Namespaces** filter at the top of the dashboard.\n\n**Compliance % = actual usage \u00f7 requested capacity.**\n\n#### Namespace categories (top filter)\n\n- **Application** \u2014 DOME-built workloads (analytics, billing, marketplace, zammad, etc.)\n- **Infrastructure** \u2014 ops/monitoring/GitOps add-ons (argocd, cert-manager, falco, kube-prometheus-stack, loki, velero, ingress-nginx, sealed-secrets, promtail, external-dns)\n- **System** \u2014 Kubernetes core (kube-system, kube-public, kube-node-lease, default) \u2014 *opt-in*\n\n\n#### Per-namespace cell colors\n\n| Cell | \ud83d\udfe2 Green | \ud83d\udfe1 Yellow | \ud83d\udd34 Red |\n|---|---|---|---|\n| **CPU %** | 30\u201380% (healthy) | <30% wasteful, or 80\u2013120% tight | >120% throttled |\n| **Memory %** | 30\u201380% (healthy) | <30% wasteful, or 80\u2013100% tight | >100% **OOM risk** |\n| **Storage %** | <50% | 50\u201380% monitor, 80\u201395% plan expansion | >95% **disk full** |\n| **Pods w/o requests** | 0 | \u2013 | \u22651 (invisible to scheduler) |\n\nA dash (\u2014) means there is no data for that cell \u2014 usually because no pod in the namespace has set a request for that resource.\n\n#### Status column rollup\n\n- **\u2713 OK** \u2014 nothing flagged\n- **\u26a0 Watch** \u2014 at least one cell is yellow\n- **\u26a1 Act** \u2014 at least one cell is red \u2014 investigate\n\n#### Top stats (cluster-wide; ignores the namespace filter)\n\nCluster **requested** = sum of resource requests across all pods \u00f7 total cluster allocatable. **Used** = actual consumption. The gap between them is reclaim opportunity. **N-1 CPU pressure** > 1.0 means a single node failure causes pending pods (the Apr 2026 incident pattern)."
+            }
+          },
+          {
+            "id": 100,
+            "type": "table",
+            "title": "Namespace Compliance",
+            "description": "Per-namespace usage vs requests, averaged over the selected time range.",
+            "gridPos": {
+              "x": 0,
+              "y": 22,
+              "w": 24,
+              "h": 16
+            },
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "targets": [
+              {
+                "refId": "CPU",
+                "expr": "avg_over_time((sum by (namespace) (rate(container_cpu_usage_seconds_total{container!=\"POD\",container!=\"\",namespace=~\"${category:pipe}\"}[5m])) / sum by (namespace) (kube_pod_container_resource_requests{resource=\"cpu\",namespace=~\"${category:pipe}\"}))[$__range:5m])",
+                "instant": true,
+                "format": "table",
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                }
+              },
+              {
+                "refId": "MEM",
+                "expr": "avg_over_time((sum by (namespace) (container_memory_working_set_bytes{container!=\"POD\",container!=\"\",namespace=~\"${category:pipe}\"}) / sum by (namespace) (kube_pod_container_resource_requests{resource=\"memory\",namespace=~\"${category:pipe}\"}))[$__range:5m])",
+                "instant": true,
+                "format": "table",
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                }
+              },
+              {
+                "refId": "STORAGE",
+                "expr": "avg_over_time((sum by (namespace) (kubelet_volume_stats_used_bytes{namespace=~\"${category:pipe}\"}) / sum by (namespace) (kubelet_volume_stats_capacity_bytes{namespace=~\"${category:pipe}\"}))[$__range:5m])",
+                "instant": true,
+                "format": "table",
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                }
+              },
+              {
+                "refId": "NOREQ",
+                "expr": "sum by (namespace) (count by (namespace, pod, container) (kube_pod_container_info{pod!=\"\",namespace=~\"${category:pipe}\"}) unless on (namespace, pod, container) kube_pod_container_resource_requests{resource=\"cpu\",namespace=~\"${category:pipe}\"})",
+                "instant": true,
+                "format": "table",
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                }
+              },
+              {
+                "refId": "STATUS",
+                "expr": "max by (namespace) (((sum by (namespace) (count by (namespace, pod, container) (kube_pod_container_info{pod!=\"\",namespace=~\"${category:pipe}\"}) unless on (namespace, pod, container) kube_pod_container_resource_requests{resource=\"cpu\",namespace=~\"${category:pipe}\"}) > 0) > bool 0) * 3 or (((avg_over_time((sum by (namespace) (container_memory_working_set_bytes{container!=\"POD\",container!=\"\",namespace=~\"${category:pipe}\"}) / sum by (namespace) (kube_pod_container_resource_requests{resource=\"memory\",namespace=~\"${category:pipe}\"}))[$__range:5m])) > 1.0) > bool 0) * 3 or (((avg_over_time((sum by (namespace) (rate(container_cpu_usage_seconds_total{container!=\"POD\",container!=\"\",namespace=~\"${category:pipe}\"}[5m])) / sum by (namespace) (kube_pod_container_resource_requests{resource=\"cpu\",namespace=~\"${category:pipe}\"}))[$__range:5m])) > 1.2) > bool 0) * 3 or (((avg_over_time((sum by (namespace) (kubelet_volume_stats_used_bytes{namespace=~\"${category:pipe}\"}) / sum by (namespace) (kubelet_volume_stats_capacity_bytes{namespace=~\"${category:pipe}\"}))[$__range:5m])) > 0.9) > bool 0) * 3 or (((avg_over_time((sum by (namespace) (container_memory_working_set_bytes{container!=\"POD\",container!=\"\",namespace=~\"${category:pipe}\"}) / sum by (namespace) (kube_pod_container_resource_requests{resource=\"memory\",namespace=~\"${category:pipe}\"}))[$__range:5m])) > 0.8) > bool 0) * 2 or (((avg_over_time((sum by (namespace) (container_memory_working_set_bytes{container!=\"POD\",container!=\"\",namespace=~\"${category:pipe}\"}) / sum by (namespace) (kube_pod_container_resource_requests{resource=\"memory\",namespace=~\"${category:pipe}\"}))[$__range:5m])) < 0.3) > bool 0) * 2 or (((avg_over_time((sum by (namespace) (rate(container_cpu_usage_seconds_total{container!=\"POD\",container!=\"\",namespace=~\"${category:pipe}\"}[5m])) / sum by (namespace) (kube_pod_container_resource_requests{resource=\"cpu\",namespace=~\"${category:pipe}\"}))[$__range:5m])) > 0.8) > bool 0) * 2 or (((avg_over_time((sum by (namespace) (rate(container_cpu_usage_seconds_total{container!=\"POD\",container!=\"\",namespace=~\"${category:pipe}\"}[5m])) / sum by (namespace) (kube_pod_container_resource_requests{resource=\"cpu\",namespace=~\"${category:pipe}\"}))[$__range:5m])) < 0.3) > bool 0) * 2 or (((avg_over_time((sum by (namespace) (kubelet_volume_stats_used_bytes{namespace=~\"${category:pipe}\"}) / sum by (namespace) (kubelet_volume_stats_capacity_bytes{namespace=~\"${category:pipe}\"}))[$__range:5m])) > 0.7) > bool 0) * 2 or sum by (namespace) (kube_pod_container_info{pod!=\"\",namespace=~\"${category:pipe}\"}) * 0 + 1)",
+                "instant": true,
+                "format": "table",
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                }
+              }
+            ],
+            "transformations": [
+              {
+                "id": "filterFieldsByName",
+                "options": {
+                  "include": {
+                    "pattern": "namespace|Value.*"
+                  }
+                }
+              },
+              {
+                "id": "joinByField",
+                "options": {
+                  "byField": "namespace",
+                  "mode": "outer"
+                }
+              },
+              {
+                "id": "organize",
+                "options": {
+                  "renameByName": {
+                    "namespace": "Namespace",
+                    "Value #CPU": "CPU %",
+                    "Value #MEM": "Memory %",
+                    "Value #STORAGE": "Storage %",
+                    "Value #NOREQ": "Pods w/o requests",
+                    "Value #STATUS": "Status"
+                  },
+                  "indexByName": {
+                    "namespace": 0,
+                    "Value #CPU": 1,
+                    "Value #MEM": 2,
+                    "Value #STORAGE": 3,
+                    "Value #NOREQ": 4,
+                    "Value #STATUS": 5
+                  }
+                }
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "custom": {
+                  "align": "auto",
+                  "cellOptions": {
+                    "type": "color-background",
+                    "mode": "basic"
+                  },
+                  "filterable": true
+                }
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "CPU %"
+                  },
+                  "properties": [
+                    {
+                      "id": "unit",
+                      "value": "percentunit"
+                    },
+                    {
+                      "id": "decimals",
+                      "value": 1
+                    },
+                    {
+                      "id": "noValue",
+                      "value": "\u2014"
+                    },
+                    {
+                      "id": "mappings",
+                      "value": [
+                        {
+                          "type": "special",
+                          "options": {
+                            "match": "null",
+                            "result": {
+                              "text": "\u2014",
+                              "color": "rgba(80, 80, 80, 0.35)",
+                              "index": 0
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "thresholds",
+                      "value": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "yellow",
+                            "value": null
+                          },
+                          {
+                            "color": "green",
+                            "value": 0.3
+                          },
+                          {
+                            "color": "yellow",
+                            "value": 0.8
+                          },
+                          {
+                            "color": "red",
+                            "value": 1.2
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "Memory %"
+                  },
+                  "properties": [
+                    {
+                      "id": "unit",
+                      "value": "percentunit"
+                    },
+                    {
+                      "id": "decimals",
+                      "value": 1
+                    },
+                    {
+                      "id": "noValue",
+                      "value": "\u2014"
+                    },
+                    {
+                      "id": "mappings",
+                      "value": [
+                        {
+                          "type": "special",
+                          "options": {
+                            "match": "null",
+                            "result": {
+                              "text": "\u2014",
+                              "color": "rgba(80, 80, 80, 0.35)",
+                              "index": 0
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "thresholds",
+                      "value": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "yellow",
+                            "value": null
+                          },
+                          {
+                            "color": "green",
+                            "value": 0.3
+                          },
+                          {
+                            "color": "yellow",
+                            "value": 0.8
+                          },
+                          {
+                            "color": "red",
+                            "value": 1.0
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "Storage %"
+                  },
+                  "properties": [
+                    {
+                      "id": "unit",
+                      "value": "percentunit"
+                    },
+                    {
+                      "id": "decimals",
+                      "value": 1
+                    },
+                    {
+                      "id": "noValue",
+                      "value": "\u2014"
+                    },
+                    {
+                      "id": "mappings",
+                      "value": [
+                        {
+                          "type": "special",
+                          "options": {
+                            "match": "null",
+                            "result": {
+                              "text": "\u2014",
+                              "color": "rgba(80, 80, 80, 0.35)",
+                              "index": 0
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "thresholds",
+                      "value": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "green",
+                            "value": null
+                          },
+                          {
+                            "color": "yellow",
+                            "value": 0.5
+                          },
+                          {
+                            "color": "orange",
+                            "value": 0.8
+                          },
+                          {
+                            "color": "red",
+                            "value": 0.95
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "Pods w/o requests"
+                  },
+                  "properties": [
+                    {
+                      "id": "decimals",
+                      "value": 0
+                    },
+                    {
+                      "id": "noValue",
+                      "value": "0"
+                    },
+                    {
+                      "id": "thresholds",
+                      "value": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "green",
+                            "value": null
+                          },
+                          {
+                            "color": "red",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "Status"
+                  },
+                  "properties": [
+                    {
+                      "id": "decimals",
+                      "value": 0
+                    },
+                    {
+                      "id": "thresholds",
+                      "value": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "green",
+                            "value": null
+                          },
+                          {
+                            "color": "yellow",
+                            "value": 2
+                          },
+                          {
+                            "color": "red",
+                            "value": 3
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "mappings",
+                      "value": [
+                        {
+                          "type": "value",
+                          "options": {
+                            "1": {
+                              "text": "\u2713 OK",
+                              "color": "green",
+                              "index": 0
+                            },
+                            "2": {
+                              "text": "\u26a0 Watch",
+                              "color": "yellow",
+                              "index": 1
+                            },
+                            "3": {
+                              "text": "\u26a1 Act",
+                              "color": "red",
+                              "index": 2
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "options": {
+              "showHeader": true,
+              "footer": {
+                "show": false
+              },
+              "sortBy": [
+                {
+                  "displayName": "Status",
+                  "desc": true
+                }
+              ]
+            }
+          }
+        ],
+        "links": []
+      }
