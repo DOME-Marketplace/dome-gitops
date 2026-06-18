@@ -12,3 +12,10 @@ ingress-nginx:
       http2-max-field-size: "32k"
       http2-max-header-size: "32k"
       proxy-body-size: "10m"
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 384Mi
