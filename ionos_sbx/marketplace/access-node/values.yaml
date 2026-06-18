@@ -129,7 +129,7 @@ access-node:
     image:
       repository:  quay.io/digitelts/dlt-adapter
       pullPolicy: Always 
-      tag: "1.5.3-SNAPSHOT" 
+      tag: "1.5.3-SNAPSHOT-2" 
 
     service:
       port: 8080
