@@ -2,3 +2,11 @@ config:
   clients:
     - url: >-
         http://loki-distributed-gateway.loki-distributed.svc.cluster.local/loki/api/v1/push
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 256Mi
+  limits:
+    cpu: 200m
+    memory: 384Mi

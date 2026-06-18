@@ -36,8 +36,23 @@ grafana:
         contains(groups[*], '@DOME-Marketplace/dome-grafana-prod-ro') && 'Viewer'
   resources:
     requests:
-      cpu: 150m
-      memory: 350Mi
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 300m
+      memory: 384Mi
+  sidecar:
+    # Shared resources for ALL Grafana sidecar containers (dashboard + datasource,
+    # incl. their init container). The grafana subchart (v8.0.2) reads only
+    # `sidecar.resources`; there is no per-type sidecar.dashboards/datasources.resources
+    # path. Setting this lifts the Grafana pod out of BestEffort QoS.
+    resources:
+      requests:
+        cpu: 10m
+        memory: 96Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
   extraSecretMounts:
     - name: kube-prometheus-stack-sso
       secretName: kube-prometheus-stack-sso
@@ -79,7 +94,10 @@ prometheusOperator:
   resources:
     requests:
       cpu: 20m
-      memory: 50Mi
+      memory: 64Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
   admissionWebhooks:
     deployment:
       resources:
@@ -106,7 +124,10 @@ prometheus:
     resources:
       requests:
         cpu: 200m
-        memory: 1000Mi
+        memory: 1500Mi
+      limits:
+        cpu: 1000m
+        memory: 2Gi
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -117,13 +138,19 @@ prometheus:
 prometheus-node-exporter:
   resources:
     requests:
-      cpu: 5m
-      memory: 20Mi
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
 kube-state-metrics:
   resources:
     requests:
-      cpu: 3m
-      memory: 50Mi
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      cpu: 100m
+      memory: 64Mi
 alertmanager:
   config:
     route:
@@ -149,6 +176,9 @@ alertmanager:
     resources:
       requests:
         cpu: 20m
-        memory: 50Mi
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
   #   secrets:
   #     - kube-prometheus-stack-discord-infrastructure-webhook-secret
