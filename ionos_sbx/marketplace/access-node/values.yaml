@@ -8,19 +8,31 @@ access-node:
     image:
       repository: in2workspace/in2-desmos-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.0.11-snapshot
+      tag: v2.0.11
       pullPolicy: Always
     resources:
       requests:
-        cpu: "50m"
+        cpu: "250m"
         memory: "512Mi"
       limits:
-        cpu: "500m"
-        memory: "768Mi"
+        cpu: "1000m"
+        memory: "1024Mi"
     readinessProbe:
-      failureThreshold: 10
+      httpGet:
+        path: /health
+        port: 8080
+      initialDelaySeconds: 5
+      timeoutSeconds: 5
+      periodSeconds: 5
+      failureThreshold: 3
     livenessProbe:
-      failureThreshold: 10
+      httpGet:
+        path: /health
+        port: 8080
+      initialDelaySeconds: 40
+      timeoutSeconds: 5
+      periodSeconds: 15
+      failureThreshold: 3
     ingress:
       enabled: true
       className: nginx
