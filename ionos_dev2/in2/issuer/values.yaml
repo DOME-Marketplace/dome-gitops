@@ -118,6 +118,9 @@ dome-issuer:
           allowedOrigins: "https://issuer.dome-marketplace-dev2.org, https://wallet.dome-marketplace-dev2.org"
         external:
           allowedOrigins: "https://issuer.dome-marketplace-dev2.org, https://dome-certification.dome-marketplace-dev2.org, https://wallet.dome-marketplace-dev2.org"
+      labelUpload:
+        certifierEmail: dome@qualityhouse.com
+        marketplaceEmail: dome2@qualityhouse.com
       vault:
         url: http://wallet-vault-server:8200
         secretsMount: kv
