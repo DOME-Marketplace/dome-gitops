@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: caddy-proxy
+spec:
+  type: ClusterIP          # consumato dalle app INTERNE via HTTP_PROXY
+  selector: { app: caddy-proxy }
+  ports:
+    - { name: forward, port: 8080, targetPort: 8080 }

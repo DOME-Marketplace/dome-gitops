@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: caddy-proxy
+  labels: { app: caddy-proxy }
+spec:
+  replicas: 1                       # 1 replica => 1 IP sorgente in uscita
+  selector:
+    matchLabels: { app: caddy-proxy }
+  template:
+    metadata:
+      labels: { app: caddy-proxy }
+    spec:
+      # FASE 2 (IP fisso): pin sul node pool con IP riservato.
+      # Per il PRIMO TEST funzionale (FASE 1) lascia questo blocco COMMENTATO,
+      # cosi' lo scheduler mette il pod su un nodo qualsiasi (vedi §9).
+      # nodeSelector:
+      #   nodepool: ingress
+      containers:
+        - name: caddy
+          image: ghcr.io/dome-marketplace/caddy-forwardproxy:2.11.4
+          args: ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+          ports:
+            - { name: forward, containerPort: 8080 }
+          envFrom:
+            - secretRef: { name: caddy-forward-auth }   # PROXY_USERNAME / PROXY_PASSWORD
+          resources:
+            requests: { cpu: "50m", memory: "64Mi" }
+            limits:   { cpu: "500m", memory: "256Mi" }
+          volumeMounts:
+            - { name: config, mountPath: /etc/caddy, readOnly: true }
+            - { name: data,   mountPath: /data }
+            - { name: config-store, mountPath: /config }
+          readinessProbe: { tcpSocket: { port: 8080 }, initialDelaySeconds: 5,  periodSeconds: 10 }
+          livenessProbe:  { tcpSocket: { port: 8080 }, initialDelaySeconds: 10, periodSeconds: 15 }
+      volumes:
+        - name: config
+          configMap: { name: caddy-proxy-config }   # Kustomize riscrive col nome hashato
+        - name: data
+          emptyDir: {}                                # nessun cert da persistere
+        - name: config-store
+          emptyDir: {}

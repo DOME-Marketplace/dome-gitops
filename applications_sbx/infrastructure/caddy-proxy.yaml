@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: caddy-proxy
+  namespace: caddy-proxy
+  labels: { purpose: infra }
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: caddy-proxy
+  source:
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: HEAD
+    path: ionos_sbx/caddy-proxy
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+    syncOptions: ["CreateNamespace=true"]
