@@ -278,6 +278,12 @@ business-api-ecosystem:
         value: tm-forum-api-customer-bill-management
       - name: BAE_LP_ENDPOINT_CUSTOMER_BILL_PORT
         value: "8080"
+      - name: BAE_LP_ENDPOINT_DOCUMENT_PATH
+        value: /tmf-api/document/v4
+      - name: BAE_LP_ENDPOINT_DOCUMENT_HOST
+        value: tm-forum-api-document-management
+      - name: BAE_LP_ENDPOINT_DOCUMENT_PORT
+        value: "8080"
       - name: BAE_LP_ENDPOINT_CUSTOMER_BILL_PATH
         value: /tmf-api/customerBillManagement/v4
       - name: BAE_LP_PAYMENT_GATEWAY
