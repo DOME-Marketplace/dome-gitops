@@ -14,5 +14,4 @@ spec:
     targetRevision: HEAD
     path: ionos_sbx/caddy-proxy
   syncPolicy:
-    automated: { prune: true, selfHeal: true }
     syncOptions: ["CreateNamespace=true"]
