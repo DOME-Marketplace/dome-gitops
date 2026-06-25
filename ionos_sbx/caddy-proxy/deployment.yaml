@@ -24,7 +24,6 @@ spec:
             requests: { cpu: "50m", memory: "64Mi" }
             limits:   { cpu: "500m", memory: "256Mi" }
           volumeMounts:
-            - { name: config, mountPath: /etc/caddy, readOnly: true }
             - { name: data,   mountPath: /data }
             - { name: config-store, mountPath: /config }
           readinessProbe: { tcpSocket: { port: 8080 }, initialDelaySeconds: 5,  periodSeconds: 10 }
