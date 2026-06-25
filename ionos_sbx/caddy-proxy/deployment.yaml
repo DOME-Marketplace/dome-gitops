@@ -11,28 +11,26 @@ spec:
     metadata:
       labels: { app: caddy-proxy }
     spec:
-      template:
-        spec:
-          imagePullSecrets:
-            - name: ghcr-pull-secret
-          containers:
-            - name: caddy
-              image: ghcr.io/dome-marketplace/caddy-forwardproxy:2.11.4
-              args: ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
-              ports:
-                - { name: forward, containerPort: 8080 }
-              envFrom:
-                - secretRef: { name: caddy-forward-auth } 
-              resources:
-                requests: { cpu: "50m", memory: "64Mi" }
-                limits:   { cpu: "500m", memory: "256Mi" }
-              volumeMounts:
-                - { name: data,   mountPath: /data }
-                - { name: config-store, mountPath: /config }
-              readinessProbe: { tcpSocket: { port: 8080 }, initialDelaySeconds: 5,  periodSeconds: 10 }
-              livenessProbe:  { tcpSocket: { port: 8080 }, initialDelaySeconds: 10, periodSeconds: 15 }
-          volumes:
-            - name: data
-              emptyDir: {}                                
-            - name: config-store
-              emptyDir: {}
+      imagePullSecrets:
+        - name: ghcr-pull-secret
+      containers:
+        - name: caddy
+          image: ghcr.io/dome-marketplace/caddy-forwardproxy:2.11.4
+          args: ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+          ports:
+            - { name: forward, containerPort: 8080 }
+          envFrom:
+            - secretRef: { name: caddy-forward-auth }
+          resources:
+            requests: { cpu: "50m", memory: "64Mi" }
+            limits:   { cpu: "500m", memory: "256Mi" }
+          volumeMounts:
+            - { name: data,   mountPath: /data }
+            - { name: config-store, mountPath: /config }
+          readinessProbe: { tcpSocket: { port: 8080 }, initialDelaySeconds: 5,  periodSeconds: 10 }
+          livenessProbe:  { tcpSocket: { port: 8080 }, initialDelaySeconds: 10, periodSeconds: 15 }
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: config-store
+          emptyDir: {}
