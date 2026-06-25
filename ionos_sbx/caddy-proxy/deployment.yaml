@@ -30,8 +30,6 @@ spec:
           readinessProbe: { tcpSocket: { port: 8080 }, initialDelaySeconds: 5,  periodSeconds: 10 }
           livenessProbe:  { tcpSocket: { port: 8080 }, initialDelaySeconds: 10, periodSeconds: 15 }
       volumes:
-        - name: config
-          configMap: { name: caddy-proxy-config }   # Kustomize riscrive col nome hashato
         - name: data
           emptyDir: {}                                # nessun cert da persistere
         - name: config-store

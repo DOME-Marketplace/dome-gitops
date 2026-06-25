@@ -3,8 +3,4 @@ kind: Kustomization
 resources:
   - deployment.yaml
   - service.yaml
-  - forward-auth-sealed.yaml         # il SealedSecret (§4)
-configMapGenerator:
-  - name: caddy-proxy-config
-    files:
-      - Caddyfile=Caddyfile
+  - forward-auth-sealed.yaml         
