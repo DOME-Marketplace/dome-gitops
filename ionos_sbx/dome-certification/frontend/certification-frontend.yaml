@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: certification-frontend
-          image: bfeitaisuw/dome-compliance-frontend:dev2-1.1.13
+          image: bfeitaisuw/dome-compliance-frontend:sbx-1.1.17
           ports:
             - containerPort: 80
               name: http
