@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: caddy-proxy
-  namespace: caddy-proxy
+  namespace: argocd
   labels: { purpose: infra }
 spec:
   project: default
