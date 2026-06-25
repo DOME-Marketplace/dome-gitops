@@ -11,11 +11,7 @@ spec:
     metadata:
       labels: { app: caddy-proxy }
     spec:
-      # FASE 2 (IP fisso): pin sul node pool con IP riservato.
-      # Per il PRIMO TEST funzionale (FASE 1) lascia questo blocco COMMENTATO,
-      # cosi' lo scheduler mette il pod su un nodo qualsiasi (vedi §9).
-      # nodeSelector:
-      #   nodepool: ingress
+
       containers:
         - name: caddy
           image: ghcr.io/dome-marketplace/caddy-forwardproxy:2.11.4
