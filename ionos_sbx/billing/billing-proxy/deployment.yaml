@@ -28,6 +28,9 @@ spec:
             limits:
               memory: 256Mi
               cpu: "1"
+          envFrom:
+           - secretRef:
+              name: egress-proxy-creds
           env:
             - name: TMF_ENDPOINT
               value: http://tm-forum-api # http://tm-forum-api-envoy.marketplace.svc.cluster.local:8080
@@ -45,6 +48,10 @@ spec:
               value: http://invoicing-service-svc.billing.svc.cluster.local:8080
             - name: LOG_LEVEL
               value: DEBUG
+            # workaround for external proxy issue with billing-proxy container
+            - name: NO_PROXY
+              value: "localhost,127.0.0.1,169.254.169.254,.svc,.svc.cluster.local,.cluster.local,10.0.0.0/8"
+            
           livenessProbe:
             httpGet:
               path: /health
