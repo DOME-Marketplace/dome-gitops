@@ -4,7 +4,7 @@ metadata:
   name: caddy-proxy
   labels: { app: caddy-proxy }
 spec:
-  replicas: 1                       # 1 replica => 1 IP sorgente in uscita
+  replicas: 1                       
   selector:
     matchLabels: { app: caddy-proxy }
   template:
