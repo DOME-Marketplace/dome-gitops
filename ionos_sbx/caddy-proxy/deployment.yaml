@@ -12,7 +12,12 @@ spec:
       labels: { app: caddy-proxy }
     spec:
       nodeSelector:
-        nodepool: ingress
+        cloud.ionos.com/nodepool-name: ingress-pool
+      tolerations:
+        - key: ingress-node
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
       imagePullSecrets:
         - name: ghcr-pull-secret
       containers:
