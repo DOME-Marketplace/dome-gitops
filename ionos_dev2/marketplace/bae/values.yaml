@@ -203,7 +203,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "11.21.1"
+        tag: "11.21.2"
         pullPolicy: Always
 
     ingress: 
@@ -274,6 +274,12 @@ business-api-ecosystem:
         value: "8080"
       - name: BAE_LP_ENDPOINT_CUSTOMER_BILL_PATH
         value: /tmf-api/customerBillManagement/v4
+      - name: BAE_LP_ENDPOINT_DOCUMENT_PATH
+        value: /tmf-api/document/v4
+      - name: BAE_LP_ENDPOINT_DOCUMENT_HOST
+        value: tm-forum-api-document-management
+      - name: BAE_LP_ENDPOINT_DOCUMENT_PORT
+        value: "8080"
       - name: BAE_LP_PAYMENT_GATEWAY
         value: https://dpas-dev2.egroup.hu
       - name: BAE_LP_ENDPOINT_REVENUE_HOST
