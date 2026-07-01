@@ -51,6 +51,30 @@ spec:
             # workaround for external proxy issue with billing-proxy container
             - name: NO_PROXY
               value: "localhost,127.0.0.1,169.254.169.254,.svc,.svc.cluster.local,.cluster.local,10.0.0.0/8"
+
+            - name: PROXY_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: egress-proxy-creds
+                  key: PROXY_USERNAME
+            - name: PROXY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: egress-proxy-creds
+                  key: PROXY_PASSWORD
+
+            - name: JAVA_TOOL_OPTIONS
+              value: >-
+                -Dhttps.proxyHost=caddy-proxy.caddy-proxy.svc.cluster.local
+                -Dhttps.proxyPort=8080
+                -Dhttp.proxyHost=caddy-proxy.caddy-proxy.svc.cluster.local
+                -Dhttp.proxyPort=8080
+                -Dhttps.proxyUser=$(PROXY_USERNAME)
+                -Dhttps.proxyPassword=$(PROXY_PASSWORD)
+                -Dhttp.proxyUser=$(PROXY_USERNAME)
+                -Dhttp.proxyPassword=$(PROXY_PASSWORD)
+                -Djdk.http.auth.tunneling.disabledSchemes=
+                -Djdk.http.auth.proxying.disabledSchemes=
             
           livenessProbe:
             httpGet:
