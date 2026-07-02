@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: certification-backend
-          image: jviegasubi/domecertificationbackend:1.4.0
+          image: bfeitaisuw/dome-compliance-backend:1.4.1
           env:
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
