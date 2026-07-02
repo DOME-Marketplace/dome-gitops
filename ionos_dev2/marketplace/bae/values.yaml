@@ -203,7 +203,7 @@ business-api-ecosystem:
     statefulset:
       image:
         repository: fiware/biz-ecosystem-logic-proxy
-        tag: "11.21.2"
+        tag: "11.21.3"
         pullPolicy: Always
 
     ingress: 
@@ -304,6 +304,8 @@ business-api-ecosystem:
         value: https://issuer.dome-marketplace-dev2.org/
       - name: BAE_LP_TENDER_DEV_BUTTON_ENABLED
         value: "true"
+      - name: BAE_LP_GOOGLE_TAG_MANAGER_ID
+        value: "GTM-PKSQXL8G"
       - name: BAE_LP_SIOP_PRIVATE_KEY
         valueFrom:
           secretKeyRef:
