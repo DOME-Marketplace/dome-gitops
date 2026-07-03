@@ -6,6 +6,8 @@ metadata:
     app: certification-backend
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: certification-backend
@@ -16,7 +18,7 @@ spec:
     spec:
       containers:
         - name: certification-backend
-          image: bfeitaisuw/dome-compliance-backend:1.4.1
+          image: bfeitaisuw/dome-compliance-backend:1.4.2
           env:
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
