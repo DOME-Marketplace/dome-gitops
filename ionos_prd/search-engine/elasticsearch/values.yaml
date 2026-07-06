@@ -24,7 +24,7 @@ elasticsearch:
     accessModes: ["ReadWriteOnce"]
     resources:
       requests:
-        storage: "5Gi"
+        storage: "30Gi"
 
   readinessProbe:
     failureThreshold: 3
