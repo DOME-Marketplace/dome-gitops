@@ -17,30 +17,24 @@ spec:
     spec:
       containers:
         - name: search
-          image: production.eng.it:8433/dome/search:1.2.1
+          image: production.eng.it:8433/dome/search:1.5.2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
-              hostPort: 8080
               protocol: TCP
-          resources:
-            requests:
-              cpu: "50m"
-              memory: "200Mi"
-            limits:
-              cpu: "500m"
-              memory: "512Mi"
           env:
             - name: ELASTICSEARCH_ADDRESS_HOST
               value: elasticsearch-master
             - name: ELASTICSEARCH_ADDRESS_PORT
               value: "9200"
-            - name: network.host
-              value: "0.0.0.0"
             - name: ELASTIC_USERNAME
               value: elastic
             - name: ELASTIC_PASSWORD
               value: dome_2024!
+            - name: ELASTIC_SSL_ENABLED
+              value: "true"
+            - name: ELASTIC_SSL_VERIFICATION
+              value: "false"
             - name: TMF_ENDPOINT
               value: http://tm-forum-api
             - name: TMF_ENVOY
@@ -57,6 +51,8 @@ spec:
               value: https://deployenv6.expertcustomers.ai:8086/services/dome/classify
             - name: LOG_LEVEL
               value: DEBUG
+            - name: DOME_BASE_URL
+              value: https://dome-marketplace-prd.org
           livenessProbe:
             httpGet:
               path: /health
