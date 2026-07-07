@@ -21,7 +21,7 @@ dome-wallet:
       pullPolicy: IfNotPresent
     ## deployment specific configuration
     app:
-      logLevel: DEBUG
+      logLevel: INFO
       authServer:
         externalUrl: https://keycloak.dome-marketplace.eu/realms/dome-wallet
         internalUrl: http://keycloak:80/realms/dome-wallet
