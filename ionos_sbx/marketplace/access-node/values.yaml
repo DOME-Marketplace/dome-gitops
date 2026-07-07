@@ -398,6 +398,8 @@ access-node:
           value: "sbx"
         - name: S3_MAX_CONTENT_SIZE
           value: "15728640"
+        - name: MICRONAUT_SERVER_MAX_REQUEST_SIZE
+          value: "15728640"
         - name: S3_ACCESS_KEY
           valueFrom:
             secretKeyRef:
