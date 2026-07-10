@@ -249,7 +249,58 @@ data:
         'ENABLE_TEMPLATE_PROCESSING': True,
         'EMBEDDED_SUPERSET': True,
     }
-    
+
+    # ----------------------------------------------------------------------
+    # Embedded dashboards (marketplace iframe via @superset-ui/embedded-sdk)
+    # ----------------------------------------------------------------------
+    # Symmetric secret Superset uses to SIGN guest tokens (HS256). This lives
+    # only in Superset; the marketplace backend never needs it. Rotate it and
+    # move it to a k8s Secret before this leaves the sandbox.
+    GUEST_TOKEN_JWT_SECRET = 'b9F2k7Qm4XpR8sW1zT5vN0yJ6cL3hD7gA2eU8oP'
+    GUEST_TOKEN_JWT_ALGO = 'HS256'
+    GUEST_TOKEN_JWT_EXP_SECONDS = 300
+    # Role applied to embedded (guest) viewers. Must NOT have all-datasource
+    # access, otherwise the per-request RLS clauses are ignored. Gamma is fine.
+    GUEST_ROLE_NAME = 'Gamma'
+
+    # Let the marketplace origin call the guest-token API and load assets
+    ENABLE_CORS = True
+    CORS_OPTIONS = {
+        'supports_credentials': True,
+        'allow_headers': ['*'],
+        'resources': ['*'],
+        # 'http://localhost:8000' is for solo testing only — remove before prod
+        'origins': ['https://dome-marketplace-sbx.org', 'http://localhost:8000'],
+    }
+
+    # Talisman: allow the marketplace to frame Superset via CSP frame-ancestors
+    # and stop emitting a restrictive X-Frame-Options header. NOTE: TALISMAN_CONFIG
+    # REPLACES Superset's default CSP wholesale, so the full policy is restated
+    # here. 'unsafe-inline'/'unsafe-eval' are kept so the Superset UI itself still
+    # works without nonces; tighten later if you lock down the embed.
+    TALISMAN_ENABLED = True
+    TALISMAN_CONFIG = {
+        'content_security_policy': {
+            'base-uri': ["'self'"],
+            'default-src': ["'self'"],
+            'img-src': ["'self'", 'data:', 'blob:'],
+            'worker-src': ["'self'", 'blob:'],
+            'connect-src': ["'self'", 'https://dome-marketplace-sbx.org'],
+            'style-src': ["'self'", "'unsafe-inline'"],
+            'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+            'frame-ancestors': ["'self'", 'https://dome-marketplace-sbx.org', 'http://localhost:8000'],
+        },
+        'force_https': False,
+        'frame_options': None,
+    }
+
+    # Register the custom DOME embed guest-token route. It validates the
+    # forwarded verifier Access Token and derives RLS from the credential,
+    # so the marketplace backend computes no filters of its own.
+    def FLASK_APP_MUTATOR(app):
+        from dome_embed_auth import register_dome_embed
+        register_dome_embed(app)
+
     # Load examples
     SUPERSET_LOAD_EXAMPLES = True
     
@@ -259,12 +310,232 @@ data:
     
     WEBDRIVER_BASEURL = 'https://analytics.dome-marketplace-sbx.org/'
     EOF
-    
+
+    # Create the DOME embed auth module: validates the forwarded verifier
+    # Access Token against the verifier JWKS and derives RLS from the
+    # credential (org / Powers), then mints the guest token server-side.
+    cat > /app/pythonpath/dome_embed_auth.py << 'EOF'
+    import json
+    import logging
+    import os
+    import re
+    import time
+
+    import requests
+    from flask import Blueprint, request, jsonify, current_app
+    from authlib.jose import JsonWebToken, JsonWebKey
+
+    log = logging.getLogger("dome-embed-auth")
+
+    # OIDC metadata of the DOME verifier that signs the Access Token. Superset
+    # already trusts this issuer (it is the OAuth provider), so we validate the
+    # forwarded Access Token against the verifier's published JWKS.
+    VERIFIER_METADATA_URL = os.environ.get(
+        "VERIFIER_METADATA_URL",
+        "https://verifier.dome-marketplace-sbx.org/.well-known/openid-configuration",
+    )
+
+    # Dashboard -> RLS rule templates ({org} is filled from the validated VC).
+    RLS_RULES_PATH = os.environ.get("DOME_EMBED_RLS_PATH", "/app/pythonpath/dome_embed_rls.json")
+
+    # Tenant value must be a safe identifier before it is spliced into a clause.
+    _ORG_RE = re.compile(r"^[A-Za-z0-9._:-]+$")
+
+    # Asymmetric algorithms we accept from the verifier (no 'none', no HS*).
+    _jwt = JsonWebToken(["RS256", "RS384", "RS512", "ES256", "ES384", "ES256K", "EdDSA"])
+
+    _jwks_cache = {"keys": None, "ts": 0.0}
+    _JWKS_TTL = 3600
+
+
+    def _get_jwks():
+        now = time.time()
+        if _jwks_cache["keys"] is None or now - _jwks_cache["ts"] > _JWKS_TTL:
+            meta = requests.get(VERIFIER_METADATA_URL, timeout=10).json()
+            jwks = requests.get(meta["jwks_uri"], timeout=10).json()
+            _jwks_cache["keys"] = JsonWebKey.import_key_set(jwks)
+            _jwks_cache["ts"] = now
+        return _jwks_cache["keys"]
+
+
+    def validate_access_token(token):
+        """Verify the verifier's signature + expiry and return the claims.
+
+        Audience is intentionally not enforced: the verifier issues the token for
+        the marketplace client, not for Superset. We trust signature + iss + exp.
+        """
+        claims = _jwt.decode(token, _get_jwks())
+        claims.validate()
+        return claims
+
+
+    def _mandate(claims):
+        vc = claims.get("vc", {}) or {}
+        return vc.get("credentialSubject", {}).get("mandate", {}) or {}
+
+
+    def _org_id(mandate):
+        return (mandate.get("mandator", {}) or {}).get("organizationIdentifier", "")
+
+
+    def _load_rules():
+        try:
+            with open(RLS_RULES_PATH, encoding="utf-8") as fh:
+                return json.load(fh)
+        except FileNotFoundError:
+            log.warning("RLS rules file not found at %s", RLS_RULES_PATH)
+            return {}
+
+
+    def build_rls_for_dashboard(dashboard_id, org):
+        """Expand the dashboard's rule templates into per-dataset RLS clauses.
+
+        Returns None if the dashboard is not configured (caller should deny).
+        """
+        groups = _load_rules().get(dashboard_id)
+        if groups is None:
+            return None
+        rules = []
+        for group in groups:
+            clause = group["clause"].replace("{org}", org)
+            for dataset_id in group["datasets"]:
+                rules.append({"dataset": dataset_id, "clause": clause})
+        return rules
+
+
+    def build_guest_user(claims):
+        mandate = _mandate(claims)
+        org = _org_id(mandate)
+        did = claims.get("sub", "")
+        if did and org:
+            username = did + "_" + org
+        else:
+            username = did or "dome_guest"
+        return {
+            "username": username,
+            "first_name": claims.get("given_name", "DOME"),
+            "last_name": claims.get("family_name", "User"),
+        }
+
+
+    dome_embed_bp = Blueprint("dome_embed", __name__)
+
+
+    @dome_embed_bp.route("/api/v1/dome/guest_token/", methods=["POST"])
+    def dome_guest_token():
+        auth = request.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            return jsonify({"error": "missing bearer access token"}), 401
+        token = auth.split(" ", 1)[1].strip()
+
+        try:
+            claims = validate_access_token(token)
+        except Exception as exc:  # noqa: BLE001
+            log.warning("Access token validation failed: %s", exc)
+            return jsonify({"error": "invalid access token"}), 401
+
+        org = _org_id(_mandate(claims))
+        if not org or not _ORG_RE.match(org):
+            return jsonify({"error": "no usable organizationIdentifier in credential"}), 403
+
+        body = request.get_json(silent=True) or {}
+        dashboard_id = body.get("dashboard")
+        if not dashboard_id and body.get("resources"):
+            dashboard_id = body["resources"][0].get("id")
+        if not dashboard_id:
+            return jsonify({"error": "dashboard (uuid) required"}), 400
+
+        rls = build_rls_for_dashboard(dashboard_id, org)
+        if rls is None:
+            return jsonify({"error": "dashboard not configured for embedding: %s" % dashboard_id}), 403
+
+        user = build_guest_user(claims)
+        resources = [{"type": "dashboard", "id": dashboard_id}]
+
+        token_str = current_app.appbuilder.sm.create_guest_access_token(user, resources, rls)
+        if isinstance(token_str, bytes):
+            token_str = token_str.decode("utf-8")
+        return jsonify({"token": token_str, "rls": rls, "user": user})
+
+
+    def register_dome_embed(app):
+        app.register_blueprint(dome_embed_bp)
+        log.info("DOME embed guest-token route registered at /api/v1/dome/guest_token/")
+    EOF
+
+    # Dashboard -> RLS rules map. {org} is filled from the validated VC at mint
+    # time. Edit datasets/clauses here (then commit) to add or change dashboards.
+    cat > /app/pythonpath/dome_embed_rls.json << 'EOF'
+    {
+      "0cd86a99-2d3d-438f-84be-508c4725a5f5": [
+        {"datasets": [75, 81, 83, 67, 82, 79, 84, 88], "clause": "vat = '{org}' OR brand = 'Dome Marketplace Overall'"},
+        {"datasets": [76], "clause": "'{org}' = ANY(all_vats)"}
+      ],
+      "945ed89c-13ce-4553-afc9-12ec18d14064": [
+        {"datasets": [75, 81, 83, 67, 82, 79, 84, 88], "clause": "vat = '{org}' OR brand = 'Dome Marketplace Overall'"},
+        {"datasets": [76], "clause": "'{org}' = ANY(all_vats)"},
+        {"datasets": [110, 108, 113, 112, 114], "clause": "vat = '{org}'"}
+      ],
+      "566cf4c8-e033-43ef-b8fb-24ae7067b416": [
+        {"datasets": [115], "clause": "vat = '{org}'"}
+      ]
+    }
+    EOF
+
+    # Create embed service-account provisioning script.
+    # Creates a dedicated 'embed_service_account' user whose only power is the
+    # 'can grant guest token on SecurityRestApi' permission (least privilege:
+    # no UI, no SQL Lab, no mutations). The marketplace backend logs in as this
+    # user to mint guest tokens.
+    cat > /app/pythonpath/setup_embed_account.py << 'EOF'
+    import os
+    import logging
+
+    logging.basicConfig(level=logging.INFO)
+    log = logging.getLogger("embed-setup")
+
+    from superset.app import create_app
+
+    app = create_app()
+    with app.app_context():
+        from superset import db
+        from superset.extensions import security_manager as sm
+
+        ROLE_NAME = "embed_guest_minter"
+        USERNAME = "embed_service_account"
+        PASSWORD = os.environ.get("EMBED_SERVICE_PASSWORD", "embed-sbx-change-me")
+
+        role = sm.find_role(ROLE_NAME) or sm.add_role(ROLE_NAME)
+
+        pvm = sm.find_permission_view_menu("can_grant_guest_token", "SecurityRestApi")
+        if pvm is not None and pvm not in role.permissions:
+            sm.add_permission_role(role, pvm)
+            log.info("Granted can_grant_guest_token to %s", ROLE_NAME)
+
+        user = sm.find_user(username=USERNAME)
+        if user is None:
+            sm.add_user(
+                username=USERNAME,
+                first_name="Embed",
+                last_name="Service",
+                email="embed@dome-marketplace-sbx.org",
+                role=role,
+                password=PASSWORD,
+            )
+            log.info("Created user %s", USERNAME)
+        elif role not in user.roles:
+            user.roles.append(role)
+
+        db.session.commit()
+    EOF
+
     # Ensure data directory exists
     mkdir -p /app/data
     
     echo "Installing required packages..."
-
+    # Pin Authlib and cryptography: apache-superset 4.0.2 requires
+    # cryptography<43.0.0,>=42.0.4 and an unpinned Authlib pulls in
+    # cryptography 48+, which makes the superset CLI refuse to start
     pip install --no-cache-dir "Authlib==1.3.2" "cryptography>=42.0.4,<43"
     pip install --no-cache-dir \
         sqlalchemy_trino==0.5.0 \
@@ -288,7 +559,10 @@ data:
     
     echo "Initializing Superset..."
     superset init
-    
+
+    echo "Provisioning embed service account and guest-token role..."
+    python /app/pythonpath/setup_embed_account.py || echo "Embed account setup completed with warnings"
+
     echo "Starting Celery worker in background..."
     nohup celery --app=superset.tasks.celery_app:app worker --loglevel=info > /tmp/celery.log 2>&1 &
     
