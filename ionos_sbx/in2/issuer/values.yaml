@@ -42,9 +42,13 @@ dome-issuer:
             - issuer.dome-marketplace-sbx.org
           secretName: issuer-tls-secret
     app:
+      netty:
+        accessLog:
+          enabled: true
       logLevel:
         app: DEBUG
         security: INFO
+        actuatorHealth: DEBUG
       url: https://issuer.dome-marketplace-sbx.org
       issuerFrontendUrl: https://issuer.dome-marketplace-sbx.org
       knowledgeBase:
