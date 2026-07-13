@@ -31,6 +31,6 @@ data:
   JWT_PUBLIC_KEY_Y: 2ewVHc6-KbG3xNkogzA5okub-A87ecgi3o2k2Tg7kaM
   JWT_OAUTH_CLIENT_ID: did:key:zDnaep7iGodkmSEUD8uAsp4dhqcaxxrFQ3zgyANHD2brt7CgB
   JWT_OAUTH_REDIRECT_URI: https://dome-certification.dome-marketplace-sbx.org/auth/login
-  JWT_OAUTH_AUD: https://verifier.dome-marketplace-sbx.org
+  JWT_OAUTH_AUD: https://verifier.dome-marketplace-lcl.org
   JWT_OAUTH_ISSUER: https://issuer.dome-marketplace-lcl.org
   JWT_ISSUER_URL: https://issuer.dome-marketplace-lcl.org
