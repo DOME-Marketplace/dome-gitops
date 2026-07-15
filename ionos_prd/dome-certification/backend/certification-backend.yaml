@@ -6,6 +6,8 @@ metadata:
     app: certification-backend
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: certification-backend
@@ -16,9 +18,9 @@ spec:
     spec:
       containers:
         - name: certification-backend
-          image: noeliaguedek/dome-compliance-backend:prd-1.1.8
+          image: bfeitaisuw/dome-compliance-backend:1.4.2
           env:
-            - name: POSTGRES_PASSWORD
+            - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: dekra-postgres-secret
