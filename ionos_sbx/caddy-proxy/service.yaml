@@ -3,7 +3,8 @@ kind: Service
 metadata:
   name: caddy-proxy
 spec:
-  type: ClusterIP          # consumato dalle app INTERNE via HTTP_PROXY
+  type: ClusterIP          
   selector: { app: caddy-proxy }
   ports:
     - { name: forward, port: 8080, targetPort: 8080 }
+    - { name: http,    port: 80,   targetPort: 80 }

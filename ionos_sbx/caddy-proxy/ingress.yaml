@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tmf-caddy
+  namespace: caddy-proxy
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - tmf.dome-marketplace-sbx.org
+      secretName: tmf-dome-sbx-tls          
+  rules:
+    - host: tmf.dome-marketplace-sbx.org    
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: caddy-proxy                 
+                port:
+                  number: 80
