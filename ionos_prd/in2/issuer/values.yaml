@@ -114,7 +114,7 @@ dome-issuer:
           credentialDidKey: did-key
       cors:
         default:
-          allowedOrigins: "https://issuer.dome-marketplace.eu"
+          allowedOrigins: "https://issuer.dome-marketplace.eu, https://wallet.dome-marketplace-dev2.org, https://wallet.dome-marketplace-sbx.org, https://wallet.dome-marketplace-lcl.org"
         external:
           allowedOrigins: "https://issuer.dome-marketplace.eu, https://dome-certification.dome-marketplace.eu"
       vault:
