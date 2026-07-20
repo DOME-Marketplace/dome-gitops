@@ -160,7 +160,7 @@ dome-issuer:
         baseUrl: "https://cdn.jsdelivr.net/gh/in2workspace/eudistack-assets@main/DOME"
         logoPath: "dome-issuer-logo.png"
         faviconPath: "dome-favicon.png"
-      keycloakUrl: "https://keycloak.dome-marketplace-dev.org/realms/dome-issuer"
+      keycloakUrl: "https://keycloak.dome-marketplace-dev.org/realms/dome-issuer-dev"
       backendUrl: "https://issuer.dome-marketplace-dev.org"
       walletUrl: "https://wallet.dome-marketplace.eu"
       walletUrlTest: "https://wallet.dome-marketplace-dev.org"
