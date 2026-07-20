@@ -87,7 +87,7 @@ dome-issuer:
         provider: keycloak
         externalUrl: https://keycloak.dome-marketplace-dev.org
         internalUrl: http://keycloak:80
-        realm: dome-issuer
+        realm: dome-issuer-dev
         client:
           clientId: issuer-api-client
           username: issuer-api-user
