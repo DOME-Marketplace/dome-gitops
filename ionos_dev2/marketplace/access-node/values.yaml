@@ -8,7 +8,7 @@ access-node:
     image:
       repository: in2workspace/in2-desmos-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.0.13
+      tag: v2.0.15-snapshot
       pullPolicy: Always
     resources:
       requests:
@@ -266,12 +266,14 @@ access-node:
 
     defaultConfig:
       image:
-        tag: sbx_1.6.3
+        tag: sbx_1.8.4
       additionalEnvVars:
       - name: MAPPING_STRICT_RELATIONSHIPS
         value: "false"
       - name: API_EXTENSION_ENABLED
         value: "true"
+      - name: API_EXTENSION_PUT_ENABLED
+        value: "false"
 
       ngsiLd:
         # -- address of the broker

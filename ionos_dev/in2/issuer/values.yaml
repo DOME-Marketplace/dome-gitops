@@ -17,7 +17,7 @@ dome-issuer:
     image:
       repository: in2workspace/eudistack-issuer-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.2.17
+      tag: v2.2.23
       pullPolicy: Always
     resources:
       requests:
@@ -87,7 +87,7 @@ dome-issuer:
         provider: keycloak
         externalUrl: https://keycloak.dome-marketplace-dev.org
         internalUrl: http://keycloak:80
-        realm: dome-issuer
+        realm: dome-issuer-dev
         client:
           clientId: issuer-api-client
           username: issuer-api-user
@@ -145,7 +145,7 @@ dome-issuer:
     image:
       repository: in2workspace/eudistack-issuer-ui
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.1.13
+      tag: v2.1.17
       pullPolicy: Always
     resources:
       requests:
@@ -160,7 +160,7 @@ dome-issuer:
         baseUrl: "https://cdn.jsdelivr.net/gh/in2workspace/eudistack-assets@main/DOME"
         logoPath: "dome-issuer-logo.png"
         faviconPath: "dome-favicon.png"
-      keycloakUrl: "https://keycloak.dome-marketplace-dev.org/realms/dome-issuer"
+      keycloakUrl: "https://keycloak.dome-marketplace-dev.org/realms/dome-issuer-dev"
       backendUrl: "https://issuer.dome-marketplace-dev.org"
       walletUrl: "https://wallet.dome-marketplace.eu"
       walletUrlTest: "https://wallet.dome-marketplace-dev.org"
