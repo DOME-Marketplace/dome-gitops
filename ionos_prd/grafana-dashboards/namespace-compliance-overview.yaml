@@ -893,6 +893,292 @@ data:
                 }
               ]
             }
+          },
+          {
+            "id": 101,
+            "type": "table",
+            "title": "Pod Compliance (within selected namespaces)",
+            "description": "Same live usage-vs-requests ratio as the namespace table, broken down per pod. Averaged over the selected time range. Pods with no request show \u2014 in CPU/Memory and are flagged in Status. Storage is namespace-level only (omitted here). Uses a 10-minute inner sampling step for performance across many pods.",
+            "gridPos": {
+              "x": 0,
+              "y": 38,
+              "w": 24,
+              "h": 20
+            },
+            "datasource": {
+              "type": "prometheus",
+              "uid": "prometheus"
+            },
+            "targets": [
+              {
+                "refId": "CPU",
+                "expr": "label_join(avg_over_time((sum by (namespace,pod)(rate(container_cpu_usage_seconds_total{container!=\"POD\",container!=\"\",namespace=~\"${category:pipe}\"}[5m])) / sum by (namespace,pod)(kube_pod_container_resource_requests{resource=\"cpu\",namespace=~\"${category:pipe}\"}))[$__range:10m]), \"pod_id\", \"/\", \"namespace\", \"pod\")",
+                "instant": true,
+                "format": "table",
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                }
+              },
+              {
+                "refId": "MEM",
+                "expr": "label_join(avg_over_time((sum by (namespace,pod)(container_memory_working_set_bytes{container!=\"POD\",container!=\"\",namespace=~\"${category:pipe}\"}) / sum by (namespace,pod)(kube_pod_container_resource_requests{resource=\"memory\",namespace=~\"${category:pipe}\"}))[$__range:10m]), \"pod_id\", \"/\", \"namespace\", \"pod\")",
+                "instant": true,
+                "format": "table",
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                }
+              },
+              {
+                "refId": "STATUS",
+                "expr": "label_join(max by (namespace,pod)((((sum by (namespace,pod)(count by (namespace,pod,container)(kube_pod_container_info{pod!=\"\",namespace=~\"${category:pipe}\"}) unless on (namespace,pod,container) kube_pod_container_resource_requests{resource=\"cpu\",namespace=~\"${category:pipe}\"}) > 0) > bool 0) * 3) or ((((avg_over_time((sum by (namespace,pod)(container_memory_working_set_bytes{container!=\"POD\",container!=\"\",namespace=~\"${category:pipe}\"}) / sum by (namespace,pod)(kube_pod_container_resource_requests{resource=\"memory\",namespace=~\"${category:pipe}\"}))[$__range:10m])) > 1.0) > bool 0) * 3) or ((((avg_over_time((sum by (namespace,pod)(rate(container_cpu_usage_seconds_total{container!=\"POD\",container!=\"\",namespace=~\"${category:pipe}\"}[5m])) / sum by (namespace,pod)(kube_pod_container_resource_requests{resource=\"cpu\",namespace=~\"${category:pipe}\"}))[$__range:10m])) > 1.2) > bool 0) * 3) or ((((avg_over_time((sum by (namespace,pod)(container_memory_working_set_bytes{container!=\"POD\",container!=\"\",namespace=~\"${category:pipe}\"}) / sum by (namespace,pod)(kube_pod_container_resource_requests{resource=\"memory\",namespace=~\"${category:pipe}\"}))[$__range:10m])) > 0.8) > bool 0) * 2) or ((((avg_over_time((sum by (namespace,pod)(container_memory_working_set_bytes{container!=\"POD\",container!=\"\",namespace=~\"${category:pipe}\"}) / sum by (namespace,pod)(kube_pod_container_resource_requests{resource=\"memory\",namespace=~\"${category:pipe}\"}))[$__range:10m])) < 0.3) > bool 0) * 2) or ((((avg_over_time((sum by (namespace,pod)(rate(container_cpu_usage_seconds_total{container!=\"POD\",container!=\"\",namespace=~\"${category:pipe}\"}[5m])) / sum by (namespace,pod)(kube_pod_container_resource_requests{resource=\"cpu\",namespace=~\"${category:pipe}\"}))[$__range:10m])) > 0.8) > bool 0) * 2) or ((((avg_over_time((sum by (namespace,pod)(rate(container_cpu_usage_seconds_total{container!=\"POD\",container!=\"\",namespace=~\"${category:pipe}\"}[5m])) / sum by (namespace,pod)(kube_pod_container_resource_requests{resource=\"cpu\",namespace=~\"${category:pipe}\"}))[$__range:10m])) < 0.3) > bool 0) * 2) or sum by (namespace,pod)(kube_pod_container_info{pod!=\"\",namespace=~\"${category:pipe}\"}) * 0 + 1), \"pod_id\", \"/\", \"namespace\", \"pod\")",
+                "instant": true,
+                "format": "table",
+                "datasource": {
+                  "type": "prometheus",
+                  "uid": "prometheus"
+                }
+              }
+            ],
+            "transformations": [
+              {
+                "id": "filterFieldsByName",
+                "options": {
+                  "include": {
+                    "pattern": "pod_id|Value.*"
+                  }
+                }
+              },
+              {
+                "id": "joinByField",
+                "options": {
+                  "byField": "pod_id",
+                  "mode": "outer"
+                }
+              },
+              {
+                "id": "organize",
+                "options": {
+                  "renameByName": {
+                    "pod_id": "Namespace / Pod",
+                    "Value #CPU": "CPU %",
+                    "Value #MEM": "Memory %",
+                    "Value #STATUS": "Status"
+                  },
+                  "indexByName": {
+                    "pod_id": 0,
+                    "Value #CPU": 1,
+                    "Value #MEM": 2,
+                    "Value #STATUS": 3
+                  }
+                }
+              }
+            ],
+            "fieldConfig": {
+              "defaults": {
+                "custom": {
+                  "align": "auto",
+                  "cellOptions": {
+                    "type": "color-background",
+                    "mode": "basic"
+                  },
+                  "filterable": true
+                }
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "CPU %"
+                  },
+                  "properties": [
+                    {
+                      "id": "unit",
+                      "value": "percentunit"
+                    },
+                    {
+                      "id": "decimals",
+                      "value": 1
+                    },
+                    {
+                      "id": "noValue",
+                      "value": "\u2014"
+                    },
+                    {
+                      "id": "mappings",
+                      "value": [
+                        {
+                          "type": "special",
+                          "options": {
+                            "match": "null",
+                            "result": {
+                              "text": "\u2014",
+                              "color": "rgba(80,80,80,0.35)",
+                              "index": 0
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "thresholds",
+                      "value": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "yellow",
+                            "value": null
+                          },
+                          {
+                            "color": "green",
+                            "value": 0.3
+                          },
+                          {
+                            "color": "yellow",
+                            "value": 0.8
+                          },
+                          {
+                            "color": "red",
+                            "value": 1.2
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "Memory %"
+                  },
+                  "properties": [
+                    {
+                      "id": "unit",
+                      "value": "percentunit"
+                    },
+                    {
+                      "id": "decimals",
+                      "value": 1
+                    },
+                    {
+                      "id": "noValue",
+                      "value": "\u2014"
+                    },
+                    {
+                      "id": "mappings",
+                      "value": [
+                        {
+                          "type": "special",
+                          "options": {
+                            "match": "null",
+                            "result": {
+                              "text": "\u2014",
+                              "color": "rgba(80,80,80,0.35)",
+                              "index": 0
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": "thresholds",
+                      "value": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "yellow",
+                            "value": null
+                          },
+                          {
+                            "color": "green",
+                            "value": 0.3
+                          },
+                          {
+                            "color": "yellow",
+                            "value": 0.8
+                          },
+                          {
+                            "color": "red",
+                            "value": 1.0
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "Status"
+                  },
+                  "properties": [
+                    {
+                      "id": "decimals",
+                      "value": 0
+                    },
+                    {
+                      "id": "thresholds",
+                      "value": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "green",
+                            "value": null
+                          },
+                          {
+                            "color": "yellow",
+                            "value": 2
+                          },
+                          {
+                            "color": "red",
+                            "value": 3
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "id": "mappings",
+                      "value": [
+                        {
+                          "type": "value",
+                          "options": {
+                            "1": {
+                              "text": "\u2713 OK",
+                              "color": "green",
+                              "index": 0
+                            },
+                            "2": {
+                              "text": "\u26a0 Watch",
+                              "color": "yellow",
+                              "index": 1
+                            },
+                            "3": {
+                              "text": "\u26a1 Act",
+                              "color": "red",
+                              "index": 2
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "options": {
+              "showHeader": true,
+              "cellHeight": "sm",
+              "footer": {
+                "show": false
+              },
+              "sortBy": [
+                {
+                  "displayName": "Status",
+                  "desc": true
+                }
+              ]
+            }
           }
         ],
         "links": []
