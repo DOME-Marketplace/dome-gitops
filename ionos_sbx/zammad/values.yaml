@@ -112,3 +112,7 @@ zammad:
       limits:
         cpu: "250m"
         memory: "256Mi"
+
+  extraEnv:
+    - name: MALLOC_ARENA_MAX
+      value: "2"

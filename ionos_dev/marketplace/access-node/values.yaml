@@ -8,8 +8,15 @@ access-node:
     image:
       repository: in2workspace/in2-desmos-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.0.15-snapshot
+      tag: v2.0.15
       pullPolicy: Always
+    resources:
+      requests:
+        cpu: "250m"
+        memory: "512Mi"
+      limits:
+        cpu: "1000m"
+        memory: "1024Mi"
     readinessProbe:
       failureThreshold: 10
     livenessProbe:
