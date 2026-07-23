@@ -1,0 +1,39 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: tmf-allow-only-caddy
+  namespace: marketplace
+  labels: { app: caddy-proxy }
+spec:
+  podSelector:
+    matchExpressions:
+      - key: app.kubernetes.io/name
+        operator: In
+        values:
+          - tm-forum-api-account
+          - tm-forum-api-agreement
+          - tm-forum-api-product-catalog
+          - tm-forum-api-customer-bill-management
+          - tm-forum-api-customer-management
+          - tm-forum-api-party-catalog
+          - tm-forum-api-party-role
+          - tm-forum-api-product-inventory
+          - tm-forum-api-product-ordering-managementù
+          - tm-forum-api-quote
+          - tm-forum-api-resource-catalog
+          - tm-forum-api-resource-function-activation
+          - tm-forum-api-resource-inventory
+          - tm-forum-api-service-catalog
+          - tm-forum-api-service-inventory
+          - tm-forum-api-usage-management
+          - tm-forum-api-document-management
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: caddy-proxy
+      ports:
+        - protocol: TCP
+          port: 8080 

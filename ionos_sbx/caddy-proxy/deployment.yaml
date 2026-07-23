@@ -4,7 +4,7 @@ metadata:
   name: caddy-proxy
   labels: { app: caddy-proxy }
 spec:
-  replicas: 1                       # 1 replica => 1 IP sorgente in uscita
+  replicas: 1                       
   selector:
     matchLabels: { app: caddy-proxy }
   template:
@@ -37,6 +37,9 @@ spec:
           readinessProbe: { tcpSocket: { port: 8080 }, initialDelaySeconds: 5,  periodSeconds: 10 }
           livenessProbe:  { tcpSocket: { port: 8080 }, initialDelaySeconds: 10, periodSeconds: 15 }
       volumes:
+        - name: caddyfile                                  
+          configMap:
+            name: caddy-proxy-config                                
         - name: data
           emptyDir: {}
         - name: config-store
