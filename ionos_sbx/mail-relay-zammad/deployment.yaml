@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mail-relay
+  namespace: zammad
+  labels:
+    app: mail-relay
+spec:
+  replicas: 1
+  # One queue lives per pod: use Recreate so two pods never contend the RWO PVC.
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: mail-relay
+  template:
+    metadata:
+      labels:
+        app: mail-relay
+    spec:
+      containers:
+        - name: postfix
+          image: boky/postfix:latest
+          ports:
+            - name: submission
+              containerPort: 587
+          env:
+            # Sender domains allowed to relay through this instance
+            - name: ALLOWED_SENDER_DOMAINS
+              value: "dome-marketplace.eu"
+            # Smarthost = the real IONOS mail server
+            - name: RELAYHOST
+              value: "smtp.ionos.de:587"
+            - name: RELAYHOST_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mail-relay-zammad-secret
+                  key: username
+            - name: RELAYHOST_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mail-relay-zammad-secret
+                  key: password
+            # Enforce TLS towards IONOS
+            - name: RELAYHOST_TLS_LEVEL
+              value: "encrypt"
+            # Only in-cluster (private) networks may relay without auth.
+            # Tighten this to your real pod CIDR if you know it.
+            - name: MYNETWORKS
+              value: "10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 127.0.0.0/8"
+            - name: POSTFIX_myhostname
+              value: "mail-relay.dome-marketplace.eu"
+            # Retry tuning: how long/often Postfix keeps retrying deferred mail
+            - name: POSTFIX_maximal_queue_lifetime
+              value: "5d"
+            - name: POSTFIX_bounce_queue_lifetime
+              value: "5d"
+            - name: POSTFIX_minimal_backoff_time
+              value: "300s"
+            - name: POSTFIX_maximal_backoff_time
+              value: "4000s"
+          volumeMounts:
+            - name: spool
+              mountPath: /var/spool/postfix
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+          readinessProbe:
+            tcpSocket:
+              port: 587
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 587
+            initialDelaySeconds: 30
+            periodSeconds: 20
+      volumes:
+        - name: spool
+          persistentVolumeClaim:
+            claimName: mail-relay-spool
