@@ -117,6 +117,9 @@ dome-issuer:
           allowedOrigins: "https://issuer.dome-marketplace.eu, https://wallet.dome-marketplace-dev2.org, https://wallet.dome-marketplace-sbx.org, https://wallet.dome-marketplace-lcl.org"
         external:
           allowedOrigins: "https://issuer.dome-marketplace.eu, https://dome-certification.dome-marketplace.eu"
+      labelUpload:
+        certifierEmail: certification@dome-marketplace.eu
+        marketplaceEmail: domesupport@ficodes.com
       vault:
         url: http://wallet-vault-server:8200
         secretsMount: kv
