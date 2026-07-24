@@ -1,0 +1,20 @@
+# Restrict the relay: only Zammad pods may reach the submission port.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: mail-relay-ingress
+  namespace: zammad
+spec:
+  podSelector:
+    matchLabels:
+      app: mail-relay
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: zammad
+      ports:
+        - protocol: TCP
+          port: 587
