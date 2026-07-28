@@ -4,14 +4,14 @@ metadata:
   name: mail-relay
   namespace: argocd
   labels:
-    purpose: zammad
+    purpose: mail-relay
 spec:
   destination:
-    namespace: zammad
+    namespace: mail-relay
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: ionos_sbx/mail-relay-zammad
+    path: ionos_sbx/mail-relay
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
   syncPolicy:
