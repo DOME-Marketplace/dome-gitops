@@ -20,6 +20,7 @@ data:
   # LOGGING_LEVEL_ROOT: INFO
   SPRING_MAIL_USERNAME: certification@dome-marketplace.eu
   SPRING_MAIL_ADDRESS: certification@dome-marketplace.eu
+  EMAIL_ADDRESS: certification@dome-marketplace.eu
   SPRING_MAIL_HOST: smtp.ionos.de
   SPRING_MAIL_PORT: "587"
   SPRING_MAIL_SMPT_AUTH: "true"
@@ -32,4 +33,5 @@ data:
   JWT_OAUTH_CLIENT_ID: did:key:zDnaemuFzGnbeSpxGUKmXMo354Nhvivfao3UjrNqLyJKX34gw
   JWT_OAUTH_REDIRECT_URI: https://dome-certification.dome-marketplace.eu/auth/login
   JWT_OAUTH_AUD: https://verifier.dome-marketplace.eu
+  JWT_OAUTH_ISSUER: https://issuer.dome-marketplace.eu
   JWT_ISSUER_URL: https://issuer.dome-marketplace.eu
