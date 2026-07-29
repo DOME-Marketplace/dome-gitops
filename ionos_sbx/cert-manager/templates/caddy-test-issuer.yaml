@@ -1,0 +1,30 @@
+# ClusterIssuer dedicato al test del Caddy Ingress Controller.
+#
+# Non si puo' riusare `letsencrypt-sbx-issuer` perche' il suo solver HTTP01
+# crea l'Ingress di challenge con `ingressClassName: nginx`: la challenge
+# arriverebbe al LoadBalancer di nginx, mentre il DNS di tmf-test punta a
+# quello di Caddy, e la validazione fallirebbe.
+#
+# Il selector e' volutamente ristretto al singolo dnsName di test, quindi
+# questo issuer non puo' intercettare i certificati degli altri componenti.
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-caddy-test-issuer
+spec:
+  acme:
+    email: giovanni.grifo@demetrix.it
+    preferredChain: ""
+    # Per i primi giri usare lo staging di Let's Encrypt (rate limit molto piu'
+    # permissivi, certificato non valido nel browser):
+    # server: https://acme-staging-v02.api.letsencrypt.org/directory
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: lets-encrypt-caddy-test-issuer-account-key
+    solvers:
+      - selector:
+          dnsNames:
+            - "tmf-test.dome-marketplace-sbx.org"
+        http01:
+          ingress:
+            ingressClassName: caddy

@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: test-caddy
+  namespace: argocd
+  labels:
+    purpose: test
+spec:
+  destination:
+    namespace: test-caddy
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: ionos_sbx/test-caddy
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      # Il namespace viene creato qui e NON in ionos_common/namespaces, che e'
+      # condiviso con dev / dev2 / prd: cosi' test-caddy esiste solo in SBX.
+      - CreateNamespace=true

@@ -1,0 +1,73 @@
+# Caddy Ingress Controller - deployment di TEST su SBX
+#
+# Scopo: valutare Caddy come reverse proxy in sostituzione di ingress-nginx.
+# Convive con ingress-nginx senza interferire: gestisce SOLO gli Ingress che
+# dichiarano esplicitamente `ingressClassName: caddy` (classNameRequired: true).
+#
+# Il traffico degli altri host continua a passare dal LoadBalancer di
+# ingress-nginx, che non viene toccato.
+caddy-ingress-controller:
+
+  fullnameOverride: caddy-ingress
+
+  # 2 repliche = default del chart, coerente con il PodDisruptionBudget
+  # (minAvailable: 1) che il chart crea sempre.
+  replicaCount: 2
+
+  image:
+    repository: caddy/ingress
+    tag: "v0.2.1"
+    pullPolicy: IfNotPresent
+
+  ingressController:
+    # watchNamespace vuoto = watch su tutti i namespace, ma classNameRequired
+    # limita di fatto il raggio d'azione ai soli Ingress con class "caddy".
+    watchNamespace: ""
+    className: caddy
+    classNameRequired: true
+    verbose: true
+    rbac:
+      create: true
+    config:
+      # ACME nativo di Caddy DISATTIVATO (email vuota => no Automatic HTTPS).
+      # I certificati Let's Encrypt sono emessi da cert-manager tramite il
+      # ClusterIssuer letsencrypt-caddy-test-issuer e consumati da Caddy via
+      # `spec.tls[].secretName` sull'Ingress ("Bring Your Own Certificates").
+      email: ""
+      onDemandTLS: false
+      metrics: true
+      debug: false
+      proxyProtocol: false
+
+  # Service di tipo LoadBalancer dedicato: IP pubblico separato da quello di
+  # ingress-nginx. Il record DNS di tmf-test.dome-marketplace-sbx.org va
+  # puntato a QUESTO IP (vedi ionos_sbx/test-caddy/notes.md).
+  loadBalancer:
+    enabled: true
+    annotations:
+      # Registra come target del LB solo i nodi dell'ingress pool
+      # (risparmio di IP pubblici, stessa convenzione di ingress-nginx).
+      cloud.ionos.com/node-selector: nodepool=ingress
+
+  serviceAccount:
+    create: true
+    name: caddy-ingress-controller
+
+  # Il nodo dell'ingress pool e' tainted con ingress-node=true:NoSchedule
+  # (cfr. doc/devops/taints/TAINT_INGRESS_NODE.md), quindi servono sia il
+  # nodeSelector sia la toleration per finire sullo stesso nodo di nginx.
+  nodeSelector:
+    nodepool: ingress
+  tolerations:
+    - key: ingress-node
+      operator: Equal
+      value: "true"
+      effect: NoSchedule
+
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "1"
+      memory: "512Mi"

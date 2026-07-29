@@ -1,0 +1,15 @@
+# Nessun Ingress associato: ClusterIP puro.
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-caddy-internal-svc
+  namespace: test-caddy
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/instance: test-caddy-internal
+    app.kubernetes.io/name: test-caddy-internal
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
