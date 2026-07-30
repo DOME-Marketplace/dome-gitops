@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mail-relay
+  namespace: argocd
+  labels:
+    purpose: mail-relay
+spec:
+  destination:
+    namespace: mail-relay
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: ionos_dev2/mail-relay
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
