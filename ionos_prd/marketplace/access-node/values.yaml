@@ -241,7 +241,7 @@ access-node:
       image:
         repository: docker.io/drllbl18
         # -- current latest tag
-        tag: "sbx_1.6.3"
+        tag: "sbx_1.8.4"
         pullPolicy: IfNotPresent
       # -- resource requests/limits applied to all TM Forum API pods
       resources:
@@ -254,6 +254,8 @@ access-node:
       additionalEnvVars:
         - name: API_EXTENSION_ENABLED
           value: "true"
+        - name: API_EXTENSION_PUT_ENABLED
+          value: "false"
 
       # -- ngsi-ld broker connection information
       ngsiLd:
