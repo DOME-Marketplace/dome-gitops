@@ -1,0 +1,502 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    grafana_dashboard: "1"
+  name: application-logs
+data:
+  application-logs.json: |-
+      {
+        "title": "Application Logs",
+        "description": "Browse application logs from any pod in the cluster. Pick a namespace, optionally narrow to specific pods, filter by level, and search free-text. Backed by Loki; history goes back to 2025-04.",
+        "tags": [
+          "dome",
+          "logs",
+          "loki"
+        ],
+        "uid": "dome-application-logs",
+        "timezone": "browser",
+        "schemaVersion": 39,
+        "version": 1,
+        "editable": true,
+        "refresh": "",
+        "time": {
+          "from": "now-1h",
+          "to": "now"
+        },
+        "timepicker": {
+          "refresh_intervals": [
+            "10s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "1h"
+          ],
+          "time_options": [
+            "5m",
+            "15m",
+            "1h",
+            "6h",
+            "12h",
+            "24h",
+            "2d",
+            "7d",
+            "30d",
+            "90d",
+            "1y"
+          ]
+        },
+        "templating": {
+          "list": [
+            {
+              "name": "datasource",
+              "label": "Datasource",
+              "type": "datasource",
+              "query": "loki",
+              "current": {},
+              "hide": 0,
+              "refresh": 1
+            },
+            {
+              "name": "namespace",
+              "label": "Namespace",
+              "type": "query",
+              "datasource": {
+                "type": "loki",
+                "uid": "${datasource}"
+              },
+              "definition": "label_values(namespace)",
+              "query": {
+                "label": "namespace",
+                "refId": "namespace",
+                "type": 1
+              },
+              "multi": true,
+              "includeAll": true,
+              "allValue": ".*",
+              "current": {
+                "text": [
+                  "marketplace"
+                ],
+                "value": [
+                  "marketplace"
+                ]
+              },
+              "refresh": 2,
+              "sort": 1
+            },
+            {
+              "name": "pod",
+              "label": "Pod",
+              "type": "query",
+              "datasource": {
+                "type": "loki",
+                "uid": "${datasource}"
+              },
+              "definition": "label_values({namespace=~\"$namespace\"}, pod)",
+              "query": {
+                "label": "pod",
+                "stream": "{namespace=~\"$namespace\"}",
+                "refId": "pod",
+                "type": 1
+              },
+              "multi": true,
+              "includeAll": true,
+              "allValue": ".*",
+              "current": {
+                "text": [
+                  "All"
+                ],
+                "value": [
+                  "$__all"
+                ]
+              },
+              "refresh": 2,
+              "sort": 1
+            },
+            {
+              "name": "level",
+              "label": "Level",
+              "type": "custom",
+              "query": ".  : All,(?i)(warn|error|fatal|panic|exception) : Warnings and errors,(?i)(error|fatal|panic|exception) : Errors only",
+              "options": [
+                {
+                  "selected": true,
+                  "text": "All",
+                  "value": "."
+                },
+                {
+                  "selected": false,
+                  "text": "Warnings and errors",
+                  "value": "(?i)(warn|error|fatal|panic|exception)"
+                },
+                {
+                  "selected": false,
+                  "text": "Errors only",
+                  "value": "(?i)(error|fatal|panic|exception)"
+                }
+              ],
+              "current": {
+                "selected": true,
+                "text": "All",
+                "value": "."
+              },
+              "hide": 0
+            },
+            {
+              "name": "search",
+              "label": "Search",
+              "type": "textbox",
+              "query": "",
+              "current": {
+                "text": "",
+                "value": ""
+              },
+              "description": "Free-text, case-insensitive. Leave empty to match everything.",
+              "hide": 0
+            }
+          ]
+        },
+        "panels": [
+          {
+            "type": "row",
+            "title": "Overview",
+            "collapsed": false,
+            "gridPos": {
+              "h": 1,
+              "w": 24,
+              "x": 0,
+              "y": 0
+            },
+            "panels": []
+          },
+          {
+            "type": "stat",
+            "title": "Log lines (selected range)",
+            "description": "Total lines matching the current namespace / pod / level / search selection.",
+            "datasource": {
+              "type": "loki",
+              "uid": "${datasource}"
+            },
+            "gridPos": {
+              "h": 4,
+              "w": 8,
+              "x": 0,
+              "y": 1
+            },
+            "targets": [
+              {
+                "datasource": {
+                  "type": "loki",
+                  "uid": "${datasource}"
+                },
+                "editorMode": "code",
+                "expr": "sum(count_over_time({namespace=~\"$namespace\", pod=~\"$pod\"} |~ \"$level\" |~ \"(?i)$search\" [$__range]))",
+                "queryType": "instant",
+                "refId": "A"
+              }
+            ],
+            "options": {
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "orientation": "auto",
+              "textMode": "auto",
+              "colorMode": "text",
+              "graphMode": "area"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "unit": "short",
+                "color": {
+                  "mode": "fixed",
+                  "fixedColor": "text"
+                }
+              },
+              "overrides": []
+            }
+          },
+          {
+            "type": "stat",
+            "title": "Error lines (selected range)",
+            "description": "Lines matching error|fatal|panic|exception, regardless of the Level selector.",
+            "datasource": {
+              "type": "loki",
+              "uid": "${datasource}"
+            },
+            "gridPos": {
+              "h": 4,
+              "w": 8,
+              "x": 8,
+              "y": 1
+            },
+            "targets": [
+              {
+                "datasource": {
+                  "type": "loki",
+                  "uid": "${datasource}"
+                },
+                "editorMode": "code",
+                "expr": "sum(count_over_time({namespace=~\"$namespace\", pod=~\"$pod\"} |~ \"(?i)(error|fatal|panic|exception)\" |~ \"(?i)$search\" [$__range]))",
+                "queryType": "instant",
+                "refId": "A"
+              }
+            ],
+            "options": {
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "orientation": "auto",
+              "textMode": "auto",
+              "colorMode": "value",
+              "graphMode": "area"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "unit": "short",
+                "color": {
+                  "mode": "fixed",
+                  "fixedColor": "text"
+                }
+              },
+              "overrides": []
+            }
+          },
+          {
+            "type": "stat",
+            "title": "Pods reporting",
+            "description": "How many distinct pods produced matching lines. 0 usually means the selection is too narrow.",
+            "datasource": {
+              "type": "loki",
+              "uid": "${datasource}"
+            },
+            "gridPos": {
+              "h": 4,
+              "w": 8,
+              "x": 16,
+              "y": 1
+            },
+            "targets": [
+              {
+                "datasource": {
+                  "type": "loki",
+                  "uid": "${datasource}"
+                },
+                "editorMode": "code",
+                "expr": "count(sum by (pod) (count_over_time({namespace=~\"$namespace\", pod=~\"$pod\"} |~ \"$level\" |~ \"(?i)$search\" [$__range])))",
+                "queryType": "instant",
+                "refId": "A"
+              }
+            ],
+            "options": {
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": false
+              },
+              "orientation": "auto",
+              "textMode": "auto",
+              "colorMode": "text",
+              "graphMode": "area"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "unit": "short",
+                "color": {
+                  "mode": "fixed",
+                  "fixedColor": "text"
+                }
+              },
+              "overrides": []
+            }
+          },
+          {
+            "type": "row",
+            "title": "Volume",
+            "collapsed": false,
+            "gridPos": {
+              "h": 1,
+              "w": 24,
+              "x": 0,
+              "y": 5
+            },
+            "panels": []
+          },
+          {
+            "type": "timeseries",
+            "title": "Log volume by pod",
+            "description": "Stacked line counts per pod. A sudden spike or a pod dropping to zero is usually what you are looking for.",
+            "datasource": {
+              "type": "loki",
+              "uid": "${datasource}"
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 6
+            },
+            "targets": [
+              {
+                "datasource": {
+                  "type": "loki",
+                  "uid": "${datasource}"
+                },
+                "editorMode": "code",
+                "expr": "sum by (pod) (count_over_time({namespace=~\"$namespace\", pod=~\"$pod\"} |~ \"$level\" |~ \"(?i)$search\" [$__interval]))",
+                "queryType": "range",
+                "refId": "A",
+                "legendFormat": "{{pod}}"
+              }
+            ],
+            "options": {
+              "legend": {
+                "displayMode": "list",
+                "placement": "bottom",
+                "showLegend": true,
+                "calcs": [
+                  "sum"
+                ]
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "desc"
+              }
+            },
+            "fieldConfig": {
+              "defaults": {
+                "unit": "short",
+                "custom": {
+                  "drawStyle": "bars",
+                  "fillOpacity": 30,
+                  "lineWidth": 1,
+                  "stacking": {
+                    "mode": "normal",
+                    "group": "A"
+                  },
+                  "axisSoftMin": 0
+                }
+              },
+              "overrides": []
+            }
+          },
+          {
+            "type": "timeseries",
+            "title": "Errors over time",
+            "description": "Error-like lines only. Independent of the Level selector so you always see errors.",
+            "datasource": {
+              "type": "loki",
+              "uid": "${datasource}"
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 6
+            },
+            "targets": [
+              {
+                "datasource": {
+                  "type": "loki",
+                  "uid": "${datasource}"
+                },
+                "editorMode": "code",
+                "expr": "sum by (pod) (count_over_time({namespace=~\"$namespace\", pod=~\"$pod\"} |~ \"(?i)(error|fatal|panic|exception)\" |~ \"(?i)$search\" [$__interval]))",
+                "queryType": "range",
+                "refId": "A",
+                "legendFormat": "{{pod}}"
+              }
+            ],
+            "options": {
+              "legend": {
+                "displayMode": "list",
+                "placement": "bottom",
+                "showLegend": true,
+                "calcs": [
+                  "sum"
+                ]
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "desc"
+              }
+            },
+            "fieldConfig": {
+              "defaults": {
+                "unit": "short",
+                "custom": {
+                  "drawStyle": "bars",
+                  "fillOpacity": 30,
+                  "lineWidth": 1,
+                  "stacking": {
+                    "mode": "normal",
+                    "group": "A"
+                  },
+                  "axisSoftMin": 0
+                }
+              },
+              "overrides": []
+            }
+          },
+          {
+            "type": "row",
+            "title": "Logs",
+            "collapsed": false,
+            "gridPos": {
+              "h": 1,
+              "w": 24,
+              "x": 0,
+              "y": 14
+            },
+            "panels": []
+          },
+          {
+            "type": "logs",
+            "title": "Logs",
+            "description": "Newest first. Click a line to expand labels. Use the Search variable for free-text; it is case-insensitive.",
+            "datasource": {
+              "type": "loki",
+              "uid": "${datasource}"
+            },
+            "gridPos": {
+              "h": 20,
+              "w": 24,
+              "x": 0,
+              "y": 15
+            },
+            "targets": [
+              {
+                "datasource": {
+                  "type": "loki",
+                  "uid": "${datasource}"
+                },
+                "editorMode": "code",
+                "expr": "{namespace=~\"$namespace\", pod=~\"$pod\"} |~ \"$level\" |~ \"(?i)$search\"",
+                "queryType": "range",
+                "refId": "A"
+              }
+            ],
+            "options": {
+              "showTime": true,
+              "showLabels": false,
+              "showCommonLabels": false,
+              "wrapLogMessage": true,
+              "prettifyLogMessage": false,
+              "enableLogDetails": true,
+              "dedupStrategy": "none",
+              "sortOrder": "Descending"
+            }
+          }
+        ]
+      }
