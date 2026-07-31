@@ -18,6 +18,15 @@ spec:
   - repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
     ref: values
+  # The `values` source above only supplies valueFiles; it does not deploy
+  # manifests. This third source deploys the S3 SealedSecret that every Loki
+  # component now needs, using the same pattern as applications_prd/argocd.yaml.
+  # `include` is required so values.yaml is not applied as a manifest.
+  - repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: HEAD
+    path: ionos_prd/loki-distributed
+    directory:
+      include: 'loki-s3-sealed-secret.yaml'
   destination:
     namespace: loki-distributed
     server: https://kubernetes.default.svc

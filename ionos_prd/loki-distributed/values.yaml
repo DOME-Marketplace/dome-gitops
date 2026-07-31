@@ -1,65 +1,219 @@
 global:
   dnsService: "coredns"
 
-compactor:
-  enabled: true
-  resources:
-    requests:
-      cpu: 10m
-      memory: 64Mi
-    limits:
-      cpu: 100m
-      memory: 128Mi
+# ---------------------------------------------------------------------------
+# Loki stores logs in IONOS Object Storage (bucket: loki-prd), not on local
+# volumes.
+#
+# Why: the `filesystem` object store requires ONE filesystem visible to every
+# component. Previously ingester and querier each had their own ReadWriteOnce
+# volume, so the querier searched an empty disk while ~470 days of chunks sat on
+# the ingester's. Queries returned HTTP 200 with zero chunks, which Grafana
+# renders as "No data" — logs looked lost but were only unreachable.
+#
+# A shared volume is impossible here: the IONOS CSI driver refuses to mount one
+# block device twice ("Resource busy"), even read-only, and no RWX storage class
+# exists. Object storage removes the constraint entirely: every component reads
+# the same bucket, so the distributed topology is finally correct.
+#
+# The existing 127 GiB (1,892,200 objects, covering 2025-04-18 -> 2026-07-31)
+# has already been migrated into loki-prd and verified queryable end-to-end.
+# ---------------------------------------------------------------------------
 
+loki:
+  # Deep-merged over the chart's templated config.
+  structuredConfig:
+    schema_config:
+      configs:
+        # Unchanged from the previous deployment EXCEPT object_store, which
+        # moves filesystem -> s3. Schema, store and index period MUST stay the
+        # same or the migrated historical chunks will not resolve.
+        - from: "2020-09-07"
+          store: boltdb-shipper
+          object_store: s3
+          schema: v11
+          index:
+            prefix: loki_index_
+            period: 24h
+
+    storage_config:
+      boltdb_shipper:
+        shared_store: s3
+        active_index_directory: /var/loki/index
+        cache_location: /var/loki/cache
+        cache_ttl: 168h
+      aws:
+        bucketnames: loki-prd
+        # eu-central-3 uses the DOT form; s3-eu-central-3... does not resolve.
+        endpoint: s3.eu-central-3.ionoscloud.com
+        region: eu-central-3
+        # Expanded from env (see extraArgs / extraEnvFrom below) so credentials
+        # live in a SealedSecret and never appear in this file.
+        access_key_id: ${AWS_ACCESS_KEY_ID}
+        secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+        s3forcepathstyle: true
+
+    compactor:
+      shared_store: s3
+      working_directory: /var/loki/compactor
+      # Retention deliberately NOT enabled here — tracked as separate work.
+      retention_enabled: false
+
+    ingester:
+      lifecycler:
+        ring:
+          # HA: each stream is held by two ingesters, so losing one no longer
+          # stops ingestion cluster-wide.
+          replication_factor: 2
+
+# Loki must expand ${...} in the config, and every component that touches object
+# storage needs the credentials. Applied to each Loki binary; the gateway runs
+# nginx and is excluded.
 ingester:
+  replicas: 2
+  # Required by the chart whenever replicas > 1; also makes the PDB meaningful.
+  maxUnavailable: 1
+  extraArgs:
+    - -config.expand-env=true
+  extraEnvFrom:
+    - secretRef:
+        name: loki-s3-credentials
   persistence:
     enabled: true
     claims:
+      # WAL only — chunks now live in S3. The previous 200Gi claim held the
+      # chunk store and is no longer needed at that size.
       - name: data
-        size: 200Gi
+        size: 10Gi
   resources:
     requests:
-      cpu: 20m
+      cpu: 100m
       memory: 512Mi
     limits:
-      cpu: 200m
-      memory: 768Mi
+      cpu: "1"
+      memory: 1Gi
 
 distributor:
+  replicas: 2
+  # Required by the chart whenever replicas > 1; also makes the PDB meaningful.
+  maxUnavailable: 1
+  extraArgs:
+    - -config.expand-env=true
+  extraEnvFrom:
+    - secretRef:
+        name: loki-s3-credentials
   resources:
     requests:
-      cpu: 20m
+      cpu: 50m
       memory: 192Mi
     limits:
-      cpu: 200m
-      memory: 256Mi
+      cpu: 500m
+      memory: 512Mi
 
 querier:
+  replicas: 2
+  # Required by the chart whenever replicas > 1; also makes the PDB meaningful.
+  maxUnavailable: 1
+  extraArgs:
+    - -config.expand-env=true
+  extraEnvFrom:
+    - secretRef:
+        name: loki-s3-credentials
+  # No chunk store on disk any more; the boltdb-shipper cache is ephemeral.
   persistence:
-    enabled: true
-    size: 200Gi
+    enabled: false
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi
+
+queryFrontend:
+  replicas: 2
+  # Required by the chart whenever replicas > 1; also makes the PDB meaningful.
+  maxUnavailable: 1
+  extraArgs:
+    - -config.expand-env=true
+  extraEnvFrom:
+    - secretRef:
+        name: loki-s3-credentials
+  # Previously limited to 64Mi and OOMKilled every ~8 minutes (23 restarts) —
+  # what users experienced as intermittent Loki errors.
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+compactor:
+  enabled: true
+  extraArgs:
+    - -config.expand-env=true
+  extraEnvFrom:
+    - secretRef:
+        name: loki-s3-credentials
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+gateway:
+  replicas: 2
+  # Required by the chart whenever replicas > 1; also makes the PDB meaningful.
+  maxUnavailable: 1
   resources:
     requests:
       cpu: 10m
-      memory: 64Mi
+      memory: 32Mi
     limits:
       cpu: 100m
       memory: 128Mi
 
-queryFrontend:
+# ---------------------------------------------------------------------------
+# Caching. Without it every query re-fetches index and chunks from S3 over the
+# network, which makes browsing months of logs in Grafana painfully slow.
+# ---------------------------------------------------------------------------
+memcachedIndexQueries:
+  enabled: true
+  replicas: 1
   resources:
     requests:
-      cpu: 10m
-      memory: 32Mi
+      cpu: 25m
+      memory: 128Mi
     limits:
-      cpu: 100m
-      memory: 64Mi
+      cpu: 250m
+      memory: 256Mi
 
-gateway:
+memcachedChunks:
+  enabled: true
+  replicas: 1
   resources:
     requests:
-      cpu: 10m
-      memory: 32Mi
+      cpu: 25m
+      memory: 256Mi
     limits:
-      cpu: 100m
-      memory: 64Mi
+      cpu: 250m
+      memory: 512Mi
+
+memcachedFrontend:
+  enabled: true
+  replicas: 1
+  resources:
+    requests:
+      cpu: 25m
+      memory: 128Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+
+# Loki previously exported no metrics to Prometheus at all, so failures of the
+# logging stack itself were invisible.
+serviceMonitor:
+  enabled: true
