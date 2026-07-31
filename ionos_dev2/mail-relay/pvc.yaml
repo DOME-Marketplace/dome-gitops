@@ -1,0 +1,12 @@
+# This is what actually guarantees delivery when the mail server is down.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mail-relay-spool
+  namespace: mail-relay
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
