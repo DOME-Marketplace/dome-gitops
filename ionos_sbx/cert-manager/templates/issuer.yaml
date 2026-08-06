@@ -11,8 +11,9 @@ spec:
     server: https://acme-v02.api.letsencrypt.org/directory
     solvers:
     - selector:
-        dnsZones:
-          - "dome-marketplace-sbx.org"
-      http01:
-        ingress:
-          ingressClassName: nginx
+        dnsNames: ["tmf-test.dome-marketplace-sbx.org"]
+      http01: { ingress: { ingressClassName: caddy } }
+    - selector:
+        dnsZones: ["dome-marketplace-sbx.org"]
+      http01: { ingress: { ingressClassName: nginx } }
+

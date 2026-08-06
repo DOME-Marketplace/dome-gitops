@@ -15,7 +15,7 @@ metadata:
   name: echo-via-caddy
   namespace: test-caddy
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-caddy-test-issuer
+    cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
 spec:
   ingressClassName: caddy
   rules:
