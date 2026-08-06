@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: echo-via-caddy
+  namespace: test-caddy
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/instance: echo-via-caddy
+    app.kubernetes.io/name: echo-via-caddy
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080

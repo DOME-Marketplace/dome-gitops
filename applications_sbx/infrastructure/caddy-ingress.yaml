@@ -13,7 +13,11 @@ spec:
   source:
     path: ionos_sbx/caddy-ingress
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
-    targetRevision: HEAD
+    # ATTENZIONE - da riportare a `HEAD` prima del merge su main.
+    # Durante il test i manifest esistono solo su questo branch: con `HEAD`
+    # Argo leggerebbe il branch di default (main), dove ionos_sbx/caddy-ingress
+    # non c'e' ancora, e l'Application resterebbe vuota.
+    targetRevision: test-caddy-integration
   syncPolicy:
     automated:
       prune: true

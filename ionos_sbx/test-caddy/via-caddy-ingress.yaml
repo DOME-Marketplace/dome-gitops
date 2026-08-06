@@ -1,0 +1,35 @@
+# Ingress gestito da CADDY: il traffico entra dal LoadBalancer del Caddy
+# Ingress Controller (IP pubblico dedicato) e non tocca mai nginx.
+#
+# `ingressClassName: caddy` e' l'unico discriminante: il controller e'
+# configurato con classNameRequired=true, quindi prende in carico solo gli
+# Ingress che lo dichiarano esplicitamente. Nessuna annotation
+# nginx.ingress.kubernetes.io/* qui: non avrebbe effetto.
+#
+# TLS: cert-manager emette il certificato Let's Encrypt tramite il ClusterIssuer
+# di test (solver HTTP01 su class caddy) e lo salva in echo-via-caddy-tls;
+# Caddy lo serve tramite spec.tls[].secretName.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: echo-via-caddy
+  namespace: test-caddy
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-caddy-test-issuer
+spec:
+  ingressClassName: caddy
+  rules:
+    - host: tmf-test.dome-marketplace-sbx.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: echo-via-caddy
+                port:
+                  number: 8080
+  tls:
+    - hosts:
+        - tmf-test.dome-marketplace-sbx.org
+      secretName: echo-via-caddy-tls

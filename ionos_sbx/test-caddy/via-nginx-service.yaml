@@ -1,12 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: test-caddy-exposed-svc
+  name: echo-via-nginx
   namespace: test-caddy
 spec:
+  type: ClusterIP
   selector:
-    app.kubernetes.io/instance: test-caddy-exposed
-    app.kubernetes.io/name: test-caddy-exposed
+    app.kubernetes.io/instance: echo-via-nginx
+    app.kubernetes.io/name: echo-via-nginx
   ports:
     - name: http
       port: 8080
