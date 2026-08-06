@@ -216,11 +216,11 @@ data:
                 'client_id': 'did:key:zDnaer6wstrAhZxM5ej7fvQbnf9aP3RdojhXEao431SMrN3Lb',
                 'token_endpoint_auth_method': 'none',
                 'code_challenge_method': 'S256',
-                'server_metadata_url': 'https://verifier.dome-marketplace-sbx.org/.well-known/openid-configuration',
+                'server_metadata_url': 'https://verifier.dome-marketplace-lcl.org/.well-known/openid-configuration',
                 'client_kwargs': {
                     'scope': 'openid_learcredential',
                 },
-                'api_base_url': 'https://verifier.dome-marketplace-sbx.org/',
+                'api_base_url': 'https://verifier.dome-marketplace-lcl.org/',
             },
         }
     ]
@@ -332,7 +332,7 @@ data:
     # forwarded Access Token against the verifier's published JWKS.
     VERIFIER_METADATA_URL = os.environ.get(
         "VERIFIER_METADATA_URL",
-        "https://verifier.dome-marketplace-sbx.org/.well-known/openid-configuration",
+        "https://verifier.dome-marketplace-lcl.org/.well-known/openid-configuration",
     )
 
     # Dashboard -> RLS rule templates ({org} is filled from the validated VC).
