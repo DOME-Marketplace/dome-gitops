@@ -119,7 +119,7 @@ data:
               "name": "level",
               "label": "Level",
               "type": "custom",
-              "query": ".  : All,(?i)(warn|error|fatal|panic|exception) : Warnings and errors,(?i)(error|fatal|panic|exception) : Errors only",
+              "query": ". : All,(?i)(warn|error|fatal|panic|exception) : Warnings and errors,(?i)(error|fatal|panic|exception) : Errors only",
               "options": [
                 {
                   "selected": true,
