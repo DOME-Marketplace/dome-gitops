@@ -220,7 +220,7 @@ data:
                 'client_kwargs': {
                     'scope': 'openid_learcredential',
                 },
-                'api_base_url': 'https://verifier.dome-marketplace-sbx.org/',
+                'api_base_url': 'https://verifier.dome-marketplace-sbx.org/verifier',
             },
         }
     ]

@@ -8,7 +8,7 @@ access-node:
     image:
       repository: in2workspace/in2-desmos-api
       # Overrides the image tag whose default is the chart appVersion.
-      tag: v2.0.15
+      tag: v2.0.16
       pullPolicy: Always
     resources:
       requests:
@@ -57,7 +57,7 @@ access-node:
       ## information about the access-node operator
       operator:
         # -- did of the organization running the node
-        organizationIdentifier: did:key:zDnaev2NrT2aiJN7CE8hwMuahRJccCYLaWwCGyqDaB5C81FQQ
+        organizationIdentifier: did:key:zDnaeZ3sytoFpuy2P7W9gzdWCcb6fMMv3nYsbT2djJEzT1ZsM
       ## connection information for the context broker
       broker:
         # -- provider of the broker
@@ -141,7 +141,7 @@ access-node:
     env:
       DEBUG: "*"
       RPC_ADDRESS: "https://red-t.alastria.io/v0/9461d9f4292b41230527d57ee90652a6"
-      ISS: "0x6a2f383855cba0fff292455ccd908c4a08d6c07f5ef139b5afcef4cf62d4798b"
+      ISS: "0x85f06ba6412ff078f29693cf3775cf5d1f42842912d544ac16c7de023590b269"
 
    ## dlt adapter hashnet
   dlt-adapter-hashnet:
@@ -279,7 +279,7 @@ access-node:
 
     defaultConfig:
       image:
-        tag: sbx_1.8.4
+        tag: sbx_1.9.0
       additionalEnvVars: 
       - name: MAPPING_STRICT_RELATIONSHIPS
         value: "false"
