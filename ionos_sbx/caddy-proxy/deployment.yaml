@@ -48,9 +48,6 @@ spec:
               cpu: "500m"
               memory: "256Mi"
           volumeMounts:
-            - name: caddyfile
-              mountPath: /etc/caddy
-              readOnly: true
             - name: data
               mountPath: /data
             - name: config-store
@@ -67,9 +64,6 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 15
       volumes:
-        - name: caddyfile
-          configMap:
-            name: caddy-proxy-config
         - name: data
           emptyDir: {}
         - name: config-store
