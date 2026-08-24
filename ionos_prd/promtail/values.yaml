@@ -10,3 +10,21 @@ resources:
   limits:
     cpu: 200m
     memory: 384Mi
+
+# Promtail ran on 4 of 5 nodes: the DaemonSet did not tolerate the
+# `ingress-node` taint, so NOTHING scheduled on ingress-pool-* was collected —
+# including the ingress-nginx controller's HTTP access logs, which are exactly
+# what developers need to debug 4xx/5xx from their components.
+#
+# Setting `tolerations` REPLACES the chart defaults, so the master and
+# control-plane entries below are the chart's own and must be kept.
+tolerations:
+  - key: node-role.kubernetes.io/master
+    operator: Exists
+    effect: NoSchedule
+  - key: node-role.kubernetes.io/control-plane
+    operator: Exists
+    effect: NoSchedule
+  - key: ingress-node
+    operator: Exists
+    effect: NoSchedule
