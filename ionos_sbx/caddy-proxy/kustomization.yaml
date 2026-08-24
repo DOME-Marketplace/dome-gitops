@@ -4,4 +4,9 @@ resources:
   - deployment.yaml
   - service.yaml
   - forward-auth-sealed.yaml
-  - ghcr-auth-sealed.yaml   
+  - ghcr-auth-sealed.yaml
+
+configMapGenerator:
+  - name: caddy-proxy-config
+    files:
+      - Caddyfile=Caddyfile
