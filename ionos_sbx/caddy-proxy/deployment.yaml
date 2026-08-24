@@ -25,7 +25,7 @@ spec:
         - name: ghcr-pull-secret
       containers:
         - name: caddy
-          image: ghcr.io/dome-marketplace/caddy-proxy:1.0.0
+          image: ghcr.io/dome-marketplace/caddy-proxy:1.0.1
           imagePullPolicy: IfNotPresent
           args:
             - caddy
@@ -48,9 +48,6 @@ spec:
               cpu: "500m"
               memory: "256Mi"
           volumeMounts:
-            - name: caddyfile
-              mountPath: /etc/caddy
-              readOnly: true
             - name: data
               mountPath: /data
             - name: config-store
@@ -67,9 +64,6 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 15
       volumes:
-        - name: caddyfile
-          configMap:
-            name: caddy-proxy-config
         - name: data
           emptyDir: {}
         - name: config-store
