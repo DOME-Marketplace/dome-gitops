@@ -81,10 +81,17 @@ ingester:
   persistence:
     enabled: true
     claims:
-      # WAL only — chunks now live in S3. The previous 200Gi claim held the
-      # chunk store and is no longer needed at that size.
+      # Deliberately left at 200Gi, unchanged from the current deployment.
+      #
+      # With chunks in S3 this volume only needs WAL + active index, so 10Gi
+      # would be plenty. But a StatefulSet's volumeClaimTemplates are IMMUTABLE:
+      # shrinking it would make ArgoCD's sync fail with `Forbidden`, and someone
+      # would have to delete the StatefulSet by hand for the deploy to complete.
+      # Keeping the size means this PR applies as a pure `git merge` with no
+      # manual kubectl. Right-sizing is deferred to a separate maintenance
+      # window where we control the timing.
       - name: data
-        size: 10Gi
+        size: 200Gi
   resources:
     requests:
       cpu: 100m
@@ -119,9 +126,13 @@ querier:
   extraEnvFrom:
     - secretRef:
         name: loki-s3-credentials
-  # No chunk store on disk any more; the boltdb-shipper cache is ephemeral.
+  # Kept enabled at 200Gi, unchanged from the current deployment. Removing it
+  # would alter volumeClaimTemplates, which is immutable — same reason as the
+  # ingester above. The volume is no longer a chunk store; it now just holds the
+  # boltdb-shipper cache, which is genuinely useful to keep across restarts.
   persistence:
-    enabled: false
+    enabled: true
+    size: 200Gi
   resources:
     requests:
       cpu: 100m
