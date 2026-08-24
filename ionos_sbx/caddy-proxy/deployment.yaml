@@ -25,7 +25,7 @@ spec:
         - name: ghcr-pull-secret
       containers:
         - name: caddy
-          image: ghcr.io/dome-marketplace/caddy-proxy:1.0.0
+          image: ghcr.io/dome-marketplace/caddy-proxy:1.0.1
           imagePullPolicy: IfNotPresent
           args:
             - caddy
