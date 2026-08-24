@@ -2,16 +2,17 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: caddy-proxy
-  labels: { app: caddy-proxy }
+  labels:
+    app: caddy-proxy
 spec:
-  replicas: 1    
-  strategy:
-    type: Recreate                  
+  replicas: 1                       # 1 replica => 1 IP sorgente in uscita stabile
   selector:
-    matchLabels: { app: caddy-proxy }
+    matchLabels:
+      app: caddy-proxy
   template:
     metadata:
-      labels: { app: caddy-proxy }
+      labels:
+        app: caddy-proxy
     spec:
       nodeSelector:
         cloud.ionos.com/nodepool-name: ingress-pool
@@ -24,25 +25,50 @@ spec:
         - name: ghcr-pull-secret
       containers:
         - name: caddy
-          image: ghcr.io/dome-marketplace/caddy-proxy:1.0.0
+          image: ghcr.io/dome-marketplace/caddy-forwardproxy:1.0.0
           imagePullPolicy: IfNotPresent
-          args: ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+          args:
+            - caddy
+            - run
+            - --config
+            - /etc/caddy/Caddyfile
+            - --adapter
+            - caddyfile
           ports:
-            - { name: forward, containerPort: 8080 }
+            - name: forward
+              containerPort: 8080
           envFrom:
-            - secretRef: { name: caddy-forward-auth }
+            - secretRef:
+                name: caddy-forward-auth
           resources:
-            requests: { cpu: "50m", memory: "64Mi" }
-            limits:   { cpu: "500m", memory: "256Mi" }
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
           volumeMounts:
-            - { name: data,   mountPath: /data }
-            - { name: config-store, mountPath: /config }
-            - { name: caddyfile, mountPath: /etc/caddy, readOnly: true }
-          readinessProbe: { tcpSocket: { port: 8080 }, initialDelaySeconds: 5,  periodSeconds: 10 }
-          livenessProbe:  { tcpSocket: { port: 8080 }, initialDelaySeconds: 10, periodSeconds: 15 }
+            - name: caddyfile
+              mountPath: /etc/caddy
+              readOnly: true
+            - name: data
+              mountPath: /data
+            - name: config-store
+              mountPath: /config
+          readinessProbe:
+
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 15
       volumes:
         - name: caddyfile
-          configmap:
+          configMap:
             name: caddy-proxy-config
         - name: data
           emptyDir: {}
