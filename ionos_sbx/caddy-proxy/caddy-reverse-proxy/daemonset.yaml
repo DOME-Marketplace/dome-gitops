@@ -4,17 +4,22 @@ metadata:
   name: caddy-reverse-proxy
   labels: { app: caddy-reverse-proxy }
   annotations:
-    reloader.stakater.com/auto: "true"
+    reloader.stakater.com/auto: "true"        # riavvio quando ruota il Secret TLS
 spec:
+  updateStrategy:                             # AGGIUNTO: rollout controllato
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
   selector:
     matchLabels: { app: caddy-reverse-proxy }
   template:
     metadata:
       labels: { app: caddy-reverse-proxy }
     spec:
-      serviceAccountName: caddy-sa 
+      serviceAccountName: caddy-sa
+      automountServiceAccountToken: false     # AGGIUNTO: Caddy non chiama l'API di K8s
       nodeSelector:
-        cloud.ionos.com/nodepool-name: ingress-pool
+        cloud.ionos.com/nodepool-name: ingress-pool   # label REALE sui nodi IONOS
       imagePullSecrets: [{ name: reverse-proxy-pull-secret }]
       securityContext:
         runAsNonRoot: true
@@ -34,7 +39,8 @@ spec:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities:
-              drop: ["ALL"]
+              drop: ["ALL"]                   # CORRETTO tenerlo cosi': 8080/8443 > 1024,
+                                              # nessuna NET_BIND_SERVICE necessaria
           resources:
             requests: { cpu: "100m", memory: "96Mi" }
             limits:   { cpu: "1",    memory: "384Mi" }
