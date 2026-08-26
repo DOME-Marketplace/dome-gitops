@@ -7,8 +7,5 @@ resources:
   - daemonset.yaml
   - service.yaml
   - networkpolicy.yaml
-  - acme-http-solver-service.yaml
-  - networkpolicy-acme-solver.yaml
-  - certificate.yaml
   - reverse-proxy-sealed.yaml
   - serviceaccount.yaml
