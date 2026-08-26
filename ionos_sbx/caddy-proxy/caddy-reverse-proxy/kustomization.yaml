@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+ 
+namespace: caddy-proxy
+ 
+resources:
+  - daemonset.yaml
+  - service.yaml
+  - networkpolicy.yaml
+  - acme-http-solver-service.yaml
+  - networkpolicy-acme-solver.yaml
+  - certificate.yaml
+  - ghcr-auth-sealed.yaml
+  - serviceaccount.yaml

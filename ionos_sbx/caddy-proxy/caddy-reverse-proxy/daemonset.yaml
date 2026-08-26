@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: caddy-reverse-proxy
+  labels: { app: caddy-reverse-proxy }
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  selector:
+    matchLabels: { app: caddy-reverse-proxy }
+  template:
+    metadata:
+      labels: { app: caddy-reverse-proxy }
+    spec:
+      serviceAccountName: caddy-sa 
+      nodeSelector:
+        cloud.ionos.com/nodepool-name: ingress-pool
+      imagePullSecrets: [{ name: ghcr-pull-secret }]
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile: { type: RuntimeDefault }
+      containers:
+        - name: caddy-reverse-proxy
+          image: ghcr.io/dome-marketplace/caddy-reverse-proxy:1.0.0
+          imagePullPolicy: IfNotPresent
+          args: ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+          ports:
+            - { name: http,  containerPort: 8080 }
+            - { name: https, containerPort: 8443 }
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests: { cpu: "100m", memory: "96Mi" }
+            limits:   { cpu: "1",    memory: "384Mi" }
+          volumeMounts:
+            - { name: certs,  mountPath: /certs, readOnly: true }
+            - { name: data,   mountPath: /data }
+            - { name: config, mountPath: /config }
+            - { name: tmp,    mountPath: /tmp }
+          readinessProbe: { tcpSocket: { port: 8443 }, initialDelaySeconds: 5,  periodSeconds: 10 }
+          livenessProbe:  { tcpSocket: { port: 8443 }, initialDelaySeconds: 10, periodSeconds: 15 }
+      volumes:
+        - name: certs
+          secret: { secretName: tmf-test-sbx-tls, optional: true }
+        - { name: data,   emptyDir: {} }
+        - { name: config, emptyDir: {} }
+        - { name: tmp,    emptyDir: {} }

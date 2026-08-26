@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: caddy-reverse-proxy-balancer
+  labels: { app: caddy-reverse-proxy }
+  annotations:
+    cloud.ionos.com/node-selector: nodepool=ingress-pool
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  selector: { app: caddy-reverse-proxy }
+  ports:
+    - { name: https, port: 443, targetPort: 8443, protocol: TCP }
+    - { name: http,  port: 80,  targetPort: 8080, protocol: TCP }
