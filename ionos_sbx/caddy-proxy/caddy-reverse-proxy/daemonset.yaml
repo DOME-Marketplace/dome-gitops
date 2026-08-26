@@ -15,7 +15,7 @@ spec:
       serviceAccountName: caddy-sa 
       nodeSelector:
         cloud.ionos.com/nodepool-name: ingress-pool
-      imagePullSecrets: [{ name: ghcr-pull-secret }]
+      imagePullSecrets: [{ name: reverse-proxy-pull-secret }]
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
