@@ -1,0 +1,15 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: ghcr-pull-secret
+  namespace: caddy-proxy
+spec:
+  encryptedData:
+    .dockerconfigjson: AgBlehjg9Yx7MVOs0CV8stJOy9sVKQuJsALNJOFmh3/2onszCLVdSVBigTiqGFQ4rdSAy6/3jFhrK3Wf8CYHeFL5TG8acrrI5yc8vZ29cfYJ7IT6GYKjZmXIpCtT96tIJQLDJk6GWDUjZiFZ04xXu8qFL/u15VlYWWINg/p6HtmL6YuXKsbfpvLgHq80hTYt007G9AmtWuL1QIJMvdit45MDiFtQEVuRGdAEwGjR1pwedoGyifcTZeCpFNixEk/E95iCCmBH6EhUsJNaVJDcAQ4pIMx7s2Mm7mbmbmTWA30yo7QOCtBcAefXGerQEyJVtvTC7H2lITNtM/dhIdBFYoxG1sI24xWT2NAIq+hF3O2FdwmxJVB12w0rhEdy1HPo3h7uP8Yi+4deMDUKpUpK2xTtHdZKYJTJugHFecXG1AkeA3Z5xKmkHiUc0F1Ge3fdQkOMYWYXPUNCBSbBPzTMWDUnLgXKvpMTcXhY5fuzkw/JJPek6SNQwk/dl/4r7BuLTD+vo0QwbdeUykP2O2Sz2y3+uqx0Pi8UOlUnLD3Agb1SlfgLUfbWK0PYOiMkg0BJnOIW5Gb7ptZFP5DN50mRmhj58a6duaYBYQXc9WeNhSrU6iK6FbXG6jMM7mWmEOANtFwojXykuUfoO1rzo8wMWZ2PUqwRZZ6K5+o1L+4InzWMNzOAlYCCgoUXf4FxlRZ+X+KiM2jp27ZV9R0GjBwGezeG7QA65uyYVP8GEDxR0yqMsJW9UaQb65lRNGW4oKaE8YHVQ/ZirxAPCUqYGAcSAUe2mj/Kgy+j/i+jvhXeUg/sg/6DdyePeQUR/m+49EDeZA2rqFu383kHVEx1keJ5jSh/Hmn69ALdUvldoMQNFU4E/EoxPJo8uZ0CADm0BHmuaVIIWYGYTZrsjxCwBdtcZi4RR3Z3Yt3R2GU+m4xVVXIUkL15kUuQIF1FdJmZ6X8v0M8HNg==
+  template:
+    metadata:
+      creationTimestamp: null
+      name: ghcr-pull-secret
+      namespace: caddy-proxy
+    type: kubernetes.io/dockerconfigjson
