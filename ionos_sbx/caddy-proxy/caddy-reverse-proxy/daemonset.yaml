@@ -3,16 +3,17 @@ kind: DaemonSet
 metadata:
   name: caddy-reverse-proxy
   labels: { app: caddy-reverse-proxy }
-  annotations:
-    reloader.stakater.com/auto: "true"
 spec:
   selector:
     matchLabels: { app: caddy-reverse-proxy }
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
   template:
     metadata:
       labels: { app: caddy-reverse-proxy }
     spec:
-      serviceAccountName: caddy-sa 
       nodeSelector:
         cloud.ionos.com/nodepool-name: ingress-pool
       imagePullSecrets: [{ name: reverse-proxy-pull-secret }]
