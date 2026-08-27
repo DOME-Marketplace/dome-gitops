@@ -6,29 +6,17 @@ spec:
   podSelector:
     matchLabels: { app: caddy-reverse-proxy }
   policyTypes: ["Ingress", "Egress"]
-  
   ingress:
     - ports:
         - { port: 8080, protocol: TCP }
         - { port: 8443, protocol: TCP }
-        
   egress:
-
-    - to:
-        - namespaceSelector:
-            matchLabels: { kubernetes.io/metadata.name: kube-system }
+    - to: [{ namespaceSelector: {} }]        
       ports:
         - { port: 53, protocol: UDP }
         - { port: 53, protocol: TCP }
-        
-    - to:
+    - to:                                  
         - namespaceSelector:
             matchLabels: { kubernetes.io/metadata.name: tmf-test }
       ports:
         - { port: 8080, protocol: TCP }
-        
-    - to:
-        - podSelector:
-            matchLabels: { acme.cert-manager.io/http01-solver: "true" }
-      ports:
-        - { port: 8089, protocol: TCP }

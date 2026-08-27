@@ -34,7 +34,7 @@ spec:
         seccompProfile: { type: RuntimeDefault }
       containers:
         - name: caddy-reverse-proxy
-          image: ghcr.io/dome-marketplace/caddy-reverse-proxy:1.0.0
+          image: ghcr.io/dome-marketplace/caddy-reverse-proxy:2.0.0
           imagePullPolicy: IfNotPresent
           args: ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
           ports:
@@ -44,8 +44,7 @@ spec:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities:
-              drop: ["ALL"]                   # CORRETTO tenerlo cosi': 8080/8443 > 1024,
-                                              # nessuna NET_BIND_SERVICE necessaria
+              drop: ["ALL"]                  
           resources:
             requests: { cpu: "100m", memory: "96Mi" }
             limits:   { cpu: "1",    memory: "384Mi" }
