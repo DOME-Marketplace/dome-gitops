@@ -218,7 +218,7 @@ data:
                 'code_challenge_method': 'S256',
                 'server_metadata_url': 'https://verifier.dome-marketplace-sbx.org/.well-known/openid-configuration',
                 'client_kwargs': {
-                    'scope': 'openid_learcredential',
+                    'scope': 'openid learcredential',
                 },
                 'api_base_url': 'https://verifier.dome-marketplace-sbx.org/verifier',
             },
