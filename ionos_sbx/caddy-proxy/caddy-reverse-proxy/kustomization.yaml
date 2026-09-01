@@ -9,3 +9,4 @@ resources:
   - networkpolicy.yaml
   - reverse-proxy-sealed.yaml
   - serviceaccount.yaml
+  - pvc.yaml
