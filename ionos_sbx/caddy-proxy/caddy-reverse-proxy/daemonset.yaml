@@ -3,10 +3,8 @@ kind: DaemonSet
 metadata:
   name: caddy-reverse-proxy
   labels: { app: caddy-reverse-proxy }
-  annotations:
-    reloader.stakater.com/auto: "true"        
 spec:
-  updateStrategy:                             
+  updateStrategy:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1
@@ -17,14 +15,14 @@ spec:
       labels: { app: caddy-reverse-proxy }
     spec:
       serviceAccountName: caddy-sa
-      automountServiceAccountToken: false    
+      automountServiceAccountToken: false
       nodeSelector:
         cloud.ionos.com/nodepool-name: ingress-pool
-      tolerations:                                     
+      tolerations:
         - key: ingress-node        
           operator: Equal
-          value: "true"          
-          effect: NoSchedule       
+          value: "true"
+          effect: NoSchedule
       imagePullSecrets: [{ name: reverse-proxy-pull-secret }]
       securityContext:
         runAsNonRoot: true
@@ -34,7 +32,7 @@ spec:
         seccompProfile: { type: RuntimeDefault }
       containers:
         - name: caddy-reverse-proxy
-          image: ghcr.io/dome-marketplace/caddy-reverse-proxy:2.0.0
+          image: ghcr.io/dome-marketplace/caddy-reverse-proxy:3.0.0   
           imagePullPolicy: IfNotPresent
           args: ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
           ports:
@@ -44,20 +42,19 @@ spec:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities:
-              drop: ["ALL"]                  
+              drop: ["ALL"]
           resources:
             requests: { cpu: "100m", memory: "96Mi" }
             limits:   { cpu: "1",    memory: "384Mi" }
           volumeMounts:
-            - { name: certs,  mountPath: /certs, readOnly: true }
-            - { name: data,   mountPath: /data }
+            - { name: data,   mountPath: /data }      
             - { name: config, mountPath: /config }
             - { name: tmp,    mountPath: /tmp }
           readinessProbe: { tcpSocket: { port: 8443 }, initialDelaySeconds: 5,  periodSeconds: 10 }
           livenessProbe:  { tcpSocket: { port: 8443 }, initialDelaySeconds: 10, periodSeconds: 15 }
       volumes:
-        - name: certs
-          secret: { secretName: tmf-test-sbx-tls, optional: true }
-        - { name: data,   emptyDir: {} }
+        - name: data
+          persistentVolumeClaim:
+            claimName: caddy-data                     
         - { name: config, emptyDir: {} }
         - { name: tmp,    emptyDir: {} }

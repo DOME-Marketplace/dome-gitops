@@ -1,3 +1,4 @@
+
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -11,11 +12,11 @@ spec:
         - { port: 8080, protocol: TCP }
         - { port: 8443, protocol: TCP }
   egress:
-    - to: [{ namespaceSelector: {} }]        
+    - to: [{ namespaceSelector: {} }]       
       ports:
         - { port: 53, protocol: UDP }
         - { port: 53, protocol: TCP }
-    - to:                                  
+    - to:                                    
         - namespaceSelector:
             matchLabels: { kubernetes.io/metadata.name: tmf-test }
       ports:
