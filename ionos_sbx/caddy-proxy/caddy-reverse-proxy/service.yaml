@@ -8,7 +8,7 @@ metadata:
 spec:
   type: LoadBalancer
   externalTrafficPolicy: Local
-  LoadBalancerIP: 87.106.161.151
+  loadBalancerIP: 87.106.161.151
   selector: { app: caddy-reverse-proxy }
   ports:
     - { name: https, port: 443, targetPort: https, protocol: TCP }
