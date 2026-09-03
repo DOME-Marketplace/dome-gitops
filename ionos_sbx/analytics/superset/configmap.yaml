@@ -216,7 +216,11 @@ data:
                 'client_id': 'did:key:zDnaer6wstrAhZxM5ej7fvQbnf9aP3RdojhXEao431SMrN3Lb',
                 'token_endpoint_auth_method': 'none',
                 'code_challenge_method': 'S256',
-                'server_metadata_url': 'https://verifier.dome-marketplace-sbx.org/.well-known/openid-configuration',
+                'issuer': 'https://verifier.dome-marketplace-sbx.org/verifier',
+                'authorize_url': 'https://verifier.dome-marketplace-sbx.org/verifier/oidc/authorize',
+                'access_token_url': 'https://verifier.dome-marketplace-sbx.org/verifier/oidc/token',
+                'jwks_uri': 'https://verifier.dome-marketplace-sbx.org/verifier/oidc/jwks',
+                'id_token_signing_alg_values_supported': ['ES256', 'RS256'],
                 'client_kwargs': {
                     'scope': 'openid learcredential',
                 },
