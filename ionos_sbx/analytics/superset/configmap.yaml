@@ -42,9 +42,9 @@ data:
 
     logger = logging.getLogger(__name__)
 
-    # Add DOME usernames (did:key_orgId) that should be Admin
+    # Add DOME usernames (sub_orgId) that should be Admin
     ADMIN_USERS = [
-        'did:key:zDnaersD2HBUk52PGonuqsM1SETZ1nD1Py8wzDQpLpHXaQFTt_VATGR-094402295',
+        'georgios.peppas@eurodyn.com_VATGR-094402295',
     ]
 
     def decode_jwt_payload(token):
