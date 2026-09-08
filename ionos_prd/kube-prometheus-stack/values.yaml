@@ -34,6 +34,16 @@ grafana:
         contains(groups[*], '@DOME-Marketplace/dome-grafana-prod-admins') && 'GrafanaAdmin' ||
         contains(groups[*], '@DOME-Marketplace/dome-grafana-prod-rw') && 'Editor' ||
         contains(groups[*], '@DOME-Marketplace/dome-grafana-prod-ro') && 'Viewer'
+    users:
+      # Grafana OSS hides the Explore button from the Viewer role. The GitHub team
+      # dome-grafana-prod-ro maps to Viewer (see role_attribute_path above), so
+      # read-only users could open dashboards but had no way to query logs or
+      # metrics ad hoc.
+      #
+      # viewers_can_edit lets Viewers use Explore and tweak a panel's query in the
+      # browser. It does NOT let them save: dashboards, folders and datasources stay
+      # read-only, so the group keeps its read-only meaning.
+      viewers_can_edit: true
   resources:
     requests:
       cpu: 100m
