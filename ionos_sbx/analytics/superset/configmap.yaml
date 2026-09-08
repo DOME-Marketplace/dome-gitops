@@ -471,17 +471,15 @@ data:
     # time. Edit datasets/clauses here (then commit) to add or change dashboards.
     cat > /app/pythonpath/dome_embed_rls.json << 'EOF'
     {
-      "0cd86a99-2d3d-438f-84be-508c4725a5f5": [
-        {"datasets": [75, 81, 83, 67, 82, 79, 84, 88], "clause": "vat = '{org}' OR brand = 'Dome Marketplace Overall'"},
-        {"datasets": [76], "clause": "'{org}' = ANY(all_vats)"}
-      ],
-      "945ed89c-13ce-4553-afc9-12ec18d14064": [
-        {"datasets": [75, 81, 83, 67, 82, 79, 84, 88], "clause": "vat = '{org}' OR brand = 'Dome Marketplace Overall'"},
-        {"datasets": [76], "clause": "'{org}' = ANY(all_vats)"},
-        {"datasets": [110, 108, 113, 112, 114], "clause": "vat = '{org}'"}
-      ],
-      "566cf4c8-e033-43ef-b8fb-24ae7067b416": [
-        {"datasets": [115], "clause": "vat = '{org}'"}
+      "3f73e178-3f8b-4b7c-9a34-c4b3710509f3": [
+        {
+          "datasets": [
+            44,
+            45,
+            46
+          ],
+          "clause": "vat = '{org}'"
+        }
       ]
     }
     EOF
