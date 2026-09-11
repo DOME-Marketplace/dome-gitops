@@ -282,6 +282,8 @@ business-api-ecosystem:
         value: "8080"
       - name: BAE_LP_PAYMENT_GATEWAY
         value: https://dpas-dev2.egroup.hu
+      - name: BAE_LP_PAYMENT_PROVIDER
+        value: dpas
       - name: BAE_LP_ENDPOINT_REVENUE_HOST
         value: revenue-engine-svc.billing.svc.cluster.local
       - name: BAE_LP_ANALYTICS_URL
