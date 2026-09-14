@@ -32,7 +32,10 @@ spec:
         seccompProfile: { type: RuntimeDefault }
       containers:
         - name: caddy-reverse-proxy
-          image: ghcr.io/dome-marketplace/caddy-reverse-proxy:3.0.4  
+          image: ghcr.io/dome-marketplace/caddy-reverse-proxy:1.0
+          envFrom:
+            - secretRef:
+                name: caddy-env 
           imagePullPolicy: IfNotPresent
           args: ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
           ports:
