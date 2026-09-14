@@ -1,0 +1,76 @@
+apiVersion: v1
+data:
+  root-password: emFtbWFkYWRtaW4=
+  root-user: emFtbWFkYWRtaW4=
+kind: Secret
+metadata:
+  name: minio-existing-secret
+  namespace: zammad
+type: Opaque
+---
+apiVersion: v1
+data:
+  redis-password: cmVkaXM=
+kind: Secret
+metadata:
+  name: redis-existing-secret
+  namespace: zammad
+type: Opaque
+---
+apiVersion: v1
+data:
+  postgresql-password: emFtbWFk
+kind: Secret
+metadata:
+  name: postgresql-existing-secret
+  namespace: zammad
+type: Opaque
+---
+apiVersion: v1
+data:
+  elasticsearch-password: emFtbWFk
+kind: Secret
+metadata:
+  name: elasticsearch-existing-secret
+  namespace: zammad
+type: Opaque
+---
+apiVersion: v1
+data:
+  autowizard: ewogICJVc2VycyI6IFsKICAgIHsKICAgICAgImxvZ2luIjogImFkbWluQGV4YW1wbGUuY29tIiwKICAgICAgImZpcnN0bmFtZSI6ICJUZXN0IEFkbWluIiwKICAgICAgImxhc3RuYW1lIjogIkFnZW50IiwKICAgICAgImVtYWlsIjogImFkbWluQGV4YW1wbGUuY29tIiwKICAgICAgInBhc3N3b3JkIjogInRlc3QiCiAgICB9LAogICAgewogICAgICAibG9naW4iOiAiYWdlbnQxQGV4YW1wbGUuY29tIiwKICAgICAgImZpcnN0bmFtZSI6ICJBZ2VudCAxIiwKICAgICAgImxhc3RuYW1lIjogIlRlc3QiLAogICAgICAiZW1haWwiOiAiYWdlbnQxQGV4YW1wbGUuY29tIiwKICAgICAgInBhc3N3b3JkIjogInRlc3QiLAogICAgICAicm9sZXMiOiBbIkFnZW50Il0KICAgIH0KICBdLAogICJHcm91cHMiOiBbCiAgICB7CiAgICAgICJuYW1lIjogInNvbWUgZ3JvdXAxIiwKICAgICAgInVzZXJzIjogWyJhZG1pbkBleGFtcGxlLmNvbSIsICJhZ2VudDFAZXhhbXBsZS5jb20iXQogICAgfSwKICAgIHsKICAgICAgIm5hbWUiOiAiVXNlcnMiLAogICAgICAidXNlcnMiOiBbImFkbWluQGV4YW1wbGUuY29tIiwgImFnZW50MUBleGFtcGxlLmNvbSJdLAogICAgICAic2lnbmF0dXJlIjogImRlZmF1bHQiLAogICAgICAiZW1haWxfYWRkcmVzc19pZCI6IDEKICAgIH0KICBdLAogICJDaGFubmVscyI6IFsKICAgIHsKICAgICAgImlkIjogMSwKICAgICAgImFyZWEiOiAiRW1haWw6OkFjY291bnQiLAogICAgICAiZ3JvdXAiOiAiVXNlcnMiLAogICAgICAib3B0aW9ucyI6IHsKICAgICAgICAiaW5ib3VuZCI6IHsKICAgICAgICAgICJhZGFwdGVyIjogImltYXAiLAogICAgICAgICAgIm9wdGlvbnMiOiB7CiAgICAgICAgICAgICJob3N0IjogIm14MS5leGFtcGxlLmNvbSIsCiAgICAgICAgICAgICJ1c2VyIjogIm5vdF9leGlzdGluZyIsCiAgICAgICAgICAgICJwYXNzd29yZCI6ICJub3RfZXhpc3RpbmciLAogICAgICAgICAgICAic3NsIjogInNzbCIKICAgICAgICAgIH0KICAgICAgICB9LAogICAgICAgICJvdXRib3VuZCI6IHsKICAgICAgICAgICJhZGFwdGVyIjogInNlbmRtYWlsIgogICAgICAgIH0KICAgICAgfQogICAgfQogIF0sCiAgIkVtYWlsQWRkcmVzc2VzIjogWwogICAgewogICAgICAiaWQiOiAxLAogICAgICAiY2hhbm5lbF9pZCI6IDEsCiAgICAgICJuYW1lIjogIlphbW1hZCBIZWxwZGVzayIsCiAgICAgICJlbWFpbCI6ICJ6YW1tYWRAbG9jYWxob3N0IgogICAgfQogIF0sCiAgIlNldHRpbmdzIjogWwogICAgewogICAgICAibmFtZSI6ICJwcm9kdWN0X25hbWUiLAogICAgICAidmFsdWUiOiAiWmFtbWFkIFRlc3QgU3lzdGVtIgogICAgfSwKICAgIHsKICAgICAgIm5hbWUiOiAiZGV2ZWxvcGVyX21vZGUiLAogICAgICAidmFsdWUiOiB0cnVlCiAgICB9CiAgXSwKICAiVGV4dE1vZHVsZUxvY2FsZSI6IHsKICAgICJMb2NhbGUiOiAiZGUtZGUiCiAgfQp9Cg==
+kind: Secret
+metadata:
+  name: autowizard
+  namespace: zammad
+type: Opaque
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: storage-volume-claim
+  namespace: zammad
+spec:
+  accessModes:
+    - ReadWriteOnce   # Testing env does not provide ReadWrite Many, but for CI this is enough.
+  resources:
+    requests:
+      storage: 32Mi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: helm-tests
+  namespace: zammad
+data:
+  helm-test.rake: |-
+    namespace :zammad do
+      namespace :helm do
+        desc 'Runs a set of Helm tests'
+        task test: :environment do |_task, args|
+          puts 'Checking if temporary file can be created...'
+          Tempfile.create do |f|
+            puts '  Temporary file was created successfully.'
+          end
+        end
+      end
+    end

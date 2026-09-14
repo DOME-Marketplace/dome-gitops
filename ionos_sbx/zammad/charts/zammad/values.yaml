@@ -1,0 +1,533 @@
+image:
+  repository: ghcr.io/zammad/zammad
+  # If not set, appVersion field from Chart.yaml is used as default.
+  # appVersion points to a fixed version. You are responsible to update this to newer patch level versions yourself.
+  # Alternatively, you can also use floating versions that will give you automatic updates:
+  # tag: "6.2"     # all patchlevel updates
+  # tag: "6"       # including minor updates
+  # tag: "latest"  # all updates of stable versions, including major
+  # tag: "develop" # bleeding-edge development version
+  # If you want to use a floating version, you should also set pullPolicy: Always
+  tag: ""
+  pullPolicy: IfNotPresent
+  imagePullSecrets: []
+    # - name: "image-pull-secret"
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+    # - secretName: chart-example-tls
+    #   hosts:
+    #     - chart-example.local
+
+# Please note that passwords for PostgreSQL, Redis and S3 may not
+#   contain special characters which would require URL encoding.
+# See also https://github.com/zammad/zammad-helm/issues/251
+secrets:
+  autowizard:
+    useExisting: false
+    secretKey: autowizard
+    secretName: autowizard
+  elasticsearch:
+    useExisting: false
+    secretKey: password
+    secretName: elastic-credentials
+  postgresql:
+    useExisting: false
+    secretKey: postgresql-pass
+    secretName: postgresql-pass
+  redis:
+    useExisting: false
+    secretKey: redis-password
+    secretName: redis-pass
+
+securityContext:
+  fsGroup: 1000
+  # https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#configure-volume-permission-and-ownership-change-policy-for-pods
+  fsGroupChangePolicy: Always
+  runAsUser: 1000
+  runAsNonRoot: true
+  runAsGroup: 1000
+  seccompProfile:
+    type: RuntimeDefault
+
+zammadConfig:
+  elasticsearch:
+    # enable/disable elasticsearch chart dependency
+    enabled: true
+    # host env var is only used when zammadConfig.elasticsearch.enabled is false
+    host: zammad-elasticsearch-master
+    initialisation: true
+    pass: ""
+    port: 9200
+    reindex: true
+    schema: http
+    user: ""
+
+  memcached:
+    # enable/disable memcached chart dependency
+    enabled: true
+    # host env var is only used when zammadConfig.memcached.enabled is false
+    host: zammad-memcached
+    port: 11211
+
+  minio:
+    # enable/disable minio chart dependency
+    enabled: false
+
+    # Uncomment this in case you want to use an external S3 service.
+    # externalS3Url: https://user:pw@external-minio-service/bucket
+
+  nginx:
+    replicas: 1
+    trustedProxies: []
+    extraHeaders: []
+      # - 'HeaderName "Header Value"'
+    websocketExtraHeaders: []
+      # - 'HeaderName "Header Value"'
+    knowledgeBaseUrl: ""
+    livenessProbe:
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 30
+      successThreshold: 1
+      failureThreshold: 5
+      timeoutSeconds: 5
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 8080
+      initialDelaySeconds: 30
+      successThreshold: 1
+      failureThreshold: 5
+      timeoutSeconds: 5
+      periodSeconds: 10
+    resources: {}
+      # requests:
+      #   cpu: 50m
+      #   memory: 32Mi
+      # limits:
+      #   cpu: 100m
+      #   memory: 64Mi
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      readOnlyRootFilesystem: true
+      privileged: false
+    # can be used to add additional containers / sidecars
+    sidecars: []
+
+  postgresql:
+    # enable/disable postgresql chart dependency
+    enabled: true
+    # needs to be the same as the postgresql.auth.database
+    db: zammad_production
+    # host env var is only used when postgresql.enabled is false
+    host: zammad-postgresql
+    # needs to be the same as the postgresql.auth.password
+    pass: "zammad"
+    port: 5432
+    # needs to be the same as the postgresql.auth.username
+    user: zammad
+    # additional connection options
+    options: "pool=50"
+
+  railsserver:
+    replicas: 1
+    livenessProbe:
+      tcpSocket:
+        port: 3000
+      initialDelaySeconds: 30
+      successThreshold: 1
+      failureThreshold: 5
+      timeoutSeconds: 5
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 3000
+      initialDelaySeconds: 30
+      successThreshold: 1
+      failureThreshold: 5
+      timeoutSeconds: 5
+      periodSeconds: 10
+    resources: {}
+      # requests:
+      #   cpu: 100m
+      #   memory: 512Mi
+      # limits:
+      #   cpu: 200m
+      #   memory: 1024Mi
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      readOnlyRootFilesystem: true
+      privileged: false
+    # can be used to add additional containers / sidecars
+    sidecars: []
+    trustedProxies: "['127.0.0.1', '::1']"
+    webConcurrency: 0
+    # tmpdir will be used by all Zammad/Rails containers
+    tmpdir: "/opt/zammad/tmp"
+
+  redis:
+    # enable/disable redis chart dependency
+    enabled: true
+    host: "zammad-redis-master"
+    # needs to be the same as the redis.auth.password
+    pass: zammad
+    port: 6379
+
+  scheduler:
+    resources: {}
+      # requests:
+      #   cpu: 100m
+      #   memory: 256Mi
+      # limits:
+      #   cpu: 200m
+      #   memory: 512Mi
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      readOnlyRootFilesystem: true
+      privileged: false
+    # can be used to add additional containers / sidecars
+    sidecars: []
+
+  storageVolume:
+    # Enable this for 'File' based storage in Zammad. You must provide an externally managed 'extistingClaim'
+    #   with 'ReadWriteMany' permisssion in this case.
+    enabled: false
+    ##
+    ## A manually managed Persistent Volume and Claim
+    ## If defined, PVC must be created manually before volume will be bound
+    ## The value is evaluated as a template, so, for example, the name can depend on .Release or .Chart
+    ##
+    # existingClaim:
+
+  tmpDirVolume:
+    emptyDir:
+      sizeLimit: 100Mi
+      # enable "medium: Memory" to Work around problems with world writable tmp dir permissions if volumePermissions.enabled is set to false
+      # see: https://github.com/kubernetes/kubernetes/issues/76158 & https://github.com/kubernetes/kubernetes/issues/110835
+      # medium: Memory
+
+  # Custom volumes for all Zammad Pods.
+  customVolumes:
+    # - name: custom-volume
+    #   configMap:
+    #     name: my-config-map
+
+  # Custom volumeMounts for all Zammad Pods.
+  customVolumeMounts:
+    # - name: custom-volume
+    #   mountPath: "/opt/zammad/config_map"
+    #   readOnly: true
+
+  websocket:
+    livenessProbe:
+      tcpSocket:
+        port: 6042
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      successThreshold: 1
+      failureThreshold: 10
+      timeoutSeconds: 5
+    readinessProbe:
+      tcpSocket:
+        port: 6042
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      successThreshold: 1
+      failureThreshold: 5
+      timeoutSeconds: 5
+    resources: {}
+      # requests:
+      #   cpu: 100m
+      #   memory: 256Mi
+      # limits:
+      #   cpu: 200m
+      #   memory: 512Mi
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+      readOnlyRootFilesystem: true
+      privileged: false
+    # can be used to add additional containers / sidecars
+    sidecars: []
+
+  initContainers:
+    elasticsearch:
+      resources: {}
+        # requests:
+        #   cpu: 100m
+        #   memory: 256Mi
+        # limits:
+        #   cpu: 200m
+        #   memory: 512Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        readOnlyRootFilesystem: true
+        privileged: false
+    postgresql:
+      resources: {}
+        # requests:
+        #   cpu: 100m
+        #   memory: 256Mi
+        # limits:
+        #   cpu: 200m
+        #   memory: 512Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        readOnlyRootFilesystem: true
+        privileged: false
+    # volumePermissions will be used by all Zammad Pods
+    volumePermissions:
+      enabled: true
+      image:
+        repository: alpine
+        tag: "3.18.4"
+        pullPolicy: IfNotPresent
+      command:
+        - /bin/sh
+        - -cx
+        - |
+          chmod 770 /opt/zammad/tmp
+      resources: {}
+        # requests:
+        #   cpu: 100m
+        #   memory: 256Mi
+        # limits:
+        #   cpu: 200m
+        #   memory: 512Mi
+      securityContext:
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop:
+            - ALL
+        privileged: true
+        runAsNonRoot: false
+        runAsUser: 0
+    zammad:
+      resources: {}
+        # requests:
+        #   cpu: 100m
+        #   memory: 256Mi
+        # limits:
+        #   cpu: 200m
+        #   memory: 512Mi
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        readOnlyRootFilesystem: true
+        privileged: false
+      customInit: ""
+        #  bundle exec rails runner '…'
+
+# additional environment vars added to all zammad services
+extraEnv: []
+  # - name: FOO_BAR
+  #   value: "foobar"
+
+# autowizard config
+# if a token is used the url must look like: http://zammad/#getting_started/auto_wizard/your_token_here
+autoWizard:
+  enabled: false
+  # string with the autowizard config as json
+  # config: |
+  #   {
+  #     "Token": "secret_zammad_autowizard_token",
+  #     "TextModuleLocale": {
+  #       "Locale": "en-us"
+  #     },
+  #     "Users": [
+  #       {
+  #         "login": "email@example.org",
+  #         "firstname": "Zammad",
+  #         "lastname": "Admin",
+  #         "email": "email@example.org",
+  #         "organization": "ZammadTest",
+  #         "password": "..."
+  #       }
+  #     ],
+  #     "Settings": [
+  #       {
+  #         "name": "product_name",
+  #         "value": "ZammadTestSystem"
+  #       },
+  #       {
+  #         "name": "system_online_service",
+  #         "value": true
+  #       }
+  #     ],
+  #     "Organizations": [
+  #       {
+  #         "name": "ZammadTest"
+  #       }
+  #     ]
+  #   }
+
+podAnnotations: {}
+  # my-annotation: "value"
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+# service account configurations
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# can be used to add additional init containers
+initContainers: []
+  # - name: s3-restore
+  #   image: some-aws-s3-restore:latest
+  #   env:
+  #     - name: AWS_DEFAULT_REGION
+  #       value: "eu-central-1"
+  #     - name: AWS_ACCESS_KEY_ID
+  #       value: "xxxxxxxxxxxx"
+  #     - name: AWS_SECRET_ACCESS_KEY
+  #       value: "xxxxxxxxxxxx"
+  #     - name: SYNC_DIR
+  #       value: "/opt/zammad"
+  #     - name: AWS_SYNC_BUCKET
+  #       value: "some-backup-bucket"
+  #   volumeMounts:
+  #     - name: help-zammad
+  #       mountPath: /opt/zammad
+
+
+# dependency charts config
+
+# Settings for the elasticsearch subchart
+elasticsearch:
+  clusterName: zammad
+  coordinating:
+    replicaCount: 0
+  data:
+    replicaCount: 0
+  ingest:
+    replicaCount: 0
+  master:
+    heapSize: 512m
+    masterOnly: false
+    replicaCount: 1
+  # To use an existing Kubernetes secret containing the credentials,
+  # remove the comments on the lines below and adjust them accordingly
+  #
+  # security:
+  #   existingSecret: elastic-credentials
+
+# settings for the memcached subchart
+memcached:
+  replicaCount: 1
+  resources: {}
+    # requests:
+    #   cpu: 50m
+    #   memory: 64Mi
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+# settings for the minio subchart
+minio:
+  auth:
+    rootUser: zammadadmin
+    rootPassword: zammadadmin
+
+    # Use existing secret for credentials details (auth.rootUser and
+    # auth.rootPassword will be ignored and picked up from this secret).
+    # The secret has to contain the keys root-user and root-password)
+    # existingSecret: minio-credentials
+
+  defaultBuckets: zammad
+
+  # You can use this to enable the web UI for debugging.
+  disableWebUI: true
+
+# settings for the postgres subchart
+postgresql:
+  auth:
+    username: "zammad"
+    replicationUsername: repl_user
+    database: "zammad_production"
+
+    # Passwords
+    postgresPassword: "zammad"
+    password: "zammad"
+    replicationPassword: "zammad"
+
+    # To avoid passwords in your values.yaml, you can comment out the 3 lines above
+    # and use an existing Kubernetes secret. Remove the comments on the lines below
+    # and adjust them accordingly
+    #
+    # existingSecret: postgresql-pass
+    # secretKeys:
+    #   adminPasswordKey: postgresql-admin-password
+    #   userPasswordKey: postgresql-pass
+    #   replicationPasswordKey: postgresql-replication-password
+    #
+  resources: {}
+    # requests:
+    #   cpu: 250m
+    #   memory: 256Mi
+    # limits:
+    #   cpu: 500m
+    #   memory: 512Mi
+
+# settings for the redis subchart
+redis:
+  architecture: standalone
+  auth:
+    password: zammad
+    # To avoid passwords in your values.yaml, you can comment out the line above
+    # and use an existing Kubernetes secret. Remove the comments on the lines below
+    # and adjust them accordingly
+    #
+    # existingSecret: redis-pass
+    # existingSecretPasswordKey: redis-password
+  master:
+    resources: {}
+    # limits:
+    #   cpu: 250m
+    #   memory: 256Mi
+    # requests:
+    #   cpu: 250m
+    #   memory: 256Mi

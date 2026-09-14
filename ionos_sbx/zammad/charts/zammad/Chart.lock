@@ -1,0 +1,18 @@
+dependencies:
+- name: elasticsearch
+  repository: https://charts.bitnami.com/bitnami
+  version: 19.17.0
+- name: minio
+  repository: https://charts.bitnami.com/bitnami
+  version: 13.2.0
+- name: memcached
+  repository: https://charts.bitnami.com/bitnami
+  version: 6.9.0
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 12.12.10
+- name: redis
+  repository: https://charts.bitnami.com/bitnami
+  version: 17.17.1
+digest: sha256:cd7daba98fc59fbc3b768d65f9848957ee7471576001360e67063a801e23bb45
+generated: "2024-05-08T11:37:55.824469041Z"

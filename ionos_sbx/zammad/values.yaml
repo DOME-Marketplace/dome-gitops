@@ -48,6 +48,28 @@ zammad:
         failureThreshold: 8
         successThreshold: 1
 
+    elasticsearch:
+      initialisation: true
+      reindex: false
+
+    initContainers:
+      postgresql:
+        resources:
+          requests:
+            cpu: 50m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+      elasticsearch:
+        resources:
+          requests:
+            cpu: 50m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+
   elasticsearch:
     image:
       repository: bitnamilegacy/elasticsearch

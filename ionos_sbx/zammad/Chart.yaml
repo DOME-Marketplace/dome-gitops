@@ -1,11 +1,11 @@
 apiVersion: v2
 name: zammad
-description: Chart holder for argo-cd
+description: >-
+  Chart holder for argo-cd. The upstream zammad chart 12.1.0 is vendored under
+  charts/ with a patch to templates/job-init.yaml: the init Job is declared as
+  an Argo CD Sync hook with a deterministic name, replacing the original
+  uuidv4-based name and ttlSecondsAfterFinished. Without this patch Argo CD
+  recreates the Job in a loop. Re-apply the patch on any chart upgrade.
 
 type: application
 version: 12.1.0
-
-dependencies:
-- name: zammad
-  version: 12.1.0
-  repository: https://zammad.github.io/zammad-helm
