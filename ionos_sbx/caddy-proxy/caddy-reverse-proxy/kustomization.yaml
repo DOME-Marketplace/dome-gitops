@@ -8,5 +8,6 @@ resources:
   - service.yaml
   - networkpolicy.yaml
   - reverse-proxy-sealed.yaml
+  - caddy-env-sealed-secret.yaml
   - serviceaccount.yaml
   - pvc.yaml
