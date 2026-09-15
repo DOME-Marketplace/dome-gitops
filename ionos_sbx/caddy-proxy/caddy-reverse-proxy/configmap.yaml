@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: caddy-routes-config
+  namespace: caddy-proxy 
+data:
+  sbx-routes.caddy: |
+    
+    handle_path /tmf-test/get-route* {
+        reverse_proxy account.tmf-test.svc.cluster.local:8080 {
+            transport http {
+                dial_timeout 5s
+                response_header_timeout 60s
+            }
+        }
+    }
