@@ -33,7 +33,7 @@ spec:
       containers:
         - name: caddy-reverse-proxy
           image: ghcr.io/dome-marketplace/caddy-reverse-proxy:1.0
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           args: ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
           ports:
             - { name: http,  containerPort: 8080 }
