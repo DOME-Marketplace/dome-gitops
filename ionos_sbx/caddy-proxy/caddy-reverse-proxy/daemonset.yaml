@@ -53,6 +53,7 @@ spec:
             - { name: data,   mountPath: /data }      
             - { name: config, mountPath: /config }
             - { name: tmp,    mountPath: /tmp }
+            - { name: caddy-routes-volume, mountPath: /etc/caddy/routes/ }
           readinessProbe: { tcpSocket: { port: 8443 }, initialDelaySeconds: 5,  periodSeconds: 10 }
           livenessProbe:  { tcpSocket: { port: 8443 }, initialDelaySeconds: 10, periodSeconds: 15 }
       volumes:
@@ -61,3 +62,7 @@ spec:
             claimName: caddy-data                     
         - { name: config, emptyDir: {} }
         - { name: tmp,    emptyDir: {} }
+
+        - name: caddy-routes-volume
+          configMap:
+            name: caddy-routes-config
