@@ -1,118 +1,110 @@
-image:
-  repository: kingmanfri/dome_ticketing_zammad
-  tag: "6.5.custom"
-  pullPolicy: Always
+zammad:
 
-ingress:
-  enabled: true
-  className: nginx
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
-  hosts:
-    - host: ticketing.dome-marketplace-sbx.org
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls:
-    - secretName: ticketing-tls-secret
-      hosts:
-        - ticketing.dome-marketplace-sbx.org
+  image:
+    repository: kingmanfri/dome_ticketing_zammad
+    tag: "6.5.custom"
+    pullPolicy: Always
 
-zammadConfig:
-  railsserver:
-    replicas: 2
-    webConcurrency: 2
-    resources:
-      requests:
-        cpu: "500m"
-        memory: "2Gi"
-      limits:
-        cpu: "2000m"
-        memory: "4Gi"
-    securityContext:
-      allowPrivilegeEscalation: false
-      capabilities:
-        drop:
-          - ALL
-      readOnlyRootFilesystem: false
-      privileged: false
-    readinessProbe:
-      httpGet:
-        path: /
-        port: 3000
-      initialDelaySeconds: 45
-      periodSeconds: 10
-      timeoutSeconds: 10
-      failureThreshold: 8
-      successThreshold: 1
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+    hosts:
+      - host: ticketing.dome-marketplace-sbx.org
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls:
+      - secretName: ticketing-tls-secret
+        hosts:
+          - ticketing.dome-marketplace-sbx.org
+
+  zammadConfig:
+    railsserver:
+      replicas: 2
+      webConcurrency: 2
+      resources:
+        requests:
+          cpu: "500m"
+          memory: "2Gi"
+        limits:
+          cpu: "2000m"
+          memory: "4Gi"
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        readOnlyRootFilesystem: false
+        privileged: false
+      readinessProbe:
+        httpGet:
+          path: /
+          port: 3000
+        initialDelaySeconds: 45
+        periodSeconds: 10
+        timeoutSeconds: 10
+        failureThreshold: 8
+        successThreshold: 1
 
   elasticsearch:
-    initialisation: true
-    reindex: false
-
-  initContainers:
-    postgresql:
+    image:
+      repository: bitnamilegacy/elasticsearch
+      tag: 8.12.0-debian-11-r1
+    sysctlImage:
+      registry: docker.io
+      repository: bitnamilegacy/os-shell
+      tag: 11-debian-11-r96
+    clusterName: zammad
+    master:
+      masterOnly: false
+      replicaCount: 1
+      heapSize: 1g
       resources:
         requests:
-          cpu: 50m
-          memory: 512Mi
+          cpu: 500m
+          memory: 2Gi
         limits:
           cpu: 1000m
-          memory: 2Gi
-    elasticsearch:
+          memory: 3Gi
+    coordinating:
+      replicaCount: 0
+    data:
+      replicaCount: 0
+    ingest:
+      replicaCount: 0
+
+  postgresql:
+    image:
+      repository: bitnamilegacy/postgresql
+      tag: 15.4.0-debian-11-r45
+    primary:
       resources:
         requests:
-          cpu: 50m
-          memory: 512Mi
+          cpu: "200m"
+          memory: "1Gi"
         limits:
-          cpu: 1000m
-          memory: 2Gi
+          cpu: "1000m"
+          memory: "2Gi"
 
-elasticsearch:
-  image:
-    repository: bitnamilegacy/elasticsearch
-    tag: 8.12.0-debian-11-r1
-  sysctlImage:
-    registry: docker.io
-    repository: bitnamilegacy/os-shell
-    tag: 11-debian-11-r96
-  clusterName: zammad
-  master:
-    masterOnly: false
-    replicaCount: 1
-    heapSize: 1g
-    resources:
-      requests:
-        cpu: 500m
-        memory: 2Gi
-      limits:
-        cpu: 1000m
-        memory: 3Gi
-  coordinating:
-    replicaCount: 0
-  data:
-    replicaCount: 0
-  ingest:
-    replicaCount: 0
+  redis:
+    image:
+      repository: bitnamilegacy/redis
+      tag: 7.0.12-debian-11-r34
+    master:
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "128Mi"
+        limits:
+          cpu: "250m"
+          memory: "256Mi"
 
-postgresql:
-  image:
-    repository: bitnamilegacy/postgresql
-    tag: 15.4.0-debian-11-r45
-  primary:
-    resources:
-      requests:
-        cpu: "200m"
-        memory: "1Gi"
-      limits:
-        cpu: "1000m"
-        memory: "2Gi"
-
-redis:
-  image:
-    repository: bitnamilegacy/redis
-    tag: 7.0.12-debian-11-r34
-  master:
+  memcached:
+    image:
+      repository: bitnamilegacy/memcached
+      tag: 1.6.23-debian-11-r0
     resources:
       requests:
         cpu: "100m"
@@ -121,18 +113,6 @@ redis:
         cpu: "250m"
         memory: "256Mi"
 
-memcached:
-  image:
-    repository: bitnamilegacy/memcached
-    tag: 1.6.23-debian-11-r0
-  resources:
-    requests:
-      cpu: "100m"
-      memory: "128Mi"
-    limits:
-      cpu: "250m"
-      memory: "256Mi"
-
-extraEnv:
-  - name: MALLOC_ARENA_MAX
-    value: "2"
+  extraEnv:
+    - name: MALLOC_ARENA_MAX
+      value: "2"
