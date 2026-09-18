@@ -26,7 +26,7 @@ zammad:
       webConcurrency: 2
       resources:
         requests:
-          cpu: "500m"
+          cpu: "250m"
           memory: "2Gi"
         limits:
           cpu: "2000m"
@@ -47,6 +47,34 @@ zammad:
         timeoutSeconds: 10
         failureThreshold: 8
         successThreshold: 1
+
+    initJob:
+      randomName: false
+      annotations:
+        argocd.argoproj.io/hook: Sync
+        argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
+
+    elasticsearch:
+      initialisation: true
+      reindex: false
+
+    initContainers:
+      postgresql:
+        resources:
+          requests:
+            cpu: 50m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+      elasticsearch:
+        resources:
+          requests:
+            cpu: 50m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
 
   elasticsearch:
     image:
