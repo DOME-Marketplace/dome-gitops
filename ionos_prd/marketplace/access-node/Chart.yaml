@@ -2,10 +2,15 @@ apiVersion: v2
 name: access-node
 description: Chart holder for ArgoCD
 type: application
-version: 0.3.5
+version: 0.3.6
 appVersion: 0.6.0
 dependencies:
   - name: access-node
     condition: access-node.enabled
     repository: https://dome-marketplace.github.io/access-node
     version: 1.2.7
+  - name: dlt-adapter
+    alias: dlt-adapter-hashnet
+    condition: dlt-adapter-hashnet.enabled
+    repository: https://alastria.github.io/helm-charts
+    version: 8.0.0
