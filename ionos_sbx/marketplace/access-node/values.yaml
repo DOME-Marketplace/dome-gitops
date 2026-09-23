@@ -222,6 +222,7 @@ access-node:
     livenessProbe:
       # -- path to be used for the readiness probe, older versions used /actuator/health
       path: /q/health
+      initialDelaySeconds: 300
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     fullnameOverride: scorpio
     ## configuration to be used for the service offered by scorpio
