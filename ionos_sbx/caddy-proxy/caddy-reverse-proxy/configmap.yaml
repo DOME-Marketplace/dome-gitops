@@ -38,6 +38,15 @@ data:
                 }
             }
         }
+
+        handle_path /ticketing/* {
+            reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
+                header_up Host ticketing.dome-marketplace-sbx.org
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+        }
+
         handle {
             respond "Not Found" 404
         }
