@@ -49,6 +49,16 @@ data:
             }
         }
 
+        handle_path /bae/* {
+            reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                    }
+            }
+        }
+        
+
         handle {
             respond "Not Found" 404
         }
