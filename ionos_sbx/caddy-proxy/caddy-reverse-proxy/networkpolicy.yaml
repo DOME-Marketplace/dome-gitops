@@ -19,6 +19,9 @@ spec:
     - to:                                    
         - namespaceSelector:
             matchLabels: { kubernetes.io/metadata.name: tmf-test }
+    - to:                                    
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: zammad }
       ports:
         - { port: 8080, protocol: TCP }
     - to:                                 # Internet 443: API ACME di Let's Encrypt
