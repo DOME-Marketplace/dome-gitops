@@ -199,7 +199,7 @@ access-node:
       # -- repository to be used - resource friendly all-in-one-runner without kafka
       repository: scorpiobroker/all-in-one-runner
       # -- tag of the image to be used 
-      tag: java-6.0.1
+      tag: java-5.0.3
     ## configuration of the database to be used by broker
     db:
       # -- host of the db
@@ -222,7 +222,7 @@ access-node:
     livenessProbe:
       # -- path to be used for the readiness probe, older versions used /actuator/health
       path: /q/health
-      initialDelaySeconds: 300
+      initialDelaySeconds: 40
     # -- overrides the generated name, provides stable service names - this should be avoided if multiple instances are available in the same namespace
     fullnameOverride: scorpio
     ## configuration to be used for the service offered by scorpio
