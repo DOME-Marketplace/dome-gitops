@@ -40,15 +40,24 @@ data:
             }
         }
 
-        handle_path /tmf-api/* {
-            reverse_proxy tm-forum-api.marketplace.svc.cluster.local:8080 {
+        handle_path /tmf-api/productCatalogManagement/v4* {
+            reverse_proxy tm-forum-api-product-catalog.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        handle_path /tmf-api/accountManagement* {
+            reverse_proxy tm-forum-api-account.marketplace.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
                     response_header_timeout 60s
                 }
             }
         }        
-
+                
         handle_path /ticketing/* {
             reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
                 header_up Host ticketing.dome-marketplace-sbx.org
