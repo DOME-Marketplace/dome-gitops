@@ -30,6 +30,7 @@ data:
             -X-Powered-By
         }
         encode zstd gzip
+        
         handle_path /tmf-test/get-route* {
             reverse_proxy account.tmf-test.svc.cluster.local:8080 {
                 transport http {
@@ -38,6 +39,15 @@ data:
                 }
             }
         }
+
+        handle_path /tmf-api/* {
+            reverse_proxy tm-forum-api.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }        
 
         handle_path /ticketing/* {
             reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
