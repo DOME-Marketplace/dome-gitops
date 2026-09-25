@@ -57,7 +57,52 @@ data:
                     }
             }
         }
+
+        handle_path /desmos/api/v2/entities* {
+            reverse_proxy desmos.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                    }
+            }
+        }        
+
+
+        handle_path /verifier-marketplace/* {
+            reverse_proxy verifier-marketplace-vcverifier.marketplace.svc.cluster.local:3000 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                    }
+            }
+        }              
         
+        handle_path /payment/* {
+            reverse_proxy payment.billing.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                    }
+            }
+        }   
+
+        handle_path /cs-identity/* {
+            reverse_proxy cs-identity-keycloak.cs-identity.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                    }
+            }
+        }
+
+        handle_path /bookstack/* {
+            reverse_proxy bookstack.knowledgebase.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                    }
+            }
+        }
 
         handle {
             respond "Not Found" 404
