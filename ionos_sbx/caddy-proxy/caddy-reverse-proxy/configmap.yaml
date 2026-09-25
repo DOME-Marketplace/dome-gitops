@@ -40,7 +40,7 @@ data:
             }
         }
 
-        handle_path /tmf-api/productCatalogManagement/v4* {
+        handle /tmf-api/productCatalogManagement/v4* {
             reverse_proxy tm-forum-api-product-catalog.marketplace.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
@@ -49,7 +49,7 @@ data:
             }
         }
 
-        handle_path /tmf-api/accountManagement* {
+        handle /tmf-api/accountManagement* {
             reverse_proxy tm-forum-api-account.marketplace.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
