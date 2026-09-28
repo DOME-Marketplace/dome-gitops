@@ -30,7 +30,8 @@ data:
             -X-Powered-By
         }
         encode zstd gzip
-        handle_path /tmf-test/get-route* {
+        
+        handle /tmf-test/get-route* {
             reverse_proxy account.tmf-test.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
@@ -39,7 +40,25 @@ data:
             }
         }
 
-        handle_path /ticketing/* {
+        handle /tmf-api/productCatalogManagement/v4* {
+            reverse_proxy tm-forum-api-product-catalog.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        handle /tmf-api/accountManagement* {
+            reverse_proxy tm-forum-api-account.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }        
+                
+        handle /ticketing/* {
             reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
                 header_up Host ticketing.dome-marketplace-sbx.org
                 transport http {
@@ -49,7 +68,7 @@ data:
             }
         }
 
-        handle_path /bae/* {
+        handle /bae/* {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
                 transport http {
                     dial_timeout            5s
@@ -57,7 +76,52 @@ data:
                     }
             }
         }
+
+        handle /desmos/api/v2/entities* {
+            reverse_proxy desmos.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                    }
+            }
+        }        
+
+
+        handle /verifier-marketplace/* {
+            reverse_proxy verifier-marketplace-vcverifier.marketplace.svc.cluster.local:3000 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                    }
+            }
+        }              
         
+        handle /payment/* {
+            reverse_proxy payment.billing.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                    }
+            }
+        }   
+
+        handle /cs-identity/* {
+            reverse_proxy cs-identity-keycloak.cs-identity.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                    }
+            }
+        }
+
+        handle /bookstack/* {
+            reverse_proxy bookstack.knowledgebase.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                    }
+            }
+        }
 
         handle {
             respond "Not Found" 404

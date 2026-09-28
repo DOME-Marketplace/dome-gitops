@@ -28,11 +28,32 @@ spec:
             matchLabels: { kubernetes.io/metadata.name: zammad }
       ports:
         - { port: 8080, protocol: TCP }
+
+    - to:                                     
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: cs-identity }
+      ports:
+        - { port: 8080, protocol: TCP }
+
+    - to:                                     
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: billing }
+      ports:
+        - { port: 8080, protocol: TCP }
+
+    - to:                                     
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: knowledgebase }
+      ports:
+        - { port: 8080, protocol: TCP }
+    
     - to:                                     
         - namespaceSelector:
             matchLabels: { kubernetes.io/metadata.name: marketplace }
       ports:
-        - { port: 8004, protocol: TCP }    
+        - { port: 8004, protocol: TCP }
+        - { port: 8080, protocol: TCP }    
+        - { port: 3000, protocol: TCP }
     - to:                                     
         - ipBlock:
             cidr: 0.0.0.0/0
