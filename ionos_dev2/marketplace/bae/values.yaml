@@ -181,6 +181,8 @@ business-api-ecosystem:
         value: "http://tm-forum-api-party-catalog:8080/tmf-api/party/v4"
       - name: BAE_CB_OPERATOR_ID
         value: "did:elsi:VATSB-12345678J"
+      - name: BAE_CB_BILLING_ENGINE
+        value: dome
       - name: BAE_CB_RELATED_PARTY_SCHEMA_LOCATION
         value: "https://raw.githubusercontent.com/DOME-Marketplace/tmf-api/refs/heads/main/DOME/ShareableEntity.schema.json"
       - name: DPAS_KEY
