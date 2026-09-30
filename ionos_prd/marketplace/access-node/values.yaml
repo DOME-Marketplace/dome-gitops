@@ -364,7 +364,7 @@ dlt-adapter-hashnet:
   fullnameOverride: dlt-adapter-hashnet
 
   image:
-    repository: public.ecr.aws/u3o6a8u0/dome-connector-dlt-interface:hashnet-integration
+    repository: public.ecr.aws/u3o6a8u0/dome-connector-dlt-interface
     pullPolicy: Always
     tag: hashnet-integration
 
