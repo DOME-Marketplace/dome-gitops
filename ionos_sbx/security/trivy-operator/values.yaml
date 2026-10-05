@@ -1,0 +1,40 @@
+# Trivy Operator — continuous image vulnerability and Kubernetes
+# security/configuration scanning. Chart 0.36.0 (appVersion 0.34.0).
+
+# Blank string = scan every namespace.
+targetNamespaces: ""
+excludeNamespaces: ""
+
+operator:
+  # Container image vulnerabilities.
+  vulnerabilityScannerEnabled: true
+  # Kubernetes security and configuration findings.
+  configAuditScannerEnabled: true
+  rbacAssessmentScannerEnabled: true
+  infraAssessmentScannerEnabled: true
+  exposedSecretScannerEnabled: true
+
+  # Chart default is 10; lower on a shared sandbox cluster.
+  scanJobsConcurrentLimit: 5
+  scanJobTimeout: 5m
+
+  # Expose per-finding detail to Prometheus, not just totals.
+  metricsFindingsEnabled: true
+
+trivy:
+  severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+  ignoreUnfixed: false
+
+# SBX kube-prometheus-stack sets serviceMonitorSelectorNilUsesHelmValues=false,
+# so ServiceMonitors are discovered in any namespace.
+serviceMonitor:
+  enabled: true
+
+# The operator Deployment itself. Scan jobs are sized by trivy.resources.
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
