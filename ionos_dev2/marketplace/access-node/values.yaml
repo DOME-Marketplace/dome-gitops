@@ -176,6 +176,7 @@ access-node:
   scorpio:
     # -- should scorpio be enabled
     enabled: true
+    replicaCount: 0
     ## configuration of the image to be used
     image:
       # -- repository to be used - resource friendly all-in-one-runner without kafka
