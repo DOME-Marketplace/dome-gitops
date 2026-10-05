@@ -11,7 +11,7 @@ operator:
   # Kubernetes security and configuration findings.
   configAuditScannerEnabled: true
   rbacAssessmentScannerEnabled: true
-  infraAssessmentScannerEnabled: true
+  infraAssessmentScannerEnabled: false
   exposedSecretScannerEnabled: true
 
   # Chart default is 10; lower on a shared sandbox cluster.
