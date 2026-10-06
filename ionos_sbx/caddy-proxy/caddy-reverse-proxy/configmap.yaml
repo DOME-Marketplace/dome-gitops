@@ -58,13 +58,18 @@ data:
             }
         }        
                 
-        handle /ticketing/* {
+        handle_path /ticketing* {
             reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
-                header_up Host ticketing.dome-marketplace-sbx.org
+
+                # header_up Host ticketing.dome-marketplace-sbx.org
+                
+                header_up X-Forwarded-Host {host}
+                header_up X-Forwarded-Prefix /ticketing
+
                 transport http {
                     dial_timeout            5s
                     response_header_timeout 60s
-                    }
+                }
             }
         }
 
