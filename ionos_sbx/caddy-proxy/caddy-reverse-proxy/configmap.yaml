@@ -24,7 +24,7 @@ data:
             Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
             X-Content-Type-Options    "nosniff"
             X-Frame-Options           "DENY"
-            Referrer-Policy           "no-referrer"
+            Referrer-Policy           "SAMEORIGIN"
             Permissions-Policy        "geolocation=(), camera=(), microphone=()"
             -Server
             -X-Powered-By
@@ -60,8 +60,6 @@ data:
                 
         handle_path /ticketing* {
             reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
-
-                # header_up Host ticketing.dome-marketplace-sbx.org
                 
                 header_up X-Forwarded-Host {host}
                 header_up X-Forwarded-Prefix /ticketing
@@ -94,11 +92,10 @@ data:
             }
         }
 
-        @bae_static {
-        path /*.js /*.css /assets/* /config
+        @from_bae {
+            header Referer *tmf-test.dome-marketplace-sbx.org/bae*
         }
-    
-        handle @bae_static {
+        handle @from_bae {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
                 header_up X-Forwarded-Host {host}
             }
