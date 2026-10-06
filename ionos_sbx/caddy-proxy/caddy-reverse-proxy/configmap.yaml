@@ -71,7 +71,9 @@ data:
             }
         }
 
-        @zammad_dependencies path /*
+        @zammad_dependencies {
+            header Referer *tmf-test.dome-marketplace-sbx.org/ticketing*
+        }
         handle @zammad_dependencies {
             reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
                 header_up X-Forwarded-Host {host}
@@ -92,7 +94,9 @@ data:
             }
         }
 
-        @bae_dependencies path /* 
+        @bae_dependencies {
+            header Referer *tmf-test.dome-marketplace-sbx.org/bae*
+        }
         handle @bae_dependencies {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
                 header_up X-Forwarded-Host {host}
