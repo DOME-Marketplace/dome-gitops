@@ -94,15 +94,31 @@ data:
             }
         }
 
-        @bae_dependencies {
-            header Referer *tmf-test.dome-marketplace-sbx.org/bae*
+        @bae_assets {
+            path /assets/themes/bae/*
         }
-        handle @bae_dependencies {
+        handle @bae_assets {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
-                header_up X-Forwarded-Host {host}
+            header_up X-Forwarded-Host {host}
             }
         }
-        
+
+        handle /dashboard* {
+            reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
+            header_up X-Forwarded-Host {host}
+            }
+        }
+
+        @from_bae {
+            header Referer *tmf-test.dome-marketplace-sbx.org/bae*
+            header Referer *tmf-test.dome-marketplace-sbx.org/dashboard*
+        }
+        handle @from_bae {
+            reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
+            header_up X-Forwarded-Host {host}
+            }
+        }
+
 
         handle /desmos/api/v2/entities* {
             reverse_proxy desmos.marketplace.svc.cluster.local:8080 {
