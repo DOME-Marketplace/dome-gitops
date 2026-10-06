@@ -92,10 +92,7 @@ data:
             }
         }
 
-        @bae_dependencies path /*{
-            header Referer *tmf-test.dome-marketplace-sbx.org/bae*
-        }
-        
+        @bae_dependencies path /* 
         handle @bae_dependencies {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
                 header_up X-Forwarded-Host {host}
