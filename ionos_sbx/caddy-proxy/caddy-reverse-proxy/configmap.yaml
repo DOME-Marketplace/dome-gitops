@@ -88,6 +88,7 @@ data:
             }
         }
 
+        # 2. Intercetta gli SVG e asset visivi specifici del BAE
         @bae_assets {
             path /assets/themes/bae/*
         }
@@ -97,15 +98,16 @@ data:
             }
         }
 
+        # 3. Intercetta la navigazione interna di Angular (che sovrascrive l'URL)
         handle /dashboard* {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
                 header_up X-Forwarded-Host {host}
             }
         }
 
-        # CORREZIONE: I due valori sulla stessa riga creano un "OR" logico
+        # 4. Intercetta chiamate orfane (JS, CSS, /config) verificando la provenienza
         @from_bae {
-            header Referer *tmf-test.dome-marketplace-sbx.org/bae* *tmf-test.dome-marketplace-sbx.org/dashboard*
+            header_regexp Referer tmf-test\.dome-marketplace-sbx\.org/(bae|dashboard)
         }
         handle @from_bae {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
