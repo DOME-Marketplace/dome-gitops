@@ -71,7 +71,7 @@ data:
             }
         }
 
-        @zammad_dependencies path /assets/* /api/v1/* /ws /cable /auth/* /avatar/* /images/* /vite/* /fonts/* /robots.txt /apple-touch-icon.png /favicon.ico
+        @zammad_dependencies path /*
         handle @zammad_dependencies {
             reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
                 header_up X-Forwarded-Host {host}
@@ -79,7 +79,7 @@ data:
         }
 
 
-        handle_path /bae/* {
+        handle_path /bae* {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
 
                 header_up X-Forwarded-Host {host}
@@ -92,10 +92,11 @@ data:
             }
         }
 
-        @from_bae {
+        @bae_dependencies path /*{
             header Referer *tmf-test.dome-marketplace-sbx.org/bae*
         }
-        handle @from_bae {
+        
+        handle @bae_dependencies {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
                 header_up X-Forwarded-Host {host}
             }
