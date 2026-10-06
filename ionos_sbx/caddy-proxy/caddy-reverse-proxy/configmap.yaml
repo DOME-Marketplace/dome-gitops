@@ -81,14 +81,30 @@ data:
         }
 
 
-        handle /bae/* {
+        handle_path /bae/* {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
+
+                header_up X-Forwarded-Host {host}
+                header_up X-Forwarded-Prefix /bae                
+                
                 transport http {
                     dial_timeout            5s
                     response_header_timeout 60s
                     }
             }
         }
+
+        @bae_static {
+            path /*.js /*.css /assets/themes/bae/*
+        }
+
+        handle @bae_static {
+        reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
+            header_up X-Forwarded-Host {host}
+            header_up X-Forwarded-Prefix /bae}
+            }
+        }
+        
 
         handle /desmos/api/v2/entities* {
             reverse_proxy desmos.marketplace.svc.cluster.local:8080 {
