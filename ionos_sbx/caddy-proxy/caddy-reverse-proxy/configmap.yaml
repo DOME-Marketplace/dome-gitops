@@ -73,6 +73,14 @@ data:
             }
         }
 
+        @zammad_dependencies path /assets/* /api/v1/* /ws /cable /auth/* /avatar/* /images/* /vite/* /fonts/* /robots.txt /apple-touch-icon.png /favicon.ico
+        handle @zammad_dependencies {
+            reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
+                header_up X-Forwarded-Host {host}
+            }
+        }
+
+
         handle /bae/* {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
                 transport http {
