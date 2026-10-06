@@ -95,13 +95,12 @@ data:
         }
 
         @bae_static {
-            path /*.js /*.css /assets/themes/bae/*
+        path /*.js /*.css /assets/* /config
         }
-
+    
         handle @bae_static {
-        reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
-            header_up X-Forwarded-Host {host}
-            header_up X-Forwarded-Prefix /bae}
+            reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
+                header_up X-Forwarded-Host {host}
             }
         }
         
