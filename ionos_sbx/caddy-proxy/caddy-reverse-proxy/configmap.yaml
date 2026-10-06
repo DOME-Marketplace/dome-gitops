@@ -23,8 +23,8 @@ data:
         header {
             Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
             X-Content-Type-Options    "nosniff"
-            X-Frame-Options           "DENY"
-            Referrer-Policy           "SAMEORIGIN"
+            X-Frame-Options           "SAMEORIGIN"
+            Referrer-Policy           "same-origin"
             Permissions-Policy        "geolocation=(), camera=(), microphone=()"
             -Server
             -X-Powered-By
@@ -83,14 +83,8 @@ data:
 
         handle_path /bae* {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
-
                 header_up X-Forwarded-Host {host}
                 header_up X-Forwarded-Prefix /bae                
-                
-                transport http {
-                    dial_timeout            5s
-                    response_header_timeout 60s
-                    }
             }
         }
 
@@ -99,23 +93,23 @@ data:
         }
         handle @bae_assets {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
-            header_up X-Forwarded-Host {host}
+                header_up X-Forwarded-Host {host}
             }
         }
 
         handle /dashboard* {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
-            header_up X-Forwarded-Host {host}
+                header_up X-Forwarded-Host {host}
             }
         }
 
+        # CORREZIONE: I due valori sulla stessa riga creano un "OR" logico
         @from_bae {
-            header Referer *tmf-test.dome-marketplace-sbx.org/bae*
-            header Referer *tmf-test.dome-marketplace-sbx.org/dashboard*
+            header Referer *tmf-test.dome-marketplace-sbx.org/bae* *tmf-test.dome-marketplace-sbx.org/dashboard*
         }
         handle @from_bae {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
-            header_up X-Forwarded-Host {host}
+                header_up X-Forwarded-Host {host}
             }
         }
 
