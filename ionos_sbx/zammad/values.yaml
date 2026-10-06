@@ -6,19 +6,19 @@ zammad:
     pullPolicy: Always
 
   ingress:
-    enabled: false
-    #className: nginx
-    #annotations:
-    #  cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
-    #hosts:
-    #  - host: ticketing.dome-marketplace-sbx.org
-    #    paths:
-    #      - path: /
-    #        pathType: ImplementationSpecific
-    #tls:
-    #  - secretName: ticketing-tls-secret
-    #    hosts:
-    #      - ticketing.dome-marketplace-sbx.org
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+    hosts:
+      - host: ticketing.dome-marketplace-sbx.org
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls:
+      - secretName: ticketing-tls-secret
+        hosts:
+          - ticketing.dome-marketplace-sbx.org
 
   zammadConfig:
     railsserver:
