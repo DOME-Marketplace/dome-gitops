@@ -181,7 +181,7 @@ data:
         }        
 
 
-        handle /verifier-marketplace/* {
+        handle_path /verifier-marketplace/* {
             reverse_proxy verifier-marketplace-dome-verifier.marketplace.svc.cluster.local:7000 {
                 transport http {
                     dial_timeout            5s
