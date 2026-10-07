@@ -11,10 +11,23 @@ data:
             format json
         }
         rate_limit {
-            zone per_ip {
-                key    {remote_host}
-                events 200
-                window 2m
+            zone static {
+                match {
+                    not remote_ip 127.0.0.1
+                    path_regexp \.(js|css|map|woff2?|ttf|otf|eot|svg|png|jpe?g|gif|webp|ico)$
+                }
+                key    {client_ip}
+                events 1000
+                window 1m
+            }
+            zone api {
+                match {
+                    not remote_ip 127.0.0.1
+                    not path_regexp \.(js|css|map|woff2?|ttf|otf|eot|svg|png|jpe?g|gif|webp|ico)$
+                }
+                key    {client_ip}
+                events 300
+                window 1m
             }
         }
         request_body {
@@ -58,30 +71,25 @@ data:
             }
         }
 
-        @bae_html {
-            path /bae /bae/*
-            header Accept *text/html*
-        }
-        handle @bae_html {
-            header Content-Type  "text/html; charset=utf-8"
-            header Cache-Control "no-cache"
-            templates {
-                between <<caddy caddy>>
-            }
-            respond `<<caddy httpInclude (printf "/__bae_index%s" (trimPrefix "/bae" .OriginalReq.URL.Path)) | replace "<base href=\"/\">" "<base href=\"/bae/\">" caddy>>` 200
+        @bae_bad_came_from expression `{http.request.uri.query.came_from} != "" && !{http.request.uri.query.came_from}.matches("^/($|[^/\\\\])")`
+        handle @bae_bad_came_from {
+            respond "Bad Request" 400
         }
 
         @bae_index_internal {
-            path /__bae_index /__bae_index/*
+            path /__bae_index
             remote_ip 127.0.0.1
         }
         handle @bae_index_internal {
-            uri strip_prefix /__bae_index
+            rewrite * /
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004
         }
 
         @bae path /bae /bae/*
         handle @bae {
+            @bae_hashed path_regexp ^/bae/[A-Za-z0-9_-]+\.[0-9a-f]{16}\.(js|css|woff2?|ttf|otf|eot|svg|png|jpe?g|gif|webp)$
+            header @bae_hashed >Cache-Control "max-age=31536000, immutable"
+
             uri strip_prefix /bae
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
                 header_up X-Forwarded-Prefix /bae
@@ -89,6 +97,19 @@ data:
                 transport http {
                     dial_timeout            5s
                     response_header_timeout 60s
+                }
+
+                @spa_index {
+                    status 200
+                    header Content-Type text/html*
+                }
+                handle_response @spa_index {
+                    header Content-Type  "text/html; charset=utf-8"
+                    header Cache-Control "no-cache"
+                    templates {
+                        between <<caddy caddy>>
+                    }
+                    respond `<<caddy httpInclude "/__bae_index" | replace "<base href=\"/\">" "<base href=\"/bae/\">" caddy>>` 200
                 }
             }
         }
@@ -107,7 +128,7 @@ data:
         @bae_nav {
             header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae([/?#]|$)
             header Accept *text/html*
-            not path /bae /bae/* /__bae_index* /auth/* /tmf-api/* /tmf-test/* /ticketing/* /desmos/* /verifier-marketplace/* /payment/* /cs-identity/* /bookstack/*
+            not path /bae /bae/* /__bae_index /auth/* /tmf-api/* /tmf-test/* /ticketing/* /desmos/* /verifier-marketplace/* /payment/* /cs-identity/* /bookstack/*
         }
         handle @bae_nav {
             redir * /bae{uri} 302
@@ -115,7 +136,7 @@ data:
 
         @bae_from_page {
             header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae([/?#]|$)
-            not path /bae /bae/* /__bae_index* /auth/* /tmf-api/* /tmf-test/* /ticketing/* /desmos/* /verifier-marketplace/* /payment/* /cs-identity/* /bookstack/*
+            not path /bae /bae/* /__bae_index /auth/* /tmf-api/* /tmf-test/* /ticketing/* /desmos/* /verifier-marketplace/* /payment/* /cs-identity/* /bookstack/*
         }
         handle @bae_from_page {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
@@ -125,7 +146,7 @@ data:
                     response_header_timeout 60s
                 }
             }
-        }        
+        }      
                 
         handle_path /ticketing/* {
             reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
@@ -187,7 +208,7 @@ data:
             }
         }
 
-        handle /bookstack/* {
+        handle_path /bookstack/* {
             reverse_proxy bookstack.knowledgebase.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
