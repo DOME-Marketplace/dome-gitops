@@ -1,0 +1,95 @@
+# OWASP Dependency-Track: central platform for SBOMs and component
+# vulnerabilities. Chart 2.6.0 (app 5.1.2).
+# Postgres runs in-cluster (extraObjects below). Credentials and the KEK come
+# from dependency-track-secret (keys: username, password, kek).
+
+database:
+  jdbcUrl: "jdbc:postgresql://dependency-track-postgres:5432/dtrack?reWriteBatchedInserts=true"
+  existingSecret:
+    name: dependency-track-secret
+
+secretManagement:
+  database:
+    kek:
+      existingSecret:
+        name: dependency-track-secret
+
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  hostname: dependency-track.dome-marketplace-sbx.org
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+  tls:
+    - secretName: dependency-track-tls
+      hosts:
+        - dependency-track.dome-marketplace-sbx.org
+
+extraObjects:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: dependency-track-postgres
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10Gi
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: dependency-track-postgres
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      selector:
+        matchLabels:
+          app: dependency-track-postgres
+      template:
+        metadata:
+          labels:
+            app: dependency-track-postgres
+        spec:
+          containers:
+            - name: postgres
+              image: postgres:17-alpine
+              env:
+                - name: POSTGRES_DB
+                  value: dtrack
+                - name: POSTGRES_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: dependency-track-secret
+                      key: username
+                - name: POSTGRES_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: dependency-track-secret
+                      key: password
+                # Subdirectory: the volume root holds lost+found, which initdb rejects.
+                - name: PGDATA
+                  value: /var/lib/postgresql/data/pgdata
+              ports:
+                - containerPort: 5432
+              readinessProbe:
+                exec:
+                  command: ["pg_isready"]
+              volumeMounts:
+                - name: data
+                  mountPath: /var/lib/postgresql/data
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: dependency-track-postgres
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      name: dependency-track-postgres
+    spec:
+      selector:
+        app: dependency-track-postgres
+      ports:
+        - port: 5432
