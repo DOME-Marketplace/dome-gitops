@@ -13,8 +13,8 @@ data:
         rate_limit {
             zone per_ip {
                 key    {remote_host}
-                events 100
-                window 1m
+                events 200
+                window 2m
             }
         }
         request_body {
@@ -56,9 +56,78 @@ data:
                     response_header_timeout 60s
                 }
             }
+        }
+
+        @bae_html {
+            path /bae /bae/*
+            header Accept *text/html*
+        }
+        handle @bae_html {
+            header Content-Type  "text/html; charset=utf-8"
+            header Cache-Control "no-cache"
+            templates {
+                between <<caddy caddy>>
+            }
+            respond `<<caddy httpInclude (printf "/__bae_index%s" (trimPrefix "/bae" .OriginalReq.URL.Path)) | replace "<base href=\"/\">" "<base href=\"/bae/\">" caddy>>` 200
+        }
+
+        @bae_index_internal {
+            path /__bae_index /__bae_index/*
+            remote_ip 127.0.0.1
+        }
+        handle @bae_index_internal {
+            uri strip_prefix /__bae_index
+            reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004
+        }
+
+        @bae path /bae /bae/*
+        handle @bae {
+            uri strip_prefix /bae
+            reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
+                header_up X-Forwarded-Prefix /bae
+                header_down Location "^/(bae(/|$))?" "/bae/"
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        @bae_auth path /auth/*
+        handle @bae_auth {
+            reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
+                header_down Location "^/(bae(/|$))?" "/bae/"
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        @bae_nav {
+            header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae([/?#]|$)
+            header Accept *text/html*
+            not path /bae /bae/* /__bae_index* /auth/* /tmf-api/* /tmf-test/* /ticketing/* /desmos/* /verifier-marketplace/* /payment/* /cs-identity/* /bookstack/*
+        }
+        handle @bae_nav {
+            redir * /bae{uri} 302
+        }
+
+        @bae_from_page {
+            header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae([/?#]|$)
+            not path /bae /bae/* /__bae_index* /auth/* /tmf-api/* /tmf-test/* /ticketing/* /desmos/* /verifier-marketplace/* /payment/* /cs-identity/* /bookstack/*
+        }
+        handle @bae_from_page {
+            reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
+                header_down Location "^/(bae(/|$))?" "/bae/"
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
         }        
                 
-        handle_path /ticketing* {
+        handle_path /ticketing/* {
             reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
                 
                 header_up X-Forwarded-Host {host}
@@ -76,41 +145,6 @@ data:
         }
         handle @zammad_dependencies {
             reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
-                header_up X-Forwarded-Host {host}
-            }
-        }
-
-
-        handle_path /bae* {
-            reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
-                header_up X-Forwarded-Host {host}
-                header_up X-Forwarded-Prefix /bae                
-            }
-        }
-
-        # 2. Intercetta gli SVG e asset visivi specifici del BAE
-        @bae_assets {
-            path /assets/themes/bae/*
-        }
-        handle @bae_assets {
-            reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
-                header_up X-Forwarded-Host {host}
-            }
-        }
-
-        # 3. Intercetta la navigazione interna di Angular (che sovrascrive l'URL)
-        handle /dashboard* {
-            reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
-                header_up X-Forwarded-Host {host}
-            }
-        }
-
-        # 4. Intercetta chiamate orfane (JS, CSS, /config) verificando la provenienza
-        @from_bae {
-            header_regexp Referer tmf-test\.dome-marketplace-sbx\.org/(bae|dashboard)
-        }
-        handle @from_bae {
-            reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
                 header_up X-Forwarded-Host {host}
             }
         }
