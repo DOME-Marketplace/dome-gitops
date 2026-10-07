@@ -1,8 +1,16 @@
 dome-verifier:
   image:
     repository: in2workspace/eudistack-verifier-api
-    tag: v2.0.12
+    tag: v2.0.14
     pullPolicy: Always
+
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "512Mi"
+    limits:
+      cpu: "500m"
+      memory: "640Mi"
 
   ingress:
     enabled: true
@@ -49,6 +57,7 @@ dome-verifier:
           es.in2.vcverifier: DEBUG
       # Placeholder for backend URL (REQUIRED)
       url: "https://verifier.dome-marketplace-dev.org"
+      plainListEntityBypassUrls: ["https://issuer.dome-marketplace-sbx.org"]
       security:
         serviceIdentity:
           # Placeholder for private key used in identity verification (REQUIRED)
