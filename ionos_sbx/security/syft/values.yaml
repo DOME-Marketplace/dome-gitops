@@ -1,0 +1,5 @@
+# sbom-operator: generates an SBOM with Syft for every image running in the
+# cluster and stores it as a ConfigMap next to the pod. Chart 0.47.0.
+args:
+  targets: configmap
+  format: cyclonedxjson
