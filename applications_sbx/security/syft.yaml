@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: syft
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  labels:
+    purpose: security
+spec:
+  project: default
+  sources:
+  - repoURL: https://ckotzbauer.github.io/helm-charts
+    targetRevision: 0.47.0
+    chart: sbom-operator
+    helm:
+      releaseName: sbom-operator
+      valueFiles:
+      - $values/ionos_sbx/security/syft/values.yaml
+  - repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: HEAD
+    ref: values
+  destination:
+    namespace: security
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
