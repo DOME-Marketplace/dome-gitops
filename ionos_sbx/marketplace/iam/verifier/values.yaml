@@ -1,7 +1,7 @@
 dome-verifier:
   image:
     repository: in2workspace/eudistack-verifier-api
-    tag: v2.0.13
+    tag: v2.0.14
     pullPolicy: Always
 
   resources:
@@ -59,6 +59,7 @@ dome-verifier:
           org.springframework.security: TRACE
       # Placeholder for backend URL (REQUIRED)
       url: "https://verifier.dome-marketplace-sbx.org"
+      plainListEntityBypassUrls: ["https://issuer.dome-marketplace-sbx.org"]
       security:
         serviceIdentity:
           # Placeholder for private key used in identity verification (REQUIRED)
