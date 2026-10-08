@@ -1,0 +1,26 @@
+# The chart's ClusterRole lacks what the kubernetes source needs:
+# list namespaces, and read pods' image pull secrets for private images.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: grype-kubernetes-source
+rules:
+- apiGroups: [""]
+  resources: ["namespaces"]
+  verbs: ["list"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: grype-kubernetes-source
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: grype-kubernetes-source
+subjects:
+- kind: ServiceAccount
+  name: vulnerability-operator
+  namespace: security

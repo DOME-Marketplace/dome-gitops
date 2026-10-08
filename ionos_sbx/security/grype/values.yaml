@@ -1,0 +1,11 @@
+# vulnerability-operator: scans every image running in the cluster with Grype
+# once a day (00:00 UTC), idle in between, and exports the findings as
+# Prometheus metrics. Chart 0.31.15.
+# Source "kubernetes" needs no config; the default "git" crash-loops without a repo.
+args:
+  sources: kubernetes
+  targets: metrics
+  cron: "@daily"
+
+servicemonitor:
+  enabled: true
