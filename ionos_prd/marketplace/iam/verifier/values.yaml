@@ -1,7 +1,7 @@
 dome-verifier:
   image:
     repository: in2workspace/eudistack-verifier-api
-    tag: v2.0.12
+    tag: v2.0.14
     pullPolicy: IfNotPresent
 
   resources:
@@ -52,6 +52,7 @@ dome-verifier:
     backend:
       # Placeholder for backend URL (REQUIRED)
       url: "https://verifier.dome-marketplace.eu"
+      plainListEntityBypassUrls: ["https://issuer.dome-marketplace-sbx.org"]
       security:
         serviceIdentity:
           # Placeholder for private key used in identity verification (REQUIRED)
