@@ -1,0 +1,22 @@
+# Trivy CLI toolbox: an idle pod with trivy for ad-hoc scans from inside the
+# cluster (reaches the private registries). Exec into it to scan:
+#   kubectl -n security exec -it <trivy-cli pod> -- trivy image <image>
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trivy-cli
+  namespace: security
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trivy-cli
+  template:
+    metadata:
+      labels:
+        app: trivy-cli
+    spec:
+      containers:
+        - name: trivy
+          image: mirror.gcr.io/aquasec/trivy:0.75.0
+          command: ["sleep", "infinity"]

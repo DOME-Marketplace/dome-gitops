@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: trivy-cli
+  namespace: argocd
+  labels:
+    purpose: security
+spec:
+  destination:
+    namespace: security
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: ionos_sbx/security/trivy-cli
+    repoURL: https://github.com/DOME-Marketplace/dome-gitops
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
