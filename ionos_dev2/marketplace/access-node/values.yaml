@@ -268,13 +268,15 @@ access-node:
 
     defaultConfig:
       image:
-        tag: sbx_1.8.4
+        tag: sbx_1.10.3
       additionalEnvVars:
       - name: MAPPING_STRICT_RELATIONSHIPS
         value: "false"
       - name: API_EXTENSION_ENABLED
         value: "true"
       - name: API_EXTENSION_PUT_ENABLED
+        value: "false"
+      - name: GENERAL_SPLITORVALUES
         value: "false"
 
       ngsiLd:
