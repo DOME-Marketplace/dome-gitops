@@ -1,0 +1,18 @@
+# Shared relay: allow the submission port from pods in ANY namespace
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: mail-relay-ingress
+  namespace: mail-relay
+spec:
+  podSelector:
+    matchLabels:
+      app: mail-relay
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector: {}
+      ports:
+        - protocol: TCP
+          port: 587
