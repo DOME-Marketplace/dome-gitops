@@ -85,7 +85,67 @@ data:
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004
         }
 
-        @bae path /bae /bae/*
+        @bae_config_internal {
+            path /__bae_config
+            remote_ip 127.0.0.1
+        }
+        handle @bae_config_internal {
+            rewrite * /config
+            reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004
+        }
+
+        @bae_config {
+            path /config
+            header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae([/?#]|$)
+        }
+        handle @bae_config {
+            header Content-Type  "application/json; charset=utf-8"
+            header Cache-Control "no-store"
+            templates {
+                mime    application/json
+                between <<caddy caddy>>
+            }
+            respond `<<caddy httpInclude "/__bae_config" | replace "https://verifier.dome-marketplace-sbx.org" "https://tmf-test.dome-marketplace-sbx.org/bae/verifier" caddy>>` 200
+        }
+
+        @verifier_login_internal {
+            path /__verifier_login
+            remote_ip 127.0.0.1
+        }
+        handle @verifier_login_internal {
+            rewrite * /login?{query}
+            reverse_proxy verifier-marketplace-dome-verifier.marketplace.svc.cluster.local:80
+        }
+
+        @bae_verifier_login path /bae/verifier/login
+        handle @bae_verifier_login {
+            header Content-Type  "text/html; charset=utf-8"
+            header Cache-Control "no-store"
+            templates {
+                between <<caddy caddy>>
+            }
+            respond `<<caddy httpInclude (print "/__verifier_login?" (.Req.URL.RawQuery | replace "homeUri=https%3A%2F%2Fdome-marketplace-sbx.org" "homeUri=https%3A%2F%2Ftmf-test.dome-marketplace-sbx.org%2Fbae")) | replace "new SockJS('/qr-socket')" "new SockJS('/bae/verifier/qr-socket')" | replace "window.location.href = message.body;" "window.location.href = message.body.replace('https://dome-marketplace-sbx.org/', 'https://tmf-test.dome-marketplace-sbx.org/');" caddy>>` 200
+        }
+
+        @bae_verifier {
+            path /bae/verifier /bae/verifier/*
+            not path /bae/verifier/login
+        }
+        handle @bae_verifier {
+            uri strip_prefix /bae/verifier
+            reverse_proxy verifier-marketplace-dome-verifier.marketplace.svc.cluster.local:80 {
+                header_down Location "^(https://tmf-test\.dome-marketplace-sbx\.org)?/" "${1}/bae/verifier/"
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        @bae {
+            path /bae /bae/*
+            not path /bae/verifier /bae/verifier/*
+        }
         handle @bae {
             @bae_hashed path_regexp ^/bae/[A-Za-z0-9_-]+\.[0-9a-f]{16}\.(js|css|woff2?|ttf|otf|eot|svg|png|jpe?g|gif|webp)$
             header @bae_hashed >Cache-Control "max-age=31536000, immutable"
@@ -114,7 +174,7 @@ data:
             }
         }
 
-        # /auth/vc/request.jwt viene scaricato dal verifier reale: deve passare da qui
+        # /auth/vc/request.jwt (letto dal verifier) e /auth/vc/callback (ritorno dal login)
         @bae_auth path /auth/*
         handle @bae_auth {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
@@ -129,16 +189,15 @@ data:
         @bae_nav {
             header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae([/?#]|$)
             header Accept *text/html*
-            not path /bae /bae/* /__bae_index /qr-socket* /auth/* /tmf-api/* /tmf-test/* /ticketing/* /desmos/* /verifier /verifier/* /payment/* /cs-identity/* /bookstack/*
+            not path /bae /bae/* /__bae_index /__bae_config /__verifier_login /config /auth/* /tmf-api/* /tmf-test/* /ticketing/* /desmos/* /payment/* /cs-identity/* /bookstack/*
         }
         handle @bae_nav {
             redir * /bae{uri} 302
         }
 
-        # serve anche /config: il verifierHost resta quello reale
         @bae_from_page {
             header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae([/?#]|$)
-            not path /bae /bae/* /__bae_index /qr-socket* /auth/* /tmf-api/* /tmf-test/* /ticketing/* /desmos/* /verifier /verifier/* /payment/* /cs-identity/* /bookstack/*
+            not path /bae /bae/* /__bae_index /__bae_config /__verifier_login /config /auth/* /tmf-api/* /tmf-test/* /ticketing/* /desmos/* /payment/* /cs-identity/* /bookstack/*
         }
         handle @bae_from_page {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
@@ -182,29 +241,6 @@ data:
             }
         }        
 
-
-        @verifier path /verifier /verifier/*
-        handle @verifier {
-            uri strip_prefix /verifier
-            reverse_proxy verifier-marketplace-dome-verifier.marketplace.svc.cluster.local:80 {
-                header_down Location "^(https://tmf-test\.dome-marketplace-sbx\.org)?/" "${1}/verifier/"
-                transport http {
-                    dial_timeout            5s
-                    response_header_timeout 60s
-                }
-            }
-        }
-
-        handle /qr-socket* {
-            reverse_proxy verifier-marketplace-dome-verifier.marketplace.svc.cluster.local:80 {
-                transport http {
-                    dial_timeout            5s
-                    response_header_timeout 60s
-                }
-            }
-        }
-
-        
         handle /payment/* {
             reverse_proxy payment.billing.svc.cluster.local:8080 {
                 transport http {
