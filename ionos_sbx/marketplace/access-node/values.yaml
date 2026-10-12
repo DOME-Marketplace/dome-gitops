@@ -291,6 +291,10 @@ access-node:
         value: "true"
       - name: GENERAL_SPLITORVALUES
         value: "false"
+      - name: GENERAL_REPLACEONUPDATE
+        value: "true"
+      - name: GENERAL_ENCLOSEQUERY
+        value: "false"
 
       ngsiLd:
         # -- address of the broker
