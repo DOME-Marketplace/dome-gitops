@@ -296,37 +296,38 @@ data:
         }
 
         @bookstack_internal {
-            path /__bookstack /__bookstack/*
-            remote_ip 127.0.0.1
-        }
+    path /__bookstack /__bookstack/*
+    remote_ip 127.0.0.1
+    }
 
-        handle @bookstack_dependencies {
-            reverse_proxy bookstack.knowledgebase.svc.cluster.local:8080 {
-                header_up X-Forwarded-Host {host}
+    handle @bookstack_internal {
+        uri strip_prefix /__bookstack
+        reverse_proxy bookstack.knowledgebase.svc.cluster.local:8080 {
+            header_up Accept-Encoding identity
+        }
+    }
+
+    redir /bookstack /bookstack/ 308
+    handle_path /bookstack/* {
+        reverse_proxy bookstack.knowledgebase.svc.cluster.local:8080 {
+            header_up Accept-Encoding identity
+            
+            header_down Location "^https?://knowledgebase\.dome-marketplace-sbx\.org" "https://tmf-test.dome-marketplace-sbx.org/bookstack"
+            
+            @bookstack_page {
+                status 200
+                header Content-Type text/html*
+            }
+            
+            handle_response @bookstack_page {
+                header Content-Type "text/html; charset=utf-8"
+                templates {
+                    between <<caddy caddy>>
+                }
+                respond `<<caddy httpInclude (print "/__bookstack" .Req.URL.RequestURI) | replace "https://knowledgebase.dome-marketplace-sbx.org" "https://tmf-test.dome-marketplace-sbx.org/bookstack" caddy>>` 200
             }
         }
-
-        redir /bookstack /bookstack/ 308
-        handle_path /bookstack/* {
-            reverse_proxy bookstack.knowledgebase.svc.cluster.local:8080 {
-                header_up Accept-Encoding identity
-    
-                header_down Location "^https?://knowledgebase\.dome-marketplace-sbx\.org" "https://tmf-test.dome-marketplace-sbx.org/bookstack"
-                
-                @bookstack_page {
-                    status 200
-                    header Content-Type text/html*
-                }
-                
-                handle_response @bookstack_page {
-                    header Content-Type "text/html; charset=utf-8"
-                    templates {
-                        between <<caddy caddy>>
-                    }
-                    respond `<<caddy httpInclude (print "/__bookstack" .Req.URL.RequestURI) | replace "https://knowledgebase.dome-marketplace-sbx.org" "https://tmf-test.dome-marketplace-sbx.org/bookstack" caddy>>` 200
-                }
-            }
-        }    
+    }    
 
         handle {
             respond "Not Found" 404
