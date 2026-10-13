@@ -346,10 +346,9 @@ data:
                 handle_response @bookstack_page {
                     header Content-Type "text/html; charset=utf-8"
                     templates {
-                        # Usa una stringa complessa impossibile da inserire casualmente
-                        between <<DOME_SECURE_TPL_8f9a2b>> <<DOME_SECURE_TPL_8f9a2b>>
+                        between "[[DOME_SEC_8f9a2b]]" "[[END_DOME_SEC]]"
                     }
-                    respond `<<DOME_SECURE_TPL_8f9a2b httpInclude (print "/__bookstack" .Req.URL.RequestURI) | replace "https://knowledgebase.dome-marketplace-sbx.org" "https://tmf-test.dome-marketplace-sbx.org/bookstack" DOME_SECURE_TPL_8f9a2b>>` 200
+                    respond `[[DOME_SEC_8f9a2b]] httpInclude (print "/__bookstack" .Req.URL.RequestURI) | replace "https://knowledgebase.dome-marketplace-sbx.org" "https://tmf-test.dome-marketplace-sbx.org/bookstack" [[END_DOME_SEC]]` 200
                 }
             }
         }  
