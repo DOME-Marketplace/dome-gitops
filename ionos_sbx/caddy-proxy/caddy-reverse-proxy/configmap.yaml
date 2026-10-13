@@ -8,14 +8,21 @@ data:
     (dome_verifier_upstream) {
         reverse_proxy verifier-marketplace-dome-verifier.marketplace.svc.cluster.local:80 {
             flush_interval -1
-            header_down Location "^(https://tmf-test\.dome-marketplace-sbx\.org)?/" "${1}/bae/verifier/"
+            # Redirect del verifier -> sotto /bae/verifier, in sequenza:
+            # 1) URL assoluti su tmf-test (http o https, con o senza porta) -> relativi
+            # 2) ogni path relativo -> prefisso /bae/verifier/
+            # 3) annulla il doppio prefisso (/bae/...) e lascia /auth/... al BAE
+            header_down Location "^https?://tmf-test\.dome-marketplace-sbx\.org(:[0-9]+)?/" "/"
+            header_down Location "^/" "/bae/verifier/"
+            header_down Location "^/bae/verifier/(bae|auth)([/?#]|$)" "/${1}${2}"
             transport http {
                 dial_timeout            5s
                 response_header_timeout 60s
             }
         }
     }
-    
+
+
     tmf-test.dome-marketplace-sbx.org {
         log {
             output stdout
@@ -128,7 +135,12 @@ data:
                 mime    application/json
                 between <<caddy caddy>>
             }
-            respond `<<caddy $cfg := httpInclude "/__bae_config" caddy>><<caddy $host := "{$VERIFIER_PUBLIC_HOST}" caddy>><<caddy if $host caddy>><<caddy $cfg | replace (print "https://" $host) "https://tmf-test.dome-marketplace-sbx.org/bae/verifier" caddy>><<caddy else caddy>><<caddy $cfg caddy>><<caddy end caddy>>` 200
+            # Il frontend del BAE costruisce il link di login come
+            #   siop.verifierHost + siop.verifierQRCodePath
+            # (header.component.ts, onLoginClick). Riscriviamo SOLO il campo
+            # verifierHost, qualunque host contenga: nessun nome host del
+            # verifier e nessuna variabile d'ambiente necessari.
+            respond `<<caddy regexReplaceAll "\"verifierHost\"\\s*:\\s*\"[^\"]*\"" (httpInclude "/__bae_config") "\"verifierHost\":\"https://tmf-test.dome-marketplace-sbx.org/bae/verifier\"" caddy>>` 200
         }
 
 
@@ -164,6 +176,8 @@ data:
             uri strip_prefix /bae/verifier
             import dome_verifier_upstream
         }
+
+        # ---------- BAE vero e proprio ----------
 
         @bae {
             path /bae /bae/*
