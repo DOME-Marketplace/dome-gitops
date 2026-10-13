@@ -300,9 +300,18 @@ data:
                 transport http {
                     dial_timeout            5s
                     response_header_timeout 60s
-                    }
+                }
             }
         }
+
+        @bookstack_dependencies {
+            header Referer *tmf-test.dome-marketplace-sbx.org/bookstack*
+        }
+        handle @bookstack_dependencies {
+            reverse_proxy bookstack.knowledgebase.svc.cluster.local:8080 {
+                header_up X-Forwarded-Host {host}
+            }
+        }        
 
         handle {
             respond "Not Found" 404
