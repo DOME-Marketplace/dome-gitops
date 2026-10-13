@@ -5,7 +5,6 @@ metadata:
   namespace: caddy-proxy
 data:
   sbx-site.caddy: |
-
     (dome_verifier_upstream) {
         reverse_proxy verifier-marketplace-dome-verifier.marketplace.svc.cluster.local:80 {
             flush_interval -1
@@ -16,8 +15,7 @@ data:
             }
         }
     }
-
-
+    
     tmf-test.dome-marketplace-sbx.org {
         log {
             output stdout
@@ -68,7 +66,7 @@ data:
                 }
             }
         }
-        
+
         handle /tmf-test/get-route* {
             reverse_proxy account.tmf-test.svc.cluster.local:8080 {
                 transport http {
@@ -130,7 +128,7 @@ data:
                 mime    application/json
                 between <<caddy caddy>>
             }
-            respond `<<caddy httpInclude "/__bae_config" | replace "https://verifier.dome-marketplace-sbx.org" "https://tmf-test.dome-marketplace-sbx.org/bae/verifier" caddy>>` 200
+            respond `<<caddy $cfg := httpInclude "/__bae_config" caddy>><<caddy $host := "{$VERIFIER_PUBLIC_HOST}" caddy>><<caddy if $host caddy>><<caddy $cfg | replace (print "https://" $host) "https://tmf-test.dome-marketplace-sbx.org/bae/verifier" caddy>><<caddy else caddy>><<caddy $cfg caddy>><<caddy end caddy>>` 200
         }
 
 
@@ -166,8 +164,6 @@ data:
             uri strip_prefix /bae/verifier
             import dome_verifier_upstream
         }
-
-        # ---------- BAE vero e proprio ----------
 
         @bae {
             path /bae /bae/*
@@ -234,10 +230,10 @@ data:
                 }
             }
         }    
-                
+
         handle_path /ticketing/* {
             reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
-                
+
                 header_up X-Forwarded-Host {host}
                 header_up X-Forwarded-Prefix /ticketing
 
