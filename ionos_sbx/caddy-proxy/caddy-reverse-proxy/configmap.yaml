@@ -52,14 +52,18 @@ data:
             max_size 1MB
         }
         header {
-            Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-            X-Content-Type-Options    "nosniff"
-            X-Frame-Options           "SAMEORIGIN"
-            Referrer-Policy           "same-origin"
-            Permissions-Policy        "geolocation=(), camera=(), microphone=()"
-            -Server
-            -X-Powered-By
-        }
+                Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+                X-Content-Type-Options    "nosniff"
+                X-Frame-Options           "SAMEORIGIN"
+                Referrer-Policy           "same-origin"
+                Permissions-Policy        "geolocation=(), camera=(), microphone=()"
+                
+                # Aggiunta CSP base (da calibrare in base a se l'app usa script inline)
+                Content-Security-Policy   "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'"
+                
+                -Server
+                -X-Powered-By
+            }
         encode zstd gzip
 
         @compressible not path /bae/verifier/qr-socket/*
@@ -267,6 +271,27 @@ data:
             }
         }
 
+        handle_path /helpdesk/* {
+            reverse_proxy zammad2-nginx.zammad2.svc.cluster.local:8080 {
+
+                header_up X-Forwarded-Host {host}
+                header_up X-Forwarded-Prefix /helpdesk
+
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        @zammad2_dependencies {
+            header Referer *tmf-test.dome-marketplace-sbx.org/helpdesk*
+        }
+        handle @zammad2_dependencies {
+            reverse_proxy zammad2-nginx.zammad2.svc.cluster.local:8080 {
+                header_up X-Forwarded-Host {host}
+            }
+        }
 
         handle /desmos/api/v2/entities* {
             reverse_proxy desmos.marketplace.svc.cluster.local:8080 {
@@ -296,9 +321,9 @@ data:
         }
 
         @bookstack_internal {
-    path /__bookstack /__bookstack/*
-    remote_ip 127.0.0.1
-    }
+            path /__bookstack /__bookstack/*
+            remote_ip 127.0.0.1
+        }
 
     handle @bookstack_internal {
         uri strip_prefix /__bookstack
@@ -309,25 +334,25 @@ data:
 
     redir /bookstack /bookstack/ 308
     handle_path /bookstack/* {
-        reverse_proxy bookstack.knowledgebase.svc.cluster.local:8080 {
-            header_up Accept-Encoding identity
-            
-            header_down Location "^https?://knowledgebase\.dome-marketplace-sbx\.org" "https://tmf-test.dome-marketplace-sbx.org/bookstack"
-            
-            @bookstack_page {
-                status 200
-                header Content-Type text/html*
-            }
-            
-            handle_response @bookstack_page {
-                header Content-Type "text/html; charset=utf-8"
-                templates {
-                    between <<caddy caddy>>
+            reverse_proxy bookstack.knowledgebase.svc.cluster.local:8080 {
+                header_up Accept-Encoding identity
+                header_down Location "^https?://knowledgebase\.dome-marketplace-sbx\.org" "https://tmf-test.dome-marketplace-sbx.org/bookstack"
+                
+                @bookstack_page {
+                    status 200
+                    header Content-Type text/html*
                 }
-                respond `<<caddy httpInclude (print "/__bookstack" .Req.URL.RequestURI) | replace "https://knowledgebase.dome-marketplace-sbx.org" "https://tmf-test.dome-marketplace-sbx.org/bookstack" caddy>>` 200
+                
+                handle_response @bookstack_page {
+                    header Content-Type "text/html; charset=utf-8"
+                    templates {
+                        # Usa una stringa complessa impossibile da inserire casualmente
+                        between <<DOME_SECURE_TPL_8f9a2b>> <<DOME_SECURE_TPL_8f9a2b>>
+                    }
+                    respond `<<DOME_SECURE_TPL_8f9a2b httpInclude (print "/__bookstack" .Req.URL.RequestURI) | replace "https://knowledgebase.dome-marketplace-sbx.org" "https://tmf-test.dome-marketplace-sbx.org/bookstack" DOME_SECURE_TPL_8f9a2b>>` 200
+                }
             }
-        }
-    }    
+        }  
 
         handle {
             respond "Not Found" 404
