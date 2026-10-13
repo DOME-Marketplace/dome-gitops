@@ -5,18 +5,22 @@ metadata:
   namespace: caddy-proxy
 data:
   sbx-site.caddy: |
-
     (dome_verifier_upstream) {
         reverse_proxy verifier-marketplace-dome-verifier.marketplace.svc.cluster.local:80 {
             flush_interval -1
-            header_down Location "^(https://tmf-test\.dome-marketplace-sbx\.org)?/" "${1}/bae/verifier/"
+
+            header_down Location "^{$VERIFIER_PUBLIC_URL}/" "/"
+            header_down Location "^https?://tmf-test\.dome-marketplace-sbx\.org(:[0-9]+)?/" "/"
+            header_down Location "^/" "/bae/verifier/"
+            header_down Location "^/bae/verifier/(bae|auth)([/?#]|$)" "/${1}${2}"
+            header_down Location "^https://dome-marketplace-sbx\.org/" "https://tmf-test.dome-marketplace-sbx.org/"
+
             transport http {
                 dial_timeout            5s
                 response_header_timeout 60s
             }
         }
     }
-
 
     tmf-test.dome-marketplace-sbx.org {
         log {
@@ -55,20 +59,10 @@ data:
             -Server
             -X-Powered-By
         }
-        encode zstd gzip
 
         @compressible not path /bae/verifier/qr-socket/*
         encode @compressible zstd gzip
 
-        handle /tmf-test/get-route* {
-            reverse_proxy account.tmf-test.svc.cluster.local:8080 {
-                transport http {
-                    dial_timeout            5s
-                    response_header_timeout 60s
-                }
-            }
-        }
-        
         handle /tmf-test/get-route* {
             reverse_proxy account.tmf-test.svc.cluster.local:8080 {
                 transport http {
@@ -110,6 +104,15 @@ data:
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004
         }
 
+        @verifier_login_internal {
+            path /__verifier_login
+            remote_ip 127.0.0.1
+        }
+        handle @verifier_login_internal {
+            rewrite * /login?{query}
+            import dome_verifier_upstream
+        }
+
         @bae_config_internal {
             path /__bae_config
             remote_ip 127.0.0.1
@@ -130,17 +133,7 @@ data:
                 mime    application/json
                 between <<caddy caddy>>
             }
-            respond `<<caddy httpInclude "/__bae_config" | replace "https://verifier.dome-marketplace-sbx.org" "https://tmf-test.dome-marketplace-sbx.org/bae/verifier" caddy>>` 200
-        }
-
-
-        @verifier_login_internal {
-            path /__verifier_login
-            remote_ip 127.0.0.1
-        }
-        handle @verifier_login_internal {
-            rewrite * /login?{query}
-            import dome_verifier_upstream
+            respond `<<caddy httpInclude "/__bae_config" | replace "{$VERIFIER_PUBLIC_URL}" "https://tmf-test.dome-marketplace-sbx.org/bae/verifier" caddy>>` 200
         }
 
         @bae_verifier_login path /bae/verifier/login
@@ -167,8 +160,6 @@ data:
             import dome_verifier_upstream
         }
 
-        # ---------- BAE vero e proprio ----------
-
         @bae {
             path /bae /bae/*
             not path /bae/verifier /bae/verifier/*
@@ -180,6 +171,7 @@ data:
             uri strip_prefix /bae
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
                 header_up X-Forwarded-Prefix /bae
+                header_down Location "^{$VERIFIER_PUBLIC_URL}/" "https://tmf-test.dome-marketplace-sbx.org/bae/verifier/"
                 header_down Location "^/(bae(/|$))?" "/bae/"
                 transport http {
                     dial_timeout            5s
@@ -204,6 +196,7 @@ data:
         @bae_auth path /auth/*
         handle @bae_auth {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
+                header_down Location "^{$VERIFIER_PUBLIC_URL}/" "https://tmf-test.dome-marketplace-sbx.org/bae/verifier/"
                 header_down Location "^/(bae(/|$))?" "/bae/"
                 transport http {
                     dial_timeout            5s
@@ -227,20 +220,18 @@ data:
         }
         handle @bae_from_page {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
+                header_down Location "^{$VERIFIER_PUBLIC_URL}/" "https://tmf-test.dome-marketplace-sbx.org/bae/verifier/"
                 header_down Location "^/(bae(/|$))?" "/bae/"
                 transport http {
                     dial_timeout            5s
                     response_header_timeout 60s
                 }
             }
-        }    
-                
+        }
+
         handle_path /ticketing/* {
             reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
-                
-                header_up X-Forwarded-Host {host}
                 header_up X-Forwarded-Prefix /ticketing
-
                 transport http {
                     dial_timeout            5s
                     response_header_timeout 60s
@@ -252,36 +243,33 @@ data:
             header Referer *tmf-test.dome-marketplace-sbx.org/ticketing*
         }
         handle @zammad_dependencies {
-            reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
-                header_up X-Forwarded-Host {host}
-            }
+            reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080
         }
-
 
         handle /desmos/api/v2/entities* {
             reverse_proxy desmos.marketplace.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
                     response_header_timeout 60s
-                    }
+                }
             }
-        }        
+        }
 
         handle /payment/* {
             reverse_proxy payment.billing.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
                     response_header_timeout 60s
-                    }
+                }
             }
-        }   
+        }
 
         handle /cs-identity/* {
             reverse_proxy cs-identity-keycloak.cs-identity.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
                     response_header_timeout 60s
-                    }
+                }
             }
         }
 
@@ -290,7 +278,7 @@ data:
                 transport http {
                     dial_timeout            5s
                     response_header_timeout 60s
-                    }
+                }
             }
         }
 
