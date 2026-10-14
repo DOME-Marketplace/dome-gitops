@@ -28,6 +28,7 @@ data:
                 status 200
                 header Content-Type text/html*
             }
+            
             handle_response @verifier_html {
                 header Content-Type  "text/html; charset=utf-8"
                 header Cache-Control "no-store"
