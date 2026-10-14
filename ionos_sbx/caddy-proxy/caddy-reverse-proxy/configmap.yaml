@@ -53,9 +53,7 @@ data:
             X-Frame-Options           "SAMEORIGIN"
             Referrer-Policy           "same-origin"
             Permissions-Policy        "geolocation=(), camera=(), microphone=()"
-
             Content-Security-Policy   "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: https:; img-src 'self' data: https: blob:; connect-src 'self' https: wss:"
-
             -Server
             -X-Powered-By
         }
@@ -123,7 +121,6 @@ data:
                 mime    application/json
                 between <<caddy caddy>>
             }
-            # Riscrive verifierHost puntando a https://tmf-test.dome-marketplace-sbx.org/verifier
             respond `<<caddy regexReplaceAll "\"verifierHost\"\\s*:\\s*\"[^\"]*\"" (httpInclude "/__bae_config") "\"verifierHost\":\"https://tmf-test.dome-marketplace-sbx.org/verifier\"" caddy>>` 200
         }
 
@@ -148,7 +145,7 @@ data:
             templates {
                 between <<caddy caddy>>
             }
-            respond `<<caddy httpInclude (print "/__verifier_login?" (.Req.URL.RawQuery | replace "homeUri=https%3A%2F%2Fdome-marketplace-sbx.org" "homeUri=https%3A%2F%2Ftmf-test.dome-marketplace-sbx.org%2Fbae" | replace "homeUri=https://dome-marketplace-sbx.org" "homeUri=https://tmf-test.dome-marketplace-sbx.org/bae")) | replace "new SockJS('/qr-socket')" "new SockJS('/verifier/qr-socket')" | replace "window.location.href = message.body;" "window.location.href = message.body.replace('https://dome-marketplace-sbx.org/', 'https://tmf-test.dome-marketplace-sbx.org/');" | replace "https://dome-marketplace-sbx.org" "https://tmf-test.dome-marketplace-sbx.org/bae" caddy>>` 200
+            respond `<<caddy httpInclude (print "/__verifier_login?" (.Req.URL.RawQuery | replace "homeUri=https%3A%2F%2Fdome-marketplace-sbx.org" "homeUri=https%3A%2F%2Ftmf-test.dome-marketplace-sbx.org%2Fbae")) | replace "new SockJS('/qr-socket')" "new SockJS('/verifier/qr-socket')" | replace "window.location.href = message.body;" "window.location.href = message.body.replace('https://dome-marketplace-sbx.org/', 'https://tmf-test.dome-marketplace-sbx.org/');" caddy>>` 200
         }
 
         @verifier {
@@ -161,7 +158,7 @@ data:
         }
 
         @verifier_dependencies {
-            header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/verifier([/?#]|\$)
+            header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/(bae/)?verifier([/?#]|\$)
             not path /verifier /verifier/* /bae /bae/* /__bae_index /__bae_config /__verifier_login /config /auth/* /tmf-api/* /tmf-test/* /ticketing/* /helpdesk/* /desmos/* /payment/* /cs-identity/* /bookstack/*
         }
         handle @verifier_dependencies {
@@ -224,7 +221,6 @@ data:
 
         @bae_from_page {
             header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae([/?#]|\$)
-            not header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae/verifier([/?#]|\$)
             not path /bae /bae/* /verifier /verifier/* /__bae_index /__bae_config /__verifier_login /config /auth/* /tmf-api/* /tmf-test/* /ticketing/* /helpdesk/* /desmos/* /payment/* /cs-identity/* /bookstack/*
         }
         handle @bae_from_page {
@@ -349,18 +345,10 @@ data:
             }
         }
 
-
-        handle /analytics/* {
-            reverse_proxy superset-service.analytics.svc.cluster.local:8088 {
-                transport http {
-                    dial_timeout            5s
-                    response_header_timeout 60s
-                }
-            }
-        }
-
         handle {
             respond "Not Found" 404
         }
         handle_errors {
-            respond "Error {err.status_code}" {err.status_code
+            respond "Error {err.status_code}" {err.status_code}
+        }
+    }
