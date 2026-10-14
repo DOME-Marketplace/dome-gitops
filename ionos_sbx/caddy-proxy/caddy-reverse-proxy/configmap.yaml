@@ -8,10 +8,11 @@ data:
     (dome_verifier_upstream) {
         reverse_proxy verifier-marketplace-dome-verifier.marketplace.svc.cluster.local:80 {
             flush_interval -1
+            header_down Location "^https?://([a-z0-9-]+\.)?dome-marketplace-sbx\.org(:[0-9]+)?/?$" "/bae/"
             header_down Location "^https?://([a-z0-9-]+\.)?dome-marketplace-sbx\.org(:[0-9]+)?/" "/"
             header_down Location "^/" "/verifier/"
             header_down Location "^/verifier/verifier([/?#]|$)" "/verifier${1}"
-            header_down Location "^/verifier/(bae|auth)([/?#]|\$)" "/${1}${2}"
+            header_down Location "^/verifier/(bae|auth)([/?#]|$)" "/${1}${2}"
             transport http {
                 dial_timeout            5s
                 response_header_timeout 60s
@@ -133,12 +134,7 @@ data:
             import dome_verifier_upstream
         }
 
-        @bae_verifier_legacy path_regexp bae_ver ^/bae/verifier(.*)\$
-        handle @bae_verifier_legacy {
-            redir * /verifier{re.bae_ver.1}?{query} 302
-        }
-
-        @verifier_login path /verifier/login /verifier /verifier/
+        @verifier_login path /verifier/login
         handle @verifier_login {
             header Content-Type  "text/html; charset=utf-8"
             header Cache-Control "no-store"
@@ -146,6 +142,11 @@ data:
                 between <<caddy caddy>>
             }
             respond `<<caddy httpInclude (print "/__verifier_login?" (.Req.URL.RawQuery | replace "homeUri=https%3A%2F%2Fdome-marketplace-sbx.org" "homeUri=https%3A%2F%2Ftmf-test.dome-marketplace-sbx.org%2Fbae")) | replace "new SockJS('/qr-socket')" "new SockJS('/verifier/qr-socket')" | replace "window.location.href = message.body;" "window.location.href = message.body.replace('https://dome-marketplace-sbx.org/', 'https://tmf-test.dome-marketplace-sbx.org/');" caddy>>` 200
+        }
+
+        @verifier_root path /verifier /verifier/
+        handle @verifier_root {
+            redir * /bae/ 302
         }
 
         @verifier {
@@ -202,7 +203,7 @@ data:
         handle @bae_auth {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
                 header_down Location "^https?://dome-marketplace-sbx\.org(:[0-9]+)?/" "/bae/"
-                header_down Location "^/(bae(/|\$))?" "/bae/"
+                header_down Location "^/(bae(/|$))?" "/bae/"
                 transport http {
                     dial_timeout            5s
                     response_header_timeout 60s
@@ -211,18 +212,19 @@ data:
         }
 
         @bae_nav {
-            header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae([/?#]|\$)
+            header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae([/?#]|$)
             header Accept *text/html*
-            not path /bae /bae/* /verifier /verifier/* /__bae_index /__bae_config /__verifier_login /config /auth/* /tmf-api/* /tmf-test/* /ticketing/* /helpdesk/* /desmos/* /payment/* /cs-identity/* /bookstack/*
+            not path /bae /bae/* /verifier /verifier/* /__bae_index /__bae_config /__verifier_login /config /auth/* /tmf-api/* /tmf-test/* /ticketing/* /desmos/* /payment/* /cs-identity/* /bookstack/*
         }
         handle @bae_nav {
             redir * /bae{uri} 302
         }
 
         @bae_from_page {
-            header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae([/?#]|\$)
-            not path /bae /bae/* /verifier /verifier/* /__bae_index /__bae_config /__verifier_login /config /auth/* /tmf-api/* /tmf-test/* /ticketing/* /helpdesk/* /desmos/* /payment/* /cs-identity/* /bookstack/*
+            header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae([/?#]|$)
+            not path /bae /bae/* /verifier /verifier/* /__bae_index /__bae_config /__verifier_login /config /auth/* /tmf-api/* /tmf-test/* /ticketing/* /desmos/* /payment/* /cs-identity/* /bookstack/*
         }
+
         handle @bae_from_page {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
                 header_down Location "^https?://dome-marketplace-sbx\.org(:[0-9]+)?/" "/bae/"
