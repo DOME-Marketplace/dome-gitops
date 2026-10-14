@@ -11,13 +11,15 @@ data:
             header_up Accept-Encoding identity
 
             header_down Location "^https?://(verifier|tmf-test)\.dome-marketplace-sbx\.org(:[0-9]+)?/(.*)$" "/bae/verifier/${3}"
-            header_down Location "^https?://(verifier|tmf-test)\.dome-marketplace-sbx\.org(:[0-9]+)?\$" "/bae/verifier/"
 
-            header_down Location "^https?://dome-marketplace-sbx\.org(:[0-9]+)?/(.*)$" "/${2}"
-            header_down Location "^https?://dome-marketplace-sbx\.org(:[0-9]+)?\$" "/bae/"
+            header_down Location "^https?://(verifier|tmf-test)\.dome-marketplace-sbx\.org(:[0-9]+)?$" "/bae/verifier/"
+
+            header_down Location "^https?://dome-marketplace-sbx\.org(:[0-9]+)?/(auth/.*)$" "/${2}"
+            header_down Location "^https?://dome-marketplace-sbx\.org(:[0-9]+)?/(.*)$" "/bae/${2}"
+            header_down Location "^https?://dome-marketplace-sbx\.org(:[0-9]+)?$" "/bae/"
 
             header_down Location "^/([^b]|b[^a]|ba[^e]|bae[^/]).*$" "/bae/verifier${0}"
-            header_down Location "^/bae/verifier/(bae|auth)([/?#].*|\$)" "/${1}${2}"
+            header_down Location "^/bae/verifier/(bae|auth)([/?#].*|$)" "/${1}${2}"
 
             transport http {
                 dial_timeout            5s
@@ -44,12 +46,11 @@ data:
             output stdout
             format json
         }
-
         rate_limit {
             zone static {
                 match {
                     not remote_ip 127.0.0.1 ::1
-                    path_regexp \.(js|css|map|woff2?|ttf|otf|eot|svg|png|jpe?g|gif|webp|ico)\$
+                    path_regexp \.(js|css|map|woff2?|ttf|otf|eot|svg|png|jpe?g|gif|webp|ico)$
                 }
                 key    {client_ip}
                 events 1000
@@ -58,7 +59,7 @@ data:
             zone api {
                 match {
                     not remote_ip 127.0.0.1 ::1
-                    not path_regexp \.(js|css|map|woff2?|ttf|otf|eot|svg|png|jpe?g|gif|webp|ico)\$
+                    not path_regexp \.(js|css|map|woff2?|ttf|otf|eot|svg|png|jpe?g|gif|webp|ico)$
                 }
                 key    {client_ip}
                 events 300
@@ -76,7 +77,7 @@ data:
             X-Frame-Options           "SAMEORIGIN"
             Referrer-Policy           "same-origin"
             Permissions-Policy        "geolocation=(), camera=(), microphone=()"
-            Content-Security-Policy   "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: https:; img-src 'self' data: https: blob:; connect-src 'self' https: wss:"
+            Content-Security-Policy   "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: https:; img-src 'self' data: https: blob:; connect-src 'self' https: wss:"
             -Server
             -X-Powered-By
         }
@@ -151,6 +152,13 @@ data:
             respond `<<caddy regexReplaceAll "\"verifierHost\"\\s*:\\s*\"[^\"]*\"" (httpInclude "/__bae_config") "\"verifierHost\":\"https://tmf-test.dome-marketplace-sbx.org/bae/verifier\"" caddy>>` 200
         }
 
+        @verifier_blocked {
+            path /bae/verifier/actuator /bae/verifier/actuator/* /actuator /actuator/*
+        }
+        handle @verifier_blocked {
+            respond "Not Found" 404
+        }
+
         @verifier_raw_internal {
             path /__verifier_raw/*
             remote_ip 127.0.0.1 ::1
@@ -181,7 +189,7 @@ data:
         }
 
         @bae_verifier_dependencies {
-            header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae/verifier([/?#]|\$)
+            header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae/verifier([/?#]|$)
             not path /bae /bae/* /__bae_index /__bae_config /__verifier_raw/* /config /auth/* /tmf-api/* /tmf-test/* /ticketing/* /helpdesk/* /desmos/* /payment/* /cs-identity/* /bookstack/*
         }
         handle @bae_verifier_dependencies {
@@ -193,7 +201,8 @@ data:
             not path /bae/verifier /bae/verifier/* /bae/config
         }
         handle @bae {
-            @bae_hashed path_regexp ^/bae/[A-Za-z0-9_-]+\.[0-9a-f]{16}\.(js|css|woff2?|ttf|otf|eot|svg|png|jpe?g|gif|webp)\$
+
+            @bae_hashed path_regexp ^/bae/[A-Za-z0-9_-]+\.[0-9a-f]{16}\.(js|css|woff2?|ttf|otf|eot|svg|png|jpe?g|gif|webp)$
             header @bae_hashed >Cache-Control "max-age=31536000, immutable"
 
             uri strip_prefix /bae
@@ -202,7 +211,8 @@ data:
 
                 header_down Location "^https?://verifier\.dome-marketplace-sbx\.org(:[0-9]+)?/(.*)$" "/bae/verifier/${2}"
                 header_down Location "^https?://dome-marketplace-sbx\.org(:[0-9]+)?/(.*)$" "/bae/${2}"
-                header_down Location "^/(bae(/|\$))?" "/bae/"
+
+                header_down Location "^/(bae(/|$))?" "/bae/"
                 header_down Location "^/bae/bae/(.*)$" "/bae/${1}"
                 transport http {
                     dial_timeout            5s
@@ -229,7 +239,7 @@ data:
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
                 header_down Location "^https?://verifier\.dome-marketplace-sbx\.org(:[0-9]+)?/(.*)$" "/bae/verifier/${2}"
                 header_down Location "^https?://dome-marketplace-sbx\.org(:[0-9]+)?/(.*)$" "/bae/${2}"
-                header_down Location "^/(bae(/|\$))?" "/bae/"
+                header_down Location "^/(bae(/|$))?" "/bae/"
                 header_down Location "^/bae/bae/(.*)$" "/bae/${1}"
                 transport http {
                     dial_timeout            5s
@@ -239,8 +249,8 @@ data:
         }
 
         @bae_nav {
-            header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae([/?#]|\$)
-            not header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae/verifier([/?#]|\$)
+            header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae([/?#]|$)
+            not header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae/verifier([/?#]|$)
             header Accept *text/html*
             not path /bae /bae/* /__bae_index /__bae_config /__verifier_raw/* /config /auth/* /tmf-api/* /tmf-test/* /ticketing/* /helpdesk/* /desmos/* /payment/* /cs-identity/* /bookstack/*
         }
@@ -249,15 +259,15 @@ data:
         }
 
         @bae_from_page {
-            header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae([/?#]|\$)
-            not header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae/verifier([/?#]|\$)
+            header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae([/?#]|$)
+            not header_regexp Referer ^https://tmf-test\.dome-marketplace-sbx\.org/bae/verifier([/?#]|$)
             not path /bae /bae/* /__bae_index /__bae_config /__verifier_raw/* /config /auth/* /tmf-api/* /tmf-test/* /ticketing/* /helpdesk/* /desmos/* /payment/* /cs-identity/* /bookstack/*
         }
         handle @bae_from_page {
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
                 header_down Location "^https?://verifier\.dome-marketplace-sbx\.org(:[0-9]+)?/(.*)$" "/bae/verifier/${2}"
                 header_down Location "^https?://dome-marketplace-sbx\.org(:[0-9]+)?/(.*)$" "/bae/${2}"
-                header_down Location "^/(bae(/|\$))?" "/bae/"
+                header_down Location "^/(bae(/|$))?" "/bae/"
                 header_down Location "^/bae/bae/(.*)$" "/bae/${1}"
                 transport http {
                     dial_timeout            5s
