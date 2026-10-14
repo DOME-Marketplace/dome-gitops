@@ -187,7 +187,6 @@ data:
         handle @bae_verifier_dependencies {
             import dome_verifier_upstream
         }
-
         @bae {
             path /bae /bae/*
             not path /bae/verifier /bae/verifier/* /bae/config
@@ -199,7 +198,7 @@ data:
             uri strip_prefix /bae
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
                 header_up X-Forwarded-Prefix /bae
-
+                # Se il backend del BAE fa redirect verso verifier.dome-marketplace-sbx.org -> manda a /bae/verifier/
                 header_down Location "^https?://verifier\.dome-marketplace-sbx\.org(:[0-9]+)?/(.*)$" "/bae/verifier/${2}"
                 header_down Location "^https?://dome-marketplace-sbx\.org(:[0-9]+)?/(.*)$" "/bae/${2}"
                 header_down Location "^/(bae(/|\$))?" "/bae/"
