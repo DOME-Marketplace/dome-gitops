@@ -177,7 +177,7 @@ data:
             }
         }
        
-        handle / {
+        handle /* {
             
             reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
 
