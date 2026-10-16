@@ -76,16 +76,7 @@ data:
                 }
             }
         }
-        
-        handle / {
-            
-            reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
 
-                transport http {
-                    dial_timeout            5s
-                    response_header_timeout 60s
-                }
-        }
 
         handle_path /ticketing/* {
             reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
@@ -182,6 +173,17 @@ data:
                         between "[[DOME_SEC_8f9a2b]]" "[[END_DOME_SEC]]"
                     }
                     respond `[[DOME_SEC_8f9a2b]] httpInclude (print "/__bookstack" .Req.URL.RequestURI) | replace "https://knowledgebase.dome-marketplace-sbx.org" "https://tmf-test.dome-marketplace-sbx.org/bookstack" [[END_DOME_SEC]]` 200
+                }
+            }
+        }
+       
+        handle / {
+            
+            reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
+
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
                 }
             }
         }
