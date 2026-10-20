@@ -12,6 +12,13 @@ mysql:
       CREATE DATABASE ccs;
       
   primary:
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "768Mi"
+      limits:
+        cpu: "500m"
+        memory: "1Gi"
     podAnnotations:
       backup.velero.io/backup-volumes: data
     
