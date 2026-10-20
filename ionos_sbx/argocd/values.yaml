@@ -26,6 +26,22 @@ redis-ha:
 
 controller:
   replicas: 1
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/component: server
+            topologyKey: kubernetes.io/hostname
   metrics:
     enabled: true
     serviceMonitor:
@@ -33,6 +49,22 @@ controller:
 
 server:
   replicas: 1
+  resources:
+    requests:
+      cpu: 20m
+      memory: 96Mi
+    limits:
+      cpu: 200m
+      memory: 192Mi
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/component: repo-server
+            topologyKey: kubernetes.io/hostname
   ingress:
     enabled: true
     hostname: argocd.dome-marketplace-sbx.org
@@ -49,6 +81,22 @@ server:
 
 repoServer:
   replicas: 1
+  resources:
+    requests:
+      cpu: 200m
+      memory: 256Mi
+    limits:
+      cpu: 1500m
+      memory: 3Gi
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/component: application-controller
+            topologyKey: kubernetes.io/hostname  
   metrics:
     enabled: true
     serviceMonitor:
@@ -56,19 +104,49 @@ repoServer:
 
 applicationSet:
   replicas: 1
+  resources:
+    requests:
+      cpu: 20m
+      memory: 64Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi  
   metrics:
     enabled: true
     serviceMonitor:
       enabled: true
 
 dex:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
   metrics:
     enabled: true
     serviceMonitor:
       enabled: true
 
 redis:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      cpu: 100m
+      memory: 64Mi
   metrics:
     enabled: true
     serviceMonitor:
       enabled: true
+
+notifications:
+  resources:
+    requests:
+      cpu: 20m
+      memory: 64Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
