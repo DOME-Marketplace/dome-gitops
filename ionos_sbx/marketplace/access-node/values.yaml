@@ -142,6 +142,14 @@ access-node:
       DEBUG: "*"
       RPC_ADDRESS: "https://red-t.alastria.io/v0/9461d9f4292b41230527d57ee90652a6"
       ISS: "0x85f06ba6412ff078f29693cf3775cf5d1f42842912d544ac16c7de023590b269"
+    
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "256Mi"
+      limits:
+        cpu: "500m"
+        memory: "384Mi"
 
    ## dlt adapter hashnet
   dlt-adapter-hashnet:
@@ -162,6 +170,13 @@ access-node:
       DOME_EVENTS_CONTRACT_ABI: '[{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"index","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"timestamp","type":"uint256"},{"indexed":true,"internalType":"bytes32","name":"origin","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"entityIDHash","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"previousEntityHash","type":"bytes32"},{"indexed":false,"internalType":"string","name":"eventType","type":"string"},{"indexed":false,"internalType":"string","name":"dataLocation","type":"string"},{"indexed":false,"internalType":"string[]","name":"metadata","type":"string[]"}],"name":"EventDOMEv1","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"inputs":[{"internalType":"bytes32","name":"_origin","type":"bytes32"},{"internalType":"bytes32","name":"_entityIDHash","type":"bytes32"},{"internalType":"bytes32","name":"_previousEntityHash","type":"bytes32"},{"internalType":"string","name":"_eventType","type":"string"},{"internalType":"string","name":"_dataLocation","type":"string"},{"internalType":"string[]","name":"_metadata","type":"string[]"}],"name":"emitNewEvent","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"index","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"}]'
       DOME_PRODUCTION_BLOCK_NUMBER: "118733266"
       HASHNET_NETWORK_ID: "3"
+      resources:
+    requests:
+      cpu: "50m"
+      memory: "256Mi"
+    limits:
+      cpu: "500m"
+      memory: "384Mi"
 
   ## dome-ied (Interchain Event Distributor)
   dome-ied:
@@ -195,6 +210,13 @@ access-node:
     # -- should scorpio be enabled
     enabled: true
     replicaCount: 1
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "1Gi"
+      limits:
+        cpu: "500m"
+        memory: "1536Mi"
     ## configuration of the image to be used
     image:
       # -- repository to be used - resource friendly all-in-one-runner without kafka
@@ -278,6 +300,14 @@ access-node:
     nameOverride: tm-forum-api
     # -- should tm-forum-api be enabled
     enabled: true
+
+    resources:
+      requests:
+        cpu: "50m"
+        memory: "512Mi"
+      limits:
+        cpu: "500m"
+        memory: "1Gi"   
 
     defaultConfig:
       image:
