@@ -20,35 +20,37 @@ zammad:
         hosts:
           - helpdesk.dome-marketplace-sbx.org
 
-  railsserver:
-    webConcurrency: 3
-    resources:
-      requests:
-        cpu: "1000m"
-        memory: "2Gi"
-      limits:
-        cpu: "2000m"
-        memory: "4Gi"
-    securityContext:
-      allowPrivilegeEscalation: false
-      capabilities:
-        drop:
-          - ALL
-      readOnlyRootFilesystem: false
-      privileged: false
-    readinessProbe:
-      httpGet:
-        path: /
-        port: 3000
-      initialDelaySeconds: 45
-      periodSeconds: 15
-      timeoutSeconds: 5
-    autoscaling:
-      enabled: true
-      minReplicas: 1
-      maxReplicas: 4
-      targetCPUUtilizationPercentage: 75
-      stabilizationWindowSeconds: 180
+  zammadConfig:
+    railsserver:
+      replicas: 2
+      webConcurrency: 3
+      resources:
+        requests:
+          cpu: "1000m"
+          memory: "2Gi"
+        limits:
+          cpu: "2000m"
+          memory: "4Gi"
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
+        readOnlyRootFilesystem: false
+        privileged: false
+      readinessProbe:
+        httpGet:
+          path: /
+          port: 3000
+        initialDelaySeconds: 45
+        periodSeconds: 15
+        timeoutSeconds: 5
+      autoscaling:
+        enabled: true
+        minReplicas: 1
+        maxReplicas: 4
+        targetCPUUtilizationPercentage: 75
+        stabilizationWindowSeconds: 180
 
   elasticsearch:
     image:

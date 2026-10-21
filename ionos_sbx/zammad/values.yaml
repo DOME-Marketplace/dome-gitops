@@ -110,11 +110,11 @@ zammad:
     primary:
       resources:
         requests:
-          cpu: "200m"
-          memory: "1Gi"
+          cpu: 500m
+          memory: 1Gi
         limits:
-          cpu: "1000m"
-          memory: "2Gi"
+          cpu: 1000m
+          memory: 2Gi
 
   redis:
     image:
@@ -123,11 +123,11 @@ zammad:
     master:
       resources:
         requests:
-          cpu: "100m"
-          memory: "128Mi"
+          cpu: 100m
+          memory: 128Mi
         limits:
-          cpu: "250m"
-          memory: "256Mi"
+          cpu: 250m
+          memory: 256Mi
 
   memcached:
     image:
@@ -135,12 +135,20 @@ zammad:
       tag: 1.6.23-debian-11-r0
     resources:
       requests:
-        cpu: "100m"
-        memory: "128Mi"
+        cpu: 100m
+        memory: 128Mi
       limits:
-        cpu: "250m"
-        memory: "256Mi"
-
+        cpu: 250m
+        memory: 256Mi
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/instance: zammad
+          topologyKey: kubernetes.io/hostname
   extraEnv:
     - name: MALLOC_ARENA_MAX
       value: "2"
