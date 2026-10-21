@@ -301,17 +301,18 @@ access-node:
     # -- should tm-forum-api be enabled
     enabled: true
 
-    resources:
-      requests:
-        cpu: "50m"
-        memory: "512Mi"
-      limits:
-        cpu: "500m"
-        memory: "1Gi"   
-
     defaultConfig:
       image:
         tag: sbx_1.10.3
+      
+      resources:
+        requests:
+          cpu: "50m"
+          memory: "512Mi"
+        limits:
+          cpu: "500m"
+          memory: "1Gi"         
+
       additionalEnvVars: 
       - name: MAPPING_STRICT_RELATIONSHIPS
         value: "false"
