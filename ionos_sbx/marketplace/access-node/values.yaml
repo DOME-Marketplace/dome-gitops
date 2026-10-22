@@ -305,14 +305,6 @@ access-node:
       image:
         tag: sbx_1.10.3
       
-      resources:
-        requests:
-          cpu: "10m"
-          memory: "100Mi"
-        limits:
-          cpu: "50m"
-          memory: "256Mi"         
-
       additionalEnvVars: 
       - name: MAPPING_STRICT_RELATIONSHIPS
         value: "false"
