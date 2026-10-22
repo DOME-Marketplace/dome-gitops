@@ -27,7 +27,7 @@ spec:
               memory: "256Mi"      
             limits:
               memory: 512Mi
-              cpu: "200m"
+              cpu: "500m"
           env:
             - name: TMF_ENDPOINT
               value: http://tm-forum-api
