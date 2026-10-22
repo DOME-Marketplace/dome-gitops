@@ -308,10 +308,10 @@ access-node:
       resources:
         requests:
           cpu: "10m"
-          memory: "256Mi"
+          memory: "100Mi"
         limits:
           cpu: "50m"
-          memory: "100Mi"         
+          memory: "256Mi"         
 
       additionalEnvVars: 
       - name: MAPPING_STRICT_RELATIONSHIPS
