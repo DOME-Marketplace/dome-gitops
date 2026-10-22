@@ -6,10 +6,10 @@ dome-verifier:
 
   resources:
     requests:
-      cpu: "100m"
+      cpu: "10m"
       memory: "512Mi"
     limits:
-      cpu: "500m"
+      cpu: "200m"
       memory: "640Mi"
 
   ingress:
