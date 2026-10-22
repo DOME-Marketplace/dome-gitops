@@ -16,10 +16,10 @@ mysql:
       backup.velero.io/backup-volumes: data
     resources:
       requests:
-        cpu: "100m"
+        cpu: "50m"
         memory: "768Mi"
       limits:
-        cpu: "500m"
+        cpu: "200m"
         memory: "1Gi"    
 
   labels:

@@ -6,10 +6,10 @@ trusted-issuers-list:
       tag: 0.2.0
     resources:
       requests:
-        cpu: "50m"
+        cpu: "10m"
         memory: "384Mi"
       limits:
-        cpu: "500m"
+        cpu: "200m"
         memory: "512Mi"
 
   # Configure an Ingress or OpenShift Route

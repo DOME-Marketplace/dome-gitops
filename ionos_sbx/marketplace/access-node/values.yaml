@@ -145,10 +145,10 @@ access-node:
     
     resources:
       requests:
-        cpu: "50m"
+        cpu: "10m"
         memory: "256Mi"
       limits:
-        cpu: "500m"
+        cpu: "200m"
         memory: "384Mi"
 
    ## dlt adapter hashnet
@@ -172,10 +172,10 @@ access-node:
       HASHNET_NETWORK_ID: "3"
       resources:
     requests:
-      cpu: "50m"
+      cpu: "10m"
       memory: "256Mi"
     limits:
-      cpu: "500m"
+      cpu: "100m"
       memory: "384Mi"
 
   ## dome-ied (Interchain Event Distributor)
@@ -307,11 +307,11 @@ access-node:
       
       resources:
         requests:
-          cpu: "50m"
-          memory: "512Mi"
+          cpu: "10m"
+          memory: "256Mi"
         limits:
-          cpu: "500m"
-          memory: "1Gi"         
+          cpu: "50m"
+          memory: "100Mi"         
 
       additionalEnvVars: 
       - name: MAPPING_STRICT_RELATIONSHIPS

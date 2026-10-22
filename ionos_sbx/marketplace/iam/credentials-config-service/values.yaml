@@ -7,10 +7,10 @@ credentials-config-service:
       tag: 1.0.1
     resources:
       requests:
-        cpu: "50m"
+        cpu: "10m"
         memory: "384Mi"
       limits:
-        cpu: "500m"
+        cpu: "200m"
         memory: "512Mi"
 
   # Database config
