@@ -48,13 +48,7 @@ grafana:
     type: loki
     url: http://loki-distributed-gateway.loki-distributed.svc.cluster.local
     version: 1
-  resources:
-      requests:
-        cpu: 10m
-        memory: 96Mi
-      limits:
-        cpu: 100m
-        memory: 128Mi
+
 prometheus:
   prometheusSpec:
     additionalScrapeConfigs:
@@ -64,53 +58,7 @@ prometheus:
     probeSelectorNilUsesHelmValues: false
     ruleSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
-    resources:
-      requests:
-        cpu: 200m
-        memory: 1500Mi
-      limits:
-        cpu: 1000m
-        memory: 2Gi
-prometheusOperator:
-  resources:
-    requests:
-      cpu: 20m
-      memory: 64Mi
-    limits:
-      cpu: 100m
-      memory: 128Mi
-  admissionWebhooks:
-    deployment:
-      resources:
-        requests:
-          cpu: 20m
-          memory: 50Mi
-    patch:
-      resources:
-        requests:
-          cpu: 20m
-          memory: 50Mi 
-  prometheusConfigReloader:
-    resources:
-      requests:
-        cpu: 20m
-        memory: 50Mi
-prometheus-node-exporter:
-  resources:
-    requests:
-      cpu: 10m
-      memory: 64Mi
-    limits:
-      cpu: 100m
-      memory: 128Mi
-kube-state-metrics:
-  resources:
-    requests:
-      cpu: 10m
-      memory: 32Mi
-    limits:
-      cpu: 100m
-      memory: 64Mi 
+
 alertmanager:
   config:
     route:
