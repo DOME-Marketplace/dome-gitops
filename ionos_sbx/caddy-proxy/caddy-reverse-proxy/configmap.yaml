@@ -59,6 +59,33 @@ data:
             }
         }
 
+        handle /tmf-api/party/v4* {
+            reverse_proxy tm-forum-api-party-catalog.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }        
+
+        handle /tmf-api/customerBillManagement/v4* {
+            reverse_proxy tm-forum-api-customer-bill-management.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        handle /tmf-api/customerManagement/v4* {
+            reverse_proxy tm-forum-api-customer-management.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
         handle /tmf-api/productCatalogManagement/v4* {
             reverse_proxy tm-forum-api-product-catalog.marketplace.svc.cluster.local:8080 {
                 transport http {
@@ -68,8 +95,116 @@ data:
             }
         }
 
-        handle /tmf-api/accountManagement* {
+        handle /tmf-api/productInventory/v4* {
+            reverse_proxy tm-forum-api-product-inventory.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }        
+
+        handle /tmf-api/productOrderingManagement/v4* {
+            reverse_proxy tm-forum-api-product-ordering-management.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        handle /tmf-api/resourceCatalog/v4* {
+            reverse_proxy tm-forum-api-resource-catalog.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        handle /tmf-api/resourceFunctionActivation/v4* {
+            reverse_proxy tm-forum-api-resource-function-activation.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        handle /tmf-api/resourceInventoryManagement/v4* {
+            reverse_proxy tm-forum-api-resource-inventory.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        handle /tmf-api/serviceCatalogManagement/v4* {
+            reverse_proxy tm-forum-api-service-catalog.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        handle /tmf-api/serviceInventory/v4* {
+            reverse_proxy tm-forum-api-service-inventory.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+        
+        handle /tmf-api/accountManagement/v4* {
             reverse_proxy tm-forum-api-account.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }                
+
+        handle /tmf-api/agreementManagement/v4* {
+            reverse_proxy tm-forum-api-agreement.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        handle /tmf-api/partyRoleManagement/v4* {
+            reverse_proxy tm-forum-api-party-role.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        handle /tmf-api/usageManagement/v4* {
+            reverse_proxy tm-forum-api-usage-management.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }        
+
+        handle /tmf-api/quoteManagement/v4* {
+            reverse_proxy tm-forum-api-quote.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        handle /tmf-api/document/v4* {
+            reverse_proxy tm-forum-api-document-management.marketplace.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
                     response_header_timeout 60s
