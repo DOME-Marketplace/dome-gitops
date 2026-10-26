@@ -14,13 +14,7 @@ mysql:
   primary:
     podAnnotations:
       backup.velero.io/backup-volumes: data
-    resources:
-      requests:
-        cpu: "50m"
-        memory: "768Mi"
-      limits:
-        cpu: "200m"
-        memory: "1Gi"    
+
 
   labels:
     app.kubernetes.io/name: mysql-til    
