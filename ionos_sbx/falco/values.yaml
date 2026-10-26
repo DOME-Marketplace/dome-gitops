@@ -2,13 +2,7 @@ driver:
   kind: ebpf
 falcosidekick:
   enabled: true
-  resources:
-    requests:
-      cpu: 10m
-      memory: 48Mi
-    limits:
-      cpu: 100m
-      memory: 96Mi
+
   serviceMonitor:
     enabled: true
   prometheusRules:
