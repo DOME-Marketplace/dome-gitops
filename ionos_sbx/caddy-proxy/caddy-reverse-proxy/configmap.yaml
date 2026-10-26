@@ -212,47 +212,6 @@ data:
             }
         }
 
-
-        handle_path /ticketing/* {
-            reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
-                header_up X-Forwarded-Host {host}
-                header_up X-Forwarded-Prefix /ticketing
-                transport http {
-                    dial_timeout            5s
-                    response_header_timeout 60s
-                }
-            }
-        }
-
-        @zammad_dependencies {
-            header Referer *tmf-test.dome-marketplace-sbx.org/ticketing*
-        }
-        handle @zammad_dependencies {
-            reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
-                header_up X-Forwarded-Host {host}
-            }
-        }
-
-        handle_path /helpdesk/* {
-            reverse_proxy zammad2-nginx.zammad2.svc.cluster.local:8080 {
-                header_up X-Forwarded-Host {host}
-                header_up X-Forwarded-Prefix /helpdesk
-                transport http {
-                    dial_timeout            5s
-                    response_header_timeout 60s
-                }
-            }
-        }
-
-        @zammad2_dependencies {
-            header Referer *tmf-test.dome-marketplace-sbx.org/helpdesk*
-        }
-        handle @zammad2_dependencies {
-            reverse_proxy zammad2-nginx.zammad2.svc.cluster.local:8080 {
-                header_up X-Forwarded-Host {host}
-            }
-        }
-
         handle /desmos/api/v2/entities* {
             reverse_proxy desmos.marketplace.svc.cluster.local:8080 {
                 transport http {
@@ -328,5 +287,18 @@ data:
         }
         handle_errors {
             respond "Error {err.status_code}" {err.status_code}
+        }
+    }
+
+    ticketing-int.dome-marketplace-sbx.org {
+        log {
+            output stdout
+            format json
+        }
+        reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
+            transport http {
+                dial_timeout            5s
+                response_header_timeout 60s
+            }
         }
     }
