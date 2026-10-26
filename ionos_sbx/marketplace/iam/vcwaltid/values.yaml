@@ -19,13 +19,6 @@ vcwaltid:
       repository: quay.io/fiware/waltid
       tag: 1.14.1-SNAPSHOT
       pullPolicy: Always
-    resources:
-      requests:
-        cpu: "10m"
-        memory: "256Mi"
-      limits:
-        cpu: "200m"
-        memory: "512Mi"
 
   # API config
   api:
