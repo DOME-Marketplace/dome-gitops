@@ -290,15 +290,18 @@ data:
         }
     }
 
-    ticketing-int.dome-marketplace-sbx.org {
+    ticketing.dome-marketplace-sbx.org {
         log {
             output stdout
             format json
         }
-        reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
-            transport http {
-                dial_timeout            5s
-                response_header_timeout 60s
-            }
-        }
+
+        handle /* {
+            reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }  
     }
