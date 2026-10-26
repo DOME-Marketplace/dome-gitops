@@ -60,8 +60,7 @@ spec:
               value: "knowledgebase-service"
             # Public client - no real secret, but BookStack requires a non-empty string value
             - name: OIDC_CLIENT_SECRET
-            #  value: "public-client"
-              value: ""
+              value: "public-client"
             - name: OIDC_ISSUER
               value: "https://verifier.dome-marketplace-sbx.org/verifier"
             - name: OIDC_END_SESSION_ENDPOINT
