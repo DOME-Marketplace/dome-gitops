@@ -106,4 +106,69 @@ data:
         }
     }
 
+    ticketing-test.dome-marketplace-sbx.org {
+        log {
+            output stdout
+            format json
+        }
+
+        handle /* {
+            reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }  
+    }
+
+    knowledgebase-test.dome-marketplace-sbx.org {
+        log {
+            output stdout
+            format json
+        }
+
+        handle /* {
+            reverse_proxy bookstack.knowledgebase.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }  
+    }
+
+    analytics-test.dome-marketplace-sbx.org {
+        log {
+            output stdout
+            format json
+        }
+
+        handle /* {
+            reverse_proxy superset-service.analytics.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }  
+    }
+
+    dome-certification-test.dome-marketplace-sbx.org {
+        log {
+            output stdout
+            format json
+        }
+
+        handle /* {
+            reverse_proxy certification-frontend-svc.dome-certification.svc.cluster.local:80 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }  
+    }
+    
+
     
