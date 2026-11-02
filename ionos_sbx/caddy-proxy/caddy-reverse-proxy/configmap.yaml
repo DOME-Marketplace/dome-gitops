@@ -262,7 +262,7 @@ data:
         encode zstd gzip
 
         handle /* {
-            reverse_proxy backend-module.analytics.svc.cluster.local:8080 {
+            reverse_proxy superset-service.analytics.svc.cluster.local:8088 {
                 transport http {
                     dial_timeout            5s
                     response_header_timeout 60s
@@ -317,7 +317,7 @@ data:
         encode zstd gzip
 
         handle /* {
-            reverse_proxy certification-frontend-svc.dome-certification.svc.cluster.local:8080 {
+            reverse_proxy certification-frontend-svc.dome-certification.svc.cluster.local:80 {
                 transport http {
                     dial_timeout            5s
                     response_header_timeout 60s
@@ -380,6 +380,3 @@ data:
             }        
         }  
     }
-    
-
-    

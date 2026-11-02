@@ -46,7 +46,25 @@ spec:
             matchLabels: { kubernetes.io/metadata.name: knowledgebase }
       ports:
         - { port: 8080, protocol: TCP }
-    
+
+    - to:                                     
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: analytics }
+      ports:
+        - { port: 8088, protocol: TCP }
+
+    - to:                                     
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: security }
+      ports:
+        - { port: 8080, protocol: TCP }
+
+    - to:                                     
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: dome-certification }
+      ports:
+        - { port: 80, protocol: TCP } 
+            
     - to:                                     
         - namespaceSelector:
             matchLabels: { kubernetes.io/metadata.name: marketplace }
