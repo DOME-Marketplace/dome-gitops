@@ -59,9 +59,9 @@ access-node:
         # -- provider of the dlt-adapter component
         provider: digitelts
         # -- (local) address of the dlt-adapter
-        internalDomain: http://dlt-adapter-hashnet:8080
+        internalDomain: http://dlt-adapters:8080
         # -- (external) address of the dlt-adapter
-        externalDomain: http://dlt-adapter-hashnet:8080
+        externalDomain: http://dlt-adapter:8080
       # -- operator external domain
       externalDomain:
         protocol: "https"
