@@ -10,49 +10,412 @@ data:
   startup.sh: |
     #!/bin/bash
     set -e
-    
+
     echo "Updating package lists..."
     apt-get update -qq
-    
+
     echo "Installing Redis..."
     DEBIAN_FRONTEND=noninteractive apt-get install -y redis-server
-    
+
     echo "Starting Redis server..."
     redis-server --daemonize yes --bind 127.0.0.1 --port 6379 --maxmemory 256mb --maxmemory-policy allkeys-lru
-    
+
     echo "Waiting for Redis to start..."
     sleep 5
-    
+
     # Test Redis connection
     redis-cli ping || (echo "Redis failed to start" && exit 1)
-    
+
     echo "Setting up Superset environment..."
     export SUPERSET_CONFIG_PATH=/app/pythonpath/superset_config.py
     export PYTHONPATH=/app/pythonpath:$PYTHONPATH
-    
+
     # Create config directory
     mkdir -p /app/pythonpath
-    
-    # Create superset config
+
+    # =========================================================
+    # DOME Custom CSS - Global stylesheet
+    # =========================================================
+    echo "Creating DOME custom CSS..."
+    mkdir -p /app/superset/static/assets/css
+    cat > /app/superset/static/assets/css/dome-custom.css << 'CSSEOF'
+    @import url('https://fonts.googleapis.com/css2?family=Blinker:wght@300;400;600;700&display=swap');
+
+    :root {
+        --dome-primary: #3F83F8;
+        --dome-primary-dark: #1C64F2;
+        --dome-secondary: #0C1C38;
+        --dome-bg-light: #F9FAFB;
+        --dome-bg-white: #FFFFFF;
+        --dome-text-dark: #111827;
+        --dome-text-gray: #6B7280;
+        --dome-border: #E5E7EB;
+        --dome-hover: #F3F4F6;
+    }
+
+    /* Global font change */
+    body, html, * {
+        font-family: 'Blinker', system-ui, sans-serif !important;
+    }
+
+    body {
+        background-color: var(--dome-bg-light) !important;
+    }
+
+    /* Header styling */
+    header.top {
+        background-color: var(--dome-bg-white) !important;
+        border-bottom: 1px solid var(--dome-border) !important;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
+    }
+
+    /* Navigation menu items */
+    .ant-menu-horizontal {
+        background-color: transparent !important;
+        border-bottom: none !important;
+    }
+
+    .ant-menu-item,
+    .ant-menu-submenu {
+        color: var(--dome-text-dark) !important;
+        font-weight: 400 !important;
+    }
+
+    .ant-menu-item:hover,
+    .ant-menu-submenu:hover {
+        color: var(--dome-primary) !important;
+        background-color: var(--dome-hover) !important;
+    }
+
+    .ant-menu-item a,
+    .ant-menu-submenu a {
+        color: var(--dome-text-dark) !important;
+    }
+
+    .ant-menu-item a:hover,
+    .ant-menu-submenu a:hover {
+        color: var(--dome-primary) !important;
+    }
+
+    /* Active menu items */
+    .ant-menu-item-selected,
+    .ant-menu-item-active {
+        color: var(--dome-primary) !important;
+        border-bottom-color: var(--dome-primary) !important;
+    }
+
+    /* Buttons - DOME style */
+    button.ant-btn,
+    .superset-button {
+        font-family: 'Blinker', sans-serif !important;
+        font-weight: 600 !important;
+        border-radius: 0.5rem !important;
+        transition: all 0.2s ease !important;
+    }
+
+    .superset-button-tertiary {
+        background-color: var(--dome-primary) !important;
+        color: white !important;
+        border: none !important;
+    }
+
+    .superset-button-tertiary:hover {
+        background-color: var(--dome-primary-dark) !important;
+    }
+
+    .superset-button-link {
+        color: var(--dome-primary) !important;
+    }
+
+    .superset-button-link:hover {
+        color: var(--dome-primary-dark) !important;
+        text-decoration: underline !important;
+    }
+
+    /* Cards - DOME style */
+    .ant-card {
+        background-color: var(--dome-bg-white) !important;
+        border: 1px solid var(--dome-border) !important;
+        border-radius: 0.75rem !important;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .ant-card:hover {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+        transform: translateY(-2px) !important;
+    }
+
+    /* Card titles */
+    .ant-card-meta-title {
+        color: var(--dome-text-dark) !important;
+        font-weight: 600 !important;
+    }
+
+    .ant-card-meta-description {
+        color: var(--dome-text-gray) !important;
+    }
+
+    /* Tags - DOME style */
+    .ant-tag {
+        background-color: #DBEAFE !important;
+        color: var(--dome-primary) !important;
+        border: 1px solid #BFDBFE !important;
+        border-radius: 0.375rem !important;
+        font-weight: 500 !important;
+    }
+
+    /* Collapse sections */
+    .ant-collapse {
+        background-color: transparent !important;
+        border: none !important;
+    }
+
+    .ant-collapse-header {
+        color: var(--dome-text-dark) !important;
+        font-weight: 600 !important;
+        font-size: 1.125rem !important;
+    }
+
+    /* Content areas */
+    .css-nfjnv9,
+    .css-vhf0sc {
+        background-color: var(--dome-bg-light) !important;
+    }
+
+    /* Icons - adjust colors */
+    .anticon svg {
+        color: var(--dome-text-gray) !important;
+    }
+
+    .anticon:hover svg {
+        color: var(--dome-primary) !important;
+    }
+
+    /* Links */
+    a {
+        color: var(--dome-primary) !important;
+        text-decoration: none !important;
+    }
+
+    a:hover {
+        color: var(--dome-primary-dark) !important;
+        text-decoration: underline !important;
+    }
+
+    /* Tab navigation */
+    .no-router {
+        color: var(--dome-text-gray) !important;
+        font-weight: 500 !important;
+    }
+
+    .no-router.active {
+        color: var(--dome-primary) !important;
+        border-bottom: 2px solid var(--dome-primary) !important;
+    }
+
+    /* Favorite icons */
+    .fave-unfave-icon svg path {
+        fill: var(--dome-text-gray) !important;
+    }
+
+    .fave-unfave-icon:hover svg path {
+        fill: #FCD34D !important;
+    }
+
+    /* Dropdown menus */
+    .ant-dropdown-trigger:hover {
+        color: var(--dome-primary) !important;
+    }
+
+    /* Main content wrapper */
+    #app {
+        background-color: var(--dome-bg-light) !important;
+    }
+
+    /* Navbar brand/logo area */
+    .navbar-brand {
+        padding: 0.5rem 1rem !important;
+    }
+
+    /* Menu header */
+    .menu .header {
+        color: var(--dome-text-dark) !important;
+        font-weight: 700 !important;
+        font-size: 1.25rem !important;
+    }
+
+    /* Card grid layout */
+    .css-10rqylw {
+        gap: 1.5rem !important;
+    }
+
+    /* Smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Focus states for accessibility */
+    *:focus {
+        outline: 2px solid var(--dome-primary) !important;
+        outline-offset: 2px !important;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: var(--dome-bg-light);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--dome-text-gray);
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--dome-primary);
+    }
+    CSSEOF
+
+    # =========================================================
+    # Override spa.html to inject DOME CSS globally
+    # =========================================================
+    echo "Injecting DOME CSS into Superset template..."
+    sed -i 's|</head>|<link rel="stylesheet" href="/static/assets/css/dome-custom.css">\n</head>|' /app/superset/templates/superset/basic.html
+
+    # Create custom security manager for DOME VC claims mapping
+    cat > /app/pythonpath/dome_security_manager.py << 'EOF'
+    import logging
+    import json
+    import base64
+    from superset.security import SupersetSecurityManager
+
+    logger = logging.getLogger(__name__)
+
+    # Add DOME usernames (sub_orgId) that should be Admin
+    ADMIN_USERS = [
+        'georgios.peppas@eurodyn.com_VATGR-094402295',
+        'did:key:zDnaersD2HBUk52PGonuqsM1SETZ1nD1Py8wzDQpLpHXaQFTt_VATGR-094402295',
+    ]
+
+    def decode_jwt_payload(token):
+        """Decode JWT payload without verification (just to read claims)."""
+        try:
+            parts = token.split('.')
+            if len(parts) != 3:
+                return {}
+            padding = 4 - len(parts[1]) % 4
+            payload = parts[1] + '=' * padding
+            decoded = base64.urlsafe_b64decode(payload)
+            return json.loads(decoded)
+        except Exception as e:
+            logger.error("Failed to decode JWT: %s", str(e))
+            return {}
+
+
+    class DomeSecurityManager(SupersetSecurityManager):
+
+        def oauth_user_info(self, provider, response=None):
+            if provider == 'dome':
+                # Decode access_token JWT
+                access_token = response.get('access_token', '')
+                access_claims = {}
+                if access_token:
+                    access_claims = decode_jwt_payload(access_token)
+
+                # Decode id_token JWT
+                id_token = response.get('id_token', '')
+                id_claims = {}
+                if id_token:
+                    id_claims = decode_jwt_payload(id_token)
+
+                # Merge all sources
+                all_claims = {}
+                all_claims.update(access_claims)
+                all_claims.update(id_claims)
+
+                if all_claims:
+                    # Extract did:key from sub
+                    did_key = all_claims.get('sub', '')
+
+                    # Extract organizationIdentifier from vc.credentialSubject.mandate.mandator
+                    org_id = ''
+                    try:
+                        vc = all_claims.get('vc', {})
+                        mandator = vc.get('credentialSubject', {}).get('mandate', {}).get('mandator', {})
+                        org_id = mandator.get('organizationIdentifier', '')
+                    except Exception as e:
+                        logger.error("Failed to extract organizationIdentifier: %s", str(e))
+
+                    # Username = did:key + _ + organizationIdentifier
+                    if did_key and org_id:
+                        username = did_key + '_' + org_id
+                    elif did_key:
+                        username = did_key
+                    else:
+                        username = all_claims.get('email', 'dome_user')
+
+                    email = all_claims.get('email', '')
+                    first_name = all_claims.get('given_name', 'DOME')
+                    last_name = all_claims.get('family_name', 'User')
+
+                    # Assign roles based on admin list
+                    if username in ADMIN_USERS:
+                        role_keys = ['Admin']
+                    else:
+                        role_keys = ['Gamma']
+
+                    logger.info("DOME user mapped - username: %s, email: %s, "
+                                "first: %s, last: %s, roles: %s",
+                                username, email, first_name, last_name, role_keys)
+
+                    return {
+                        'username': username,
+                        'first_name': first_name,
+                        'last_name': last_name,
+                        'email': email,
+                        'role_keys': role_keys,
+                    }
+
+                logger.warning("No claims found in any token source")
+                return {
+                    'username': 'dome_user',
+                    'first_name': 'DOME',
+                    'last_name': 'User',
+                    'email': 'user@dome.eu',
+                    'role_keys': ['Gamma'],
+                }
+            return {}
+    EOF
+
+    # Create superset config for 4.0.2 with DOME OAuth integration (public client + PKCE)
     cat > /app/pythonpath/superset_config.py << 'EOF'
     import os
-    
+    import secrets
+    from dome_security_manager import DomeSecurityManager
+    from flask_appbuilder.security.manager import AUTH_OAUTH
+
     # Database - using SQLite with persistent storage
     SQLALCHEMY_DATABASE_URI = 'sqlite:////app/data/superset.db'
-    
+
     # Redis configuration
     REDIS_HOST = '127.0.0.1'
     REDIS_PORT = 6379
-    
+
     # Celery configuration
-    CELERY_CONFIG = {
-        'broker_url': f'redis://{REDIS_HOST}:{REDIS_PORT}/0',
-        'result_backend': f'redis://{REDIS_HOST}:{REDIS_PORT}/0',
-        'worker_log_level': 'INFO',
-        'worker_prefetch_multiplier': 1,
-        'task_acks_late': True,
-    }
-    
+    class CeleryConfig:
+        broker_url = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
+        result_backend = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
+        worker_log_level = 'INFO'
+        worker_prefetch_multiplier = 1
+        task_acks_late = True
+
+    CELERY_CONFIG = CeleryConfig
+
     # Cache configuration
     CACHE_CONFIG = {
         'CACHE_TYPE': 'RedisCache',
@@ -61,33 +424,339 @@ data:
         'CACHE_REDIS_DB': 1,
         'CACHE_DEFAULT_TIMEOUT': 300,
     }
-    
+
+    DATA_CACHE_CONFIG = {
+        'CACHE_TYPE': 'RedisCache',
+        'CACHE_REDIS_HOST': REDIS_HOST,
+        'CACHE_REDIS_PORT': REDIS_PORT,
+        'CACHE_REDIS_DB': 2,
+        'CACHE_DEFAULT_TIMEOUT': 300,
+    }
+
+    FILTER_STATE_CACHE_CONFIG = {
+        'CACHE_TYPE': 'RedisCache',
+        'CACHE_REDIS_HOST': REDIS_HOST,
+        'CACHE_REDIS_PORT': REDIS_PORT,
+        'CACHE_REDIS_DB': 3,
+        'CACHE_DEFAULT_TIMEOUT': 300,
+    }
+
+    EXPLORE_FORM_DATA_CACHE_CONFIG = {
+        'CACHE_TYPE': 'RedisCache',
+        'CACHE_REDIS_HOST': REDIS_HOST,
+        'CACHE_REDIS_PORT': REDIS_PORT,
+        'CACHE_REDIS_DB': 4,
+        'CACHE_DEFAULT_TIMEOUT': 300,
+    }
+
     # Security
     SECRET_KEY = 'your-secret-key-change-in-production'
     WTF_CSRF_ENABLED = False
-    
+
+    # Enable proxy fix for running behind ingress/load balancer
+    ENABLE_PROXY_FIX = True
+    PROXY_FIX_CONFIG = {"x_for": 1, "x_proto": 1, "x_host": 1, "x_port": 0, "x_prefix": 1}
+
+    # Authentication type - OAuth (uses Authlib)
+    AUTH_TYPE = AUTH_OAUTH
+    AUTH_ALLOW_LOCAL_LOGIN = True
+
+    # DOME Verifier OAuth configuration
+    # Public client (no secret) with PKCE (S256) for secure token exchange
+    OAUTH_PROVIDERS = [
+        {
+            'name': 'dome',
+            'icon': 'fa-address-card',
+            'token_key': 'access_token',
+            'remote_app': {
+                'client_id': 'did:key:zDnaer6wstrAhZxM5ej7fvQbnf9aP3RdojhXEao431SMrN3Lb',
+                'token_endpoint_auth_method': 'none',
+                'code_challenge_method': 'S256',
+                'issuer': 'https://verifier.dome-marketplace-dev2.org',
+                'authorize_url': 'https://verifier.dome-marketplace-dev2.org/oidc/authorize',
+                'access_token_url': 'https://verifier.dome-marketplace-dev2.org/oidc/token',
+                'jwks_uri': 'https://verifier.dome-marketplace-dev2.org/oidc/jwks',
+                'id_token_signing_alg_values_supported': ['ES256', 'RS256'],
+                'client_kwargs': {
+                    'scope': 'openid learcredential',
+                },
+                'api_base_url': 'https://verifier.dome-marketplace-dev2.org',
+            },
+        }
+    ]
+
+    # Custom security manager for DOME VC claims
+    CUSTOM_SECURITY_MANAGER = DomeSecurityManager
+
+    # User registration settings
+    AUTH_USER_REGISTRATION = True
+    AUTH_USER_REGISTRATION_ROLE = 'Gamma'
+
+    # Anonymous user role
+    AUTH_ROLE_PUBLIC = "Public"
+
+    # Sync roles at each login (so admin list in security manager takes effect)
+    AUTH_ROLES_SYNC_AT_LOGIN = True
+
+    # Map role_keys from security manager to Superset roles
+    AUTH_ROLES_MAPPING = {
+        'Admin': ['Admin'],
+        'Gamma': ['Gamma'],
+    }
+
     # Feature flags
     FEATURE_FLAGS = {
         'ENABLE_TEMPLATE_PROCESSING': True,
         'PRESTO_EXPAND_DATA': True,
         'ALERT_REPORTS': True,
         'DASHBOARD_RBAC': True,
+        'EMBEDDED_SUPERSET': True,
     }
-    
+
+    # ----------------------------------------------------------------------
+    # Embedded dashboards (marketplace iframe via @superset-ui/embedded-sdk)
+    # ----------------------------------------------------------------------
+    # Symmetric secret Superset uses to SIGN guest tokens (HS256). Only this
+    # process signs and checks them, so it is random per boot and never in git.
+    # A restart just invalidates tokens that live 5 minutes anyway.
+    GUEST_TOKEN_JWT_SECRET = secrets.token_urlsafe(48)
+    GUEST_TOKEN_JWT_ALGO = 'HS256'
+    GUEST_TOKEN_JWT_EXP_SECONDS = 300
+    # Role applied to embedded (guest) viewers. Must NOT have all-datasource
+    # access, otherwise the per-request RLS clauses are ignored. Gamma is fine.
+    GUEST_ROLE_NAME = 'Gamma'
+
+    # Let the marketplace origin call the guest-token API and load assets
+    ENABLE_CORS = True
+    CORS_OPTIONS = {
+        'supports_credentials': True,
+        'allow_headers': ['*'],
+        'resources': ['*'],
+        'origins': ['https://dome-marketplace-dev2.org'],
+    }
+
+    # Talisman: allow the marketplace to frame Superset via CSP frame-ancestors
+    # and stop emitting a restrictive X-Frame-Options header. NOTE: TALISMAN_CONFIG
+    # REPLACES Superset's default CSP wholesale, so the full policy is restated
+    # here. 'unsafe-inline'/'unsafe-eval' are kept so the Superset UI itself still
+    # works without nonces; tighten later if you lock down the embed.
+    TALISMAN_ENABLED = True
+    TALISMAN_CONFIG = {
+        'content_security_policy': {
+            'base-uri': ["'self'"],
+            'default-src': ["'self'"],
+            'img-src': ["'self'", 'data:', 'blob:'],
+            'worker-src': ["'self'", 'blob:'],
+            'connect-src': ["'self'", 'https://dome-marketplace-dev2.org'],
+            'font-src': ["'self'", 'https://fonts.googleapis.com', 'https://fonts.gstatic.com'],
+            'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+            'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+            'frame-ancestors': ["'self'", 'https://dome-marketplace-dev2.org'],
+        },
+        'force_https': False,
+        'frame_options': None,
+    }
+
+    # Theme - Blinker font via design tokens
+    THEME_DEFAULT = {
+        "token": {
+            "fontUrls": [
+                "https://fonts.googleapis.com/css2?family=Blinker:wght@300;400;600;700&display=swap",
+            ],
+            "fontFamily": "'Blinker', system-ui, sans-serif",
+        }
+    }
+
+    # Register the custom DOME embed guest-token route. It validates the
+    # forwarded verifier Access Token and derives RLS from the credential,
+    # so the marketplace backend computes no filters of its own.
+    def FLASK_APP_MUTATOR(app):
+        from dome_embed_auth import register_dome_embed
+        register_dome_embed(app)
+
     # Load examples
     SUPERSET_LOAD_EXAMPLES = True
-    
+
     # Webserver config
     SUPERSET_WEBSERVER_PORT = 8088
     SUPERSET_WEBSERVER_ADDRESS = '0.0.0.0'
+
+    WEBDRIVER_BASEURL = 'https://analytics.dome-marketplace-dev2.org/'
     EOF
-    
+
+    # Create the DOME embed auth module: validates the forwarded verifier
+    # Access Token against the verifier JWKS and derives RLS from the
+    # credential (org / Powers), then mints the guest token server-side.
+    cat > /app/pythonpath/dome_embed_auth.py << 'EOF'
+    import json
+    import logging
+    import os
+    import re
+    import time
+
+    import requests
+    from flask import Blueprint, request, jsonify, current_app
+    from authlib.jose import JsonWebToken, JsonWebKey
+
+    log = logging.getLogger("dome-embed-auth")
+
+    # OIDC metadata of the DOME verifier that signs the Access Token. Superset
+    # already trusts this issuer (it is the OAuth provider), so we validate the
+    # forwarded Access Token against the verifier's published JWKS.
+    VERIFIER_METADATA_URL = os.environ.get(
+        "VERIFIER_METADATA_URL",
+        "https://verifier.dome-marketplace-dev2.org/.well-known/openid-configuration",
+    )
+
+    # Dashboard -> RLS rule templates ({org} is filled from the validated VC).
+    RLS_RULES_PATH = os.environ.get("DOME_EMBED_RLS_PATH", "/app/pythonpath/dome_embed_rls.json")
+
+    # Tenant value must be a safe identifier before it is spliced into a clause.
+    _ORG_RE = re.compile(r"^[A-Za-z0-9._:-]+$")
+
+    # Asymmetric algorithms we accept from the verifier (no 'none', no HS*).
+    _jwt = JsonWebToken(["RS256", "RS384", "RS512", "ES256", "ES384", "ES256K", "EdDSA"])
+
+    _jwks_cache = {"keys": None, "ts": 0.0}
+    _JWKS_TTL = 3600
+
+
+    def _get_jwks():
+        now = time.time()
+        if _jwks_cache["keys"] is None or now - _jwks_cache["ts"] > _JWKS_TTL:
+            meta = requests.get(VERIFIER_METADATA_URL, timeout=10).json()
+            jwks = requests.get(meta["jwks_uri"], timeout=10).json()
+            _jwks_cache["keys"] = JsonWebKey.import_key_set(jwks)
+            _jwks_cache["ts"] = now
+        return _jwks_cache["keys"]
+
+
+    def validate_access_token(token):
+        """Verify the verifier's signature + expiry and return the claims.
+
+        Audience is intentionally not enforced: the verifier issues the token for
+        the marketplace client, not for Superset. We trust signature + iss + exp.
+        """
+        claims = _jwt.decode(token, _get_jwks())
+        claims.validate()
+        return claims
+
+
+    def _mandate(claims):
+        vc = claims.get("vc", {}) or {}
+        return vc.get("credentialSubject", {}).get("mandate", {}) or {}
+
+
+    def _org_id(mandate):
+        return (mandate.get("mandator", {}) or {}).get("organizationIdentifier", "")
+
+
+    def _load_rules():
+        try:
+            with open(RLS_RULES_PATH, encoding="utf-8") as fh:
+                return json.load(fh)
+        except FileNotFoundError:
+            log.warning("RLS rules file not found at %s", RLS_RULES_PATH)
+            return {}
+
+
+    def build_rls_for_dashboard(dashboard_id, org):
+        """Expand the dashboard's rule templates into per-dataset RLS clauses.
+
+        Returns None if the dashboard is not configured (caller should deny).
+        """
+        groups = _load_rules().get(dashboard_id)
+        if groups is None:
+            return None
+        rules = []
+        for group in groups:
+            clause = group["clause"].replace("{org}", org)
+            for dataset_id in group["datasets"]:
+                rules.append({"dataset": dataset_id, "clause": clause})
+        return rules
+
+
+    def build_guest_user(claims):
+        mandate = _mandate(claims)
+        org = _org_id(mandate)
+        did = claims.get("sub", "")
+        if did and org:
+            username = did + "_" + org
+        else:
+            username = did or "dome_guest"
+        return {
+            "username": username,
+            "first_name": claims.get("given_name", "DOME"),
+            "last_name": claims.get("family_name", "User"),
+        }
+
+
+    dome_embed_bp = Blueprint("dome_embed", __name__)
+
+
+    @dome_embed_bp.route("/api/v1/dome/guest_token/", methods=["POST"])
+    def dome_guest_token():
+        auth = request.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            return jsonify({"error": "missing bearer access token"}), 401
+        token = auth.split(" ", 1)[1].strip()
+
+        try:
+            claims = validate_access_token(token)
+        except Exception as exc:  # noqa: BLE001
+            log.warning("Access token validation failed: %s", exc)
+            return jsonify({"error": "invalid access token"}), 401
+
+        org = _org_id(_mandate(claims))
+        if not org or not _ORG_RE.match(org):
+            return jsonify({"error": "no usable organizationIdentifier in credential"}), 403
+
+        body = request.get_json(silent=True) or {}
+        dashboard_id = body.get("dashboard")
+        if not dashboard_id and body.get("resources"):
+            dashboard_id = body["resources"][0].get("id")
+        if not dashboard_id:
+            return jsonify({"error": "dashboard (uuid) required"}), 400
+
+        rls = build_rls_for_dashboard(dashboard_id, org)
+        if rls is None:
+            return jsonify({"error": "dashboard not configured for embedding: %s" % dashboard_id}), 403
+
+        user = build_guest_user(claims)
+        resources = [{"type": "dashboard", "id": dashboard_id}]
+
+        token_str = current_app.appbuilder.sm.create_guest_access_token(user, resources, rls)
+        if isinstance(token_str, bytes):
+            token_str = token_str.decode("utf-8")
+        return jsonify({"token": token_str, "rls": rls, "user": user})
+
+
+    def register_dome_embed(app):
+        app.register_blueprint(dome_embed_bp)
+        log.info("DOME embed guest-token route registered at /api/v1/dome/guest_token/")
+    EOF
+
+    # Dashboard -> RLS rules map. {org} is filled from the validated VC at mint
+    # time. Edit datasets/clauses here (then commit) to add or change dashboards.
+    # Dashboard uuids and dataset ids are per-Superset: use DEV2's, never SBX's.
+    # A dashboard not listed here is denied. Format:
+    #   {"<embed uuid>": [{"datasets": [1, 2], "clause": "vat = '{org}'"}]}
+    cat > /app/pythonpath/dome_embed_rls.json << 'EOF'
+    {}
+    EOF
+
     # Ensure data directory exists
     mkdir -p /app/data
-    
+
+    echo "Installing required packages..."
+    # Pin Authlib and cryptography: apache-superset 4.0.2 requires
+    # cryptography<43.0.0,>=42.0.4 and an unpinned Authlib pulls in
+    # cryptography 48+, which makes the superset CLI refuse to start
+    pip install --no-cache-dir "Authlib==1.3.2" "cryptography>=42.0.4,<43"
+
     echo "Initializing Superset database..."
     superset db upgrade
-    
+
     echo "Creating admin user..."
     superset fab create-admin \
         --username admin \
@@ -95,18 +764,18 @@ data:
         --lastname User \
         --email admin@example.com \
         --password admin 2>/dev/null || echo "Admin user may already exist"
-    
+
     echo "Loading examples..."
     superset load_examples 2>/dev/null || echo "Examples may already be loaded"
-    
+
     echo "Initializing Superset..."
     superset init
-    
+
     echo "Starting Celery worker in background..."
     nohup celery --app=superset.tasks.celery_app:app worker --loglevel=info > /tmp/celery.log 2>&1 &
-    
+
     echo "Waiting for Celery to start..."
     sleep 10
-    
+
     echo "Starting Superset web server..."
     exec superset run -h 0.0.0.0 -p 8088 --with-threads
