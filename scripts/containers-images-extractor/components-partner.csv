@@ -1,0 +1,41 @@
+Namespace,Partner,Component
+search,ENG,elasticsearch
+search,ENG,search
+billing,ENG,billing-engine
+billing,ENG,billing-proxy
+billing,ENG,billing-scheduler
+billing,ENG,invoicing-service
+customer service,DHUB,Bookstack (Knowledgebase)
+customer service,DHUB,Chatbot
+customer service,DHUB,Keycloak (identity management)
+customer service,DHUB,Zammad (Ticketing platform)
+in2,IN2,issuer-api
+in2,IN2,keycloak
+in2,IN2,postgres-keycloak
+in2,IN2,issuer-psql
+in2,IN2,issuer-ui
+in2,IN2,vault
+in2,IN2,wallet-api
+in2,IN2,wallet-psql
+in2,IN2,wallet-ui
+marketing,Elliot,Project website
+marketing,Foundingbox,Onepass-CRM
+marketplace,DigitelTS,dlt-adapter
+marketplace,DigitelTS,mysql-marketplace
+marketplace,DigitelTS,til-marketplace
+marketplace,ELLIOT,scorpio
+marketplace,ELLIOT,scorpio-psql
+marketplace,ENG,tailored-offerings
+marketplace,ENG,tendering
+marketplace,FICODES,biz-ecosystem-charging-backend
+marketplace,FICODES,biz-ecosystem-logic-proxy
+marketplace,IN2,in2-desmos-api
+marketplace,IN2,verifier-marketplace
+marketplace,LIBELIUM,tmforum-api
+payment,ENG,payment-scheduler
+payment-engine,EG,payment-engine
+products compliance,DEKRA,Compliance Module
+reporting & analytics,ED,Analytics Modules - Integrated Early Reporting and Analytics module
+reporting & analytics,ED,Analytics Modules - Marketplace Navigation Analytics
+reporting & analytics,ED,Analytics Modules - Traffic analytics
+revenue sharing,ENG,revenue-engine
