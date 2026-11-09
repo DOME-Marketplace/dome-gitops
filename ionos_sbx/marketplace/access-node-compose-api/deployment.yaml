@@ -33,7 +33,7 @@ spec:
         - name: access-node-compose-api-ghcr
       containers:
         - name: access-node-compose-api
-          image: ghcr.io/dome-marketplace/access-node-compose-api:0.2.0
+          image: ghcr.io/dome-marketplace/access-node-compose-api:0.3.0
           ports:
             - name: http
               containerPort: 8080
