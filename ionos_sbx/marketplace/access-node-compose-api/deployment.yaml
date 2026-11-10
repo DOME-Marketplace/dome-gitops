@@ -1,0 +1,102 @@
+# access-node-compose-api: serves the access-node image versions of this
+# environment (GET /access-node-compose-api/v1/versions), read from the
+# access-node chart in dome-gitops.
+# Source: https://github.com/DOME-Marketplace/access-node-compose-api
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: access-node-compose-api
+  namespace: marketplace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: access-node-compose-api
+      app.kubernetes.io/name: access-node-compose-api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: access-node-compose-api
+        app.kubernetes.io/name: access-node-compose-api
+    spec:
+      automountServiceAccountToken: false   # the service reads gitops, not the Kubernetes API
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      # the ghcr.io package is private: pull with the credentials sealed in
+      # ghcr-pull-sealed.yaml (same pattern as caddy-proxy)
+      imagePullSecrets:
+        - name: access-node-compose-api-ghcr
+      containers:
+        - name: access-node-compose-api
+          image: ghcr.io/dome-marketplace/access-node-compose-api:0.3.0
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: GITOPS_REPO_URL
+              value: https://github.com/DOME-Marketplace/dome-gitops.git
+            - name: GITOPS_BRANCH
+              value: main
+            - name: ACCESS_NODE_CHART_PATH
+              value: ionos_sbx/marketplace/access-node
+            - name: REFRESH_INTERVAL_SECONDS
+              value: "300"
+            # every endpoint is served under this prefix: the Caddy reverse proxy
+            # forwards /access-node-compose-api/* without stripping it
+            - name: BASE_PATH
+              value: /access-node-compose-api
+            # writable locations: the root filesystem is read-only
+            - name: WORK_DIR
+              value: /work
+            - name: HOME
+              value: /work
+            - name: HELM_CACHE_HOME
+              value: /work/helm/cache
+            - name: HELM_CONFIG_HOME
+              value: /work/helm/config
+            - name: HELM_DATA_HOME
+              value: /work/helm/data
+          # probe paths must match BASE_PATH
+          readinessProbe:   # ready only once the first versions list has been generated
+            httpGet:
+              path: /access-node-compose-api/v1/ready
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /access-node-compose-api/v1/health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 20
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: work
+              mountPath: /work
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: work
+          emptyDir:
+            sizeLimit: 512Mi
+        - name: tmp
+          emptyDir:
+            sizeLimit: 128Mi

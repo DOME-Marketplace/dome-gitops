@@ -1,0 +1,14 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: access-node-compose-api-ghcr
+  namespace: marketplace
+spec:
+  encryptedData:
+    .dockerconfigjson: AgDDCURNnHJDhYC7z5qhPXiAO3otKTWV9p7z54VgVo5N5ZzctUm0prNCIbIrc6SRY61TWHhFT4oz74J0hYQ0oZ8sN4a9r4++eh1ZkuMlI/VKFnOpDKqik5QRx63Gk9abrLKIAjHGtScbT4STecUNHIWCJMojIV2KyYK9Rjm7B83C6ndivRlQL6kJS1YhPrFMFbriNQtTAcnFn1fi9vOEgV9kx9+7drT2h7Xl3B+VVDSzan3dzzitJBF9o0Jk+4LlzEkL/sjLk3IqCZwuYLdVqG7WOFg5yFN4R6Ykx4fur30Pt05Uhe3UlGZCqfRVHJVvE2KL9SK1EYxyssXDdbf0mIPH3QbS/eeL3VWMoOzfoBJAEdwVX8sEZUamWgtCN+Mm7/W0s0GosN6u+DnMjiLIa6L7yChTasMmgK1w8+MJp76QvymfYh2oC8+Dq5P/B9oHF/cqMkHG8Rw8Su/RoHqxyuxRsdIQr5MV93Fl/IjU2P56bFN4ZoueEq6Mgbz7BUOeHFDRTOeMh/Y1bTLRGt+VpPkXOUFESBEc+3Rf0Jb6gS8qu9apDCNGTx+9TD4K8GEIDM9GITViQDRW/02g/wAnpmtJ4NYX9LqCYQlmYAttYVaGHpiZ1gUkNQFZh1Wpez9GRwn9DQy+CkHP490bkU8adm4vJSf0JDvnY4gTpdmU65cWU0jr7qmS3aHmYNsCqkwqewaHeJ3XQQuiBitnY4G90SG/E+2SR7EBXUBHNnJtSBMj4xHC0SlULeLoWR4Hz7FzsbY/Q2lNpcsJNrjer/sAFIn83lCmA1SGMkZg5BSiIJBW6So6jrRSekP4NtYgpnC8JVShjNVYjtK6s9DZEmpUdwi7RbnrZeT6dPe1F0X6dpK6YI5+WXPx77VpHycjw7gYGnxcejYQVsbWdG90gZZcGti7zxPpJMt8iKaTWw0htCfz5U0Kf+IshaM0AVc=
+  template:
+    metadata:
+      name: access-node-compose-api-ghcr
+      namespace: marketplace
+    type: kubernetes.io/dockerconfigjson

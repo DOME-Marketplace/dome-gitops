@@ -86,6 +86,15 @@ data:
                 }
             }
         }
+
+        handle /access-node-compose-api/* {
+            reverse_proxy access-node-compose-api.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
        
         handle /* {
             

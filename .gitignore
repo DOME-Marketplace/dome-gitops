@@ -7,3 +7,14 @@ connectivity-test.yaml
 /ionos_dev/search-engine/elasticsearch_*/*
 .history
 .DS_Store
+
+# kubeconfig files contain cluster credentials: never commit them
+kubeconfig*.yaml
+kubeconfig*.yml
+kubeconfigs*/
+
+/scripts/containers-images-extractor/output/
+
+# Python bytecode
+__pycache__/
+*.pyc
