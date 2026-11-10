@@ -287,6 +287,27 @@ data:
     echo "Injecting DOME CSS into Superset template..."
     sed -i 's|</head>|<link rel="stylesheet" href="/static/assets/css/dome-custom.css">\n</head>|' /app/superset/templates/superset/basic.html
 
+    # =========================================================
+    # World Map hover fix: the map library re-appends the hovered country to
+    # bring it to the front, and current Chrome then re-fires the hover, so the
+    # country stays highlighted and the value popup never shows. Skip that
+    # re-append for map countries only.
+    # =========================================================
+    mkdir -p /app/superset/static/assets/js
+    cat > /app/superset/static/assets/js/dome-fixes.js << 'JSEOF'
+    (function () {
+      var orig = Node.prototype.appendChild;
+      Node.prototype.appendChild = function (child) {
+        if (child && child.parentNode === this && child.classList &&
+            child.classList.contains('datamaps-subunit')) {
+          return child;
+        }
+        return orig.call(this, child);
+      };
+    })();
+    JSEOF
+    sed -i 's|</head>|<script src="/static/assets/js/dome-fixes.js"></script>\n</head>|' /app/superset/templates/superset/basic.html
+
     # Create custom security manager for DOME VC claims mapping
     cat > /app/pythonpath/dome_security_manager.py << 'EOF'
     import logging
