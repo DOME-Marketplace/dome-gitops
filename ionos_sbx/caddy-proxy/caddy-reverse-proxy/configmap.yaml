@@ -372,7 +372,7 @@ data:
 
         encode zstd gzip
 
-        handle /* {
+        handle_path /* {
             reverse_proxy certification-backend-svc.dome-certification.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
