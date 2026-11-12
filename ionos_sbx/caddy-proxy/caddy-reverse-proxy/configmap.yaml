@@ -221,7 +221,7 @@ data:
         }  
     }
 
-    analytics-test.dome-marketplace-sbx.org {
+    analytics.dome-marketplace-sbx.org {
         log {
             output stdout
             format json
@@ -382,7 +382,7 @@ data:
         }  
     }
     
-    dependency-track-test.dome-marketplace-sbx.org {
+    dependency-track.dome-marketplace-sbx.org {
         log {
             output stdout
             format json
