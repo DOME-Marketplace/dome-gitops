@@ -170,7 +170,7 @@ data:
         }  
     }
 
-    knowledgebase-test.dome-marketplace-sbx.org {
+    knowledgebase.dome-marketplace-sbx.org {
         log {
             output stdout
             format json
@@ -180,7 +180,6 @@ data:
             zone static {
                 match {
                     not remote_ip 127.0.0.1 ::1
-                    path_regexp \.(js|css|map|woff2?|ttf|otf|eot|svg|png|jpe?g|gif|webp|ico)$
                 }
                 key    {client_ip}
                 events 1000
@@ -189,7 +188,6 @@ data:
             zone api {
                 match {
                     not remote_ip 127.0.0.1 
-                    not path_regexp \.(js|css|map|woff2?|ttf|otf|eot|svg|png|jpe?g|gif|webp|ico)$
                 }
                 key    {client_ip}
                 events 300
