@@ -276,7 +276,7 @@ data:
         }  
     }
 
-    dome-certification-test.dome-marketplace-sbx.org {
+    dome-certification.dome-marketplace-sbx.org {
         log {
             output stdout
             format json
@@ -286,7 +286,6 @@ data:
             zone static {
                 match {
                     not remote_ip 127.0.0.1 ::1
-                    path_regexp \.(js|css|map|woff2?|ttf|otf|eot|svg|png|jpe?g|gif|webp|ico)$
                 }
                 key    {client_ip}
                 events 1000
@@ -295,7 +294,6 @@ data:
             zone api {
                 match {
                     not remote_ip 127.0.0.1 
-                    not path_regexp \.(js|css|map|woff2?|ttf|otf|eot|svg|png|jpe?g|gif|webp|ico)$
                 }
                 key    {client_ip}
                 events 300
@@ -331,6 +329,59 @@ data:
         }  
     }
 
+    dome-certification-api.dome-marketplace-sbx.org {
+        log {
+            output stdout
+            format json
+        }
+
+        rate_limit {
+            zone static {
+                match {
+                    not remote_ip 127.0.0.1 ::1
+                }
+                key    {client_ip}
+                events 1000
+                window 1m
+            }
+            zone api {
+                match {
+                    not remote_ip 127.0.0.1 
+                }
+                key    {client_ip}
+                events 300
+                window 1m
+            }
+        }
+
+        request_body {
+            max_size 1MB
+        }
+
+        header {
+            Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+            X-Content-Type-Options    "nosniff"
+            X-Frame-Options           "SAMEORIGIN"
+            Referrer-Policy           "strict-origin-when-cross-origin"
+            Permissions-Policy        "geolocation=(), camera=(), microphone=()"
+
+            Content-Security-Policy   "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: https:; img-src 'self' data: https: blob:; connect-src 'self' https: wss:"
+            -Server
+            -X-Powered-By
+        }
+
+        encode zstd gzip
+
+        handle /* {
+            reverse_proxy certification-backend-svc.dome-certification.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }  
+    }
+    
     dependency-track-test.dome-marketplace-sbx.org {
         log {
             output stdout
