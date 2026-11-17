@@ -64,6 +64,7 @@ spec:
             matchLabels: { kubernetes.io/metadata.name: dome-certification }
       ports:
         - { port: 80, protocol: TCP } 
+        - { port: 8080, protocol: TCP } 
             
     - to:                                     
         - namespaceSelector:
@@ -78,4 +79,9 @@ spec:
             except: ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "169.254.0.0/16"]
       ports:
         - { port: 443, protocol: TCP }
-    
+
+    - to:                                     
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: kube-prometheus-stack }
+      ports:
+        - { port: 80, protocol: TCP }     
