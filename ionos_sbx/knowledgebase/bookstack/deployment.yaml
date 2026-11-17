@@ -70,7 +70,7 @@ spec:
             - name: OIDC_ISSUER_DISCOVER
               value: "true"
             - name: OIDC_ADDITIONAL_SCOPES
-              value: "openid_learcredential"
+              value: "openid learcredential"
             # Group sync disabled - verifier is VC-based and does not return a groups claim
             #- name: OIDC_USER_TO_GROUPS
             #  value: "true"
