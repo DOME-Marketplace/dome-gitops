@@ -480,6 +480,26 @@ data:
           ],
           "clause": "vat = '{org}'"
         }
+      ],
+      "f4023c5f-beec-4e04-a926-6952ea59b917": [
+        {
+          "datasets": [
+            56,
+            61,
+            58
+          ],
+          "clause": "vat = '{org}'"
+        }
+      ],
+      "17a4cbd6-9f8f-4414-ac72-7701f5217b51": [
+        {
+          "datasets": [
+            61,
+            58,
+            60
+          ],
+          "clause": "buyer_vat = '{org}'"
+        }
       ]
     }
     EOF
