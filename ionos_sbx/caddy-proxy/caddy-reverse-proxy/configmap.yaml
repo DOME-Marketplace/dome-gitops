@@ -452,8 +452,9 @@ data:
             }
         }
 
+        # The P2P discovery request carries the MV list of every replicable entity of the calling node
         request_body {
-            max_size 1MB
+            max_size 20MB
         }
 
         header {
@@ -470,13 +471,24 @@ data:
 
         encode zstd gzip
 
-        handle /api/v2/entities* {
+        # Public Desmos API used by other access nodes:
+        #   GET  /api/v2/entities/{id}        entities of blockchain events
+        #   POST /api/v2/sync/p2p/discovery   P2P synchronization (discovery)
+        #   POST /api/v2/sync/p2p/entities    P2P synchronization (entities)
+        @desmos_public path /api/v2/entities* /api/v2/sync/p2p/discovery /api/v2/sync/p2p/entities
+        handle @desmos_public {
             reverse_proxy desmos.marketplace.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
-                    response_header_timeout 60s
+                    # A P2P discovery on a node with data takes tens of seconds
+                    response_header_timeout 300s
                 }
             }
+        }
+
+        # Any other path: explicit 404 instead of Caddy's default empty 200
+        handle {
+            respond 404
         }
     }
 
