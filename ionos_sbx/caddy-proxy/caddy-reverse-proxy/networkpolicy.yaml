@@ -77,7 +77,7 @@ spec:
         - namespaceSelector:
             matchLabels: { kubernetes.io/metadata.name: kube-prometheus-stack }
       ports:
-        - { port: 80, protocol: TCP }  
+        - { port: 3000, protocol: TCP }  
         
     - to:                                     
         - ipBlock:
