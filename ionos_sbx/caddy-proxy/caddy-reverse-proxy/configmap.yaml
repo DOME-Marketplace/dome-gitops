@@ -433,16 +433,8 @@ data:
             -Via
         }
 
-        request_body {
-            max_size 1MiB
-        }
-
-        encode {
-            gzip 1
-            minimum_length 256
-        }
-
-        handle /* {
+        handle {
+            header_up X-Forwarded-Port 443
             reverse_proxy cs-identity-keycloak.cs-identity.svc.cluster.local:80 {
                 transport http {
                     dial_timeout            5s
