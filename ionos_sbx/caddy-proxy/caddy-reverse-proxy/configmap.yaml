@@ -456,3 +456,38 @@ data:
             respond 404
         }  
     }
+
+    keycloak.dome-marketplace-sbx.org {
+        log {
+            output stdout
+            format json
+        }
+
+        header {
+            -Server
+            -Via
+        }
+
+        request_body {
+            max_size 1MiB
+        }
+
+        encode {
+            gzip 1
+            minimum_length 256
+        }
+
+        handle /* {
+            reverse_proxy keycloak.in2.svc.cluster.local:80 {
+                header_up X-Forwarded-Port 443
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        handle {
+            respond 404
+        }  
+    }
