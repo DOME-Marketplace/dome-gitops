@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: backend-module
-          image: docker.ramp.eu/dome/dome-matomo-backend-app@sha256:0f6ccd98af5666b17f95bc0e0d0520fcdf8aee691a42f71620c7ce0a6aa825b7
+          image: docker.ramp.eu/dome/dome-matomo-backend-app@sha256:b2be9f43848040fc5fec2fca13ff164ae63273fe0b0798a8d8006637058f5a5c
           env:
             - name: MATOMO_HISTORICAL_BACKFILL_ENABLED
               value: "false"
