@@ -11,44 +11,20 @@ data:
             output stdout
             format json
         }
-        rate_limit {
-            zone static {
-                match {
-                    not remote_ip 127.0.0.1 ::1
-                    path_regexp \.(js|css|map|woff2?|ttf|otf|eot|svg|png|jpe?g|gif|webp|ico)$
-                }
-                key    {client_ip}
-                events 1000
-                window 1m
-            }
-            zone api {
-                match {
-                    not remote_ip 127.0.0.1 
-                    not path_regexp \.(js|css|map|woff2?|ttf|otf|eot|svg|png|jpe?g|gif|webp|ico)$
-                }
-                key    {client_ip}
-                events 300
-                window 1m
-            }
+
+        header {
+            -Server
+            -Via
         }
 
         request_body {
-            max_size 1MB
+            max_size 1MiB
         }
 
-        header {
-            Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-            X-Content-Type-Options    "nosniff"
-            X-Frame-Options           "SAMEORIGIN"
-            Referrer-Policy           "same-origin"
-            Permissions-Policy        "geolocation=(), camera=(), microphone=()"
-
-            Content-Security-Policy   "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: https:; img-src 'self' data: https: blob:; connect-src 'self' https: wss:"
-            -Server
-            -X-Powered-By
+        encode {
+            gzip 1
+            minimum_length 256
         }
-
-        encode zstd gzip
 
         handle /tmf-test/get-route* {
             reverse_proxy account.tmf-test.svc.cluster.local:8080 {
@@ -111,42 +87,19 @@ data:
             format json
         }
 
-        rate_limit {
-            zone static {
-                match {
-                    not remote_ip 127.0.0.1 ::1
-                }
-                key    {client_ip}
-                events 1000
-                window 1m
-            }
-            zone api {
-                match {
-                    not remote_ip 127.0.0.1 
-                }
-                key    {client_ip}
-                events 300
-                window 1m
-            }
+        header {
+            -Server
+            -Via
         }
 
         request_body {
-            max_size 1MB
+            max_size 1MiB
         }
 
-        header {
-            Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-            X-Content-Type-Options    "nosniff"
-            X-Frame-Options           "SAMEORIGIN"
-            Referrer-Policy           "same-origin"
-            Permissions-Policy        "geolocation=(), camera=(), microphone=()"
-
-            Content-Security-Policy   "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: https:; img-src 'self' data: https: blob:; connect-src 'self' https: wss:"
-            -Server
-            -X-Powered-By
+        encode {
+            gzip 1
+            minimum_length 256
         }
-
-        encode zstd gzip
 
         handle /* {
             reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
@@ -164,42 +117,19 @@ data:
             format json
         }
 
-        rate_limit {
-            zone static {
-                match {
-                    not remote_ip 127.0.0.1 ::1
-                }
-                key    {client_ip}
-                events 1000
-                window 1m
-            }
-            zone api {
-                match {
-                    not remote_ip 127.0.0.1 
-                }
-                key    {client_ip}
-                events 300
-                window 1m
-            }
+        header {
+            -Server
+            -Via
         }
 
         request_body {
-            max_size 1MB
+            max_size 1MiB
         }
 
-        header {
-            Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-            X-Content-Type-Options    "nosniff"
-            X-Frame-Options           "SAMEORIGIN"
-            Referrer-Policy           "same-origin"
-            Permissions-Policy        "geolocation=(), camera=(), microphone=()"
-
-            Content-Security-Policy   "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: https:; img-src 'self' data: https: blob:; connect-src 'self' https: wss:"
-            -Server
-            -X-Powered-By
+        encode {
+            gzip 1
+            minimum_length 256
         }
-
-        encode zstd gzip
 
         handle /* {
             reverse_proxy bookstack.knowledgebase.svc.cluster.local:8080 {
@@ -217,44 +147,19 @@ data:
             format json
         }
 
-        rate_limit {
-            zone static {
-                match {
-                    not remote_ip 127.0.0.1 ::1
-                    path_regexp \.(js|css|map|woff2?|ttf|otf|eot|svg|png|jpe?g|gif|webp|ico)$
-                }
-                key    {client_ip}
-                events 1000
-                window 1m
-            }
-            zone api {
-                match {
-                    not remote_ip 127.0.0.1 
-                    not path_regexp \.(js|css|map|woff2?|ttf|otf|eot|svg|png|jpe?g|gif|webp|ico)$
-                }
-                key    {client_ip}
-                events 300
-                window 1m
-            }
+        header {
+            -Server
+            -Via
         }
 
         request_body {
-            max_size 1MB
+            max_size 1MiB
         }
 
-        header {
-            Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-            X-Content-Type-Options    "nosniff"
-            X-Frame-Options           "SAMEORIGIN"
-            Referrer-Policy           "same-origin"
-            Permissions-Policy        "geolocation=(), camera=(), microphone=()"
-
-            Content-Security-Policy   "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: https:; img-src 'self' data: https: blob:; connect-src 'self' https: wss:"
-            -Server
-            -X-Powered-By
+        encode {
+            gzip 1
+            minimum_length 256
         }
-
-        encode zstd gzip
 
         handle /* {
             reverse_proxy superset-service.analytics.svc.cluster.local:8088 {
@@ -272,42 +177,19 @@ data:
             format json
         }
 
-        rate_limit {
-            zone static {
-                match {
-                    not remote_ip 127.0.0.1 ::1
-                }
-                key    {client_ip}
-                events 1000
-                window 1m
-            }
-            zone api {
-                match {
-                    not remote_ip 127.0.0.1 
-                }
-                key    {client_ip}
-                events 300
-                window 1m
-            }
+        header {
+            -Server
+            -Via
         }
 
         request_body {
-            max_size 1MB
+            max_size 1MiB
         }
 
-        header {
-            Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-            X-Content-Type-Options    "nosniff"
-            X-Frame-Options           "SAMEORIGIN"
-            Referrer-Policy           "strict-origin-when-cross-origin"
-            Permissions-Policy        "geolocation=(), camera=(), microphone=()"
-
-            Content-Security-Policy   "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: https:; img-src 'self' data: https: blob:; connect-src 'self' https: wss:"
-            -Server
-            -X-Powered-By
+        encode {
+            gzip 1
+            minimum_length 256
         }
-
-        encode zstd gzip
 
         handle /* {
             reverse_proxy certification-frontend-svc.dome-certification.svc.cluster.local:80 {
@@ -325,42 +207,19 @@ data:
             format json
         }
 
-        rate_limit {
-            zone static {
-                match {
-                    not remote_ip 127.0.0.1 ::1
-                }
-                key    {client_ip}
-                events 1000
-                window 1m
-            }
-            zone api {
-                match {
-                    not remote_ip 127.0.0.1 
-                }
-                key    {client_ip}
-                events 300
-                window 1m
-            }
+        header {
+            -Server
+            -Via
         }
 
         request_body {
-            max_size 1MB
+            max_size 1MiB
         }
 
-        header {
-            Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-            X-Content-Type-Options    "nosniff"
-            X-Frame-Options           "SAMEORIGIN"
-            Referrer-Policy           "strict-origin-when-cross-origin"
-            Permissions-Policy        "geolocation=(), camera=(), microphone=()"
-
-            Content-Security-Policy   "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: https:; img-src 'self' data: https: blob:; connect-src 'self' https: wss:"
-            -Server
-            -X-Powered-By
+        encode {
+            gzip 1
+            minimum_length 256
         }
-
-        encode zstd gzip
 
         handle_path /* {
             reverse_proxy certification-backend-svc.dome-certification.svc.cluster.local:8080 {
@@ -378,44 +237,19 @@ data:
             format json
         }
 
-        rate_limit {
-            zone static {
-                match {
-                    not remote_ip 127.0.0.1 ::1
-                    path_regexp \.(js|css|map|woff2?|ttf|otf|eot|svg|png|jpe?g|gif|webp|ico)$
-                }
-                key    {client_ip}
-                events 1000
-                window 1m
-            }
-            zone api {
-                match {
-                    not remote_ip 127.0.0.1 
-                    not path_regexp \.(js|css|map|woff2?|ttf|otf|eot|svg|png|jpe?g|gif|webp|ico)$
-                }
-                key    {client_ip}
-                events 300
-                window 1m
-            }
+        header {
+            -Server
+            -Via
         }
 
         request_body {
-            max_size 1MB
+            max_size 1MiB
         }
 
-        header {
-            Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-            X-Content-Type-Options    "nosniff"
-            X-Frame-Options           "SAMEORIGIN"
-            Referrer-Policy           "same-origin"
-            Permissions-Policy        "geolocation=(), camera=(), microphone=()"
-
-            Content-Security-Policy   "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: https:; img-src 'self' data: https: blob:; connect-src 'self' https: wss:"
-            -Server
-            -X-Powered-By
+        encode {
+            gzip 1
+            minimum_length 256
         }
-
-        encode zstd gzip
 
         handle /* {
             reverse_proxy dependency-track-frontend.security.svc.cluster.local:8080 {
@@ -433,43 +267,19 @@ data:
             format json
         }
 
-        rate_limit {
-            zone static {
-                match {
-                    not remote_ip 127.0.0.1 ::1
-                }
-                key    {client_ip}
-                events 1000
-                window 1m
-            }
-            zone api {
-                match {
-                    not remote_ip 127.0.0.1 
-                }
-                key    {client_ip}
-                events 300
-                window 1m
-            }
-        }
-
-        # The P2P discovery request carries the MV list of every replicable entity of the calling node
-        request_body {
-            max_size 20MB
-        }
-
         header {
-            Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-            X-Content-Type-Options    "nosniff"
-            X-Frame-Options           "SAMEORIGIN"
-            Referrer-Policy           "same-origin"
-            Permissions-Policy        "geolocation=(), camera=(), microphone=()"
-
-            Content-Security-Policy   "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: https:; img-src 'self' data: https: blob:; connect-src 'self' https: wss:"
             -Server
-            -X-Powered-By
+            -Via
         }
 
-        encode zstd gzip
+        request_body {
+            max_size 1MiB
+        }
+
+        encode {
+            gzip 1
+            minimum_length 256
+        }
 
         # Public Desmos API used by other access nodes:
         #   GET  /api/v2/entities/{id}        entities of blockchain events
@@ -498,42 +308,19 @@ data:
             format json
         }
 
-        rate_limit {
-            zone static {
-                match {
-                    not remote_ip 127.0.0.1 ::1
-                }
-                key    {client_ip}
-                events 1000
-                window 1m
-            }
-            zone api {
-                match {
-                    not remote_ip 127.0.0.1 
-                }
-                key    {client_ip}
-                events 300
-                window 1m
-            }
+        header {
+            -Server
+            -Via
         }
 
         request_body {
-            max_size 1MB
+            max_size 1MiB
         }
 
-        header {
-            Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-            X-Content-Type-Options    "nosniff"
-            X-Frame-Options           "SAMEORIGIN"
-            Referrer-Policy           "strict-origin-when-cross-origin"
-            Permissions-Policy        "geolocation=(), camera=(), microphone=()"
-
-            Content-Security-Policy   "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: https:; img-src 'self' data: https: blob:; connect-src 'self' https: wss:"
-            -Server
-            -X-Powered-By
+        encode {
+            gzip 1
+            minimum_length 256
         }
-
-        encode zstd gzip
 
         handle /tmf-api/* {
             reverse_proxy tm-forum-api.marketplace.svc.cluster.local:8080 {
@@ -551,42 +338,19 @@ data:
             format json
         }
 
-        rate_limit {
-            zone static {
-                match {
-                    not remote_ip 127.0.0.1 ::1
-                }
-                key    {client_ip}
-                events 1000
-                window 1m
-            }
-            zone api {
-                match {
-                    not remote_ip 127.0.0.1 
-                }
-                key    {client_ip}
-                events 300
-                window 1m
-            }
+        header {
+            -Server
+            -Via
         }
 
         request_body {
-            max_size 1MB
+            max_size 1MiB
         }
 
-        header {
-            Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-            X-Content-Type-Options    "nosniff"
-            X-Frame-Options           "SAMEORIGIN"
-            Referrer-Policy           "strict-origin-when-cross-origin"
-            Permissions-Policy        "geolocation=(), camera=(), microphone=()"
-
-            Content-Security-Policy   "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: https:; img-src 'self' data: https: blob:; connect-src 'self' https: wss:"
-            -Server
-            -X-Powered-By
+        encode {
+            gzip 1
+            minimum_length 256
         }
-
-        encode zstd gzip
 
         handle /* {
             reverse_proxy kube-prometheus-stack-grafana.kube-prometheus-stack.svc.cluster.local:80 {
@@ -604,42 +368,19 @@ data:
             format json
         }
 
-        rate_limit {
-            zone static {
-                match {
-                    not remote_ip 127.0.0.1 ::1
-                }
-                key    {client_ip}
-                events 1000
-                window 1m
-            }
-            zone api {
-                match {
-                    not remote_ip 127.0.0.1 
-                }
-                key    {client_ip}
-                events 300
-                window 1m
-            }
+        header {
+            -Server
+            -Via
         }
 
         request_body {
-            max_size 1MB
+            max_size 1MiB
         }
 
-        header {
-            Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-            X-Content-Type-Options    "nosniff"
-            X-Frame-Options           "SAMEORIGIN"
-            Referrer-Policy           "strict-origin-when-cross-origin"
-            Permissions-Policy        "geolocation=(), camera=(), microphone=()"
-
-            Content-Security-Policy   "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: https:; img-src 'self' data: https: blob:; connect-src 'self' https: wss:"
-            -Server
-            -X-Powered-By
+        encode {
+            gzip 1
+            minimum_length 256
         }
-
-        encode zstd gzip
 
         handle /payment/notify {
             reverse_proxy payment-scheduler-svc.billing.svc.cluster.local:8080 {
@@ -657,42 +398,19 @@ data:
             format json
         }
 
-        rate_limit {
-            zone static {
-                match {
-                    not remote_ip 127.0.0.1 ::1
-                }
-                key    {client_ip}
-                events 1000
-                window 1m
-            }
-            zone api {
-                match {
-                    not remote_ip 127.0.0.1 
-                }
-                key    {client_ip}
-                events 300
-                window 1m
-            }
+        header {
+            -Server
+            -Via
         }
 
         request_body {
-            max_size 1MB
+            max_size 1MiB
         }
 
-        header {
-            Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-            X-Content-Type-Options    "nosniff"
-            X-Frame-Options           "SAMEORIGIN"
-            Referrer-Policy           "strict-origin-when-cross-origin"
-            Permissions-Policy        "geolocation=(), camera=(), microphone=()"
-
-            Content-Security-Policy   "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: https:; img-src 'self' data: https: blob:; connect-src 'self' https: wss:"
-            -Server
-            -X-Powered-By
+        encode {
+            gzip 1
+            minimum_length 256
         }
-
-        encode zstd gzip
 
         handle /subscriptions* {
             reverse_proxy subscriptions-management-svc.billing.svc.cluster.local:8080 {
