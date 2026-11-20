@@ -504,6 +504,7 @@ data:
                     response_header_timeout 60s
                 }
             }
+        }
     }
 
     helpdesk.dome-marketplace-sbx.org {
