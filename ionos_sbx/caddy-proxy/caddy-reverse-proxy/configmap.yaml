@@ -6,7 +6,7 @@ metadata:
 data:
   sbx-site.caddy: |
     
-    tmf-test.dome-marketplace-sbx.org {
+    dome-marketplace-sbx.org {
         log {
             output stdout
             format json
