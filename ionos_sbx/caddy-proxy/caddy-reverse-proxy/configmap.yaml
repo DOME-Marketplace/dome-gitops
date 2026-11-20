@@ -272,8 +272,11 @@ data:
             -Via
         }
 
+        # Keep this limit above the 1MiB used by the other sites: the P2P
+        # discovery body lists every entity the calling node holds, and nodes
+        # with data send more than 1MiB (Caddy answers 413 and drops the request).
         request_body {
-            max_size 1MiB
+            max_size 20MiB
         }
 
         encode {
