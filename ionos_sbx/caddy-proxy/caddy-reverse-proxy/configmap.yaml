@@ -491,3 +491,41 @@ data:
             respond 404
         }  
     }
+
+    argocd.dome-marketplace-sbx.org {
+        log {
+            output stdout
+            format json
+        }
+
+        header {
+            -Server
+            -Via
+        }
+
+        request_body {
+            max_size 1MiB
+        }
+
+        encode {
+            gzip 1
+            minimum_length 256
+        }
+
+        @grpc {
+            header Content-Type application/grpc*
+            not header Content-Type application/grpc-web*
+        }
+        handle @grpc {
+            reverse_proxy h2c://argocd-server.argocd.svc.cluster.local:80
+        }
+
+        handle {
+            reverse_proxy argocd-server.argocd.svc.cluster.local:80 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }  
+    }
