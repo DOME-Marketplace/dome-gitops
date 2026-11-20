@@ -279,6 +279,10 @@ data:
             max_size 20MiB
         }
 
+        tls {
+            protocols tls1.2 tls1.2
+        }
+
         encode {
             gzip 1
             minimum_length 256
