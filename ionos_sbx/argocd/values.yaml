@@ -2,6 +2,7 @@ configs:
   params:
     server.log.level: debug
     server.extensions.enabled: "false"
+    server.insecure: "true"
   rbac:
     policy.default: role:readonly
     policy.csv: |
@@ -66,7 +67,7 @@ server:
                 app.kubernetes.io/component: repo-server
             topologyKey: kubernetes.io/hostname
   ingress:
-    enabled: true
+    enabled: false
     hostname: argocd.dome-marketplace-sbx.org
     tls: true
     annotations:
