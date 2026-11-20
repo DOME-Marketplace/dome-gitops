@@ -84,6 +84,14 @@ spec:
       ports:
         - { port: 8080, protocol: TCP }  
         - { port: 80, protocol: TCP }
+
+    - to:
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: argocd }
+          podSelector:
+            matchLabels: { app.kubernetes.io/name: argocd-server }
+      ports:
+        - { port: 8080, protocol: TCP }
         
     - to:                                     
         - ipBlock:
