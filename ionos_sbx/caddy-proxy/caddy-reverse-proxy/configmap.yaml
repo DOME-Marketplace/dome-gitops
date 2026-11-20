@@ -299,14 +299,159 @@ data:
             minimum_length 256
         }
 
-        handle /tmf-api/* {
-            reverse_proxy tm-forum-api.marketplace.svc.cluster.local:8080 {
+        handle path /tmf-api/accountManagement* {
+            reverse_proxy tm-forum-api-account.marketplace.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
                     response_header_timeout 60s
                 }
             }        
         }  
+
+        handle path /tmf-api/agreementManagement* {
+            reverse_proxy tm-forum-api-agreement.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle path /tmf-api/customerBillManagement* {
+            reverse_proxy tm-forum-api-customer-bill-management.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle path /tmf-api/customerManagement* {
+            reverse_proxy tm-forum-api-customer-management.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle path /tmf-api/documentManagement* {
+            reverse_proxy tm-forum-api-document-management.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle path /tmf-api/party* {
+            reverse_proxy tm-forum-api-party-catalog.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle path /tmf-api/partyRoleManagement* {
+            reverse_proxy tm-forum-api-party-role.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle path /tmf-api/productCatalogManagement* {
+            reverse_proxy tm-forum-api-product-catalog.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle path /tmf-api/productInventory* {
+            reverse_proxy tm-forum-api-product-inventory.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle path /tmf-api/productOrderingManagement* {
+            reverse_proxy tm-forum-api-product-ordering-management.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle path /tmf-api/quoteManagement* {
+            reverse_proxy tm-forum-api-quote.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle path /tmf-api/resourceCatalog* {
+            reverse_proxy tm-forum-api-resource-catalog.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle path /tmf-api/resourceFunctionActivation* {
+            reverse_proxy tm-forum-api-resource-function-activation.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle path /tmf-api/resourceInventoryManagement* {
+            reverse_proxy tm-forum-api-resource-inventory.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle path /tmf-api/serviceCatalogManagement* {
+            reverse_proxy tm-forum-api-service-catalog.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle path /tmf-api/serviceInventory* {
+            reverse_proxy tm-forum-api-service-inventory.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle path /tmf-api/usageManagement* {
+            reverse_proxy tm-forum-api-usage-management.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
     }
 
     grafana.dome-marketplace-sbx.org {
