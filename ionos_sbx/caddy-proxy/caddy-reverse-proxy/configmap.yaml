@@ -299,7 +299,7 @@ data:
             minimum_length 256
         }
 
-        handle_path /tmf-api/accountManagement* {
+        handle /tmf-api/accountManagement* {
             reverse_proxy tm-forum-api-account.marketplace.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
@@ -308,7 +308,7 @@ data:
             }        
         }  
 
-        handle_path /tmf-api/agreementManagement* {
+        handle /tmf-api/agreementManagement* {
             reverse_proxy tm-forum-api-agreement.marketplace.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
@@ -317,7 +317,7 @@ data:
             }        
         }
 
-        handle_path /tmf-api/customerBillManagement* {
+        handle /tmf-api/customerBillManagement* {
             reverse_proxy tm-forum-api-customer-bill-management.marketplace.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
@@ -326,7 +326,7 @@ data:
             }        
         }
 
-        handle_path /tmf-api/customerManagement* {
+        handle /tmf-api/customerManagement* {
             reverse_proxy tm-forum-api-customer-management.marketplace.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
@@ -335,7 +335,7 @@ data:
             }        
         }
 
-        handle_path /tmf-api/documentManagement* {
+        handle /tmf-api/documentManagement* {
             reverse_proxy tm-forum-api-document-management.marketplace.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
@@ -344,7 +344,7 @@ data:
             }        
         }
 
-        handle_path /tmf-api/party* {
+        handle /tmf-api/party* {
             reverse_proxy tm-forum-api-party-catalog.marketplace.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
@@ -353,7 +353,7 @@ data:
             }        
         }
 
-        handle_path /tmf-api/partyRoleManagement* {
+        handle /tmf-api/partyRoleManagement* {
             reverse_proxy tm-forum-api-party-role.marketplace.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
@@ -362,7 +362,7 @@ data:
             }        
         }
 
-        handle_path /tmf-api/productCatalogManagement* {
+        handle /tmf-api/productCatalogManagement* {
             reverse_proxy tm-forum-api-product-catalog.marketplace.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
@@ -371,7 +371,7 @@ data:
             }        
         }
 
-        handle_path /tmf-api/productInventory* {
+        handle /tmf-api/productInventory* {
             reverse_proxy tm-forum-api-product-inventory.marketplace.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
@@ -380,7 +380,7 @@ data:
             }        
         }
 
-        handle_path /tmf-api/productOrderingManagement* {
+        handle /tmf-api/productOrderingManagement* {
             reverse_proxy tm-forum-api-product-ordering-management.marketplace.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
@@ -389,7 +389,7 @@ data:
             }        
         }
 
-        handle_path /tmf-api/quoteManagement* {
+        handle /tmf-api/quoteManagement* {
             reverse_proxy tm-forum-api-quote.marketplace.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
@@ -398,7 +398,7 @@ data:
             }        
         }
 
-        handle_path /tmf-api/resourceCatalog* {
+        handle /tmf-api/resourceCatalog* {
             reverse_proxy tm-forum-api-resource-catalog.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
@@ -407,7 +407,7 @@ data:
             }        
         }
 
-        handle_path /tmf-api/resourceFunctionActivation* {
+        handle /tmf-api/resourceFunctionActivation* {
             reverse_proxy tm-forum-api-resource-function-activation.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
@@ -416,7 +416,7 @@ data:
             }        
         }
 
-        handle_path /tmf-api/resourceInventoryManagement* {
+        handle /tmf-api/resourceInventoryManagement* {
             reverse_proxy tm-forum-api-resource-inventory.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
@@ -425,7 +425,7 @@ data:
             }        
         }
 
-        handle_path /tmf-api/serviceCatalogManagement* {
+        handle /tmf-api/serviceCatalogManagement* {
             reverse_proxy tm-forum-api-service-catalog.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
@@ -434,7 +434,7 @@ data:
             }        
         }
 
-        handle_path /tmf-api/serviceInventory* {
+        handle /tmf-api/serviceInventory* {
             reverse_proxy tm-forum-api-service-inventory.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
@@ -443,7 +443,7 @@ data:
             }        
         }
 
-        handle_path /tmf-api/usageManagement* {
+        handle /tmf-api/usageManagement* {
             reverse_proxy tm-forum-api-usage-management.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
