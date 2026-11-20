@@ -18,7 +18,7 @@ data:
         }
 
         request_body {
-            max_size 1MiB
+            max_size 10MiB
         }
 
         encode {
@@ -26,32 +26,6 @@ data:
             minimum_length 256
         }
 
-        handle /tmf-test/get-route* {
-            reverse_proxy account.tmf-test.svc.cluster.local:8080 {
-                transport http {
-                    dial_timeout            5s
-                    response_header_timeout 60s
-                }
-            }
-        }
-
-        handle /payment/* {
-            reverse_proxy payment.billing.svc.cluster.local:8080 {
-                transport http {
-                    dial_timeout            5s
-                    response_header_timeout 60s
-                }
-            }
-        }
-
-        handle /cs-identity/* {
-            reverse_proxy cs-identity-keycloak.cs-identity.svc.cluster.local:8080 {
-                transport http {
-                    dial_timeout            5s
-                    response_header_timeout 60s
-                }
-            }
-        }
 
         handle /access-node-compose-api/* {
             reverse_proxy access-node-compose-api.marketplace.svc.cluster.local:8080 {
@@ -93,7 +67,7 @@ data:
         }
 
         request_body {
-            max_size 1MiB
+            max_size 10MiB
         }
 
         encode {
@@ -123,7 +97,7 @@ data:
         }
 
         request_body {
-            max_size 1MiB
+            max_size 10MiB
         }
 
         encode {
@@ -153,7 +127,7 @@ data:
         }
 
         request_body {
-            max_size 1MiB
+            max_size 10MiB
         }
 
         encode {
@@ -183,7 +157,7 @@ data:
         }
 
         request_body {
-            max_size 1MiB
+            max_size 10MiB
         }
 
         encode {
@@ -213,7 +187,7 @@ data:
         }
 
         request_body {
-            max_size 1MiB
+            max_size 10MiB
         }
 
         encode {
@@ -243,7 +217,7 @@ data:
         }
 
         request_body {
-            max_size 1MiB
+            max_size 10MiB
         }
 
         encode {
@@ -317,7 +291,7 @@ data:
         }
 
         request_body {
-            max_size 1MiB
+            max_size 10MiB
         }
 
         encode {
@@ -407,7 +381,7 @@ data:
         }
 
         request_body {
-            max_size 1MiB
+            max_size 10MiB
         }
 
         encode {
@@ -472,7 +446,7 @@ data:
         }
 
         request_body {
-            max_size 1MiB
+            max_size 10MiB
         }
 
         encode {
@@ -507,7 +481,7 @@ data:
         }
 
         request_body {
-            max_size 1MiB
+            max_size 10MiB
         }
 
         encode {
@@ -530,4 +504,34 @@ data:
                     response_header_timeout 60s
                 }
             }
+    }
+
+    helpdesk.dome-marketplace-sbx.org {
+        log {
+            output stdout
+            format json
         }
+
+        header {
+            -Server
+            -Via
+        }
+
+        request_body {
+            max_size 10MiB
+        }
+
+        encode {
+            gzip 1
+            minimum_length 256
+        }
+
+        handle /* {
+            reverse_proxy zammad2-nginx.zammad.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }  
+    }
