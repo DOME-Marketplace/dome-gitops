@@ -7,7 +7,7 @@ metadata:
     cloud.ionos.com/node-selector: cloud.ionos.com/nodepool-name=ingress-pool
 spec:
   type: LoadBalancer
-  externalTrafficPolicy: Local
+  externalTrafficPolicy: Cluster
   loadBalancerIP: 87.106.161.151
   selector: { app: caddy-reverse-proxy }
   ports:
