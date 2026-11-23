@@ -213,11 +213,11 @@ business-api-ecosystem:
         pullPolicy: Always
 
     ingress: 
-      enabled: true
-      className: nginx
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
-        nginx.ingress.kubernetes.io/proxy-body-size: "20m"
+      enabled: false
+      className: caddy-reverse-proxy
+      annotations: {}
+        # cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+        # nginx.ingress.kubernetes.io/proxy-body-size: "20m"
       tls: 
        -  hosts: 
             - dome-marketplace-sbx.org

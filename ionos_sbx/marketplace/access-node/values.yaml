@@ -34,10 +34,10 @@ access-node:
       periodSeconds: 15
       failureThreshold: 3
     ingress:
-      enabled: true
-      className: nginx
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+      enabled: false
+      className: caddy-reverse-proxy
+      annotations: {}
+        # cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
       hosts:
         - host: desmos.dome-marketplace-sbx.org
           paths:
@@ -304,10 +304,10 @@ access-node:
         url: http://scorpio:9090
 
     ingress:
-      enabled: true
-      className: nginx
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+      enabled: false
+      className: caddy-reverse-proxy
+      annotations: {}
+        # cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
       hosts:
         - host: tmf.dome-marketplace-sbx.org
           paths:
