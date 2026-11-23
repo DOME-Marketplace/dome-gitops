@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: backend-module
-          image: docker.ramp.eu/dome/dome-matomo-backend-app@sha256:69bf2e03ba5f521f712a811ec8a506e4e6ba13da61f8a53338b28f1778bf0e18
+          image: docker.ramp.eu/dome/dome-matomo-backend-app@sha256:b6f170a900681a98c007211160d71c7ca4a0b7b66d538068731f3f07574ab60a
           ports:
             - containerPort: 8080
               name: http
