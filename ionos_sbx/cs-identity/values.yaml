@@ -16,7 +16,7 @@ keycloak:
     create: true
 
   ingress:
-    enabled: true
+    enabled: false
     ingressClassName: nginx
     hostname: cs-identity.dome-marketplace-sbx.org
     annotations:
