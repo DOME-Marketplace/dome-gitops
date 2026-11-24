@@ -3,6 +3,9 @@ ingress-nginx:
   controller:
     nodeSelector:
       nodepool: ingress
+      ingress-nginx-disabled: "true"
+    admissionWebhooks:
+      enabled: false
     extraArgs:
       tcp-services-configmap: "ingress-nginx/tcp-services"
     service:

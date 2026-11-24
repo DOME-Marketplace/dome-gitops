@@ -16,10 +16,10 @@ keycloak:
   nameOverride: keycloak
 
   ingress:
-    enabled: true
-    className: nginx
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+    enabled: false
+    className: caddy-reverse-proxy
+    annotations: {}
+      # cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
     hosts:
       - host: keycloak.dome-marketplace-sbx.org
         paths:

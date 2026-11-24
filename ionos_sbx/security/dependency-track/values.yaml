@@ -15,12 +15,12 @@ secretManagement:
         name: dependency-track-secret
 
 ingress:
-  enabled: true
-  ingressClassName: nginx
+  enabled: false
+  ingressClassName: caddy-reverse-proxy
   hostname: dependency-track.dome-marketplace-sbx.org
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
-    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    # cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+    # nginx.ingress.kubernetes.io/proxy-body-size: "50m"
   tls:
     - secretName: dependency-track-tls
       hosts:

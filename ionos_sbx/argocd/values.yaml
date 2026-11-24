@@ -21,6 +21,11 @@ configs:
             clientSecret: $github-secret:clientSecret
             orgs:
             - name: DOME-Marketplace
+    resource.customizations.health.networking.k8s.io_Ingress: |
+      hs = {}
+      hs.status = "Healthy"
+      hs.message = "Ingress resource disabled: routing is handled by the caddy-reverse-proxy ingress controller"
+      return hs
 
 redis-ha:
   enabled: false

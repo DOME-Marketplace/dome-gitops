@@ -1,16 +1,16 @@
 grafana:
   ingress:
-    enabled: true
+    enabled: false
     hosts:
       - grafana.dome-marketplace-sbx.org
     tls:
       - secretName: grafana-tls
         hosts:
         - grafana.dome-marketplace-sbx.org
-    annotations:
-      kubernetes.io/ingress.class: nginx
-      cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
-    ingressClassName: nginx
+    annotations: {}
+      # kubernetes.io/ingress.class: nginx
+      # cert-manager.io/cluster-issuer: letsencrypt-sbx-issuer
+    ingressClassName: caddy-reverse-proxy
   grafana.ini:
     server:
       # The full public facing url you use in browser, used for redirects and emails
