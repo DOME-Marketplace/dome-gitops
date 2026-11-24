@@ -6,7 +6,7 @@ metadata:
 data:
   sbx-site.caddy: |
     
-    dome-marketplace-sbx.org {
+    dome-marketplace-dev2.org {
         log {
             output stdout
             format json
