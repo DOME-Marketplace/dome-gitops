@@ -2,6 +2,7 @@ configs:
   params:
     server.log.level: debug
     server.extensions.enabled: "false"
+    server.insecure: "true"
   rbac:
     policy.default: role:readonly
     policy.csv: |
@@ -57,7 +58,7 @@ server:
       cpu: 200m
       memory: 192Mi
   ingress:
-    enabled: true
+    enabled: false
     hostname: argocd.dome-marketplace-dev2.org
     tls: true
     annotations:
