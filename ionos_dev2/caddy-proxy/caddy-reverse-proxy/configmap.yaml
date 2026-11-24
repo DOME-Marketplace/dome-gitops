@@ -646,7 +646,7 @@ data:
         }
     }
 
-    argocd.dome-marketplace-sbx.org {
+    argocd.dome-marketplace-dev2.org {
         log {
             output stdout
             format json
