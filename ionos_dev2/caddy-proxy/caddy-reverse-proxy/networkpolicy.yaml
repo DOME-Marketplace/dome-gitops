@@ -1,0 +1,104 @@
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: caddy-reverse-proxy
+  namespace: caddy-proxy         
+spec:
+  podSelector:
+    matchLabels: { app: caddy-reverse-proxy }
+  policyTypes: ["Ingress", "Egress"]
+  ingress:
+    - ports:
+        - { port: 8080, protocol: TCP }
+        - { port: 8443, protocol: TCP }
+  egress:
+    - to:                                     
+        - namespaceSelector: {}
+      ports:
+        - { port: 53, protocol: UDP }
+        - { port: 53, protocol: TCP }
+    - to:                                     
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: zammad }
+      ports:
+        - { port: 8080, protocol: TCP }
+
+    - to:                                     
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: zammad2 }
+      ports:
+        - { port: 8080, protocol: TCP }
+
+    - to:                                     
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: in2 }
+      ports:
+        - { port: 8080, protocol: TCP }
+
+    - to:                                     
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: billing }
+      ports:
+        - { port: 8080, protocol: TCP }
+
+    - to:                                     
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: knowledgebase }
+      ports:
+        - { port: 8080, protocol: TCP }
+
+    - to:                                     
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: analytics }
+      ports:
+        - { port: 8088, protocol: TCP }
+
+    - to:                                     
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: security }
+      ports:
+        - { port: 8080, protocol: TCP }
+
+    - to:                                     
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: dome-certification }
+      ports:
+        - { port: 80, protocol: TCP } 
+        - { port: 8080, protocol: TCP } 
+            
+    - to:                                     
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: marketplace }
+      ports:
+        - { port: 8004, protocol: TCP }
+        - { port: 8080, protocol: TCP }    
+        - { port: 3000, protocol: TCP }
+    - to:                                     
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: kube-prometheus-stack }
+      ports:
+        - { port: 3000, protocol: TCP }
+    - to:                                     
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: cs-identity }
+      ports:
+        - { port: 8080, protocol: TCP }  
+        - { port: 80, protocol: TCP }
+
+    - to:
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: argocd }
+          podSelector:
+            matchLabels: { app.kubernetes.io/name: argocd-server }
+      ports:
+        - { port: 8080, protocol: TCP }
+        
+    - to:                                     
+        - ipBlock:
+            cidr: 0.0.0.0/0
+            except: ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "169.254.0.0/16"]
+      ports:
+        - { port: 443, protocol: TCP }
+
+   
