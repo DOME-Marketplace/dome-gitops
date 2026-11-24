@@ -55,7 +55,7 @@ data:
         }
     }
 
-    ticketing.dome-marketplace-sbx.org {
+    ticketing.dome-marketplace-dev2.org {
         log {
             output stdout
             format json
@@ -85,7 +85,7 @@ data:
         }  
     }
 
-    knowledgebase.dome-marketplace-sbx.org {
+    knowledgebase.dome-marketplace-dev2.org {
         log {
             output stdout
             format json
@@ -115,7 +115,7 @@ data:
         }  
     }
 
-    analytics.dome-marketplace-sbx.org {
+    analytics.dome-marketplace-dev2.org {
         log {
             output stdout
             format json
@@ -145,7 +145,7 @@ data:
         }  
     }
 
-    dome-certification.dome-marketplace-sbx.org {
+    dome-certification.dome-marketplace-dev2.org {
         log {
             output stdout
             format json
@@ -175,7 +175,7 @@ data:
         }  
     }
 
-    dome-certification-api.dome-marketplace-sbx.org {
+    dome-certification-api.dome-marketplace-dev2.org {
         log {
             output stdout
             format json
@@ -205,37 +205,8 @@ data:
         }  
     }
     
-    dependency-track.dome-marketplace-sbx.org {
-        log {
-            output stdout
-            format json
-        }
 
-        header {
-            -Server
-            -Via
-        }
-
-        request_body {
-            max_size 10MiB
-        }
-
-        encode {
-            gzip 1
-            minimum_length 256
-        }
-
-        handle /* {
-            reverse_proxy dependency-track-frontend.security.svc.cluster.local:8080 {
-                transport http {
-                    dial_timeout            5s
-                    response_header_timeout 60s
-                }
-            }        
-        }  
-    }
-
-    desmos.dome-marketplace-sbx.org {
+    desmos.dome-marketplace-dev2.org {
         log {
             output stdout
             format json
