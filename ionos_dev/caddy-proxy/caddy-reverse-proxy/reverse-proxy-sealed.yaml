@@ -1,0 +1,14 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: reverse-proxy-pull-secret
+  namespace: caddy-proxy
+spec:
+  encryptedData:
+    .dockerconfigjson: AgBnvSA1LoPTi3AHhf5eM9AvDJCLbGO5/0G4J40CiTJfLe4v9/79gPI9Mwq2/F9dsFvaUOy4huxc2burs7NZL01QcbEK+xmJX0OPTJiTdk1yHKVgvcaD/e03HaXM8LkfUz7rZ6mDtsUr0E9b89R7YNFqrImuoCUT1JjBQSNreZAqAozSla392OFW2xQZ3ahLP3QtYFEyzrxQgiWwRQszR1n+eD39qal1N/tmgQ159sZy9Kyt0M0NumBcD6c/xyb3yMVgxugrHvFGB5AS2a9i9wvAd8cXxo69ntOfrfzdEtTvwLlLaQzbTaOEX9uCogchrLY1hCEXiKuREWO+aQXkrrPafWBwEmvDhTP84cRceLY4pt9nXa1uq22eFZYhmGYta4eCIbfGyBBzfk+Stb9ZU6khZ1MWnSAT17nAbRbvqOXSecIhcjqMAyajLk0jowI+85u8+Lzijg7e0IhZTqJGq/mErgcmxTimG8+c3TBoKxdaCEGL3uTI+c8mbeTAJifIO4IBRDd2z3NeIdBvhm4Il1uYwedPk3UWmtfyTS5io/gqrAg5PcKMF+2BkJ2jwSkmOMSxjXgI5GM0Y/bg6FLLLAKQwZw3QYVTWgtDn40BKlnCvI6Oc+ZlqTLvms5LsPCfOrVWlVUooJKggmPJtItCxWaX44WB5jW3mRI94bhR8hnOrc0/hjoYExR8ZZPAoXTzUKpfGz4KzvdUrI5WIMyjrk2zPnKWJnMG1YJECFGdxueBEkIqRJ6iAdqFyx64A8WO8xMDu06bpZd3RRN3SVXEgJSE1SFmsTfdc+BHh6ODa+M6JihynzJeroxaM9mO/RvpipVY78axlNaI3ghlRPx0zOOjhXPxik3UnjdK/r639e/KfuW2BJTdYY08EUQg2ajvITxJjx8+SsSQOX5Ailxe9DbpsDrFGcaMN5W+AClIkTabRl+wJ/UGXmhTb6b3JUVDFvwUGw==
+  template:
+    metadata:
+      name: reverse-proxy-pull-secret
+      namespace: caddy-proxy
+    type: kubernetes.io/dockerconfigjson
