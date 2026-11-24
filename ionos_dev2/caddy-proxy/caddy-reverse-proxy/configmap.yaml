@@ -250,7 +250,7 @@ data:
         }
     }
 
-    tmf.dome-marketplace-sbx.org {
+    tmf.dome-marketplace-dev2.org {
         log {
             output stdout
             format json
@@ -425,37 +425,8 @@ data:
 
     }
 
-    grafana.dome-marketplace-sbx.org {
-        log {
-            output stdout
-            format json
-        }
 
-        header {
-            -Server
-            -Via
-        }
-
-        request_body {
-            max_size 1MiB
-        }
-
-        encode {
-            gzip 1
-            minimum_length 256
-        }
-
-        handle /* {
-            reverse_proxy kube-prometheus-stack-grafana.kube-prometheus-stack.svc.cluster.local:80 {
-                transport http {
-                    dial_timeout            5s
-                    response_header_timeout 60s
-                }
-            }        
-        }  
-    }
-
-    payment.dome-marketplace-sbx.org {
+    payment.dome-marketplace-dev2.org {
         log {
             output stdout
             format json
@@ -485,7 +456,7 @@ data:
         }
     }
 
-    manage.dome-marketplace-sbx.org {
+    manage.dome-marketplace-dev2.org {
         log {
             output stdout
             format json
@@ -515,7 +486,7 @@ data:
         }
     }
 
-    cs-identity.dome-marketplace-sbx.org {
+    cs-identity.dome-marketplace-dev2.org {
         log {
             output stdout
             format json
@@ -550,7 +521,7 @@ data:
         }  
     }
 
-    keycloak.dome-marketplace-sbx.org {
+    keycloak.dome-marketplace-dev2.org {
         log {
             output stdout
             format json
@@ -621,34 +592,4 @@ data:
                 }
             }
         }
-    }
-
-    helpdesk.dome-marketplace-sbx.org {
-        log {
-            output stdout
-            format json
-        }
-
-        header {
-            -Server
-            -Via
-        }
-
-        request_body {
-            max_size 10MiB
-        }
-
-        encode {
-            gzip 1
-            minimum_length 256
-        }
-
-        handle /* {
-            reverse_proxy zammad2-nginx.zammad.svc.cluster.local:8080 {
-                transport http {
-                    dial_timeout            5s
-                    response_header_timeout 60s
-                }
-            }        
-        }  
     }
