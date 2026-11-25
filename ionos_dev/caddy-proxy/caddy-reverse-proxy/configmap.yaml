@@ -507,7 +507,7 @@ data:
         }
 
         handle /* {
-            reverse_proxy cs-identity-keycloak.cs-identity.svc.cluster.local:80 {
+            reverse_proxy cs-identity-keycloak.cs-identity.svc.cluster.local:8080 {
                 header_up X-Forwarded-Port 443
                 transport http {
                     dial_timeout            5s
