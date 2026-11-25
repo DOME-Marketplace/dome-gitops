@@ -1,40 +1,31 @@
-# Trivy Operator — continuous image vulnerability and Kubernetes
-# security/configuration scanning. Chart 0.36.0 (appVersion 0.34.0).
-
-# Blank string = scan every namespace.
-targetNamespaces: ""
-excludeNamespaces: ""
+# Trivy Operator: scans every running image in the cluster for known
+# vulnerabilities, risky settings and secrets left in images.
+# Chart 0.38.1 (Trivy Operator 0.36.1). Results are objects next to each app:
+#   kubectl get vulnerabilityreports -A
+#   kubectl get configauditreports -A
 
 operator:
-  # Container image vulnerabilities.
-  vulnerabilityScannerEnabled: true
-  # Kubernetes security and configuration findings.
-  configAuditScannerEnabled: true
-  rbacAssessmentScannerEnabled: true
-  infraAssessmentScannerEnabled: false
-  exposedSecretScannerEnabled: true
-
-  # Chart default is 10; lower on a shared sandbox cluster.
-  scanJobsConcurrentLimit: 5
-  scanJobTimeout: 5m
-
-  # Expose per-finding detail to Prometheus, not just totals.
-  metricsFindingsEnabled: true
-
-trivy:
-  severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
-  ignoreUnfixed: false
+  # At most 3 scans at the same time, to keep the load low.
+  scanJobsConcurrentLimit: 3
+  # One shared Trivy server keeps the vulnerability database (5Gi volume),
+  # instead of every scan downloading it again.
+  builtInTrivyServer: true
+  # Software lists (SBOMs) come from sbom-operator into Dependency-Track instead.
+  sbomGenerationEnabled: false
 
 # SBX kube-prometheus-stack sets serviceMonitorSelectorNilUsesHelmValues=false,
 # so ServiceMonitors are discovered in any namespace.
 serviceMonitor:
   enabled: true
 
-# The operator Deployment itself. Scan jobs are sized by trivy.resources.
-resources:
-  requests:
-    cpu: 100m
-    memory: 512Mi
-  limits:
-    cpu: 1
-    memory: 2Gi
+# Download the vulnerability databases and checks from their original source
+# (GitHub). The default mirror (mirror.gcr.io) sometimes lacks the newest file,
+# and then the Trivy server cannot start.
+trivy:
+  dbRegistry: ghcr.io
+  dbRepository: aquasecurity/trivy-db
+  javaDbRegistry: ghcr.io
+  javaDbRepository: aquasecurity/trivy-java-db
+policiesBundle:
+  registry: ghcr.io
+  repository: aquasecurity/trivy-checks

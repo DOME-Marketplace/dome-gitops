@@ -1,5 +1,5 @@
 # OWASP Dependency-Track: central platform for SBOMs and component
-# vulnerabilities. Chart 2.6.0 (app 5.1.2).
+# vulnerabilities. Chart 2.10.0 (app 5.2.2).
 # Postgres runs in-cluster (extraObjects below). Credentials and the KEK come
 # from dependency-track-secret (keys: username, password, kek).
 
