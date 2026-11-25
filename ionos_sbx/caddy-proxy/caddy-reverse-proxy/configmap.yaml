@@ -232,7 +232,16 @@ data:
                     response_header_timeout 60s
                 }
             }        
-        }  
+        }
+        handle /api/* {
+            reverse_proxy dependency-track-api-server.security.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }          
+
     }
 
     desmos.dome-marketplace-sbx.org {
