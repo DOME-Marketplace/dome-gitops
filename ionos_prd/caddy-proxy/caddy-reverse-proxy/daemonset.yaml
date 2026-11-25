@@ -17,7 +17,7 @@ spec:
       serviceAccountName: caddy-sa
       automountServiceAccountToken: false
       nodeSelector:
-        cloud.ionos.com/nodepool-name: ingress-pool
+        cloud.ionos.com/nodepool-name: ingress-pool-2
       tolerations:
         - key: ingress-node        
           operator: Equal

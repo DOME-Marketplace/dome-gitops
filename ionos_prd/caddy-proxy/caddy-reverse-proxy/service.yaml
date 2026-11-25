@@ -4,7 +4,7 @@ metadata:
   name: caddy-reverse-proxy-balancer
   labels: { app: caddy-reverse-proxy }
   annotations:
-    cloud.ionos.com/node-selector: cloud.ionos.com/nodepool-name=ingress-pool
+    cloud.ionos.com/node-selector: cloud.ionos.com/nodepool-name=ingress-pool-2
 spec:
   type: LoadBalancer
   externalTrafficPolicy: Cluster
