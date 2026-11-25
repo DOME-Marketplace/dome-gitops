@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+ 
+namespace: caddy-proxy
+ 
+resources:
+  - daemonset.yaml
+  - service.yaml
+  - networkpolicy.yaml
+  - reverse-proxy-sealed.yaml
+  - serviceaccount.yaml
+  - pvc.yaml
+  - configmap.yaml
