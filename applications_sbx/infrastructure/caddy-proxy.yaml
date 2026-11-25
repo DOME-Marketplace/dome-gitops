@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: https://github.com/DOME-Marketplace/dome-gitops
     targetRevision: HEAD
-    path: ionos_sbx/caddy-proxy
+    path: ionos_sbx/caddy-proxy/caddy-forward-proxy
   syncPolicy:
     automated: { prune: true, selfHeal: true }
     syncOptions: ["CreateNamespace=true"]
