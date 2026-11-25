@@ -576,7 +576,27 @@ data:
             minimum_length 256
         }
 
-        handle /* {
+        handle /issuer-api/vci/v1/issuances* {
+            uri strip_prefix /issuer-api
+            reverse_proxy dome-issuer-backend.in2.svc.cluster.local:80 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        @issuer_backend path /api* /vci* /backoffice* /oid4vci* /.well-known* /oauth/token* /w3c*
+        handle @issuer_backend {
+            reverse_proxy dome-issuer-backend.in2.svc.cluster.local:80 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        handle {
             reverse_proxy dome-issuer-frontend.in2.svc.cluster.local:80 {
                 transport http {
                     dial_timeout            5s
