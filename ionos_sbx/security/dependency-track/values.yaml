@@ -14,6 +14,19 @@ secretManagement:
       existingSecret:
         name: dependency-track-secret
 
+# Caddy sends everything for this address to the frontend, but the web page
+# calls the API on the same address (/api/...). The frontend's nginx therefore
+# passes /api/ on to the API server (config in extraObjects below).
+frontend:
+  additionalVolumes:
+    - name: nginx-config
+      configMap:
+        name: dependency-track-frontend-nginx
+  additionalVolumeMounts:
+    - name: nginx-config
+      mountPath: /etc/nginx/templates/default.conf.template
+      subPath: default.conf.template
+
 ingress:
   enabled: false
   ingressClassName: caddy-reverse-proxy
@@ -93,3 +106,41 @@ extraObjects:
         app: dependency-track-postgres
       ports:
         - port: 5432
+  # nginx config of the frontend: the image's own template, plus /api/.
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: dependency-track-frontend-nginx
+    data:
+      default.conf.template: |
+        server {
+          listen      8080;
+          server_name _;
+
+          location /api/ {
+            proxy_pass           http://dependency-track-api-server.security.svc.cluster.local:8080;
+            client_max_body_size 10m;
+            proxy_read_timeout   300s;
+          }
+
+          location / {
+            root      /opt/owasp/dependency-track-frontend;
+            index     index.html;
+            try_files $uri $uri/ /index.html;
+
+            location ~ (config\.json|index\.html)$ {
+              add_header Cache-Control "max-age=0, no-cache, no-store, must-revalidate";
+              add_header Pragma "no-cache";
+              add_header Expires 0;
+            }
+
+            sub_filter '<base href=/'  '<base href=${BASE_PATH}';
+            sub_filter_once on;
+          }
+
+          error_page 500 502 503 504 /50x.html;
+
+          location = /50x.html {
+            root /usr/share/nginx/html;
+          }
+        }
