@@ -1,5 +1,24 @@
-# sbom-operator: generates an SBOM with Syft for every image running in the
-# cluster and stores it as a ConfigMap next to the pod. Chart 0.47.0.
+# sbom-operator: runs Syft on every image running in the cluster and uploads
+# the SBOM (CycloneDX) to Dependency-Track. Chart 0.51.1 (sbom-operator 0.50.1).
+# In Dependency-Track each image is a project (name = image, version = tag),
+# tagged with dome-sbx/<namespace>.
 args:
-  targets: configmap
+  targets: dtrack
   format: cyclonedxjson
+  dtrack-base-url: http://dependency-track-api-server.security.svc.cluster.local:8080
+  kubernetes-cluster-id: dome-sbx
+  dtrack-kubernetes-cluster-id-mode: tag-namespace
+
+envVars:
+  - name: SBOM_DTRACK_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: dtrack-api-key   # dtrack-api-key-sealed-secret.yaml
+        key: api-key
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    memory: 2Gi   # Syft needs room for large images
