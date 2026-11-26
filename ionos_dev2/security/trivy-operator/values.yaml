@@ -1,0 +1,39 @@
+# Trivy Operator: scans every running image in the cluster for known
+# vulnerabilities, risky settings and secrets left in images.
+# Chart 0.38.1 (Trivy Operator 0.36.1). Results are objects next to each app:
+#   kubectl get vulnerabilityreports -A
+#   kubectl get configauditreports -A
+# Same as SBX, plus two fixes for problems seen there (node checks, scan memory).
+
+operator:
+  # At most 3 scans at the same time, to keep the load low.
+  scanJobsConcurrentLimit: 3
+  # One shared Trivy server keeps the vulnerability database (5Gi volume),
+  # instead of every scan downloading it again.
+  builtInTrivyServer: true
+  # Software lists (SBOMs) come from sbom-operator into Dependency-Track instead.
+  sbomGenerationEnabled: false
+  # No node checks (CIS): they run a pod on every node, and on SBX it stays
+  # Pending because the nodes have no CPU left for it.
+  infraAssessmentScannerEnabled: false
+
+# DEV2 has the Prometheus Operator (the ArgoCD values use ServiceMonitors too).
+serviceMonitor:
+  enabled: true
+
+# Download the vulnerability databases and checks from their original source
+# (GitHub). The default mirror (mirror.gcr.io) sometimes lacks the newest file,
+# and then the Trivy server cannot start.
+trivy:
+  dbRegistry: ghcr.io
+  dbRepository: aquasecurity/trivy-db
+  javaDbRegistry: ghcr.io
+  javaDbRepository: aquasecurity/trivy-java-db
+  # Each scan unpacks the image. With the default 500M, scans of large images
+  # (elasticsearch, falco, logic-proxy on SBX) are killed for lack of memory.
+  resources:
+    limits:
+      memory: 1Gi
+policiesBundle:
+  registry: ghcr.io
+  repository: aquasecurity/trivy-checks
