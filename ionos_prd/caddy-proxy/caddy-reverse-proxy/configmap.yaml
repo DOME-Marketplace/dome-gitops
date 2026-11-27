@@ -116,7 +116,7 @@ data:
     }
 
 
-    knowledgebase.dome-marketplace.eu {
+    knowledgebase.dome-marketplace.eu, knowledgebase.dome-marketplace-prd.org, knowledgebase.dome-marketplace.org {
         log {
             output stdout
             format json
@@ -557,7 +557,7 @@ data:
         }  
     }
 
-    issuer.dome-marketplace-prd.org {
+    issuer.dome-marketplace-prd.org, issuer.dome-marketplace.eu {
         log {
             output stdout
             format json
@@ -712,4 +712,34 @@ data:
                 }
             }
         }
+    }
+
+    grafana.dome-marketplace-sbx.org {
+        log {
+            output stdout
+            format json
+        }
+
+        header {
+            -Server
+            -Via
+        }
+
+        request_body {
+            max_size 1MiB
+        }
+
+        encode {
+            gzip 1
+            minimum_length 256
+        }
+
+        handle /* {
+            reverse_proxy kube-prometheus-stack-grafana.kube-prometheus-stack.svc.cluster.local:80 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }  
     }
