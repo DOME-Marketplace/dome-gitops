@@ -6,7 +6,7 @@ metadata:
 data:
   sbx-site.caddy: |
     
-    dome-marketplace.eu {
+    dome-marketplace.eu, dome-marketplace-prd.org, dome-marketplace.org {
         log {
             output stdout
             format json
