@@ -55,7 +55,7 @@ data:
         }
     }
 
-    ticketing.dome-marketplace-dev2.org {
+    ticketing-int.dome-marketplace.eu {
         log {
             output stdout
             format json
@@ -85,7 +85,38 @@ data:
         }  
     }
 
-    knowledgebase.dome-marketplace-dev2.org {
+    ticketing.dome-marketplace.eu {
+        log {
+            output stdout
+            format json
+        }
+
+        header {
+            -Server
+            -Via
+        }
+
+        request_body {
+            max_size 10MiB
+        }
+
+        encode {
+            gzip 1
+            minimum_length 256
+        }
+
+        handle /* {
+            reverse_proxy zammad2-nginx.zammad.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }  
+    }
+
+
+    knowledgebase.dome-marketplace.eu {
         log {
             output stdout
             format json
@@ -115,7 +146,7 @@ data:
         }  
     }
 
-    analytics.dome-marketplace-dev2.org {
+    analytics.dome-marketplace-prd.org {
         log {
             output stdout
             format json
@@ -145,7 +176,7 @@ data:
         }  
     }
 
-    dome-certification.dome-marketplace-dev2.org {
+    dome-certification.dome-marketplace.eu {
         log {
             output stdout
             format json
@@ -175,7 +206,7 @@ data:
         }  
     }
 
-    dome-certification-api.dome-marketplace-dev2.org {
+    dome-certification-api.dome-marketplace.eu {
         log {
             output stdout
             format json
@@ -206,7 +237,7 @@ data:
     }
     
 
-    desmos.dome-marketplace-dev2.org {
+    desmos.dome-marketplace.eu {
         log {
             output stdout
             format json
@@ -426,7 +457,7 @@ data:
     }
 
 
-    payment.dome-marketplace-dev2.org {
+    payment.dome-marketplace-prd.org {
         log {
             output stdout
             format json
@@ -456,37 +487,7 @@ data:
         }
     }
 
-    manage.dome-marketplace-dev2.org {
-        log {
-            output stdout
-            format json
-        }
-
-        header {
-            -Server
-            -Via
-        }
-
-        request_body {
-            max_size 10MiB
-        }
-
-        encode {
-            gzip 1
-            minimum_length 256
-        }
-
-        handle /subscriptions* {
-            reverse_proxy subscriptions-management-svc.billing.svc.cluster.local:8080 {
-                transport http {
-                    dial_timeout            5s
-                    response_header_timeout 60s
-                }
-            }
-        }
-    }
-
-    cs-identity.dome-marketplace-dev2.org {
+    cs-identity.dome-marketplace.eu {
         log {
             output stdout
             format json
@@ -521,7 +522,7 @@ data:
         }  
     }
 
-    keycloak.dome-marketplace-dev2.org {
+    keycloak.dome-marketplace.eu {
         log {
             output stdout
             format json
@@ -556,7 +557,7 @@ data:
         }  
     }
 
-    issuer.dome-marketplace-dev2.org {
+    issuer.dome-marketplace-prd.org {
         log {
             output stdout
             format json
@@ -584,7 +585,7 @@ data:
                     response_header_timeout 60s
                 }
             }
-        }
+        } 
 
         @issuer_backend path /api* /vci* /backoffice* /oid4vci* /.well-known* /oauth/token* /w3c*
         handle @issuer_backend {
@@ -606,7 +607,7 @@ data:
         }
     }
 
-    wallet.dome-marketplace-dev2.org {
+    wallet.dome-marketplace.eu {
         log {
             output stdout
             format json
@@ -645,7 +646,7 @@ data:
         }
     }
 
-    verifier.dome-marketplace-dev2.org {
+    verifier.dome-marketplace.eu {
         log {
             output stdout
             format json
@@ -675,7 +676,7 @@ data:
         }
     }
 
-    argocd.dome-marketplace-dev2.org {
+    argocd.dome-marketplace-prd.org {
         log {
             output stdout
             format json
