@@ -6,7 +6,86 @@ metadata:
 data:
   sbx-site.caddy: |
     
-    knowledgebase.dome-marketplace-sbx.org {
+    dome-marketplace.eu {
+        log {
+            output stdout
+            format json
+        }
+
+        header {
+            -Server
+            -Via
+        }
+
+        request_body {
+            max_size 10MiB
+        }
+
+        encode {
+            gzip 1
+            minimum_length 256
+        }
+
+
+        handle /access-node-compose-api/* {
+            reverse_proxy access-node-compose-api.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+       
+        handle /* {
+            
+            reverse_proxy bae-marketplace-biz-ecosystem-logic-proxy.marketplace.svc.cluster.local:8004 {
+
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        handle {
+            respond "Not Found" 404
+        }
+        handle_errors {
+            respond "Error {err.status_code}" {err.status_code}
+        }
+    }
+
+    ticketing.dome-marketplace-dev2.org {
+        log {
+            output stdout
+            format json
+        }
+
+        header {
+            -Server
+            -Via
+        }
+
+        request_body {
+            max_size 10MiB
+        }
+
+        encode {
+            gzip 1
+            minimum_length 256
+        }
+
+        handle /* {
+            reverse_proxy zammad-nginx.zammad.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }  
+    }
+
+    knowledgebase.dome-marketplace-dev2.org {
         log {
             output stdout
             format json
@@ -34,4 +113,602 @@ data:
                 }
             }        
         }  
+    }
+
+    analytics.dome-marketplace-dev2.org {
+        log {
+            output stdout
+            format json
+        }
+
+        header {
+            -Server
+            -Via
+        }
+
+        request_body {
+            max_size 10MiB
+        }
+
+        encode {
+            gzip 1
+            minimum_length 256
+        }
+
+        handle /* {
+            reverse_proxy superset-service.analytics.svc.cluster.local:8088 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }  
+    }
+
+    dome-certification.dome-marketplace-dev2.org {
+        log {
+            output stdout
+            format json
+        }
+
+        header {
+            -Server
+            -Via
+        }
+
+        request_body {
+            max_size 10MiB
+        }
+
+        encode {
+            gzip 1
+            minimum_length 256
+        }
+
+        handle /* {
+            reverse_proxy certification-frontend-svc.dome-certification.svc.cluster.local:80 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }  
+    }
+
+    dome-certification-api.dome-marketplace-dev2.org {
+        log {
+            output stdout
+            format json
+        }
+
+        header {
+            -Server
+            -Via
+        }
+
+        request_body {
+            max_size 10MiB
+        }
+
+        encode {
+            gzip 1
+            minimum_length 256
+        }
+
+        handle_path /* {
+            reverse_proxy certification-backend-svc.dome-certification.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }  
+    }
+    
+
+    desmos.dome-marketplace-dev2.org {
+        log {
+            output stdout
+            format json
+        }
+
+        header {
+            -Server
+            -Via
+        }
+
+        # Keep this limit above the 1MiB used by the other sites: the P2P
+        # discovery body lists every entity the calling node holds, and nodes
+        # with data send more than 1MiB (Caddy answers 413 and drops the request).
+        request_body {
+            max_size 20MiB
+        }
+
+        encode {
+            gzip 1
+            minimum_length 256
+        }
+
+        # Public Desmos API used by other access nodes:
+        #   GET  /api/v2/entities/{id}        entities of blockchain events
+        #   POST /api/v2/sync/p2p/discovery   P2P synchronization (discovery)
+        #   POST /api/v2/sync/p2p/entities    P2P synchronization (entities)
+        @desmos_public path /api/v2/entities* /api/v2/sync/p2p/discovery /api/v2/sync/p2p/entities
+        handle @desmos_public {
+            reverse_proxy desmos.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    # A P2P discovery on a node with data takes tens of seconds
+                    response_header_timeout 300s
+                }
+            }
+        }
+
+        # Any other path: explicit 404 instead of Caddy's default empty 200
+        handle {
+            respond 404
+        }
+    }
+
+    tmf.dome-marketplace-dev2.org {
+        log {
+            output stdout
+            format json
+        }
+
+        header {
+            -Server
+            -Via
+        }
+
+        request_body {
+            max_size 10MiB
+        }
+
+        encode {
+            gzip 1
+            minimum_length 256
+        }
+
+        handle /tmf-api/accountManagement* {
+            reverse_proxy tm-forum-api-account.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }  
+
+        handle /tmf-api/agreementManagement* {
+            reverse_proxy tm-forum-api-agreement.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle /tmf-api/customerBillManagement* {
+            reverse_proxy tm-forum-api-customer-bill-management.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle /tmf-api/customerManagement* {
+            reverse_proxy tm-forum-api-customer-management.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle /tmf-api/documentManagement* {
+            reverse_proxy tm-forum-api-document-management.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle /tmf-api/party* {
+            reverse_proxy tm-forum-api-party-catalog.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle /tmf-api/partyRoleManagement* {
+            reverse_proxy tm-forum-api-party-role.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle /tmf-api/productCatalogManagement* {
+            reverse_proxy tm-forum-api-product-catalog.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle /tmf-api/productInventory* {
+            reverse_proxy tm-forum-api-product-inventory.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle /tmf-api/productOrderingManagement* {
+            reverse_proxy tm-forum-api-product-ordering-management.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle /tmf-api/quoteManagement* {
+            reverse_proxy tm-forum-api-quote.marketplace.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle /tmf-api/resourceCatalog* {
+            reverse_proxy tm-forum-api-resource-catalog.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle /tmf-api/resourceFunctionActivation* {
+            reverse_proxy tm-forum-api-resource-function-activation.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle /tmf-api/resourceInventoryManagement* {
+            reverse_proxy tm-forum-api-resource-inventory.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle /tmf-api/serviceCatalogManagement* {
+            reverse_proxy tm-forum-api-service-catalog.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle /tmf-api/serviceInventory* {
+            reverse_proxy tm-forum-api-service-inventory.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+        handle /tmf-api/usageManagement* {
+            reverse_proxy tm-forum-api-usage-management.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }        
+        }
+
+    }
+
+
+    payment.dome-marketplace-dev2.org {
+        log {
+            output stdout
+            format json
+        }
+
+        header {
+            -Server
+            -Via
+        }
+
+        request_body {
+            max_size 1MiB
+        }
+
+        encode {
+            gzip 1
+            minimum_length 256
+        }
+
+        handle /payment/notify {
+            reverse_proxy payment-scheduler-svc.billing.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+    }
+
+    manage.dome-marketplace-dev2.org {
+        log {
+            output stdout
+            format json
+        }
+
+        header {
+            -Server
+            -Via
+        }
+
+        request_body {
+            max_size 10MiB
+        }
+
+        encode {
+            gzip 1
+            minimum_length 256
+        }
+
+        handle /subscriptions* {
+            reverse_proxy subscriptions-management-svc.billing.svc.cluster.local:8080 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+    }
+
+    cs-identity.dome-marketplace-dev2.org {
+        log {
+            output stdout
+            format json
+        }
+
+        header {
+            -Server
+            -Via
+        }
+
+        request_body {
+            max_size 1MiB
+        }
+
+        encode {
+            gzip 1
+            minimum_length 256
+        }
+
+        handle /* {
+            reverse_proxy cs-identity-keycloak.cs-identity.svc.cluster.local:80 {
+                header_up X-Forwarded-Port 443
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        handle {
+            respond 404
+        }  
+    }
+
+    keycloak.dome-marketplace-dev2.org {
+        log {
+            output stdout
+            format json
+        }
+
+        header {
+            -Server
+            -Via
+        }
+
+        request_body {
+            max_size 10MiB
+        }
+
+        encode {
+            gzip 1
+            minimum_length 256
+        }
+
+        handle /* {
+            reverse_proxy keycloak.in2.svc.cluster.local:80 {
+                header_up X-Forwarded-Port 443
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        handle {
+            respond 404
+        }  
+    }
+
+    issuer.dome-marketplace-dev2.org {
+        log {
+            output stdout
+            format json
+        }
+
+        header {
+            -Server
+            -Via
+        }
+
+        request_body {
+            max_size 10MiB
+        }
+
+        encode {
+            gzip 1
+            minimum_length 256
+        }
+
+        handle /issuer-api/vci/v1/issuances* {
+            uri strip_prefix /issuer-api
+            reverse_proxy dome-issuer-backend.in2.svc.cluster.local:80 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        @issuer_backend path /api* /vci* /backoffice* /oid4vci* /.well-known* /oauth/token* /w3c*
+        handle @issuer_backend {
+            reverse_proxy dome-issuer-backend.in2.svc.cluster.local:80 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        handle {
+            reverse_proxy dome-issuer-frontend.in2.svc.cluster.local:80 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+    }
+
+    wallet.dome-marketplace-dev2.org {
+        log {
+            output stdout
+            format json
+        }
+
+        header {
+            -Server
+            -Via
+        }
+
+        request_body {
+            max_size 10MiB
+        }
+
+        encode {
+            gzip 1
+            minimum_length 256
+        }
+
+        handle /api* {
+            reverse_proxy dome-wallet-backend.in2.svc.cluster.local:80 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+
+        handle /* {
+            reverse_proxy dome-wallet-frontend.in2.svc.cluster.local:80 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+    }
+
+    verifier.dome-marketplace-dev2.org {
+        log {
+            output stdout
+            format json
+        }
+
+        header {
+            -Server
+            -Via
+        }
+
+        request_body {
+            max_size 10MiB
+        }
+
+        encode {
+            gzip 1
+            minimum_length 256
+        }
+
+        handle /* {
+            reverse_proxy verifier-marketplace-dome-verifier.marketplace.svc.cluster.local:80 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
+    }
+
+    argocd.dome-marketplace-dev2.org {
+        log {
+            output stdout
+            format json
+        }
+
+        header {
+            -Server
+            -Via
+        }
+
+        request_body {
+            max_size 10MiB
+        }
+
+        encode {
+            gzip 1
+            minimum_length 256
+        }
+
+        @grpc {
+            header Content-Type application/grpc*
+            not header Content-Type application/grpc-web*
+        }
+        handle @grpc {
+            reverse_proxy h2c://argocd-server.argocd.svc.cluster.local:80
+        }
+
+        handle {
+            reverse_proxy argocd-server.argocd.svc.cluster.local:80 {
+                transport http {
+                    dial_timeout            5s
+                    response_header_timeout 60s
+                }
+            }
+        }
     }
