@@ -106,7 +106,7 @@ data:
         }
 
         handle /* {
-            reverse_proxy zammad2-nginx.zammad.svc.cluster.local:8080 {
+            reverse_proxy zammad2-nginx.zammad2.svc.cluster.local:8080 {
                 transport http {
                     dial_timeout            5s
                     response_header_timeout 60s
