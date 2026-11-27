@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJnaGNyLmlvL2RvbWUtbWFya2V0cGxhY2UiOnsidXNlcm5hbWUiOiJtYXhtYXJpaSIsInBhc3N3b3JkIjoiZ2hwX3lYVlFGY0RHbmV2WEZXUEFyazIxT2F6dGxyNTJPUDBqTEdBZiIsImF1dGgiOiJiV0Y0YldGeWFXazZaMmh3WDNsWVZsRkdZMFJIYm1WMldFWlhVRUZ5YXpJeFQyRjZkR3h5TlRKUFVEQnFURWRCWmc9PSJ9fX0=
+kind: Secret
+metadata:
+  name: ghcr-pull-secret
+  namespace: caddy-proxy
+type: kubernetes.io/dockerconfigjson
