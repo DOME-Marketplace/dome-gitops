@@ -714,7 +714,7 @@ data:
         }
     }
 
-    grafana.dome-marketplace-sbx.org {
+    grafana.dome-marketplace-prd.org {
         log {
             output stdout
             format json
